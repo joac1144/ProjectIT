@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectIT.Shared.Models;
 
-namespace ProjectIT.Server;
+namespace ProjectIT.Server.Database;
 
 public class ProjectITDbContext : DbContext
 {
