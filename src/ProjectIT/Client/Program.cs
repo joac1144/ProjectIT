@@ -16,7 +16,8 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().Cre
 builder.Services.AddMsalAuthentication(options =>
 {
     builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-    options.ProviderOptions.DefaultAccessTokenScopes.Add("api://8ce89a56-40f5-4ccf-a6f0-8ca9ab0ec575/API.Access");
+    options.ProviderOptions.DefaultAccessTokenScopes.Add("api://9d371fdd-2916-4308-99be-ee0d7ccf75b6/API.Access");
+    options.ProviderOptions.LoginMode = "redirect";
 });
 
 await builder.Build().RunAsync();
