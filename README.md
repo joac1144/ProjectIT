@@ -4,13 +4,13 @@
 
 ### Pull Docker image for PostgreSQL
 
-```docker pull postgres```
+```$ docker pull postgres```
 
 ### Setup Docker container with PostgreSQL
 
 ```$ docker run --name ProjectIT_DB -e POSTGRES_DB=projectit -e POSTGRES_PASSWORD=postgres -p 5433:5432 -d postgres```
 
-### Connect to database server in PgAdmin
+### Connecting to database server in PgAdmin
 
 ```
 Host name/address: localhost
