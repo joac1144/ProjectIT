@@ -1,0 +1,65 @@
+﻿/* ******************************************************************************************************* */
+/* 1. Include functions first (so you can manipulate colors, SVGs, calc, etc) */
+@import "../wwwroot/lib/bootstrap/scss/functions";
+
+/* ******************************************************************************************************* */
+/* 2. Include any default variable overrides here */
+@import url("https://fonts.googleapis.com/css2?family=Scada");
+$font-family-base: 'Scada', sans-serif;
+
+/* ******************************************************************************************************* */
+/* 3. Include remainder of required Bootstrap stylesheets */
+@import "../wwwroot/lib/bootstrap/scss/variables";
+
+/* ******************************************************************************************************* */
+/* 4. Include any default map overrides here */
+
+// Colors.
+$tag-pink: #FFC0CB1A;
+$custom-colors: (
+    "tag-pink": $tag-pink 
+);
+$custom-theme-colors: (
+    "pink": $tag-pink 
+);
+
+$colors: map-merge($colors, $custom-colors);
+$theme-colors: map-merge($theme-colors, $custom-theme-colors);
+
+/* ******************************************************************************************************* */
+/* 5. Include remainder of required parts */
+@import "../wwwroot/lib/bootstrap/scss/maps";
+@import "../wwwroot/lib/bootstrap/scss/mixins";
+@import "../wwwroot/lib/bootstrap/scss/root";
+
+/* ******************************************************************************************************* */
+/* 6. Optionally include any other parts as needed */
+@import "../wwwroot/lib/bootstrap/scss/utilities";
+
+// Override utilities.
+$utilities: map-merge(
+  $utilities,
+  (
+    "font-family": map-merge(
+        map-get($utilities, "font-family"),
+        (
+            values: map-merge(
+                map-get(map-get($utilities, "font-family"), "values"),
+                (scada: var(--#{$prefix}font-scada)),
+            ),
+        ),
+    ),
+  )
+);
+
+/* ******************************************************************************************************* */
+/* 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss` */
+@import "../wwwroot/lib/bootstrap/scss/utilities/api";
+
+/* ******************************************************************************************************* */
+/* 8. Add additional custom code here */
+
+// Fonts.
+$h7-font-size: $font-size-base * 0.75;
+$h8-font-size: $font-size-base * 0.5;
+$h9-font-size: $font-size-base * 0.25;
