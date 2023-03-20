@@ -4,15 +4,14 @@
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity?.Name!
-        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+        <li><a style="text-decoration: none; color: white;" href="" @onclick="BeginLogOut"> Log out </a></li>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/login">Log in</a>
+        <a style="text-decoration: none; color: white;" href="authentication/login">Log in</a>
     </NotAuthorized>
 </AuthorizeView>
 
-@code{
+@code {
     public void BeginLogOut()
     {
         Navigation.NavigateToLogout("authentication/logout");
