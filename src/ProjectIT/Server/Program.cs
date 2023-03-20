@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using ProjectIT.Server.Database;
@@ -40,7 +38,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ProjectITDbContext>();
     context.Database.EnsureCreated();
-    SeedData.SeedDatabase(context);
+    SeedData.SeedTags(context);
 }
 
 app.UseHttpsRedirection();
