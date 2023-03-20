@@ -12,15 +12,16 @@ body {
     position: relative;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: rgba(0, 0, 0, .96);
     color: white;
+    
 }
 
 .logos {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 25px;
+    gap: 35px;
 }
 .brand-title {
     display: flex;
@@ -31,11 +32,11 @@ body {
     gap: 5px;
 }
 
-.Itu_logo {
+.Itu_text {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
+    padding-top: 10px;
     border-left: 6px solid white;
     border-width: thin;
     height: 50px;
@@ -53,12 +54,15 @@ body {
 .navbar-links ul {
     display: flex;
     margin: 0;
-    padding: 0;    
+    padding: 0;
+        
 }
 
 .navbar-links li {
     list-style: none;
+    
 }
+
 
 .navbar-links li a {
     display: block;
@@ -70,6 +74,7 @@ body {
 .navbar-links li:hover {
     background-color: #555;
 }
+
 
 .toggle-button {
     position: absolute;

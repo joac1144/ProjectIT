@@ -4,10 +4,13 @@
 
 <AuthorizeView>
     <Authorized>
-        <li><a style="text-decoration: none; color: white;" href="" @onclick="BeginLogOut"> Log out </a></li>
+        <div>
+            <a class="logOffButton" href="" @onclick="BeginLogOut"> Log out </a>
+            <img style="height: 40px; padding-right: 7px;" src="user.png" alt="Pic not found" />
+        </div>
     </Authorized>
     <NotAuthorized>
-        <a style="text-decoration: none; color: white;" href="authentication/login">Log in</a>
+        <a class="loginButton" href="authentication/login"> Log in </a> 
     </NotAuthorized>
 </AuthorizeView>
 
