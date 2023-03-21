@@ -9,28 +9,28 @@ public static class SeedData
         if (!context.Topics.Any())
         {
             context.Topics.AddRange(
-                new Topic { Category = "", Name = "SomeNewTopic"},
-                new Topic { Name = "Blazor" },
-                new Topic { Name = "C#" },
-                new Topic { Name = "ASP.NET Core" },
-                new Topic { Name = "Entity Framework Core" },
-                new Topic { Name = "REST" },
-                new Topic { Name = "PowerShell" },
-                new Topic { Name = "Bash" },
-                new Topic { Name = "Zsh" },
-                new Topic { Name = "F#" },
-                new Topic { Name = "C++" },
-                new Topic { Name = "Rust" },
-                new Topic { Name = "Go" },
-                new Topic { Name = "Python 3" },
-                new Topic { Name = "Ruby" },
-                new Topic { Name = "Java" },
-                new Topic { Name = "Kotlin" },
-                new Topic { Name = "Swift" },
-                new Topic { Name = "Objective-C" },
-                new Topic { Name = "C" },
-                new Topic { Name = "Cobol" },
-                new Topic { Name = "Assembly" }
+                new Topic { Name = "SomeNewTopic", Category = "Some Test Category" },
+                new Topic { Name = "C#", Category = "Programming Languages" },
+                new Topic { Name = "Blazor", Category = "Frameworks & Utilities" },
+                new Topic { Name = "ASP.NET Core", Category = "Frameworks & Utilities" },
+                new Topic { Name = "Entity Framework Core", Category = "Frameworks & Utilities" },
+                new Topic { Name = "REST", Category = "Frameworks & Utilities" },
+                new Topic { Name = "PowerShell", Category = "Frameworks & Utilities" },
+                new Topic { Name = "Bash", Category = "Frameworks & Utilities" },
+                new Topic { Name = "Zsh", Category = "Frameworks & Utilities" },
+                new Topic { Name = "F#", Category = "Programming Languages" },
+                new Topic { Name = "C++", Category = "Programming Languages" },
+                new Topic { Name = "Rust", Category = "Programming Languages" },
+                new Topic { Name = "Go", Category = "Programming Languages" },
+                new Topic { Name = "Python 3", Category = "Programming Languages" },
+                new Topic { Name = "Ruby", Category = "Programming Languages" },
+                new Topic { Name = "Java", Category = "Programming Languages" },
+                new Topic { Name = "Kotlin", Category = "Programming Languages" },
+                new Topic { Name = "Swift", Category = "Programming Languages" },
+                new Topic { Name = "Objective-C", Category = "Programming Languages" },
+                new Topic { Name = "C", Category = "Programming Languages" },
+                new Topic { Name = "Cobol", Category = "Programming Languages" },
+                new Topic { Name = "Assembly", Category = "Programming Languages" }
             );
         }
         context.SaveChanges();
@@ -66,7 +66,7 @@ public static class SeedData
                 {
                     Title = "ProjectIT",
                     Description = "A project management system for students at IT University of Copenhagen",
-                    Topics = context.Topics.Take(5),
+                    Topics = context.Topics.Take(5).ToArray(),
                     Languages = new[]
                     {
                         Language.English,
@@ -78,7 +78,7 @@ public static class SeedData
                     },
                     Ects = Ects.Bachelor,
                     Supervisor = context.Users.OfType<Supervisor>().First(),
-                    Students = context.Users.OfType<Student>().Take(2)
+                    Students = context.Users.OfType<Student>().Take(2).ToArray()
                 }
             );
         }
