@@ -38,7 +38,9 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ProjectITDbContext>();
     context.Database.EnsureCreated();
-    SeedData.SeedTags(context);
+    SeedData.SeedTopics(context);
+    SeedData.SeedUsers(context);
+    SeedData.SeedProjects(context);
 }
 
 app.UseHttpsRedirection();

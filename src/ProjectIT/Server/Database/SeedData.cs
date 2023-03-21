@@ -4,35 +4,33 @@ namespace ProjectIT.Server.Database;
 
 public static class SeedData
 {
-    public static void SeedTags(ProjectITDbContext context)
+    public static void SeedTopics(ProjectITDbContext context)
     {
-        if (!context.Tags.Any())
+        if (!context.Topics.Any())
         {
-            context.Tags.AddRange(
+            context.Topics.AddRange(
                 new Topic { Category = "", Name = "SomeNewTopic"},
-                new Language { Name = "Danish" },
-                new Language { Name = "English" },
-                new Tag { Name = "C#" },
-                new Tag { Name = "Blazor" },
-                new Tag { Name = "ASP.NET Core" },
-                new Tag { Name = "Entity Framework Core" },
-                new Tag { Name = "REST" },
-                new Tag { Name = "PowerShell" },
-                new Tag { Name = "Bash" },
-                new Tag { Name = "Zsh" },
-                new Tag { Name = "F#" },
-                new Tag { Name = "C++" },
-                new Tag { Name = "Rust" },
-                new Tag { Name = "Go" },
-                new Tag { Name = "Python 3" },
-                new Tag { Name = "Ruby" },
-                new Tag { Name = "Java" },
-                new Tag { Name = "Kotlin" },
-                new Tag { Name = "Swift" },
-                new Tag { Name = "Objective-C" },
-                new Tag { Name = "C" },
-                new Tag { Name = "Cobol" },
-                new Tag { Name = "Assembly" }
+                new Topic { Name = "Blazor" },
+                new Topic { Name = "C#" },
+                new Topic { Name = "ASP.NET Core" },
+                new Topic { Name = "Entity Framework Core" },
+                new Topic { Name = "REST" },
+                new Topic { Name = "PowerShell" },
+                new Topic { Name = "Bash" },
+                new Topic { Name = "Zsh" },
+                new Topic { Name = "F#" },
+                new Topic { Name = "C++" },
+                new Topic { Name = "Rust" },
+                new Topic { Name = "Go" },
+                new Topic { Name = "Python 3" },
+                new Topic { Name = "Ruby" },
+                new Topic { Name = "Java" },
+                new Topic { Name = "Kotlin" },
+                new Topic { Name = "Swift" },
+                new Topic { Name = "Objective-C" },
+                new Topic { Name = "C" },
+                new Topic { Name = "Cobol" },
+                new Topic { Name = "Assembly" }
             );
         }
         context.SaveChanges();
@@ -43,32 +41,47 @@ public static class SeedData
         if (!context.Users.Any())
         {
             context.Users.AddRange(
-                new Supervisor { FullName = "SomeNewTopic"},
-                new Student { FullName = "Danish" },
-                new Student { FullName = "English" },
-                new User { FullName = "C#" },
-                new User { FullName = "Blazor" },
-                new User { FullName = "ASP.NET Core" },
-                new User { FullName = "Entity Framework Core" },
-                new User { FullName = "REST" },
-                new User { FullName = "PowerShell" },
-                new User { FullName = "Bash" },
-                new User { FullName = "Zsh" },
-                new User { FullName = "F#" },
-                new User { FullName = "C++" },
-                new User { FullName = "Rust" },
-                new User { FullName = "Go" },
-                new User { FullName = "Python 3" },
-                new User { FullName = "Ruby" },
-                new User { FullName = "Java" },
-                new User { FullName = "Kotlin" },
-                new User { FullName = "Swift" },
-                new User { FullName = "Objective-C" },
-                new User { FullName = "C" },
-                new User { FullName = "Cobol" },
-                new User { FullName = "Assembly" }
+                new Supervisor { FullName = "John Andersen Doe"},
+                new Supervisor { FullName = "Alice Jones" },
+                new Supervisor { FullName = "John Smith" },
+                new Supervisor { FullName = "Sarah Lee" },
+                new Student { FullName = "Josefine Henriksen" },
+                new Student { FullName = "Kristian Jespersen" },
+                new Student { FullName = "Michael Davis" },
+                new Student { FullName = "Emily Patel" },
+                new Student { FullName = "David Nguyen" },
+                new Student { FullName = "Olivia Brown" },
+                new Student { FullName = "Robert Carlson " }
             );
         }
+        context.SaveChanges();
+    }
 
+    public static void SeedProjects(ProjectITDbContext context)
+    {
+        if (!context.Projects.Any())
+        {
+            context.Projects.AddRange(
+                new Project
+                {
+                    Title = "ProjectIT",
+                    Description = "A project management system for students at IT University of Copenhagen",
+                    Topics = context.Topics.Take(5),
+                    Languages = new[]
+                    {
+                        Language.English,
+                    },
+                    Educations = new[]
+                    {
+                        Education.BSWU,
+                        Education.BDS
+                    },
+                    Ects = Ects.Bachelor,
+                    Supervisor = context.Users.OfType<Supervisor>().First(),
+                    Students = context.Users.OfType<Student>().Take(2)
+                }
+            );
+        }
+        context.SaveChanges();
     }
 }
