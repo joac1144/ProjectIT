@@ -1,0 +1,61 @@
+<div class="shadow rounded rounded-1 px-5 py-4 card-size">
+    <div class="fs-4 fw-bold">@Title</div>
+    <div class="d-flex justify-content-around py-5">
+        <div class="d-flex">
+            <img src="images\educations.png" width="13%" height="100%">
+            <span class="mx-1"></span>
+            <div class="fs-6 align-self-center">
+                @for (int i = 0; i < Educations.Count(); i++)
+                {
+                    if (i == Educations.Count() - 1)
+                    {
+                        @Educations.ElementAt(i).ToString()
+                    }
+                    else
+                    {
+                        @Educations.ElementAt(i).ToString()
+                        <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <img src="images\hashtags.png" width="13%" height="95%">
+            <span class="mx-1"></span>
+            <div class="fs-6 align-self-center">
+                @Ects.ToString()
+            </div>
+        </div>
+
+         <div class="d-flex">
+            <img src="images\date.png" width="13%" height="95%">
+            <span class="mx-1"></span>
+            <div class="fs-6 align-self-center">
+                @Date.Season @Date.Year
+            </div>
+        </div>
+
+        <div class="d-flex">
+            <img src="images\supervisor.png" width="13%" height="100%">
+            <span class="mx-1"></span>
+            <div class="fs-6 align-self-center">
+                @for (int i = 0; i < Supervisors.Count(); i++)
+                {
+                    if (i == Supervisors.Count() - 1)
+                    {
+                        @Supervisors.ElementAt(i).FullName
+                    }
+                    else
+                    {
+                        @Supervisors.ElementAt(i).FullName
+                        <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div>
+        @Description
+    </div>
+</div>

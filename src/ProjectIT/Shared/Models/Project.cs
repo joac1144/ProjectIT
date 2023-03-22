@@ -27,6 +27,9 @@ public class Project
     public Ects? Ects { get; set; } = null!;
 
     [Required]
+    public Date? Date { get; set; } = null!;
+
+    [Required]
     public Supervisor Supervisor { get; set; } = null!;
 
     [Required]

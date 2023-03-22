@@ -77,6 +77,11 @@ public static class SeedData
                         Education.BDS
                     },
                     Ects = Ects.Bachelor,
+                    Date = new Date 
+                    { 
+                        Season = Season.Spring, 
+                        Year = 2024 
+                    },
                     Supervisor = context.Users.OfType<Supervisor>().First(),
                     Students = context.Users.OfType<Student>().Take(2).ToArray()
                 }
