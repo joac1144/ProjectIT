@@ -1,79 +1,38 @@
-﻿@* <div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">ProjectIT</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-} *@
-
-@inject NavigationManager NavManager
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
     <head>
-      <link rel="stylesheet" href="background_styles.css">
-      <link rel="stylesheet" href="styles.css">
-      <title>Responsive Navbar</title>
+        <link rel="stylesheet" href="background_styles.css">
+        <link rel="stylesheet" href="styles.css">
+        <title>Responsive Navbar</title>
     </head>
     <body>
-      <nav class="navbar">
-        <div class="logos">
-             <div class="brand-title"> <a href="/"> <img src="ProjectIT_main_logo.jpg"/> </a>ProjectIT  </div>
+        <nav class="navbar">
+            <div class="logos">
+                <div class="brand-title"> 
+                    <a href="/"> 
+                        <img src="images/projectIT_main_logo.jpg"/> 
+                    </a> 
+                  ProjectIT 
+                </div>
                 <div class="Itu_text">
                     <h6> IT UNIVERSITETET I KØBENHAVN </h6>
                 </div>
                 <div class="navbar-links">
-                    <ul>
+                 <ul
                         <li><a href="/">Home</a></li>
                         <li><a href="Counter">Counter</a></li>
                         <li><a href="FetchData">Fetch data</a></li>
-                        @* <li><a href=""> <LoginDisplay> </LoginDisplay> </a></li> *@
+                    @* <li><a href=""> <LoginDisplay> </LoginDisplay> </a></li> *@
                     </ul>
                 </div>
-        </div>
-        <a href="#" class="toggle-button">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </a> 
-        <LoginDisplay> </LoginDisplay>
-      </nav>
+            </div>
+            <a href="#" class="toggle-button">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+            </a> 
+            <LoginDisplay> </LoginDisplay>
+   </nav>
     </body>
 </html>
 
-@code
-{
-   
-}
