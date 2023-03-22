@@ -4,15 +4,17 @@
 
 <AuthorizeView>
     <Authorized>
-        Hello, @context.User.Identity?.Name!
-        <button class="nav-link btn btn-link" @onclick="BeginLogOut">Log out</button>
+        <div>
+            <a class="logOffButton" href="" @onclick="BeginLogOut"> Log out </a>
+            <img style="height: 40px; padding-right: 7px;" src="images/profile_icon.png" alt="Pic not found" />
+        </div>
     </Authorized>
     <NotAuthorized>
-        <a href="authentication/login">Log in</a>
+        <a class="loginButton" href="authentication/login"> Log in </a> 
     </NotAuthorized>
 </AuthorizeView>
 
-@code{
+@code {
     public void BeginLogOut()
     {
         Navigation.NavigateToLogout("authentication/logout");

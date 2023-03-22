@@ -1,0 +1,20 @@
+.loginButton {
+    text-decoration: none;
+    color: white;
+    padding: 1rem;
+}
+
+.loginButton:hover {
+    background-color: #555;
+}
+
+
+.logOffButton {
+    text-decoration: none;
+    color: white;
+    padding: 1rem;
+}
+
+.logOffButton:hover {
+    background-color: #555;
+}
