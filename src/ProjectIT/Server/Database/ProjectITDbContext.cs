@@ -18,7 +18,7 @@ public class ProjectITDbContext : DbContext
         modelBuilder.Entity<Project>()
             .Property(p => p.Languages)
             .HasConversion(
-                e => string.Join(",", e.Select(x => x.ToString("g")).ToArray()),
+                e => string.Join(",", e.Select(x => x.ToString()).ToArray()),
                 e => e.Split(new[] { ',' })
                     .Select(x => Enum.Parse(typeof(Language), x))
                     .Cast<Language>()
@@ -28,7 +28,7 @@ public class ProjectITDbContext : DbContext
         modelBuilder.Entity<Project>()
             .Property(p => p.Educations)
             .HasConversion(
-                e => string.Join(",", e.Select(x => x.ToString("g")).ToArray()),
+                e => string.Join(",", e.Select(x => x.ToString()).ToArray()),
                 e => e.Split(new[] { ',' })
                     .Select(x => Enum.Parse(typeof(Education), x))
                     .Cast<Education>()
