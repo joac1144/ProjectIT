@@ -23,7 +23,7 @@ public partial class ProjectCard
     [Parameter]
     public Ects? Ects { get; set; } = null!;
 
-    private void OnTagClicked()
+    private void OnProjectCardClicked()
     {
         // Logic to remove project from current search.
     }
