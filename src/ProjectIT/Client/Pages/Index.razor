@@ -28,6 +28,12 @@ Welcome to your new app.
         new Supervisor { FullName = "Jannick Vestergaard" }
     };
 
+    var supervisors2 = new[]
+    {
+        new Supervisor { FullName = "Jannick Vestergaard" },
+        new Supervisor { FullName = "Jannick Vestergaard" },
+    };
+
     var educations = new[]
     {
         Education.BSWU,
@@ -42,3 +48,6 @@ Welcome to your new app.
 
 <ProjectCard Title="@title" Description="@description"
 Date= "@date" Ects="@ects" Supervisors="@supervisors" Educations="@educations" ></ProjectCard>
+
+<ProjectCard Title="@title" Description="@description"
+Date= "@date" Ects="@ects" Supervisors="@supervisors2" Educations="@educations" ></ProjectCard>
