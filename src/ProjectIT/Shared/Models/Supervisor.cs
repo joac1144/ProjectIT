@@ -10,4 +10,7 @@ public class Supervisor : User
 
     [Required]
     public IEnumerable<Topic> Topics { get; set; } = null!;
+
+    [Required]
+    public string Profession { get; set; } = null!;
 }
