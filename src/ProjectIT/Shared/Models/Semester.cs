@@ -3,13 +3,13 @@ using ProjectIT.Shared.Enums;
 
 namespace ProjectIT.Shared.Models;
 
-public class Date
+public class Semester
 {
     public int Id { get; set; }
 
     [Required]
-    public Season? Season { get; set; } = null!;
+    public Season Season { get; set; }
 
     [Required]
-    public int? Year { get; set; } = null!;
+    public int Year { get; set; }
 }

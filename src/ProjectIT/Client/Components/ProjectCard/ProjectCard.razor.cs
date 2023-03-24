@@ -19,7 +19,7 @@ public partial class ProjectCard
     public IEnumerable<Education> Educations { get; set; } = null!;
 
     [Parameter]
-    public Date Date { get; set; } = null!;
+    public Semester Date { get; set; } = null!;
 
     [Parameter]
     public Ects? Ects { get; set; } = null!;

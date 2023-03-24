@@ -78,7 +78,7 @@ public static class SeedData
                         Education.BDS
                     },
                     Ects = Ects.Bachelor,
-                    Date = new Date 
+                    Date = new Semester 
                     { 
                         Season = Season.Spring, 
                         Year = 2024 
