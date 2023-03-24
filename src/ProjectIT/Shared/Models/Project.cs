@@ -25,13 +25,15 @@ public class Project
     public IEnumerable<Education> Educations { get; set; } = null!;
 
     [Required]
-    public Ects? Ects { get; set; } = null!;
+    public Ects? Ects { get; set; }
 
     [Required]
-    public Date? Date { get; set; } = null!;
+    public Semester? Semester { get; set; }
 
     [Required]
     public Supervisor Supervisor { get; set; } = null!;
+
+    public Supervisor? CoSupervisor { get; set; }
 
     [Required]
     public IEnumerable<Student> Students { get; set; } = null!;
