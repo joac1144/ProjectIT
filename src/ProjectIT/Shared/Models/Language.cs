@@ -1,5 +1,7 @@
 namespace ProjectIT.Shared.Models;
 
-public class Language : Tag
+public enum Language
 {
+    Danish,
+    English,
 }

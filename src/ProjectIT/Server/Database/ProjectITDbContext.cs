@@ -5,7 +5,9 @@ namespace ProjectIT.Server.Database;
 
 public class ProjectITDbContext : DbContext
 {
-    public DbSet<Tag> Tags { get; set; } = null!;
+    public DbSet<Topic> Topics { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Project> Projects { get; set; } = null!;
 
     public ProjectITDbContext(DbContextOptions<ProjectITDbContext> options) : base(options)
     {
@@ -13,5 +15,28 @@ public class ProjectITDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Project>()
+            .Property(p => p.Languages)
+            .HasConversion(
+                e => string.Join(",", e.Select(x => x.ToString()).ToArray()),
+                e => e.Split(new[] { ',' })
+                    .Select(x => Enum.Parse(typeof(Language), x))
+                    .Cast<Language>()
+                    .ToList()
+            );
+
+        modelBuilder.Entity<Project>()
+            .Property(p => p.Educations)
+            .HasConversion(
+                e => string.Join(",", e.Select(x => x.ToString()).ToArray()),
+                e => e.Split(new[] { ',' })
+                    .Select(x => Enum.Parse(typeof(Education), x))
+                    .Cast<Education>()
+                    .ToList()
+            );
+
+        modelBuilder.Entity<Project>()
+            .Property(p => p.Ects)
+            .HasConversion<string>();
     }
 }

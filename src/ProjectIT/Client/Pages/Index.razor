@@ -1,4 +1,5 @@
-﻿@page "/"
+﻿@using ProjectIT.Shared.Models
+@page "/"
 
 <PageTitle>Index</PageTitle>
 
@@ -9,3 +10,44 @@ Welcome to your new app.
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <Tag Text="Test text" />
+
+<br>
+<br>
+
+@{
+    var date = new Date
+    {
+        Season = Season.Spring,
+        Year = 2023,
+    };
+
+    var ects = Ects.Bachelor;
+
+    var supervisors = new[]
+    {
+        new Supervisor { FullName = "Jannick Vestergaard" }
+    };
+
+    var supervisors2 = new[]
+    {
+        new Supervisor { FullName = "Jannick Vestergaard" },
+        new Supervisor { FullName = "Jannick Vestergaard" },
+    };
+
+    var educations = new[]
+    {
+        Education.BSWU,
+        Education.BDS
+    };
+
+    var description = "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.";
+
+    var title = "ProjectIT - A very beautiful platform solving ITU's problems";
+}
+
+
+<ProjectCard Title="@title" Description="@description"
+Date= "@date" Ects="@ects" Supervisors="@supervisors" Educations="@educations" ></ProjectCard>
+
+<ProjectCard Title="@title" Description="@description"
+Date= "@date" Ects="@ects" Supervisors="@supervisors2" Educations="@educations" ></ProjectCard>

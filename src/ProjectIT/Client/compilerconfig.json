@@ -2,5 +2,9 @@
   {
     "outputFile": "wwwroot/css/base.css",
     "inputFile": "Scss/base.scss"
+  },
+  {
+    "outputFile": "Shared/ProjectCard.razor.css",
+    "inputFile": "Shared/ProjectCard.razor.scss"
   }
 ]

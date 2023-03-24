@@ -2,10 +2,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjectIT.Shared.Models;
 
-public class Tag
+public class Date
 {
     public int Id { get; set; }
 
     [Required]
-    public string Name { get; set; } = null!;
+    public Season? Season { get; set; } = null!;
+
+    [Required]
+    public int? Year { get; set; } = null!;
 }

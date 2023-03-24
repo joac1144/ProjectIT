@@ -2,12 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjectIT.Shared.Models;
 
-public class Topic
+public class User
 {
     public int Id { get; set; }
 
     [Required]
-    public string Name { get; set; } = null!;
-
-    public string Category { get; set; } = null!;
+    public string FullName { get; set; } = null!;
 }
