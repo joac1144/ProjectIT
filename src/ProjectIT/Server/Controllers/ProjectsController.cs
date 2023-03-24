@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectIT.Server.Repositories;
 using ProjectIT.Shared.Dtos.ProjectDto;
 using ProjectIT.Shared.Models;
 
@@ -8,7 +9,12 @@ namespace ProjectIT.Server.Controllers;
 [Route("[controller]")]
 public class ProjectsController : Controller
 {
-    private readonly 
+    private readonly IProjectsRepository _repository;
+    
+    public ProjectsController(IProjectsRepository repository)
+    {
+        _repository = repository;
+    }
 
     [HttpGet]
     public ActionResult<IEnumerable<Project>> GetAll()
