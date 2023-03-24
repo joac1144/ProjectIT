@@ -28,7 +28,7 @@ public class Project
     public Ects? Ects { get; set; }
 
     [Required]
-    public Semester? Date { get; set; }
+    public Semester? Semester { get; set; }
 
     [Required]
     public Supervisor Supervisor { get; set; } = null!;
