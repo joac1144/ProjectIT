@@ -1,3 +1,5 @@
+using ProjectIT.Shared.Enums;
+
 namespace ProjectIT.Shared.Models;
 
 public class Student : User

@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Database;
 
-public class ProjectITDbContext : DbContext
+public class ProjectITDbContext : DbContext, IProjectITDbContext
 {
     public DbSet<Topic> Topics { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;

@@ -1,4 +1,4 @@
-namespace ProjectIT.Shared.Models;
+namespace ProjectIT.Shared.Enums;
 
 public enum Education
 {
@@ -11,5 +11,5 @@ public enum Education
     MDDIT,
     MGAMES,
     MSD,
-    MDIM    
+    MDIM
 }

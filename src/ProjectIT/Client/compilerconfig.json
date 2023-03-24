@@ -4,7 +4,7 @@
     "inputFile": "Scss/base.scss"
   },
   {
-    "outputFile": "Shared/ProjectCard.razor.css",
-    "inputFile": "Shared/ProjectCard.razor.scss"
+    "outputFile": "Components/ProjectCard/ProjectCard.razor.css",
+    "inputFile": "Components/ProjectCard/ProjectCard.razor.scss"
   }
 ]
