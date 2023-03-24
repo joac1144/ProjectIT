@@ -1,4 +1,4 @@
-namespace ProjectIT.Shared.Models;
+namespace ProjectIT.Shared.Enums;
 
 public enum Season
 {

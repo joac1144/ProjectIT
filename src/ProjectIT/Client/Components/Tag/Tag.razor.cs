@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace ProjectIT.Client.Shared;
+namespace ProjectIT.Client.Components.Tag;
 
 public partial class Tag
 {

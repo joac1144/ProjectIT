@@ -1,12 +1,11 @@
+﻿using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Models;
 using System.ComponentModel.DataAnnotations;
-using ProjectIT.Shared.Enums;
 
-namespace ProjectIT.Shared.Models;
+namespace ProjectIT.Shared.Dtos.ProjectDto;
 
-public class Project
+public record ProjectCreateDto
 {
-    public int Id { get; set; }
-
     [Required]
     [StringLength(50)]
     public string Title { get; set; } = null!;
@@ -35,4 +34,9 @@ public class Project
 
     [Required]
     public IEnumerable<Student> Students { get; set; } = null!;
+}
+
+public record ProjectUpdateDto : ProjectCreateDto
+{
+    public int Id { get; set; }
 }

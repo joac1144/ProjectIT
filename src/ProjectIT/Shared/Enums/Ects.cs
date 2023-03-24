@@ -1,4 +1,4 @@
-namespace ProjectIT.Shared.Models;
+namespace ProjectIT.Shared.Enums;
 
 public enum Ects
 {
@@ -10,7 +10,7 @@ public enum Ects
 
     // Equals 7.5 ects
     SevenAndAHalf,
-    
+
     // Equals 5 ects
     Five
 }

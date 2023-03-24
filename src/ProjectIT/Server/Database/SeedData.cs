@@ -1,3 +1,4 @@
+using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Database;

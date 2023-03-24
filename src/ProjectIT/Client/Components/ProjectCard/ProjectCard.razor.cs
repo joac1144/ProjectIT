@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Components;
+using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
-namespace ProjectIT.Client.Shared;
+namespace ProjectIT.Client.Components.ProjectCard;
 
 public partial class ProjectCard
 {
