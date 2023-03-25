@@ -6,5 +6,9 @@
   {
     "outputFile": "Components/ProjectCard/ProjectCard.razor.css",
     "inputFile": "Components/ProjectCard/ProjectCard.razor.scss"
+  },
+  {
+    "outputFile": "Shared/NavMenu.razor.css",
+    "inputFile": "Shared/NavMenu.razor.scss"
   }
 ]
