@@ -1,17 +1,17 @@
-﻿using ProjectIT.Shared.Dtos.ProjectDto;
+﻿using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Repositories;
 
 public interface IProjectsRepository
 {
-    IEnumerable<Project> ReadAll();
+    Task<IEnumerable<ProjectDetailsDto>> ReadAllAsync();
 
-    Project ReadById(int id);
+    Task<ProjectDetailsDto> ReadByIdAsync(int id);
 
-    ProjectCreateDto Create(ProjectCreateDto projectCreateDto);
+    Task<ProjectCreateDto> CreateAsync(ProjectCreateDto projectCreateDto);
 
-    ProjectUpdateDto Update(ProjectUpdateDto projectUpdateDto);
+    Task<ProjectUpdateDto> UpdateAsync(ProjectUpdateDto projectUpdateDto);
 
-    int Delete(int id);
+    Task<int> DeleteAsync(int id);
 }

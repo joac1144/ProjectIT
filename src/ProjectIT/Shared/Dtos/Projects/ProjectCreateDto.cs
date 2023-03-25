@@ -2,8 +2,11 @@
 using ProjectIT.Shared.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ProjectIT.Shared.Dtos.ProjectDto;
+namespace ProjectIT.Shared.Dtos.Projects;
 
+/// <summary>
+/// Add project arguments.
+/// </summary>
 public record ProjectCreateDto
 {
     [Required]
@@ -24,19 +27,13 @@ public record ProjectCreateDto
     public IEnumerable<Education> Educations { get; set; } = null!;
 
     [Required]
-    public Ects? Ects { get; set; } = null!;
+    public Ects? Ects { get; set; }
 
     [Required]
-    public Semester? Semester { get; set; } = null!;
+    public Semester? Semester { get; set; }
 
     [Required]
     public Supervisor Supervisor { get; set; } = null!;
-
-    [Required]
-    public IEnumerable<Student> Students { get; set; } = null!;
-}
-
-public record ProjectUpdateDto : ProjectCreateDto
-{
-    public int Id { get; set; }
+    
+    public Supervisor? CoSupervisor { get; set; }
 }

@@ -1,5 +1,6 @@
-﻿using ProjectIT.Server.Database;
-using ProjectIT.Shared.Dtos.ProjectDto;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectIT.Server.Database;
+using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Repositories;
@@ -13,27 +14,74 @@ public class ProjectsRepository : IProjectsRepository
         _context = context;
     }
 
-    public IEnumerable<Project> ReadAll()
+    public async Task<IEnumerable<ProjectDetailsDto>> ReadAllAsync()
     {
-        return _context.Projects;
+        var projects = await _context.Projects
+            .Include(p => p.Topics)
+            .Include(p => p.Languages)
+            .Include(p => p.Educations)
+            .Include(p => p.Supervisor)
+            .Include(p => p.CoSupervisor)
+            .Include(p => p.Students)
+            .ToListAsync();
+
+        return projects.Select(p => new ProjectDetailsDto
+        {
+            Title = p.Title,
+            Description = p.Description,
+            Topics = p.Topics,
+            Languages = p.Languages,
+            Educations = p.Educations,
+            Ects = p.Ects,
+            Semester = p.Semester,
+            Supervisor = p.Supervisor,
+            CoSupervisor = p.CoSupervisor,
+            Students = p.Students
+        });
     }
 
-    public Project ReadById(int id)
+    public async Task<ProjectDetailsDto> ReadByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var project = await _context.Projects
+            .Include(p => p.Topics)
+            .Include(p => p.Languages)
+            .Include(p => p.Educations)
+            .Include(p => p.Supervisor)
+            .Include(p => p.CoSupervisor)
+            .Include(p => p.Students)
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (project == null)
+        {
+            throw new ArgumentException($"Project with ID {id} was not found!");
+        }
+
+        return new ProjectDetailsDto
+        {
+            Title = project.Title,
+            Description = project.Description,
+            Topics = project.Topics,
+            Languages = project.Languages,
+            Educations = project.Educations,
+            Ects = project.Ects,
+            Semester = project.Semester,
+            Supervisor = project.Supervisor,
+            CoSupervisor = project.CoSupervisor,
+            Students = project.Students
+        };
     }
     
-    public ProjectCreateDto Create(ProjectCreateDto projectCreateDto)
+    public async Task<ProjectCreateDto> CreateAsync(ProjectCreateDto projectCreateDto)
     {
         throw new NotImplementedException();
     }
 
-    public ProjectUpdateDto Update(ProjectUpdateDto projectUpdateDto)
+    public async Task<ProjectUpdateDto> UpdateAsync(ProjectUpdateDto projectUpdateDto)
     {
         throw new NotImplementedException();
     }
 
-    public int Delete(int id)
+    public async Task<int> DeleteAsync(int id)
     {
         throw new NotImplementedException();
     }
