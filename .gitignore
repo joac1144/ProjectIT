@@ -351,6 +351,9 @@ MigrationBackup/
 
 .vscode/
 .DS_STORE
+launchSettings.json
+
 /src/ProjectIT/Client/Shared/*.css
 /src/ProjectIT/Client/Components/**/*.css
+/src/ProjectIT/Client/Components/*/*.css
 /src/ProjectIT/Client/wwwroot/css/
