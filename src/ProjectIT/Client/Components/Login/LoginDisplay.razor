@@ -5,11 +5,11 @@
 <AuthorizeView>
     <Authorized>
         <div>
-            <a class="logOffButton" href="" @onclick="BeginLogOut"> Log out </a>
+            <a class="text-decoration-none fw-bold text-white p-3" href="authentication/logout"> Log out </a>
             <img style="height: 40px; padding-right: 7px;" src="images/profile_icon.png" alt="Pic not found" />
         </div>
     </Authorized>
     <NotAuthorized>
-        <a class="loginButton" href="authentication/login"> Log in </a> 
+        <a class="text-decoration-none fw-bold text-white p-3" href="authentication/login"> Log in </a> 
     </NotAuthorized>
 </AuthorizeView>
