@@ -22,7 +22,7 @@ public class ProjectsController : Controller
         return Ok();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet]
     public ActionResult<Project> GetById(int id)
     {
         return Ok();
