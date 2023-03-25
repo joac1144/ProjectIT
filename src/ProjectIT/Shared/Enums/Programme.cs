@@ -1,6 +1,6 @@
 namespace ProjectIT.Shared.Enums;
 
-public enum Education
+public enum Programme
 {
     BSWU,
     BDS,
