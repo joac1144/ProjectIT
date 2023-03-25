@@ -1,12 +1,16 @@
 ﻿@page "/testpage"
 @using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Components.Filter
+@using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
 
 <PageTitle>A test page</PageTitle>
 
 this a test page
+
 Here are some components:
+
+<SearchField PlaceholderText="Some placeholder text..." />
 
 <FilterPanelSimple Title="Languages"
                    Type="FilterType.Language"
