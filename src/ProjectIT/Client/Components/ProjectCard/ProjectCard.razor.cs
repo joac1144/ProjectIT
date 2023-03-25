@@ -16,7 +16,7 @@ public partial class ProjectCard
     public IEnumerable<Supervisor> Supervisors { get; set; } = null!;
 
     [Parameter]
-    public IEnumerable<Education> Educations { get; set; } = null!;
+    public IEnumerable<Programme> Educations { get; set; } = null!;
 
     [Parameter]
     public Semester Date { get; set; } = null!;

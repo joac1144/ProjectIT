@@ -25,10 +25,24 @@ public partial class FilterPanelSimple
         switch (Type)
         {
             case FilterType.Programme:
+                foreach (Programme programme in Enum.GetValues<Programme>())
+                {
+                    Data.Add(new FilterTag { Tag = programme.ToString() });
+                }
                 break;
             case FilterType.ECTS:
+                foreach (Ects ects in Enum.GetValues<Ects>())
+                {
+                    Data.Add(new FilterTag { Tag = ects.ToString() });
+                }
                 break;
             case FilterType.Semester:
+                DateTime date = DateTime.Now;
+                foreach (Season season in Enum.GetValues<Season>())
+                {
+                    Data.Add(new FilterTag { Tag = $"{season} {date.Year}" });
+                    Data.Add(new FilterTag { Tag = $"{season} {date.Year + 1}" });
+                }
                 break;
             case FilterType.Language:
                 foreach (Language lang in Enum.GetValues<Language>())

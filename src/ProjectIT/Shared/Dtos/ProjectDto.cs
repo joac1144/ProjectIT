@@ -21,7 +21,7 @@ public record ProjectCreateDto
     public IEnumerable<Language> Languages { get; set; } = null!;
 
     [Required]
-    public IEnumerable<Education> Educations { get; set; } = null!;
+    public IEnumerable<Programme> Programmes { get; set; } = null!;
 
     [Required]
     public Ects? Ects { get; set; } = null!;
