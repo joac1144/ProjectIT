@@ -7,7 +7,7 @@ namespace ProjectIT.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProjectsController : Controller
+public class ProjectsController : ControllerBase
 {
     private readonly IProjectsRepository _repository;
     

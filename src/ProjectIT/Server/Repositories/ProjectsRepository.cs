@@ -18,8 +18,6 @@ public class ProjectsRepository : IProjectsRepository
     {
         var projects = await _context.Projects
             .Include(p => p.Topics)
-            .Include(p => p.Languages)
-            .Include(p => p.Educations)
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
             .Include(p => p.Students)
@@ -44,8 +42,6 @@ public class ProjectsRepository : IProjectsRepository
     {
         var project = await _context.Projects
             .Include(p => p.Topics)
-            .Include(p => p.Languages)
-            .Include(p => p.Educations)
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
             .Include(p => p.Students)
