@@ -1,0 +1,12 @@
+﻿@using ProjectIT.Client.Components.Filter;
+
+@if (Tags != null)
+{
+    @foreach (FilterTag filterTag in Tags)
+    {
+        @if (filterTag.Selected)
+        {
+            <Tag Text="@filterTag.Tag" OnClicked="() => TagClicked(filterTag)" />
+        }
+    }
+}
