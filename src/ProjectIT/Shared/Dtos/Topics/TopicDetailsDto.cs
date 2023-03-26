@@ -1,3 +1,4 @@
+using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -11,5 +12,5 @@ public record TopicDetailsDto
     [Required]
     public string Name { get; set; } = null!;
 
-    public string Category { get; set; } = null!;    
+    public TopicCategory Category { get; set; }    
 }

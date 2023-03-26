@@ -1,22 +1,19 @@
-using ProjectIT.Server.Database;
 using ProjectIT.Server.Repositories;
 
 namespace Controller.Tests;
 
-public class ProjectsControllerTests : IDisposable
+public class ProjectsControllerTests
 {
-    private readonly ProjectITDbContext _context = null!;
-    private readonly ProjectsRepository _repository = null!;
+    private readonly IProjectsRepository _repository;
 
+    public ProjectsControllerTests(IProjectsRepository repository)
+    {
+        _repository = repository;
+    }
 
     [Fact]
     public void Test1()
     {
 
-    }
-
-    public void Dispose()
-    {
-        _context.Dispose();
     }
 }

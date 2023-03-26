@@ -22,5 +22,5 @@ public record SupervisorDetailsDto
     [Required]
     public string Profession { get; set; } = null!;
 
-    public Education? Education { get; init; } = null!; 
+    public Programme? Programme { get; init; } = null!; 
 }

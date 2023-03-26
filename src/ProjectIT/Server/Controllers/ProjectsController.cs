@@ -29,7 +29,7 @@ public class ProjectsController : ControllerBase
 
         if (project == null) return NotFound();
 
-        return project;
+        return Ok(project);
     }
 
     [HttpPost]
