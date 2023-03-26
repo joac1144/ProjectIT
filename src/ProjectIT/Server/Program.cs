@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using ProjectIT.Server.Database;
+using ProjectIT.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,9 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<ProjectITDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Development")));
+
+builder.Services.AddScoped<IProjectITDbContext, ProjectITDbContext>();
+builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

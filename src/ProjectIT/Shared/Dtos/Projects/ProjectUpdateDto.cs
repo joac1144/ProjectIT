@@ -1,11 +1,16 @@
-﻿using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace ProjectIT.Shared.Dtos.ProjectDto;
+namespace ProjectIT.Shared.Dtos.Projects;
 
-public record ProjectCreateDto
+/// <summary>
+/// Update project arguments.
+/// </summary>
+public record ProjectUpdateDto
 {
+    public int Id { get; set; }
+    
     [Required]
     [StringLength(50)]
     public string Title { get; set; } = null!;
@@ -24,19 +29,13 @@ public record ProjectCreateDto
     public IEnumerable<Programme> Programmes { get; set; } = null!;
 
     [Required]
-    public Ects? Ects { get; set; } = null!;
+    public Ects? Ects { get; set; }
 
     [Required]
-    public Semester? Semester { get; set; } = null!;
+    public Semester? Semester { get; set; }
 
     [Required]
     public Supervisor Supervisor { get; set; } = null!;
-
-    [Required]
-    public IEnumerable<Student> Students { get; set; } = null!;
-}
-
-public record ProjectUpdateDto : ProjectCreateDto
-{
-    public int Id { get; set; }
+    
+    public Supervisor? CoSupervisor { get; set; }
 }
