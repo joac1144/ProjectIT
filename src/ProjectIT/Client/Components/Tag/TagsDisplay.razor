@@ -1,4 +1,5 @@
 ﻿@using ProjectIT.Client.Components.Filter;
+@using ProjectIT.Client.Components.Tag;
 
 @if (Tags != null)
 {
@@ -6,7 +7,9 @@
     {
         @if (filterTag.Selected)
         {
-            <Tag Text="@filterTag.Tag" OnClicked="() => TagClicked(filterTag)" />
+            <span class="mx-1">
+                <Tag Text="@filterTag.Tag" OnClicked="() => TagClicked(filterTag)" />
+            </span>
         }
     }
 }
