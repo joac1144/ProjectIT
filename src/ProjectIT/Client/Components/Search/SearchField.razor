@@ -1,4 +1,4 @@
-﻿<div class="px-3 rounded-pill border-dark border-1 border-style-solid d-inline-block" style=@($"height: {Height}px;")>
+﻿<div class="px-3 mb-2 rounded-pill border-dark border-1 border-style-solid d-inline-block" style=@($"height: {Height}px;")>
     <img class="" src="lib/bootstrap-icons/search.svg" alt="Search" width="@SearchIconSize" height="@SearchIconSize">
     <input class="border-0 px-2" type="text" placeholder="@PlaceholderText" @bind-value="SearchString" @oninput="((e) => OnInput(e.Value?.ToString()!))" />
 </div>

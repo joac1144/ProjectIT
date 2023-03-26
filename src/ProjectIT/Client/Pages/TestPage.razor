@@ -3,24 +3,71 @@
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
+@using ProjectIT.Client.Components.ProjectDetailsView
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject NavigationManager navigationManager
 
 <PageTitle>A test page</PageTitle>
+@* <SearchField PlaceholderText="Some placeholder text..." /> *@
+<div class="d-flex mt-4 justify-content-center" style="gap: 50px;">
+    @* <div>
 
-this a test page
+        <FilterPanelSimple Title="Languages"
+                        Type="FilterType.Language"
+                        OnInitializedData="FilterPanelsInitialized"
+                        DataChanged="OnTagClickedInFilterPanel" />
 
-Here are some components:
+        <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
 
-<SearchField PlaceholderText="Some placeholder text..." />
+        <TagsDisplay @bind-Tags="Tags" />
 
-<FilterPanelSimple Title="Languages"
-                   Type="FilterType.Language"
-                   OnInitializedData="FilterPanelsInitialized"
-                   DataChanged="OnTagClickedInFilterPanel" />
-
-<FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
-
-<TagsDisplay @bind-Tags="Tags" />
-
-<Panel Title="Some random ass shit title">
-    Hmm what should we put in here?
-</Panel>
+        <Panel Title="Some random ass shit title">
+            Hmm what should we put in here?
+        </Panel>
+    </div> *@
+    <div class="d-flex flex-column">
+        <Panel Title="Project Info">
+            <p class="pt-2">
+                Programme: <br>
+                <p1 class="fw-normal"> SWU | DS </p1> <br> <br>
+                ECTS Points: <br>
+                <p1 class="fw-normal"> 15 ECTS </p1> <br> <br>
+                Semester: <br>
+                <p1 class="fw-normal"> Spring 2024 </p1> <br> <br>
+                Language: <br>
+                <p1 class="fw-normal"> English </p1>
+            </p>
+        </Panel>
+        <br> 
+        <Panel Title="Topics">
+            @foreach (FilterTag tag in Tags)
+            {   
+                <Tag Text="@tag.Tag"></Tag> <span/>
+            }
+        </Panel>
+    </div>
+    <ProjectDetailsView/>
+    <div class="d-flex flex-column">
+        <Panel Title="Supervisor">
+            <p class="pt-2">
+                Info: <br>
+                Jannick Vestergaard <br>
+                jave@itu.dk <br>
+                Profession
+            </p>
+        </Panel>
+        <br> <br>
+        <Panel Title="Co-supervisor">
+            <p class="pt-2">
+                Info: <br>
+                Jannick Vestergaard <br>
+                jave@itu.dk <br>
+                Profession
+            </p>
+        </Panel>
+        <br> <br>
+        <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply </button>
+    </div>
+</div>
