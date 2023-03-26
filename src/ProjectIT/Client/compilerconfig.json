@@ -6,5 +6,17 @@
   {
     "outputFile": "Components/ProjectCard/ProjectCard.razor.css",
     "inputFile": "Components/ProjectCard/ProjectCard.razor.scss"
+  },
+  {
+    "outputFile": "Shared/NavMenu.razor.css",
+    "inputFile": "Shared/NavMenu.razor.scss"
+  },
+  {
+    "outputFile": "Components/Search/SearchField.razor.css",
+    "inputFile": "Components/Search/SearchField.razor.scss"
+  },
+  {
+    "outputFile": "Components/Filter/FilterPanelTopics.razor.css",
+    "inputFile": "Components/Filter/FilterPanelTopics.razor.scss"
   }
 ]

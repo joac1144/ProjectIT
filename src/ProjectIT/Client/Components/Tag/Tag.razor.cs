@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace ProjectIT.Client.Components.Tag;
 
@@ -7,8 +8,6 @@ public partial class Tag
     [Parameter]
     public string Text { get; set; } = string.Empty;
 
-    private void OnTagClicked()
-    {
-        // Logic to remove tag from current search.
-    }
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClicked { get; set; }
 }

@@ -10,28 +10,21 @@ public static class SeedData
         if (!context.Topics.Any())
         {
             context.Topics.AddRange(
-                new Topic { Name = "SomeNewTopic", Category = "Some Test Category" },
-                new Topic { Name = "C#", Category = "Programming Languages" },
-                new Topic { Name = "Blazor", Category = "Frameworks & Utilities" },
-                new Topic { Name = "ASP.NET Core", Category = "Frameworks & Utilities" },
-                new Topic { Name = "Entity Framework Core", Category = "Frameworks & Utilities" },
-                new Topic { Name = "REST", Category = "Frameworks & Utilities" },
-                new Topic { Name = "PowerShell", Category = "Frameworks & Utilities" },
-                new Topic { Name = "Bash", Category = "Frameworks & Utilities" },
-                new Topic { Name = "Zsh", Category = "Frameworks & Utilities" },
-                new Topic { Name = "F#", Category = "Programming Languages" },
-                new Topic { Name = "C++", Category = "Programming Languages" },
-                new Topic { Name = "Rust", Category = "Programming Languages" },
-                new Topic { Name = "Go", Category = "Programming Languages" },
-                new Topic { Name = "Python 3", Category = "Programming Languages" },
-                new Topic { Name = "Ruby", Category = "Programming Languages" },
-                new Topic { Name = "Java", Category = "Programming Languages" },
-                new Topic { Name = "Kotlin", Category = "Programming Languages" },
-                new Topic { Name = "Swift", Category = "Programming Languages" },
-                new Topic { Name = "Objective-C", Category = "Programming Languages" },
-                new Topic { Name = "C", Category = "Programming Languages" },
-                new Topic { Name = "Cobol", Category = "Programming Languages" },
-                new Topic { Name = "Assembly", Category = "Programming Languages" }
+                new Topic { Name = "SomeNewTopic", Category = TopicCategory.SoftwareEngineering },
+                new Topic { Name = "C#", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "F#", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "C++", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Rust", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Go", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Python 3", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Ruby", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Java", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Kotlin", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Swift", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Objective-C", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "C", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Cobol", Category = TopicCategory.ProgrammingLanguages },
+                new Topic { Name = "Assembly", Category = TopicCategory.ProgrammingLanguages }
             );
         }
         context.SaveChanges();
@@ -72,10 +65,10 @@ public static class SeedData
                     {
                         Language.English,
                     },
-                    Educations = new[]
+                    Programmes = new[]
                     {
-                        Education.BSWU,
-                        Education.BDS
+                        Programme.BSWU,
+                        Programme.BDS
                     },
                     Ects = Ects.Bachelor,
                     Semester = new Semester 

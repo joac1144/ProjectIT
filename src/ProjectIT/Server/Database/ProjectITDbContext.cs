@@ -27,12 +27,12 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
             );
 
         modelBuilder.Entity<Project>()
-            .Property(p => p.Educations)
+            .Property(p => p.Programmes)
             .HasConversion(
                 e => string.Join(",", e.Select(x => x.ToString()).ToArray()),
                 e => e.Split(new[] { ',' })
-                    .Select(x => Enum.Parse(typeof(Education), x))
-                    .Cast<Education>()
+                    .Select(x => Enum.Parse(typeof(Programme), x))
+                    .Cast<Programme>()
                     .ToList()
             );
 

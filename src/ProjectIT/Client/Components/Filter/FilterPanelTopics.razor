@@ -1,0 +1,42 @@
+﻿@using ProjectIT.Client.Components.Panel
+@using ProjectIT.Client.Components.Search
+@using ProjectIT.Shared.Enums;
+@using ProjectIT.Shared.Models;
+
+<Panel Title="Topics">
+    <SearchField PlaceholderText="Search topics..." OnInputValueChanged="(val) => SearchTopics(val)" />
+
+    @foreach (CategoryStatus category in _categories!)
+    {
+        <div class="d-block">
+            @if (category.Collapsed)
+            {
+                <img class="rotate-90 d-inline-block" src="lib/bootstrap-icons/triangle-fill.svg" alt="Collapse" width="10" height="10">
+            }
+            else
+            {
+                <img class="rotate-180 d-inline-block" src="lib/bootstrap-icons/triangle-fill.svg" alt="Collapse" width="10" height="10">
+            }
+            <button class="border-0 bg-white fw-bold my-1"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target=@($"#{category.Category.ToString()}Collapse")
+                    aria-expanded="false"
+                    aria-controls=@($"{category.Category.ToString()}Collapse")
+                @onclick="(() => category.Collapsed = !category.Collapsed)">
+                @category.Category.ToString()
+            </button>
+            <div class=@($"{(category.Collapsed ? "collapse" : "")}") id=@($"{category.Category.ToString()}Collapse")>
+                @foreach (FilterTag filterTag in ShownData.Where(ft => ft.Category == category.Category))
+                {
+                    <div class="form-check fw-normal">
+                        <input class="form-check-input rounded-0" type="checkbox" id=@($"{filterTag.Tag.Replace(" ", "")}Checkbox") @onchange="(e) => CheckboxChecked(e, filterTag)" checked="@filterTag.Selected">
+                        <label class="form-check-label" for=@($"{filterTag.Tag.Replace(" ", "")}Checkbox")>
+                            @filterTag.Tag
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</Panel>
