@@ -17,12 +17,15 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpGet("all")]
+    [ProducesResponseType(200)]
     public async Task<IEnumerable<ProjectDetailsDto>> GetAll()
     {
         return await _repository.ReadAllAsync();
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ProjectDetailsDto), 200)]
+    [ProducesResponseType(404)]
     public async Task<ActionResult<ProjectDetailsDto>> GetById(int id)
     {
         var project = await _repository.ReadByIdAsync(id);

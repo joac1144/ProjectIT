@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Repositories;
 
@@ -38,19 +37,17 @@ public class ProjectsRepository : IProjectsRepository
         });
     }
 
-    public async Task<ProjectDetailsDto> ReadByIdAsync(int id)
+    public async Task<ProjectDetailsDto?> ReadByIdAsync(int id)
     {
         var project = await _context.Projects
             .Include(p => p.Topics)
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
             .Include(p => p.Students)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .SingleOrDefaultAsync(p => p.Id == id);
 
         if (project == null)
-        {
-            throw new ArgumentException($"Project with ID {id} was not found!");
-        }
+            return null;
 
         return new ProjectDetailsDto
         {
