@@ -8,20 +8,15 @@ public partial class SearchField
     public string? PlaceholderText { get; init; }
 
     [Parameter]
-    public int Height { get; init; } = 30;
+    public string Height { get; init; } = "30px";
 
     [Parameter]
-    public int Width { get; init; }
+    public string Width { get; init; } = "250px";
 
     [Parameter]
     public EventCallback<string> OnInputValueChanged { get; set; }
 
     public string? SearchString { get; set; }
-
-    private int SearchIconSize
-    {
-        get => (int)(Height * 0.6);
-    }
 
     private void OnInput(string newValue)
     {
