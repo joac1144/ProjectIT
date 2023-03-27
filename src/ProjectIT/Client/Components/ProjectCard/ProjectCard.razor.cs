@@ -13,7 +13,10 @@ public partial class ProjectCard
     public string Description { get; set; } = string.Empty;
 
     [Parameter]
-    public IEnumerable<Supervisor> Supervisors { get; set; } = null!;
+    public Supervisor Supervisor { get; set; } = null!;
+
+    [Parameter]
+    public Supervisor? CoSupervisor { get; set; }
 
     [Parameter]
     public IEnumerable<Programme> Educations { get; set; } = null!;
@@ -22,7 +25,7 @@ public partial class ProjectCard
     public Semester Date { get; set; } = null!;
 
     [Parameter]
-    public Ects? Ects { get; set; } = null!;
+    public Ects? Ects { get; set; }
 
     private void OnProjectCardClicked()
     {

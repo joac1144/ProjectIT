@@ -14,16 +14,9 @@ public partial class MainPage
 
     private Ects ects = Ects.Bachelor;
 
-    private IEnumerable<Supervisor> supervisors = new[]
-    {
-        new Supervisor { FullName = "Jannick Vestergaard" }
-    };
+    private Supervisor supervisor = new Supervisor { FullName = "Jannick Vestergaard" };
 
-    private IEnumerable<Supervisor> supervisors2 = new[]
-    {
-        new Supervisor { FullName = "Jannick Vestergaard" },
-        new Supervisor { FullName = "Jannick Vestergaard" },
-    };
+    private Supervisor coSupervisor = new Supervisor { FullName = "Morten Østervortesen" };
 
     private IEnumerable<Programme> educations = new[]
     {
@@ -34,12 +27,18 @@ public partial class MainPage
     private string description = "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.";
 
     private string title = "ProjectIT - A very beautiful platform solving ITU's problems";
-    
+
     public IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
+    public IList<Project> Projects { get; set; } = new List<Project>();
 
     private void FilterPanelsInitialized(IList<FilterTag> data)
     {
         Tags = Tags.Concat(data).ToList();
+    }
+
+    private void ProjectsInitialized(IList<Project> data)
+    {
+        Projects = Projects.Concat(data).ToList();
     }
 
     private void OnTagClickedInFilterPanel(FilterTag filterTag)

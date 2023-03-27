@@ -1,11 +1,16 @@
 .card-size {
-    width: 45rem;
-    height: 17rem;
+    width: 43rem;
+    height: 16rem;
+}
+
+@media (max-width: 1220px) {
+    .card-size {
+        width: 38rem;
+    }
 }
 
 .padding-icons {
-    padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
+    padding-top: 1.5rem;
 }
 
 .card-wrapper {
@@ -18,8 +23,15 @@
 }
 
 .truncate-text {
-    -webkit-line-clamp: 3;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.line-clamp-3 {
+    -webkit-line-clamp: 3;
+}
+
+.line-clamp-2 {
+    -webkit-line-clamp: 2;
 }

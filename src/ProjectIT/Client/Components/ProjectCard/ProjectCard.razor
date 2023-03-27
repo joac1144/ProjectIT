@@ -1,12 +1,12 @@
 <div class="card-zoom card-size mb-3">
     <a href="counter" class="link-dark text-decoration-none card-size d-block">
-        <div class="shadow rounded rounded-1 px-5 py-4 mb-3 card-size overflow-hidden card-wrapper">
+        <div class="shadow rounded rounded-1 px-4 py-4 mb-3 card-size overflow-hidden card-wrapper">
             <div class="fs-4 fw-bold truncate-text">@Title</div>
             <div class="d-flex justify-content-around padding-icons">
                 <div class="d-flex">
-                    <img src="images\educations.png" width="25rem" height="25rem">
+                    <img src="images\educations.png" width="23rem" height="23rem">
                     <span class="mx-1"></span>
-                    <div class="fs-6">
+                    <div class="fs-7">
                         @for (int i = 0; i < Educations.Count(); i++)
                         {
                             if (i == Educations.Count() - 1)
@@ -23,44 +23,47 @@
                 </div>
 
                 <div class="d-flex">
-                    <img src="images\hashtags.png" width="25rem" height="25rem">
+                    <img src="images\hashtags.png" width="22rem" height="22rem">
                     <span class="mx-1"></span>
-                    <div class="fs-6">
+                    <div class="fs-7">
                         @Ects.ToString()
                     </div>
                 </div>
 
                 <div class="d-flex">
-                    <img src="images\date.png" width="25rem" height="25rem">
+                    <img src="images\date.png" width="22rem" height="22rem">
                     <span class="mx-1"></span>
-                    <div class="fs-6">
+                    <div class="fs-7">
                         @Date.Season @Date.Year
                     </div>
                 </div>
 
                 <div class="d-flex">
-                    <img src="images\supervisor.png" width="25rem" height="25rem">
+                    <img src="images\supervisor.png" width="23rem" height="23rem">
                     <span class="mx-1"></span>
-                    <div class="fs-6">
-                        @for (int i = 0; i < Supervisors.Count(); i++)
+                    <div class="fs-7">
+                        @Supervisor.FullName
+                        @if (CoSupervisor != null)
                         {
-                            if (i == Supervisors.Count() - 1)
-                            {
-                                @Supervisors.ElementAt(i).FullName
-                            }
-                            else
-                            {
-                                @Supervisors.ElementAt(i).FullName
-                                <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
-                                <br>
-                            }
+                            <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
+                            <br>
+                            @CoSupervisor.FullName
                         }
                     </div>
                 </div>
             </div>
-            <div class="truncate-text">
-                @Description
-            </div>
+            <hr>
+            @if (CoSupervisor != null)
+            {
+                <div class="truncate-text line-clamp-2">
+                    @Description
+                </div>
+            }
+            else {
+                <div class="truncate-text line-clamp-3">
+                    @Description
+                </div>
+            }
         </div>
     </a>
 </div>
