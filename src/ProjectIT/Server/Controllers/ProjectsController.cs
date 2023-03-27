@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectIT.Server.Repositories;
-using ProjectIT.Shared.Dtos.ProjectDto;
+using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProjectsController : Controller
+public class ProjectsController : ControllerBase
 {
     private readonly IProjectsRepository _repository;
     
@@ -16,16 +16,20 @@ public class ProjectsController : Controller
         _repository = repository;
     }
 
-    [HttpGet]
-    public ActionResult<IEnumerable<Project>> GetAll()
+    [HttpGet("all")]
+    public async Task<IEnumerable<ProjectDetailsDto>> GetAll()
     {
-        return Ok();
+        return await _repository.ReadAllAsync();
     }
 
-    [HttpGet]
-    public ActionResult<Project> GetById(int id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ProjectDetailsDto>> GetById(int id)
     {
-        return Ok();
+        var project = await _repository.ReadByIdAsync(id);
+
+        if (project == null) return NotFound();
+
+        return Ok(project);
     }
 
     [HttpPost]
