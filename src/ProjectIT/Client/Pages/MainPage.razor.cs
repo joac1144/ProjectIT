@@ -35,12 +35,7 @@ public partial class MainPage
     {
         Tags = Tags.Concat(data).ToList();
     }
-
-    private void ProjectsInitialized(IList<Project> data)
-    {
-        Projects = Projects.Concat(data).ToList();
-    }
-
+    
     private void OnTagClickedInFilterPanel(FilterTag filterTag)
     {
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
