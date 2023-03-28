@@ -31,6 +31,12 @@ public partial class MainPage
     public IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
     public IList<Project> Projects { get; set; } = new List<Project>();
 
+    protected async override Task OnInitializedAsync()
+    {
+        //TODO Fetch projects from database.
+        await Task.CompletedTask;
+    }
+
     private void FilterPanelsInitialized(IList<FilterTag> data)
     {
         Tags = Tags.Concat(data).ToList();
