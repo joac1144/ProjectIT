@@ -65,10 +65,10 @@ public static class SeedData
                     {
                         Language.English,
                     },
-                    Educations = new[]
+                    Programmes = new[]
                     {
-                        Education.BSWU,
-                        Education.BDS
+                        Programme.BSWU,
+                        Programme.BDS
                     },
                     Ects = Ects.Bachelor,
                     Semester = new Semester 

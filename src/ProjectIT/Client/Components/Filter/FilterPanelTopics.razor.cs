@@ -14,13 +14,14 @@ public partial class FilterPanelTopics
     }
 
     [Parameter]
-    public IList<FilterTag> Data { get; set; } = new List<FilterTag>();
-
-    [Parameter]
     public EventCallback<FilterTag> DataChanged { get; init; }
 
     [Parameter]
     public EventCallback<IList<FilterTag>> OnInitializedData { get; set; }
+    
+    public IList<FilterTag> Data { get; set; } = new List<FilterTag>();
+
+    public IList<FilterTag> ShownData { get; set; } = null!;
 
     private readonly IList<CategoryStatus> _categories = new List<CategoryStatus>();
 
@@ -67,6 +68,8 @@ public partial class FilterPanelTopics
             _categories.Add(new CategoryStatus { Category = topicCategory });
         }
 
+        ShownData = Data;
+
         if (OnInitializedData.HasDelegate)
         {
             OnInitializedData.InvokeAsync(Data.Select(ft => new FilterTag { Tag = ft.Tag, Category = ft.Category }).ToList());
@@ -85,14 +88,22 @@ public partial class FilterPanelTopics
         // Show all categories and topics if search field is empty.
         if (string.IsNullOrEmpty(value))
         {
-            return;
+            foreach (CategoryStatus category in _categories)
+            {
+                category.Collapsed = true;
+            }
+            ShownData = Data;
         }
 
         // Filter topics based on search but only if search string length is greater than 2 to prevent too big of a search.
         if (value.Length >= 2)
         {
-            IEnumerable<FilterTag> matchingTopics = Data.Where(ft => ft.Tag.StartsWith(value));
+            string valueLowerCase = value.ToLower();
+            ShownData = Data.Where(ft => ft.Tag.ToLower().StartsWith(valueLowerCase) || ft.Tag.ToLower().Contains(valueLowerCase)).ToList();
+            foreach (CategoryStatus category in _categories)
+            {
+                category.Collapsed = false;
+            }
         }
-        return;
     }
 }
