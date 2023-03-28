@@ -10,9 +10,9 @@
 @inject NavigationManager navigationManager
 
 <PageTitle>A test page</PageTitle>
-@* <SearchField PlaceholderText="Some placeholder text..." /> *@
-<div class="d-flex mt-4 justify-content-center" style="gap: 50px;">
-    @* <div>
+<SearchField PlaceholderText="Some placeholder text..." />
+<div>
+    <div>
 
         <FilterPanelSimple Title="Languages"
                         Type="FilterType.Language"
@@ -26,48 +26,5 @@
         <Panel Title="Some random ass shit title">
             Hmm what should we put in here?
         </Panel>
-    </div> *@
-    <div class="d-flex flex-column">
-        <Panel Title="Project Info">
-            <p class="pt-2">
-                Programme: <br>
-                <p1 class="fw-normal"> SWU | DS </p1> <br> <br>
-                ECTS Points: <br>
-                <p1 class="fw-normal"> 15 ECTS </p1> <br> <br>
-                Semester: <br>
-                <p1 class="fw-normal"> Spring 2024 </p1> <br> <br>
-                Language: <br>
-                <p1 class="fw-normal"> English </p1>
-            </p>
-        </Panel>
-        <br> 
-        <Panel Title="Topics">
-            @foreach (FilterTag tag in Tags)
-            {   
-                <Tag Text="@tag.Tag"></Tag> <span/>
-            }
-        </Panel>
-    </div>
-    <ProjectDetailsView/>
-    <div class="d-flex flex-column">
-        <Panel Title="Supervisor">
-            <p class="pt-2">
-                Info: <br>
-                Jannick Vestergaard <br>
-                jave@itu.dk <br>
-                Profession
-            </p>
-        </Panel>
-        <br> <br>
-        <Panel Title="Co-supervisor">
-            <p class="pt-2">
-                Info: <br>
-                Jannick Vestergaard <br>
-                jave@itu.dk <br>
-                Profession
-            </p>
-        </Panel>
-        <br> <br>
-        <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply </button>
     </div>
 </div>

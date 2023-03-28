@@ -17,26 +17,5 @@ public partial class TestPage
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
     }
 
-    private void ApplyProject(NavigationManager navigationManager)
-    {
-        navigationManager.NavigateTo("/");
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-
-        for (int i = 0; i < 5; i++)
-        {
-            Tags.Add
-            (
-                new FilterTag
-                {
-                    Tag = "Tags " + i
-                }
-            );
-        }
-
-    }
 
 }
