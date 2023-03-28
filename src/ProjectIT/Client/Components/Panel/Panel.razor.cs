@@ -8,7 +8,7 @@ public partial class Panel
     public string Title { get; set; } = "Placeholder title";
 
     [Parameter]
-    public string Width { get; set; } = "320px";
+    public string Width { get; set; } = "300px";
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }

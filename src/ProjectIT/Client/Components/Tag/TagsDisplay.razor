@@ -1,4 +1,5 @@
 ﻿@using ProjectIT.Client.Components.Filter;
+@using ProjectIT.Client.Components.Tag;
 
 @if (Tags != null)
 {
@@ -6,7 +7,15 @@
     {
         @if (filterTag.Selected)
         {
-            <Tag Text="@filterTag.Tag" OnClicked="() => TagClicked(filterTag)" />
+            <span>
+                <Tag Text="@filterTag.Tag" OnClicked="() => TagClicked(filterTag)" />
+            </span>
         }
+    }
+    @if (Tags.Any(t => t.Selected))
+    {
+        <span class="clearbtn ms-3">
+            <button class="btn p-0" @onclick="ClearFilters">Clear filters</button>
+        </span>
     }
 }
