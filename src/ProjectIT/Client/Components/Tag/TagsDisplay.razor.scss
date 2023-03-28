@@ -1,0 +1,8 @@
+.btn:focus, .btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.clearbtn :hover{
+   text-decoration: underline;
+}
