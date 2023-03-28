@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using ProjectIT.Client.Utilities;
+using ProjectIT.Server.Controllers;
 using ProjectIT.Server.Database;
 using ProjectIT.Server.Repositories;
 
@@ -13,6 +15,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+builder.Services.Configure<TokenController>(builder.Configuration.GetSection("OpenAiApiKey"));
+
 builder.Services.AddDbContext<ProjectITDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Development")));
 
@@ -22,6 +26,8 @@ builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpClient<GptClient>();
 
 var app = builder.Build();
 
