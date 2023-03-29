@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjectIT.Server.Repositories;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ProjectsController : ControllerBase
