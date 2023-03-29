@@ -11,45 +11,52 @@
 @inject NavigationManager navigationManager
 
 <PageTitle> Project Details </PageTitle>
-<div class="d-flex mt-4 justify-content-center" style="gap: 50px;">
-    <div class="d-flex flex-column">
-        <Panel Title="Project Info">
-            <p class="pt-2">
-                Programme: <br>
-                <p1 class="fw-normal"> SWU | DS </p1> <br> <br>
-                ECTS Points: <br>
-                <p1 class="fw-normal"> 15 ECTS </p1> <br> <br>
-                Semester: <br>
-                <p1 class="fw-normal"> Spring 2024 </p1> <br> <br>
-                Language: <br>
-                <p1 class="fw-normal"> English </p1>
-            </p>
-        </Panel>
-        <br> 
-        <Panel Title="Topics">
-            <TagsDisplay @bind-Tags="Tags"/>
-        </Panel>
+<br>
+<div class="d-flex justify-content-center" style="gap: 50px;">
+    <div class="d-flex flex-column" style="gap: 50px;">
+        <div>
+            <Panel Title="Project Info">
+                <p class="pt-2">
+                    Programme: <br>
+                    <p1 class="fw-normal"> SWU | DS </p1> <br> <br>
+                    ECTS Points: <br>
+                    <p1 class="fw-normal"> 15 ECTS </p1> <br> <br>
+                    Semester: <br>
+                    <p1 class="fw-normal"> Spring 2024 </p1> <br> <br>
+                    Language: <br>
+                    <p1 class="fw-normal"> English </p1>
+                </p>
+            </Panel>
+        </div>
+
+        <div>
+            <Panel Title="Topics">
+                <TagsDisplay @bind-Tags="Tags"/>
+            </Panel>
+        </div>
     </div>
     <ProjectDetailsView/>
-    <div class="d-flex flex-column">
-        <Panel Title="Supervisor">
-            <p class="pt-2">
-                Info: <br>
-                Jannick Vestergaard <br>
-                jave@itu.dk <br>
-                Profession
-            </p>
-        </Panel>
-        <br> <br>
-        <Panel Title="Co-supervisor">
-            <p class="pt-2">
-                Info: <br>
-                Jannick Vestergaard <br>
-                jave@itu.dk <br>
-                Profession
-            </p>
-        </Panel>
-        <br> <br>
+    <div class="d-flex flex-column" style="gap: 50px;">
+        <div>
+            <Panel Title="Supervisor">
+                <p class="pt-2">
+                    Info: <br>
+                    Jannick Vestergaard <br>
+                    jave@itu.dk <br>
+                    Profession
+                </p>
+            </Panel>
+        </div>
+        <div>
+            <Panel Title="Co-supervisor">
+                <p class="pt-2">
+                    Info: <br>
+                    Jannick Vestergaard <br>
+                    jave@itu.dk <br>
+                    Profession
+                </p>
+            </Panel>
+        </div>
         <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply </button>
     </div>
 </div>
