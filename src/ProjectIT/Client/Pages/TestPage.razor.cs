@@ -16,6 +16,4 @@ public partial class TestPage
     {
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
     }
-
-
 }

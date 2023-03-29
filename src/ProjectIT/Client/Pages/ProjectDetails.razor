@@ -1,4 +1,4 @@
-@page "/projectDetails"
+@page "/projectDetails" /* Fix this to be {Id:int} later */
 @using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.Search
@@ -14,61 +14,75 @@
 
 <PageTitle> Project Details </PageTitle>
 <br>
-<div class="d-flex flex-row justify-content-center" style="gap: 50px;">
-    <div class="d-flex flex-column" style="gap: 50px;">
-        <div>
-            <Panel Title="Project Info">
-                <p class="pt-2">
-                    Programme: <br>
-                    <div class="d-flex" style="gap: 10px;">
-                        @foreach (Programme programme in Programmes)
-                        {       
-                            <p1 class="fw-normal"> @programme </p1>
-                            <div class="" style="border-left: 2px solid grey;"/>
+
+@if(Project == null) 
+{
+    <div class="spinner-border spinner" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+} 
+else 
+{
+
+    <div class="d-flex flex-row justify-content-center projectDetailsView">
+        <div class="d-flex flex-column leftMostPanels">
+            <div>
+                <Panel Title="Project Info">
+                    <div class="d-flex flex-column" style="">
+                        Programme: <br>
+                        <div class="d-flex programmes">
+                            @foreach (Programme programme in Project.Programmes)
+                            {
+                                <p1 class="fw-normal"> @programme </p1>
+                                <span class="border-start border-2 border-dark border-opacity-10 mx-2" />
+
+                            }
+                        </div>
+                        <br>
+                        ECTS Points: <br>
+                        <p1 class="fw-normal"> @Project.Ects </p1> <br>
+
+                        Semester: <br>
+                        <p1 class="fw-normal"> Doesn't render Semester (fix this) </p1> <br>
+
+                        Language: <br>
+
+                        @foreach (Language language in Project.Languages)
+                        {
+                            <p1 class="fw-normal"> @language </p1>
                         }
                     </div>
-                    <br> <br>
-                    ECTS Points: <br>
-                    <p1 class="fw-normal"> @Project.Ects </p1> <br> <br>
-                    Semester: <br>
-                    <p1 class="fw-normal"> Doesn't render Semester (fix this)  </p1> <br> <br>
-                    Language: <br>
-                        @foreach (Language language in Languages)
-                        {
-                            <p1 class="fw-normal"> @language </p1>  
-                        }
-                </p>
-            </Panel>
+                </Panel>
+            </div>
+            <div>
+                <Panel Title="Topics">
+                    <TagsDisplay @bind-Tags="Tags" />
+                </Panel>
+            </div>
         </div>
-
-        <div>
-            <Panel Title="Topics">
-                <TagsDisplay @bind-Tags="Tags"/>
-            </Panel>
+        <ProjectDetailsView Title="@Project.Title" Description="@Project.Description" />
+        <div class="d-flex flex-column rightMostPanels">
+            <div>
+                <Panel Title="Supervisor">
+                    <p class="fw-normal pt-2">
+                    <h6 class="fw-bold"> Info: </h6>
+                        @Project.Supervisor.FullName <br>
+                        @Project.Supervisor.Email <br>
+                        @Project.Supervisor.Profession
+                    </p>
+                </Panel>
+            </div>
+            <div>
+                <Panel Title="Co-supervisor">
+                    <p class="fw-normal pt-2">
+                    <h6 class="fw-bold"> Info: </h6>
+                        @Project.CoSupervisor?.FullName <br>
+                        @Project.CoSupervisor?.Email <br>
+                        @Project.CoSupervisor?.Profession
+                    </p>
+                </Panel>
+            </div>
+            <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply </button>
         </div>
     </div>
-    <ProjectDetailsView Title="@Project.Title" Description="@Project.Description" />
-    <div class="d-flex flex-column" style="gap: 50px;">
-        <div>
-            <Panel Title="Supervisor">
-                <p class="pt-2">
-                    Info: <br>
-                    @Supervisor.FullName <br>
-                    @Supervisor.Email <br>
-                    @Supervisor.Profession
-                </p>
-            </Panel>
-        </div>
-        <div>
-            <Panel Title="Co-supervisor">
-                <p class="pt-2">
-                    Info: <br>
-                    @CoSupervisor.FullName <br>
-                    @CoSupervisor.Email <br>
-                    @CoSupervisor.Profession
-                </p>
-            </Panel>
-        </div>
-        <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply </button>
-    </div>
-</div>
+}

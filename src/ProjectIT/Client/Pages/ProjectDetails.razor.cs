@@ -9,20 +9,11 @@ namespace ProjectIT.Client.Pages;
 
 public partial class ProjectDetails
 {
-
     //TODO: for later use, don't delete
     [Parameter]
     public int Id { get; set; }
 
-    public ProjectDetailsDto Project { get; set; } = new ProjectDetailsDto();
-
-    public List<Programme> Programmes { get; set; } = new List<Programme>();
-
-    public List<Language> Languages { get; set; } = new List<Language>();
-
-    public Supervisor Supervisor { get; set; } = new Supervisor();
-
-    public Supervisor CoSupervisor { get; set; } = new Supervisor();
+    private ProjectDetailsDto? Project;
 
     private HttpClient HttpClient = new HttpClient();
 
@@ -36,15 +27,5 @@ public partial class ProjectDetails
     protected override async Task OnInitializedAsync()
     {
         Project = await HttpClient.GetFromJsonAsync<ProjectDetailsDto>("https://localhost:7094/projects/1");
-
-        Programmes = Project.Programmes.ToList();
-
-        Languages = Project.Languages.ToList();
-
-        Supervisor = Project.Supervisor;
-
-        CoSupervisor = Project.CoSupervisor;
-
     }
-
 }

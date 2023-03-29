@@ -26,5 +26,9 @@
   {
     "outputFile": "Pages/MainPage.razor.css",
     "inputFile": "Pages/MainPage.razor.scss"
+  },
+  {
+    "outputFile": "Pages/ProjectDetails.razor.css",
+    "inputFile": "Pages/ProjectDetails.razor.scss"
   }
 ]
