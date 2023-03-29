@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Repositories;
 
@@ -25,6 +24,7 @@ public class ProjectsRepository : IProjectsRepository
 
         return projects.Select(p => new ProjectDetailsDto
         {
+            Id = p.Id,
             Title = p.Title,
             Description = p.Description,
             Topics = p.Topics,
@@ -38,22 +38,21 @@ public class ProjectsRepository : IProjectsRepository
         });
     }
 
-    public async Task<ProjectDetailsDto> ReadByIdAsync(int id)
+    public async Task<ProjectDetailsDto?> ReadByIdAsync(int id)
     {
         var project = await _context.Projects
             .Include(p => p.Topics)
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
             .Include(p => p.Students)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .SingleOrDefaultAsync(p => p.Id == id);
 
         if (project == null)
-        {
-            throw new ArgumentException($"Project with ID {id} was not found!");
-        }
+            return null;
 
         return new ProjectDetailsDto
         {
+            Id = project.Id,
             Title = project.Title,
             Description = project.Description,
             Topics = project.Topics,

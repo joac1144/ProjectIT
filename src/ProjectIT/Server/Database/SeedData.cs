@@ -58,6 +58,7 @@ public static class SeedData
             context.Projects.AddRange(
                 new Project
                 {
+                    Id = 999,
                     Title = "ProjectIT",
                     Description = "A project management system for students at IT University of Copenhagen",
                     Topics = context.Topics.Take(5).ToArray(),
@@ -79,6 +80,47 @@ public static class SeedData
                     Supervisor = context.Users.OfType<Supervisor>().First(),
                     CoSupervisor = context.Users.OfType<Supervisor>().Skip(1).First(),
                     Students = context.Users.OfType<Student>().Take(2).ToArray()
+                },
+                new Project
+                {
+                    Id = 998,
+                    Title = "Test",
+                    Description = "Test desc",
+                    Topics = new[]
+                    {
+                        new Topic
+                        {
+                            Name = "Test Topic",
+                            Category = TopicCategory.ArtificialIntelligence
+                        },
+                        new Topic
+                        {
+                            Name = "Test Topic 2",
+                            Category = TopicCategory.SoftwareEngineering
+                        }
+                    },
+                    Languages = new[]
+                    {
+                        Language.English
+                    },
+                    Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+                    Ects = Ects.Bachelor,
+                    Semester = new()
+                    {
+                        Season = Season.Spring,
+                        Year = 2023
+                    },
+                    Supervisor = new()
+                    {
+                        FullName = "Joachim Alexander Kofoed",
+                        Email = "jkof@itu.dk",
+                        Topics = new Topic[] { },
+                        Profession = "Professor"
+                    },
+                    Students = new Student[] { }
                 }
             );
         }

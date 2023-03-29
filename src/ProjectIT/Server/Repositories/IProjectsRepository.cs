@@ -7,7 +7,7 @@ public interface IProjectsRepository
 {
     Task<IEnumerable<ProjectDetailsDto>> ReadAllAsync();
 
-    Task<ProjectDetailsDto> ReadByIdAsync(int id);
+    Task<ProjectDetailsDto?> ReadByIdAsync(int id);
 
     Task<ProjectCreateDto> CreateAsync(ProjectCreateDto projectCreateDto);
 

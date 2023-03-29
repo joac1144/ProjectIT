@@ -8,6 +8,8 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @attribute [Authorize]
 @inject NavigationManager navigationManager
+@inject HttpClient httpClient
+
 
 <PageTitle>A test page</PageTitle>
 <SearchField PlaceholderText="Some placeholder text..." />
@@ -27,8 +29,14 @@
 
         <TagsDisplay @bind-Tags="Tags" />
 
-        <Panel Title="Some random ass shit title">
-            Hmm what should we put in here?
-        </Panel>
-    </div>
-</div>
+
+<FilterPanelSimple Title="Semester" 
+                   Type="FilterType.Semester"
+                   OnInitializedData="FilterPanelsInitialized"
+                   DataChanged="OnTagClickedInFilterPanel" />
+
+@if (GptResult != null)
+{
+    @GptResult
+}
+
