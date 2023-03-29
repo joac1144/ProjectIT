@@ -4,7 +4,7 @@
 @using ProjectIT.Shared.Models;
 
 <Panel Title="Topics">
-    <SearchField PlaceholderText="Search topics..." OnInputValueChanged="(val) => SearchTopics(val)" />
+    <SearchField PlaceholderText="Search topics..." OnInputValueChanged="(val) => SearchTopics(val)" Width="100%" />
 
     @foreach (CategoryStatus category in _categories!)
     {

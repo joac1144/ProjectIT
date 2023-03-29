@@ -17,4 +17,13 @@ public partial class TagsDisplay
 
         return TagsChanged.InvokeAsync(Tags);
     }
+
+    private Task ClearFilters()
+    {        
+        foreach (FilterTag tag in Tags)
+        {
+            Tags.Where(ft => ft.Tag == tag.Tag).Single().Selected = false;
+        }
+        return TagsChanged.InvokeAsync(Tags);
+    }
 }

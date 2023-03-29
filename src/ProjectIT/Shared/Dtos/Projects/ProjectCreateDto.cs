@@ -1,0 +1,39 @@
+﻿using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Models;
+using System.ComponentModel.DataAnnotations;
+
+namespace ProjectIT.Shared.Dtos.Projects;
+
+/// <summary>
+/// Add project arguments.
+/// </summary>
+public record ProjectCreateDto
+{
+    [Required]
+    [StringLength(50)]
+    public string Title { get; set; } = null!;
+
+    [Required]
+    [StringLength(4400)]
+    public string Description { get; set; } = null!;
+
+    [Required]
+    public IEnumerable<Topic> Topics { get; set; } = null!;
+
+    [Required]
+    public IEnumerable<Language> Languages { get; set; } = null!;
+
+    [Required]
+    public IEnumerable<Programme> Programmes { get; set; } = null!;
+
+    [Required]
+    public Ects? Ects { get; set; }
+
+    [Required]
+    public Semester? Semester { get; set; }
+
+    [Required]
+    public Supervisor Supervisor { get; set; } = null!;
+    
+    public Supervisor? CoSupervisor { get; set; }
+}

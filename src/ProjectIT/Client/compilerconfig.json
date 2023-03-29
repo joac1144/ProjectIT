@@ -18,5 +18,13 @@
   {
     "outputFile": "Components/Filter/FilterPanelTopics.razor.css",
     "inputFile": "Components/Filter/FilterPanelTopics.razor.scss"
+  },
+  {
+    "outputFile": "Components/Tag/TagsDisplay.razor.css",
+    "inputFile": "Components/Tag/TagsDisplay.razor.scss"
+  },
+  {
+    "outputFile": "Pages/MainPage.razor.css",
+    "inputFile": "Pages/MainPage.razor.scss"
   }
 ]

@@ -14,10 +14,14 @@
 <div>
     <div>
 
-        <FilterPanelSimple Title="Languages"
-                        Type="FilterType.Language"
-                        OnInitializedData="FilterPanelsInitialized"
-                        DataChanged="OnTagClickedInFilterPanel" />
+<SearchField PlaceholderText="This search field has correct length and height" Height="2.4rem" Width="43rem" />
+
+<FilterPanelSimple Title="Languages"
+                   Type="FilterType.Language"
+                   OnInitializedData="FilterPanelsInitialized"
+                   DataChanged="OnTagClickedInFilterPanel" />
+
+<FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
 
         <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
 
