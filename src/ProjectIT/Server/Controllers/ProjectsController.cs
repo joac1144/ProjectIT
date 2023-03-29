@@ -10,7 +10,7 @@ namespace ProjectIT.Server.Controllers;
 public class ProjectsController : ControllerBase
 {
     private readonly IProjectsRepository _repository;
-    
+
     public ProjectsController(IProjectsRepository repository)
     {
         _repository = repository;
@@ -33,13 +33,13 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Project> Create(ProjectCreateDto data)
+    public ActionResult<project> Create(ProjectCreateDto data)
     {
         return Ok(data);
     }
 
     [HttpPut]
-    public ActionResult<Project> Update(ProjectUpdateDto data)
+    public ActionResult<project> Update(ProjectUpdateDto data)
     {
         return Ok(data);
     }

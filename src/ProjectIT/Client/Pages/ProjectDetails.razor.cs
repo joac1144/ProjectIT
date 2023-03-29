@@ -13,7 +13,7 @@ public partial class ProjectDetails
     [Parameter]
     public int Id { get; set; }
 
-    private ProjectDetailsDto? Project;
+    private ProjectDetailsDto? project;
 
     private HttpClient HttpClient = new HttpClient();
 
@@ -26,6 +26,6 @@ public partial class ProjectDetails
 
     protected override async Task OnInitializedAsync()
     {
-        Project = await HttpClient.GetFromJsonAsync<ProjectDetailsDto>("https://localhost:7094/projects/1");
+        project = await HttpClient.GetFromJsonAsync<ProjectDetailsDto>("https://localhost:7094/projects/1");
     }
 }

@@ -35,7 +35,7 @@ public static class SeedData
         if (!context.Users.Any())
         {
             context.Users.AddRange(
-                new Supervisor { FullName = "John Andersen Doe", Email = "jad@mail.dk", Profession = "Supervisor"},
+                new Supervisor { FullName = "John Andersen Doe", Email = "jad@mail.dk", Profession = "Supervisor" },
                 new Supervisor { FullName = "Alice Jones", Email = "aj@mail.dk", Profession = "Co-supervisor" },
                 new Supervisor { FullName = "John Smith" },
                 new Supervisor { FullName = "Sarah Lee" },
@@ -56,7 +56,7 @@ public static class SeedData
         if (!context.Projects.Any())
         {
             context.Projects.AddRange(
-                new Project
+                new project
                 {
                     Title = "ProjectIT",
                     Description = "A project management system for students at IT University of Copenhagen",

@@ -29,7 +29,7 @@ public partial class MainPage
     private string title = "ProjectIT - A very beautiful platform solving ITU's problems";
 
     public IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
-    public IList<Project> Projects { get; set; } = new List<Project>();
+    public IList<project> Projects { get; set; } = new List<project>();
 
     protected async override Task OnInitializedAsync()
     {
@@ -41,7 +41,7 @@ public partial class MainPage
     {
         Tags = Tags.Concat(data).ToList();
     }
-    
+
     private void OnTagClickedInFilterPanel(FilterTag filterTag)
     {
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;

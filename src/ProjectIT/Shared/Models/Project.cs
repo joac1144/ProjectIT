@@ -3,7 +3,7 @@ using ProjectIT.Shared.Enums;
 
 namespace ProjectIT.Shared.Models;
 
-public class Project
+public class project
 {
     public int Id { get; set; }
 

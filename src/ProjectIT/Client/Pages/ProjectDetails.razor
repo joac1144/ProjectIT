@@ -15,39 +15,37 @@
 <PageTitle> Project Details </PageTitle>
 <br>
 
-@if(Project == null) 
+@if (project == null)
 {
     <div class="spinner-border spinner" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
-} 
-else 
+}
+else
 {
-
-    <div class="d-flex flex-row justify-content-center projectDetailsView">
-        <div class="d-flex flex-column leftMostPanels">
+    <div class="d-flex flex-row justify-content-center project-details-view">
+        <div class="d-flex flex-column panel-gap">
             <div>
                 <Panel Title="Project Info">
                     <div class="d-flex flex-column" style="">
                         Programme: <br>
                         <div class="d-flex programmes">
-                            @foreach (Programme programme in Project.Programmes)
+                            @foreach (Programme programme in project.Programmes)
                             {
                                 <p1 class="fw-normal"> @programme </p1>
                                 <span class="border-start border-2 border-dark border-opacity-10 mx-2" />
-
                             }
                         </div>
                         <br>
                         ECTS Points: <br>
-                        <p1 class="fw-normal"> @Project.Ects </p1> <br>
+                        <p1 class="fw-normal"> @project.Ects </p1> <br>
 
                         Semester: <br>
                         <p1 class="fw-normal"> Doesn't render Semester (fix this) </p1> <br>
 
                         Language: <br>
 
-                        @foreach (Language language in Project.Languages)
+                        @foreach (Language language in project.Languages)
                         {
                             <p1 class="fw-normal"> @language </p1>
                         }
@@ -60,15 +58,15 @@ else
                 </Panel>
             </div>
         </div>
-        <ProjectDetailsView Title="@Project.Title" Description="@Project.Description" />
-        <div class="d-flex flex-column rightMostPanels">
+        <ProjectDetailsView Title="@project.Title" Description="@project.Description" />
+        <div class="d-flex flex-column panel-gap">
             <div>
                 <Panel Title="Supervisor">
                     <p class="fw-normal pt-2">
                     <h6 class="fw-bold"> Info: </h6>
-                        @Project.Supervisor.FullName <br>
-                        @Project.Supervisor.Email <br>
-                        @Project.Supervisor.Profession
+                        @project.Supervisor.FullName <br>
+                        @project.Supervisor.Email <br>
+                        @project.Supervisor.Profession
                     </p>
                 </Panel>
             </div>
@@ -76,13 +74,14 @@ else
                 <Panel Title="Co-supervisor">
                     <p class="fw-normal pt-2">
                     <h6 class="fw-bold"> Info: </h6>
-                        @Project.CoSupervisor?.FullName <br>
-                        @Project.CoSupervisor?.Email <br>
-                        @Project.CoSupervisor?.Profession
+                        @project.CoSupervisor?.FullName <br>
+                        @project.CoSupervisor?.Email <br>
+                        @project.CoSupervisor?.Profession
                     </p>
                 </Panel>
             </div>
-            <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply </button>
+            <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply
+            </button>
         </div>
     </div>
 }
