@@ -26,13 +26,13 @@ public class ProjectsController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(ProjectDetailsDto), 200)]
     [ProducesResponseType(404)]
-    public async Task<ActionResult<ProjectDetailsDto>> GetById(int id)
+    public async Task<ProjectDetailsDto?> GetById(int id)
     {
         var project = await _repository.ReadByIdAsync(id);
 
-        if (project == null) return NotFound();
+        if (project == null) return null;
 
-        return Ok(project);
+        return project;
     }
 
     [HttpPost]

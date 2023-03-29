@@ -58,6 +58,7 @@ public static class SeedData
             context.Projects.AddRange(
                 new Project
                 {
+                    Id = 999,
                     Title = "ProjectIT",
                     Description = "A project management system for students at IT University of Copenhagen",
                     Topics = context.Topics.Take(5).ToArray(),
@@ -81,6 +82,7 @@ public static class SeedData
                 },
                 new Project
                 {
+                    Id = 998,
                     Title = "Test",
                     Description = "Test desc",
                     Topics = new[]

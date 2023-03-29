@@ -24,6 +24,7 @@ public class ProjectsRepository : IProjectsRepository
 
         return projects.Select(p => new ProjectDetailsDto
         {
+            Id = p.Id,
             Title = p.Title,
             Description = p.Description,
             Topics = p.Topics,
@@ -51,6 +52,7 @@ public class ProjectsRepository : IProjectsRepository
 
         return new ProjectDetailsDto
         {
+            Id = project.Id,
             Title = project.Title,
             Description = project.Description,
             Topics = project.Topics,

@@ -35,7 +35,7 @@ public class ProjectsControllerTests
         var result = await controller.GetById(69);
 
         // Assert.
-        result.Result.Should().BeOfType(typeof(NotFoundResult));
+        result.Should().BeNull();
     }
 
     [Fact]
@@ -44,7 +44,8 @@ public class ProjectsControllerTests
         // Arrange.
         var expected = new ProjectDetailsDto
         {
-            Title = "Test 1",
+            Id = 1,
+            Title = "Test 1"
         };
         var repository = new Mock<IProjectsRepository>();
         repository.Setup(pr => pr.ReadByIdAsync(1)).ReturnsAsync(expected);
@@ -54,6 +55,6 @@ public class ProjectsControllerTests
         var result = await controller.GetById(1);
 
         // Assert.
-        result.Value.Should().Be(expected);
+        result.Should().Be(expected);
     }
 }
