@@ -35,8 +35,8 @@ public static class SeedData
         if (!context.Users.Any())
         {
             context.Users.AddRange(
-                new Supervisor { FullName = "John Andersen Doe"},
-                new Supervisor { FullName = "Alice Jones" },
+                new Supervisor { FullName = "John Andersen Doe", Email = "jad@mail.dk", Profession = "Supervisor"},
+                new Supervisor { FullName = "Alice Jones", Email = "aj@mail.dk", Profession = "Co-supervisor" },
                 new Supervisor { FullName = "John Smith" },
                 new Supervisor { FullName = "Sarah Lee" },
                 new Student { FullName = "Josefine Henriksen" },
@@ -71,12 +71,13 @@ public static class SeedData
                         Programme.BDS
                     },
                     Ects = Ects.Bachelor,
-                    Semester = new Semester 
-                    { 
-                        Season = Season.Spring, 
-                        Year = 2024 
+                    Semester = new Semester
+                    {
+                        Season = Season.Spring,
+                        Year = 2024
                     },
                     Supervisor = context.Users.OfType<Supervisor>().First(),
+                    CoSupervisor = context.Users.OfType<Supervisor>().Skip(1).First(),
                     Students = context.Users.OfType<Student>().Take(2).ToArray()
                 }
             );

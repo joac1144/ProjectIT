@@ -4,6 +4,8 @@
 @using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
 @using ProjectIT.Client.Pages
+@using ProjectIT.Shared.Enums
+@using ProjectIT.Shared.Models
 @using ProjectIT.Client.Components.ProjectDetailsView
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
@@ -18,13 +20,23 @@
             <Panel Title="Project Info">
                 <p class="pt-2">
                     Programme: <br>
-                    <p1 class="fw-normal">  </p1> <br> <br>
+                    <div class="d-flex" style="gap: 10px;">
+                        @foreach (Programme programme in Programmes)
+                        {       
+                            <p1 class="fw-normal"> @programme </p1>
+                            <div class="" style="border-left: 2px solid grey;"/>
+                        }
+                    </div>
+                    <br> <br>
                     ECTS Points: <br>
-                    <p1 class="fw-normal"> 15 ECTS </p1> <br> <br>
+                    <p1 class="fw-normal"> @Project.Ects </p1> <br> <br>
                     Semester: <br>
-                    <p1 class="fw-normal"> Spring 2024 </p1> <br> <br>
+                    <p1 class="fw-normal"> Doesn't render Semester (fix this)  </p1> <br> <br>
                     Language: <br>
-                    <p1 class="fw-normal"> English </p1>
+                        @foreach (Language language in Languages)
+                        {
+                            <p1 class="fw-normal"> @language </p1>  
+                        }
                 </p>
             </Panel>
         </div>
@@ -35,15 +47,15 @@
             </Panel>
         </div>
     </div>
-    <ProjectDetailsView/>
+    <ProjectDetailsView Title="@Project.Title" Description="@Project.Description" />
     <div class="d-flex flex-column" style="gap: 50px;">
         <div>
             <Panel Title="Supervisor">
                 <p class="pt-2">
                     Info: <br>
-                    Jannick Vestergaard <br>
-                    jave@itu.dk <br>
-                    Profession
+                    @Supervisor.FullName <br>
+                    @Supervisor.Email <br>
+                    @Supervisor.Profession
                 </p>
             </Panel>
         </div>
@@ -51,9 +63,9 @@
             <Panel Title="Co-supervisor">
                 <p class="pt-2">
                     Info: <br>
-                    Jannick Vestergaard <br>
-                    jave@itu.dk <br>
-                    Profession
+                    @CoSupervisor.FullName <br>
+                    @CoSupervisor.Email <br>
+                    @CoSupervisor.Profession
                 </p>
             </Panel>
         </div>
