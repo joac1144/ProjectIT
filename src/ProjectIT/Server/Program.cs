@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
+using Microsoft.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
 using ProjectIT.Client.Utilities;
 using ProjectIT.Server.Controllers;
 using ProjectIT.Server.Database;
@@ -24,10 +26,6 @@ builder.Services.AddScoped<IProjectITDbContext, ProjectITDbContext>();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddHttpClient<GptClient>();
 
 var app = builder.Build();
 
