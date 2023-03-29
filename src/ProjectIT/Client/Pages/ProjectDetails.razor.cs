@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Components;
 using ProjectIT.Client.Components.Filter;
 using ProjectIT.Shared.Dtos.Projects;
 using System.Net.Http.Json;
-using ProjectIT.Shared.Enums;
-using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Client.Pages;
 

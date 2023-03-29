@@ -29,7 +29,8 @@ public partial class MainPage
     private string title = "ProjectIT - A very beautiful platform solving ITU's problems";
 
     public IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
-    public IList<project> Projects { get; set; } = new List<project>();
+    
+    public IList<Project> Projects { get; set; } = new List<Project>();
 
     protected async override Task OnInitializedAsync()
     {

@@ -8,7 +8,7 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
 {
     public DbSet<Topic> Topics { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
-    public DbSet<project> Projects { get; set; } = null!;
+    public DbSet<Project> Projects { get; set; } = null!;
 
     public ProjectITDbContext(DbContextOptions<ProjectITDbContext> options) : base(options)
     {
@@ -16,7 +16,7 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<project>()
+        modelBuilder.Entity<Project>()
             .Property(p => p.Languages)
             .HasConversion(
                 e => string.Join(",", e.Select(x => x.ToString()).ToArray()),
@@ -26,7 +26,7 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
                     .ToList()
             );
 
-        modelBuilder.Entity<project>()
+        modelBuilder.Entity<Project>()
             .Property(p => p.Programmes)
             .HasConversion(
                 e => string.Join(",", e.Select(x => x.ToString()).ToArray()),
@@ -36,7 +36,7 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
                     .ToList()
             );
 
-        modelBuilder.Entity<project>()
+        modelBuilder.Entity<Project>()
             .Property(p => p.Ects)
             .HasConversion<string>();
     }

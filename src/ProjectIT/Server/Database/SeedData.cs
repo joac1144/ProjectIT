@@ -56,7 +56,7 @@ public static class SeedData
         if (!context.Projects.Any())
         {
             context.Projects.AddRange(
-                new project
+                new Project
                 {
                     Id = 999,
                     Title = "ProjectIT",

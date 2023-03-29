@@ -38,13 +38,13 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<project> Create(ProjectCreateDto data)
+    public ActionResult<Project> Create(ProjectCreateDto data)
     {
         return Ok(data);
     }
 
     [HttpPut]
-    public ActionResult<project> Update(ProjectUpdateDto data)
+    public ActionResult<Project> Update(ProjectUpdateDto data)
     {
         return Ok(data);
     }

@@ -30,13 +30,17 @@
         <TagsDisplay @bind-Tags="Tags" />
 
 
-<FilterPanelSimple Title="Semester" 
+        <FilterPanelSimple Title="Semester" 
                    Type="FilterType.Semester"
                    OnInitializedData="FilterPanelsInitialized"
                    DataChanged="OnTagClickedInFilterPanel" />
 
-@if (GptResult != null)
-{
-    @GptResult
-}
+        @if (GptResult != null)
+        {
+            @GptResult
+        }
+
+    </div>
+
+</div>
 
