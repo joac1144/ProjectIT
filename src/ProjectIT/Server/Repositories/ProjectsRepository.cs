@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Repositories;
@@ -67,7 +69,7 @@ public class ProjectsRepository : IProjectsRepository
         };
     }
     
-    public async Task<int> CreateAsync(ProjectCreateDto project)
+    public async Task<int?> CreateAsync(ProjectCreateDto project)
     {
         var entity = new Project
         {
@@ -81,6 +83,11 @@ public class ProjectsRepository : IProjectsRepository
             Supervisor = project.Supervisor,
             CoSupervisor = project.CoSupervisor
         };
+
+        if (String.IsNullOrEmpty(entity.Title) || String.IsNullOrEmpty(entity.Description) || entity.Topics.IsNullOrEmpty<Topic>() ||
+            entity.Languages.IsNullOrEmpty<Language>() || entity.Programmes.IsNullOrEmpty() || entity.Ects == null || 
+            entity.Semester == null || entity.Supervisor == null)
+                throw new ArgumentNullException();
         
         _context.Projects.Add(entity);
         await _context.SaveChangesAsync();

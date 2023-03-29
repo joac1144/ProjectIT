@@ -57,4 +57,39 @@ public class ProjectsControllerTests
         // Assert.
         result.Should().Be(expected);
     }
+
+    [Fact]
+    public async void Post_ValidProject_ReturnsId()
+    {
+        // Arrange.
+        var project = new ProjectCreateDto
+        {
+            Title = "Test 1"
+        };
+        var repository = new Mock<IProjectsRepository>();
+        repository.Setup(pr => pr.CreateAsync(project)).ReturnsAsync(1);
+        var controller = new ProjectsController(repository.Object);
+
+        // Act.
+        var result = await controller.Post(project);
+
+        // Assert.
+        result.Should().Be(1);
+    }
+
+    [Fact]
+    public async void Post_InvalidProject_ReturnsNull()
+    {
+        // Arrange.
+        var project = new ProjectCreateDto();
+        var repository = new Mock<IProjectsRepository>();
+        repository.Setup(pr => pr.CreateAsync(project)).ReturnsAsync(default(int?));
+        var controller = new ProjectsController(repository.Object);
+
+        // Act.
+        var result = await controller.Post(project);
+
+        // Assert.
+        result.Should().BeNull();
+    }
 }

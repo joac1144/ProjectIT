@@ -36,7 +36,7 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<int> Post(ProjectCreateDto project)
+    public async Task<int?> Post(ProjectCreateDto project)
     {
         return await _repository.CreateAsync(project);
     }

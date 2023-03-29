@@ -9,7 +9,7 @@ public interface IProjectsRepository
 
     Task<ProjectDetailsDto?> ReadByIdAsync(int id);
 
-    Task<int> CreateAsync(ProjectCreateDto project);
+    Task<int?> CreateAsync(ProjectCreateDto project);
 
     Task<ProjectUpdateDto> UpdateAsync(ProjectUpdateDto project);
 
