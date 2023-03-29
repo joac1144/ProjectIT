@@ -41,11 +41,12 @@ public class ProjectsRepository : IProjectsRepository
     public async Task<ProjectDetailsDto?> ReadByIdAsync(int id)
     {
         var project = await _context.Projects
+            .Where(p => p.Id == id)
             .Include(p => p.Topics)
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
             .Include(p => p.Students)
-            .SingleOrDefaultAsync(p => p.Id == id);
+            .SingleOrDefaultAsync();
 
         if (project == null)
             return null;

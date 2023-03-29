@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using ProjectIT.Client.Components.Filter;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages;
@@ -13,9 +14,7 @@ public partial class ProjectDetails
 
     private ProjectDetailsDto? project;
 
-    private HttpClient HttpClient = new HttpClient();
-
-    public IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
+    public IList<FilterTag>? Topics { get; set; }
 
     private void ApplyProject(NavigationManager navigationManager)
     {
@@ -24,6 +23,23 @@ public partial class ProjectDetails
 
     protected override async Task OnInitializedAsync()
     {
-        project = await HttpClient.GetFromJsonAsync<ProjectDetailsDto>("https://localhost:7094/projects/1");
+        project = await httpClient.GetFromJsonAsync<ProjectDetailsDto>("projects/999");
+
+        if (project != null)
+        {
+            List<FilterTag> tags = new List<FilterTag>();
+
+            foreach (Topic topic in project?.Topics!)
+            {
+                FilterTag tag = new()
+                {
+                    Tag = topic.Name,
+                    Selected = true
+                };
+                tags.Add(tag);
+            }
+
+            Topics = tags;
+        }
     }
 }
