@@ -8,4 +8,6 @@ public interface IProjectITDbContext : IDisposable
     DbSet<Topic> Topics { get; set; }
     DbSet<User> Users { get; set; }
     DbSet<Project> Projects { get; set; }
+    int SaveChanges();
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

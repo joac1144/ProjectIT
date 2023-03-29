@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Repositories;
 
@@ -66,12 +67,28 @@ public class ProjectsRepository : IProjectsRepository
         };
     }
     
-    public async Task<ProjectCreateDto> CreateAsync(ProjectCreateDto projectCreateDto)
+    public async Task<int> CreateAsync(ProjectCreateDto project)
     {
-        throw new NotImplementedException();
+        var entity = new Project
+        {
+            Title = project.Title,
+            Description = project.Description,
+            Topics = project.Topics,
+            Languages = project.Languages,
+            Programmes = project.Programmes,
+            Ects = project.Ects,
+            Semester = project.Semester,
+            Supervisor = project.Supervisor,
+            CoSupervisor = project.CoSupervisor
+        };
+        
+        _context.Projects.Add(entity);
+        await _context.SaveChangesAsync();
+        
+        return entity.Id;
     }
 
-    public async Task<ProjectUpdateDto> UpdateAsync(ProjectUpdateDto projectUpdateDto)
+    public async Task<ProjectUpdateDto> UpdateAsync(ProjectUpdateDto project)
     {
         throw new NotImplementedException();
     }
