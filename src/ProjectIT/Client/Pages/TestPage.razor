@@ -3,6 +3,7 @@
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
+@inject HttpClient httpClient
 
 <PageTitle>A test page</PageTitle>
 
@@ -31,3 +32,8 @@ Here are some components:
                    Type="FilterType.Semester"
                    OnInitializedData="FilterPanelsInitialized"
                    DataChanged="OnTagClickedInFilterPanel" />
+
+@if (GptResult != null)
+{
+    @GptResult
+}
