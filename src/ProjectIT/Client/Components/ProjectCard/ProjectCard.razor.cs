@@ -19,10 +19,10 @@ public partial class ProjectCard
     public Supervisor? CoSupervisor { get; set; }
 
     [Parameter]
-    public IEnumerable<Programme> Educations { get; set; } = null!;
+    public IEnumerable<Programme> Programmes { get; set; } = null!;
 
     [Parameter]
-    public Semester Date { get; set; } = null!;
+    public Semester Semester { get; set; } = null!;
 
     [Parameter]
     public Ects? Ects { get; set; }

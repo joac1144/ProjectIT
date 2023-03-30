@@ -7,15 +7,15 @@
                     <img src="images\educations.png" width="23rem" height="23rem">
                     <span class="mx-1"></span>
                     <div class="fs-7">
-                        @for (int i = 0; i < Educations.Count(); i++)
+                        @for (int i = 0; i < Programmes.Count(); i++)
                         {
-                            if (i == Educations.Count() - 1)
+                            if (i == Programmes.Count() - 1)
                             {
-                                @Educations.ElementAt(i).ToString()
+                                @Programmes.ElementAt(i).ToString()
                             }
                             else
                             {
-                                @Educations.ElementAt(i).ToString()
+                                @Programmes.ElementAt(i).ToString()
                                 <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
                             }
                         }
@@ -34,7 +34,7 @@
                     <img src="images\date.png" width="22rem" height="22rem">
                     <span class="mx-1"></span>
                     <div class="fs-7">
-                        @Date.Season @Date.Year
+                        @Semester.Season @Semester.Year
                     </div>
                 </div>
 
