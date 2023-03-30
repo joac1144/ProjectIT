@@ -10,8 +10,8 @@
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
 
-
 <PageTitle>A test page</PageTitle>
+
 <SearchField PlaceholderText="Some placeholder text..." />
 <div>
     <div>
@@ -29,7 +29,6 @@
 
         <TagsDisplay @bind-Tags="Tags" />
 
-
         <FilterPanelSimple Title="Semester" 
                    Type="FilterType.Semester"
                    OnInitializedData="FilterPanelsInitialized"
@@ -39,8 +38,5 @@
         {
             @GptResult
         }
-
     </div>
-
 </div>
-
