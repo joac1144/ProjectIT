@@ -12,22 +12,28 @@
                 <p class="h6">Projects found</p>
             </div>
             <!-- filtering options -->
-            <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
+            <div class="my-4">
+                <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
+            </div>
             
-            <FilterPanelSimple Title="Semester"
-                            Type="FilterType.Semester"
-                            OnInitializedData="FilterPanelsInitialized"
-                            DataChanged="OnTagClickedInFilterPanel" />
-
-            <FilterPanelSimple Title="ECTS Points"
-                            Type="FilterType.ECTS"
-                            OnInitializedData="FilterPanelsInitialized"
-                            DataChanged="OnTagClickedInFilterPanel" />
-            
-            <FilterPanelSimple Title="Languages"
-                            Type="FilterType.Language"
-                            OnInitializedData="FilterPanelsInitialized"
-                            DataChanged="OnTagClickedInFilterPanel" />
+            <div class="my-4">
+                <FilterPanelSimple Title="Semester"
+                                Type="FilterType.Semester"
+                                OnInitializedData="FilterPanelsInitialized"
+                                DataChanged="OnTagClickedInFilterPanel" />
+            </div>
+            <div class="my-4">
+                <FilterPanelSimple Title="ECTS Points"
+                                Type="FilterType.ECTS"
+                                OnInitializedData="FilterPanelsInitialized"
+                                DataChanged="OnTagClickedInFilterPanel" />
+            </div>
+            <div class="my-4">
+                <FilterPanelSimple Title="Languages"
+                                Type="FilterType.Language"
+                                OnInitializedData="FilterPanelsInitialized"
+                                DataChanged="OnTagClickedInFilterPanel" />
+            </div>
         </div>
         <div class="col-md-6 main-view-size">
             <div class="mb-4">

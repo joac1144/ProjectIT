@@ -1,4 +1,5 @@
-﻿using ProjectIT.Client.Components.Filter;
+using Microsoft.AspNetCore.Components;
+using ProjectIT.Client.Components.Filter;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages;

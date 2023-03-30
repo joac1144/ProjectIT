@@ -3,37 +3,40 @@
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
+@using ProjectIT.Client.Components.ProjectDetailsView
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject NavigationManager navigationManager
 @inject HttpClient httpClient
 
 <PageTitle>A test page</PageTitle>
 
-this a test page
-
-Here are some components:
-
 <SearchField PlaceholderText="Some placeholder text..." />
+<div>
+    <div>
 
-<SearchField PlaceholderText="This search field has correct length and height" Height="2.4rem" Width="43rem" />
+        <SearchField PlaceholderText="This search field has correct length and height" Height="2.4rem" Width="43rem" />
 
-<FilterPanelSimple Title="Languages"
+        <FilterPanelSimple Title="Languages"
                    Type="FilterType.Language"
                    OnInitializedData="FilterPanelsInitialized"
                    DataChanged="OnTagClickedInFilterPanel" />
 
-<FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
+        <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
 
-<TagsDisplay @bind-Tags="Tags" />
+        <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
 
-<Panel Title="Some random ass shit title">
-    Hmm what should we put in here?
-</Panel>
+        <TagsDisplay @bind-Tags="Tags" />
 
-<FilterPanelSimple Title="Semester" 
+        <FilterPanelSimple Title="Semester" 
                    Type="FilterType.Semester"
                    OnInitializedData="FilterPanelsInitialized"
                    DataChanged="OnTagClickedInFilterPanel" />
 
-@if (GptResult != null)
-{
-    @GptResult
-}
+        @if (GptResult != null)
+        {
+            @GptResult
+        }
+    </div>
+</div>

@@ -12,13 +12,13 @@ namespace ProjectIT.Server.Controllers;
 public class ProjectsController : ControllerBase
 {
     private readonly IProjectsRepository _repository;
-    
+
     public ProjectsController(IProjectsRepository repository)
     {
         _repository = repository;
     }
 
-    [HttpGet("all")]
+    [HttpGet]
     [ProducesResponseType(200)]
     public async Task<IEnumerable<ProjectDetailsDto>> GetAll()
     {

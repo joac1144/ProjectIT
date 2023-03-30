@@ -1,0 +1,97 @@
+@page "/project-details"
+@using ProjectIT.Client.Components.Panel
+@using ProjectIT.Client.Components.Filter
+@using ProjectIT.Client.Components.Search
+@using ProjectIT.Client.Components.Tag
+@using ProjectIT.Client.Pages
+@using ProjectIT.Shared.Enums
+@using ProjectIT.Shared.Models
+@using ProjectIT.Client.Components.ProjectDetailsView
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+
+<PageTitle> Project Details </PageTitle>
+<br>
+
+@if (project == null)
+{
+    <div class="d-flex align-items-center justify-content-center h-100">
+        <div class="spinner-border spinner" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-flex flex-row justify-content-center project-details-view">
+        <div class="d-flex flex-column panel-gap">
+            <div>
+                <Panel Title="Project Info" Width="@panelWidth">
+                    <div class="d-flex flex-column py-2">
+                        Programmes: <br>
+                        <div class="d-flex programmes">
+                            @for (int i = 0; i < project.Programmes.Count(); i++)
+                            {
+                                if (i == project.Programmes.Count() - 1)
+                                {
+                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
+                                }
+                                else
+                                {
+                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
+                                    <span class="border-start border-2 border-dark border-opacity-10"></span>
+                                }
+                            }
+                        </div>
+                        <br>
+                        ECTS Points: <br>
+                        <p1 class="fw-normal"> @project.Ects </p1> <br>
+
+                        Semester: <br>
+                        <p1 class="fw-normal"> @project.Semester?.Season @project.Semester?.Year </p1> <br>
+
+                        Languages: <br>
+
+                        @foreach (Language language in project.Languages)
+                        {
+                            <p1 class="fw-normal"> @language </p1>
+                        }
+                    </div>
+                </Panel>
+            </div>
+            <div class="py-2">
+                <Panel Title="Topics" Width="@panelWidth">
+                    <TagsDisplay Tags="Topics" />
+                </Panel>
+            </div>
+        </div>
+        <ProjectDetailsView Title="@project.Title" Description="@project.Description" />
+        <div class="d-flex flex-column panel-gap">
+            <div>
+                <Panel Title="Supervisor" Width="@panelWidth">
+                    <p class="fw-normal pt-2">
+                    <h6 class="fw-bold"> Info: </h6>
+                        @project.Supervisor.FullName <br>
+                        @project.Supervisor.Email <br>
+                        @project.Supervisor.Profession
+                    </p>
+                </Panel>
+            </div>
+            <div>
+                <Panel Title="Co-supervisor" Width="@panelWidth">
+                    <p class="fw-normal pt-2">
+                    <h6 class="fw-bold"> Info: </h6>
+                        @project.CoSupervisor?.FullName <br>
+                        @project.CoSupervisor?.Email <br>
+                        @project.CoSupervisor?.Profession
+                    </p>
+                </Panel>
+            </div>
+            <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply
+            </button>
+        </div>
+    </div>
+}

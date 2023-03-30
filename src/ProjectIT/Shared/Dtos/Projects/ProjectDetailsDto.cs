@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ProjectIT.Shared.Dtos.Projects;
 
 /// <summary>
-/// Project details DTO for the <see cref="Project" /> class.
+/// Project details DTO for the <see cref="project" /> class.
 /// </summary>
 public record ProjectDetailsDto
 {
@@ -36,7 +36,7 @@ public record ProjectDetailsDto
 
     [Required]
     public Supervisor Supervisor { get; set; } = null!;
-    
+
     public Supervisor? CoSupervisor { get; set; }
 
     [Required]
