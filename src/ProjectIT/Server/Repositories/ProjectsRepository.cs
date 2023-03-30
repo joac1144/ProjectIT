@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ProjectIT.Server.Repositories;
 
