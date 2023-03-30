@@ -9,7 +9,7 @@ public partial class LoginDisplay
         Navigation.NavigateToLogout("authentication/logout");
     }
 
-        public void BeginLogIn()
+    public void BeginLogIn()
     {
         Navigation.NavigateToLogin("authentication/login");
     }
