@@ -2,7 +2,7 @@ using ProjectIT.Client.Components.Filter;
 using ProjectIT.Shared.Dtos.Projects;
 using System.Net.Http.Json;
 
-namespace ProjectIT.Client.Pages;
+namespace ProjectIT.Client.Pages.Main;
 
 public partial class MainPage
 {

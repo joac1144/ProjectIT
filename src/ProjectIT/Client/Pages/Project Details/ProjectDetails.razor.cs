@@ -4,7 +4,7 @@ using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 
-namespace ProjectIT.Client.Pages;
+namespace ProjectIT.Client.Pages.Project_Details;
 
 public partial class ProjectDetails
 {
