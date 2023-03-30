@@ -6,13 +6,18 @@ namespace ProjectIT.Client.Pages.Main;
 
 public partial class MainPage
 {
-    private IEnumerable<ProjectDetailsDto>? projects { get; set; }
+    private ICollection<ProjectDetailsDto>? projects;
+
+    private ICollection<ProjectDetailsDto>? shownProjects;
 
     private IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
-    
-    protected async override Task OnInitializedAsync()
+
+    private int projectCardCount;
+
+    protected async override Task OnParametersSetAsync()
     {
-        projects = await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects");
+        projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects"))?.ToList();
+        shownProjects = projects;
     }
 
     private void FilterPanelsInitialized(IList<FilterTag> data)
@@ -23,5 +28,26 @@ public partial class MainPage
     private void OnTagClickedInFilterPanel(FilterTag filterTag)
     {
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
+    }
+
+    private void FilterProjectsBySearch(string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            shownProjects = projects;
+        }
+        else
+        {
+            shownProjects = projects?.Where(
+                p => p.Topics.Where(t => t.Name == query).Any() 
+                || p.Title.Contains(query, StringComparison.OrdinalIgnoreCase) 
+                || p.Description.Contains(query, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+        }
+    }
+
+    private void UpdateProjectCardCount()
+    {
+
     }
 }

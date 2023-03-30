@@ -122,7 +122,294 @@ public static class SeedData
                         Profession = "Professor"
                     },
                     Students = new Student[] { }
-                }
+                },
+                new Project
+                {
+                    Id = 997,
+                    Title = "Test",
+                    Description = "Test desc",
+                    Topics = new[]
+                    {
+                        new Topic
+                        {
+                            Name = "Test Topic",
+                            Category = TopicCategory.ArtificialIntelligence
+                        },
+                        new Topic
+                        {
+                            Name = "Test Topic 2",
+                            Category = TopicCategory.SoftwareEngineering
+                        }
+                    },
+                    Languages = new[]
+                    {
+                        Language.English
+                    },
+                    Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+                    Ects = Ects.Bachelor,
+                    Semester = new()
+                    {
+                        Season = Season.Spring,
+                        Year = 2023
+                    },
+                    Supervisor = new()
+                    {
+                        FullName = "Joachim Alexander Kofoed",
+                        Email = "jkof@itu.dk",
+                        Topics = new Topic[] { },
+                        Profession = "Professor"
+                    },
+                    Students = new Student[] { }
+                },
+                 new Project
+                 {
+                     Id = 996,
+                     Title = "Test",
+                     Description = "Test desc",
+                     Topics = new[]
+                    {
+                        new Topic
+                        {
+                            Name = "Test Topic",
+                            Category = TopicCategory.ArtificialIntelligence
+                        },
+                        new Topic
+                        {
+                            Name = "Test Topic 2",
+                            Category = TopicCategory.SoftwareEngineering
+                        }
+                    },
+                     Languages = new[]
+                    {
+                        Language.English
+                    },
+                     Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+                     Ects = Ects.Bachelor,
+                     Semester = new()
+                     {
+                         Season = Season.Spring,
+                         Year = 2023
+                     },
+                     Supervisor = new()
+                     {
+                         FullName = "Joachim Alexander Kofoed",
+                         Email = "jkof@itu.dk",
+                         Topics = new Topic[] { },
+                         Profession = "Professor"
+                     },
+                     Students = new Student[] { }
+                 },
+                  new Project
+                  {
+                      Id = 995,
+                      Title = "Test",
+                      Description = "Test desc",
+                      Topics = new[]
+                    {
+                        new Topic
+                        {
+                            Name = "Test Topic",
+                            Category = TopicCategory.ArtificialIntelligence
+                        },
+                        new Topic
+                        {
+                            Name = "Test Topic 2",
+                            Category = TopicCategory.SoftwareEngineering
+                        }
+                    },
+                      Languages = new[]
+                    {
+                        Language.English
+                    },
+                      Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+                      Ects = Ects.Bachelor,
+                      Semester = new()
+                      {
+                          Season = Season.Spring,
+                          Year = 2023
+                      },
+                      Supervisor = new()
+                      {
+                          FullName = "Joachim Alexander Kofoed",
+                          Email = "jkof@itu.dk",
+                          Topics = new Topic[] { },
+                          Profession = "Professor"
+                      },
+                      Students = new Student[] { }
+                  },
+                   new Project
+                   {
+                       Id = 994,
+                       Title = "Test",
+                       Description = "Test desc",
+                       Topics = new[]
+                    {
+                        new Topic
+                        {
+                            Name = "Test Topic",
+                            Category = TopicCategory.ArtificialIntelligence
+                        },
+                        new Topic
+                        {
+                            Name = "Test Topic 2",
+                            Category = TopicCategory.SoftwareEngineering
+                        }
+                    },
+                       Languages = new[]
+                    {
+                        Language.English
+                    },
+                       Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+                       Ects = Ects.Bachelor,
+                       Semester = new()
+                       {
+                           Season = Season.Spring,
+                           Year = 2023
+                       },
+                       Supervisor = new()
+                       {
+                           FullName = "Joachim Alexander Kofoed",
+                           Email = "jkof@itu.dk",
+                           Topics = new Topic[] { },
+                           Profession = "Professor"
+                       },
+                       Students = new Student[] { }
+                   },
+                    new Project
+                    {
+                        Id = 993,
+                        Title = "Test",
+                        Description = "Test desc",
+                        Topics = new[]
+                    {
+                        new Topic
+                        {
+                            Name = "Test Topic",
+                            Category = TopicCategory.ArtificialIntelligence
+                        },
+                        new Topic
+                        {
+                            Name = "Test Topic 2",
+                            Category = TopicCategory.SoftwareEngineering
+                        }
+                    },
+                        Languages = new[]
+                    {
+                        Language.English
+                    },
+                        Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+                        Ects = Ects.Bachelor,
+                        Semester = new()
+                        {
+                            Season = Season.Spring,
+                            Year = 2023
+                        },
+                        Supervisor = new()
+                        {
+                            FullName = "Joachim Alexander Kofoed",
+                            Email = "jkof@itu.dk",
+                            Topics = new Topic[] { },
+                            Profession = "Professor"
+                        },
+                        Students = new Student[] { }
+                    },
+                     new Project
+                     {
+                         Id = 992,
+                         Title = "Test",
+                         Description = "Test desc",
+                         Topics = new[]
+                    {
+                        new Topic
+                        {
+                            Name = "Test Topic",
+                            Category = TopicCategory.ArtificialIntelligence
+                        },
+                        new Topic
+                        {
+                            Name = "Test Topic 2",
+                            Category = TopicCategory.SoftwareEngineering
+                        }
+                    },
+                         Languages = new[]
+                    {
+                        Language.English
+                    },
+                         Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+                         Ects = Ects.Bachelor,
+                         Semester = new()
+                         {
+                             Season = Season.Spring,
+                             Year = 2023
+                         },
+                         Supervisor = new()
+                         {
+                             FullName = "Joachim Alexander Kofoed",
+                             Email = "jkof@itu.dk",
+                             Topics = new Topic[] { },
+                             Profession = "Professor"
+                         },
+                         Students = new Student[] { }
+                     },
+                      new Project
+                      {
+                          Id = 991,
+                          Title = "Test",
+                          Description = "Test desc",
+                          Topics = new[]
+                    {
+                        new Topic
+                        {
+                            Name = "Test Topic",
+                            Category = TopicCategory.ArtificialIntelligence
+                        },
+                        new Topic
+                        {
+                            Name = "Test Topic 2",
+                            Category = TopicCategory.SoftwareEngineering
+                        }
+                    },
+                          Languages = new[]
+                    {
+                        Language.English
+                    },
+                          Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+                          Ects = Ects.Bachelor,
+                          Semester = new()
+                          {
+                              Season = Season.Spring,
+                              Year = 2023
+                          },
+                          Supervisor = new()
+                          {
+                              FullName = "Joachim Alexander Kofoed",
+                              Email = "jkof@itu.dk",
+                              Topics = new Topic[] { },
+                              Profession = "Professor"
+                          },
+                          Students = new Student[] { }
+                      }
             );
         }
         context.SaveChanges();

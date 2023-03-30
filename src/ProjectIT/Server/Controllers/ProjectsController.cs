@@ -6,7 +6,6 @@ using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ProjectsController : ControllerBase
