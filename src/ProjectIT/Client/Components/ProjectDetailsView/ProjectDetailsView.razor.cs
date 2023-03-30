@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 
-
 namespace ProjectIT.Client.Components.ProjectDetailsView;
+
 public partial class ProjectDetailsView
 {
     [Parameter]
