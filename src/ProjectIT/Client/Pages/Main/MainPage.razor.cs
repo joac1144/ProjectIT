@@ -1,5 +1,6 @@
 using ProjectIT.Client.Components.Filter;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages.Main;
@@ -12,15 +13,21 @@ public partial class MainPage
 
     private IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
 
+    private IList<FilterTagTopic> Topics { get; set; }
+    private IList<FilterTag> Programmes { get; set; }
+    private IList<FilterTag> ECTS { get; set; }
+    private IList<FilterTag> Semester { get; set; }
+    private IList<FilterTag> Languages { get; set; }
+
     private int projectCardCount;
 
-    protected async override Task OnParametersSetAsync()
+    protected async override Task OnInitializedAsync()
     {
         projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects"))?.ToList();
         shownProjects = projects;
     }
 
-    private void FilterPanelsInitialized(IList<FilterTag> data)
+    private void FilterPanelInitialized(IList<FilterTag> data)
     {
         Tags = Tags.Concat(data).ToList();
     }

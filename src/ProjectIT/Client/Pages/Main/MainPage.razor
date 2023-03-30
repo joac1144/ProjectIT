@@ -14,28 +14,28 @@
                 <p class="h1 fw-bold">@shownProjects?.Count()</p>
                 <p class="h6">Projects found</p>
             </div>
-            <div class="position-sticky">
+            <div style="position: sticky;">
                 <div class="my-4">
-                    <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
+                    <FilterPanelTopics OnInitializedData="FilterPanelInitialized" DataChanged="OnTagClickedInFilterPanel" />
                 </div>
             
                 <div class="my-4">
                     <FilterPanelSimple Title="Semester"
-                                    Type="FilterType.Semester"
-                                    OnInitializedData="FilterPanelsInitialized"
-                                    DataChanged="OnTagClickedInFilterPanel" />
+                                       Type="FilterType.Semester"
+                                       OnInitializedData="FilterPanelInitialized"
+                                       DataChanged="OnTagClickedInFilterPanel" />
                 </div>
                 <div class="my-4">
                     <FilterPanelSimple Title="ECTS Points"
-                                    Type="FilterType.ECTS"
-                                    OnInitializedData="FilterPanelsInitialized"
-                                    DataChanged="OnTagClickedInFilterPanel" />
+                                       Type="FilterType.ECTS"
+                                       OnInitializedData="FilterPanelInitialized"
+                                       DataChanged="OnTagClickedInFilterPanel" />
                 </div>
                 <div class="my-4">
                     <FilterPanelSimple Title="Languages"
-                                    Type="FilterType.Language"
-                                    OnInitializedData="FilterPanelsInitialized"
-                                    DataChanged="OnTagClickedInFilterPanel" />
+                                       Type="FilterType.Language"
+                                       OnInitializedData="FilterPanelInitialized"
+                                       DataChanged="OnTagClickedInFilterPanel" />
                 </div>
             </div>
         </div>
@@ -63,8 +63,7 @@
                                         Semester= "@project.Semester"
                                         Ects="@project.Ects"
                                         Supervisor="@project.Supervisor"
-                                        Programmes="@project.Programmes"
-                                        AfterRender="" />
+                                        Programmes="@project.Programmes" />
                 </Virtualize>
             }
         </div>
