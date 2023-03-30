@@ -27,14 +27,21 @@ else
     <div class="d-flex flex-row justify-content-center project-details-view">
         <div class="d-flex flex-column panel-gap">
             <div>
-                <Panel Title="Project Info">
-                    <div class="d-flex flex-column">
+                <Panel Title="Project Info" Width="@panelWidth">
+                    <div class="d-flex flex-column py-2">
                         Programmes: <br>
                         <div class="d-flex programmes">
-                            @foreach (Programme programme in project.Programmes)
+                            @for (int i = 0; i < project.Programmes.Count(); i++)
                             {
-                                <p1 class="fw-normal"> @programme </p1>
-                                <span class="border-start border-2 border-dark border-opacity-10 mx-2" />
+                                if (i == project.Programmes.Count() - 1)
+                                {
+                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
+                                }
+                                else
+                                {
+                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
+                                    <span class="border-start border-2 border-dark border-opacity-10"></span>
+                                }
                             }
                         </div>
                         <br>
@@ -53,8 +60,8 @@ else
                     </div>
                 </Panel>
             </div>
-            <div>
-                <Panel Title="Topics">
+            <div class="py-2">
+                <Panel Title="Topics" Width="@panelWidth">
                     <TagsDisplay Tags="Topics" />
                 </Panel>
             </div>
@@ -62,7 +69,7 @@ else
         <ProjectDetailsView Title="@project.Title" Description="@project.Description" />
         <div class="d-flex flex-column panel-gap">
             <div>
-                <Panel Title="Supervisor">
+                <Panel Title="Supervisor" Width="@panelWidth">
                     <p class="fw-normal pt-2">
                     <h6 class="fw-bold"> Info: </h6>
                         @project.Supervisor.FullName <br>
@@ -72,7 +79,7 @@ else
                 </Panel>
             </div>
             <div>
-                <Panel Title="Co-supervisor">
+                <Panel Title="Co-supervisor" Width="@panelWidth">
                     <p class="fw-normal pt-2">
                     <h6 class="fw-bold"> Info: </h6>
                         @project.CoSupervisor?.FullName <br>

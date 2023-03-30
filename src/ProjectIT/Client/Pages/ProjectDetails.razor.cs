@@ -13,6 +13,8 @@ public partial class ProjectDetails
     public int Id { get; set; }
 
     private ProjectDetailsDto? project;
+    
+    private string panelWidth = "250px";
 
     public IList<FilterTag>? Topics { get; set; }
 

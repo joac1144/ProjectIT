@@ -18,7 +18,7 @@ public class ProjectsController : ControllerBase
         _repository = repository;
     }
 
-    [HttpGet("all")]
+    [HttpGet]
     [ProducesResponseType(200)]
     public async Task<IEnumerable<ProjectDetailsDto>> GetAll()
     {

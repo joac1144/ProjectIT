@@ -21,6 +21,7 @@ public class ProjectsRepository : IProjectsRepository
         var projects = await _context.Projects
             .Include(p => p.Topics)
             .Include(p => p.Supervisor)
+            .Include(p => p.Semester)
             .Include(p => p.CoSupervisor)
             .Include(p => p.Students)
             .ToListAsync();
@@ -49,6 +50,7 @@ public class ProjectsRepository : IProjectsRepository
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
             .Include(p => p.Students)
+            .Include(p => p.Semester)
             .SingleOrDefaultAsync();
 
         if (project == null)
