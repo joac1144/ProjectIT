@@ -109,6 +109,84 @@ public class ProjectsRepositoryTests : IDisposable
         result.Should().NotBeNull().And.Match<ProjectDetailsDto>(p => p.Title == project2Title);
     }
 
+    [Fact]
+    public async void CreateAsync_CreatesProjectSuccessfully()
+    {
+        var project = new ProjectCreateDto
+        {
+            Title = "Test",
+            Description = "Test desc",
+            Topics = new[]
+                    {
+                        new Topic
+                        {
+                            Name = "Test Topic",
+                            Category = TopicCategory.ArtificialIntelligence
+                        },
+                        new Topic
+                        {
+                            Name = "Test Topic 2",
+                            Category = TopicCategory.SoftwareEngineering
+                        }
+                    },
+            Languages = new[]
+                    {
+                        Language.English
+                    },
+            Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+            Ects = Ects.Bachelor,
+            Semester = new()
+            {
+                Season = Season.Spring,
+                Year = 2023
+            },
+            Supervisor = new()
+            {
+                FullName = "Henrik Kjeldsen",
+                Email = "henk@itu.dk",
+                Topics = new Topic[] { },
+                Profession = "Professor"
+            }
+        };
+        
+        var resultId = await _projectsRepository.CreateAsync(project);
+        var actualResult = await _context.Projects.FindAsync(resultId);
+
+        actualResult.Should().NotBeNull().And.Match<Project>(p => p.Title == project.Title && p.Description == project.Description);
+        actualResult.Id.Should().Be(resultId);
+    }
+
+    [Fact]
+    public async Task CreateAsync_MandatoryFieldsNotFilledOut_ThrowsException()
+    {
+        var project = new ProjectCreateDto
+        {
+            Title = String.Empty,
+            Description = "Test desc",
+            Topics = Array.Empty<Topic>(),
+            Languages = Array.Empty<Language>(),
+            Programmes = Array.Empty<Programme>(),
+            Ects = Ects.Bachelor,
+            Semester = new()
+            {
+                Season = Season.Spring,
+                Year = 2023
+            },
+            Supervisor = new()
+            {
+                FullName = "Henrik Kjeldsen",
+                Email = "henk@itu.dk",
+                Topics = new Topic[] { },
+                Profession = "Professor"
+            }
+        };
+
+        await Assert.ThrowsAsync<ArgumentNullException>(() => _projectsRepository.CreateAsync(project));
+    }
+
     public void Dispose()
     {
         _context.Dispose();

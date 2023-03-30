@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ProjectIT.Server.Repositories;
 
@@ -67,12 +70,33 @@ public class ProjectsRepository : IProjectsRepository
         };
     }
     
-    public async Task<ProjectCreateDto> CreateAsync(ProjectCreateDto projectCreateDto)
+    public async Task<int?> CreateAsync(ProjectCreateDto project)
     {
-        throw new NotImplementedException();
+        var entity = new Project
+        {
+            Title = project.Title,
+            Description = project.Description,
+            Topics = project.Topics,
+            Languages = project.Languages,
+            Programmes = project.Programmes,
+            Ects = project.Ects,
+            Semester = project.Semester,
+            Supervisor = project.Supervisor,
+            CoSupervisor = project.CoSupervisor
+        };
+
+        if (String.IsNullOrEmpty(entity.Title) || String.IsNullOrEmpty(entity.Description) || entity.Topics.IsNullOrEmpty<Topic>() ||
+            entity.Languages.IsNullOrEmpty<Language>() || entity.Programmes.IsNullOrEmpty() || entity.Ects == null || 
+            entity.Semester == null || entity.Supervisor == null)
+                throw new ArgumentNullException();
+        
+        _context.Projects.Add(entity);
+        await _context.SaveChangesAsync();
+        
+        return entity.Id;
     }
 
-    public async Task<ProjectUpdateDto> UpdateAsync(ProjectUpdateDto projectUpdateDto)
+    public async Task<ProjectUpdateDto> UpdateAsync(ProjectUpdateDto project)
     {
         throw new NotImplementedException();
     }
