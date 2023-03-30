@@ -358,3 +358,5 @@ launchSettings.json
 /src/ProjectIT/Client/Pages/*.css
 /src/ProjectIT/Client/Pages/**/*.css
 /src/ProjectIT/Client/wwwroot/css/
+/src/ProjectIT/Client/Pages/Project Details/ProjectDetails.razor.css
+/src/ProjectIT/Client/Pages/Main/MainPage.razor.css
