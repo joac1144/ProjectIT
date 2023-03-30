@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Components;
 using ProjectIT.Client.Components.Filter;
 using System.Net.Http.Json;
 
-namespace ProjectIT.Client.Pages;
+namespace ProjectIT.Client.Pages.Test;
 
 public partial class TestPage
 {
