@@ -22,5 +22,6 @@ public record SupervisorDetailsDto
     [Required]
     public string Profession { get; set; } = null!;
 
+    // For Co-supervisors that might be PhD or Master students.
     public Programme? Programme { get; init; } = null!; 
 }
