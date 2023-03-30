@@ -355,6 +355,6 @@ launchSettings.json
 
 /src/ProjectIT/Client/Shared/*.css
 /src/ProjectIT/Client/Components/**/*.css
-/src/ProjectIT/Client/Components/**/*.css
 /src/ProjectIT/Client/Pages/*.css
+/src/ProjectIT/Client/Pages/**/*.css
 /src/ProjectIT/Client/wwwroot/css/
