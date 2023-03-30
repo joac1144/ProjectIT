@@ -2,7 +2,7 @@ using ProjectIT.Client.Components.Filter;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
-namespace ProjectIT.Client.Pages;
+namespace ProjectIT.Client.Pages.Main;
 
 public partial class MainPage
 {

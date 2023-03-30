@@ -1,0 +1,31 @@
+﻿.ms-6 {
+  margin-left: 4rem;
+}
+
+.marg {
+  margin-left: 7.1rem;
+}
+
+.main-view-size {
+  width: 47rem;
+  height: 100%;
+}
+
+.filter-size {
+  padding: 0;
+  width: fit-content;
+  margin-left: 5rem;
+  padding-right: 4rem;
+}
+
+@media (max-width: 1220px) {
+  .main-view-size {
+    width: 40rem;
+  }
+  .filter-size {
+    padding: 0;
+    width: fit-content;
+    margin-left: 0;
+    padding-right: 0;
+  }
+}

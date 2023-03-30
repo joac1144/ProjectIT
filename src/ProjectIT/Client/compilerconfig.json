@@ -24,15 +24,19 @@
     "inputFile": "Components/Tag/TagsDisplay.razor.scss"
   },
   {
-    "outputFile": "Pages/MainPage.razor.css",
-    "inputFile": "Pages/MainPage.razor.scss"
+    "outputFile": "Pages/Main/MainPage.razor.css",
+    "inputFile": "Pages/Main/MainPage.razor.scss"
   },
   {
-    "outputFile": "Pages/ProjectDetails.razor.css",
-    "inputFile": "Pages/ProjectDetails.razor.scss"
+    "outputFile": "Pages/Project Details/ProjectDetails.razor.css",
+    "inputFile": "Pages/Project Details/ProjectDetails.razor.scss"
   },
   {
     "outputFile": "Components/ProjectDetailsView/ProjectDetailsView.razor.css",
     "inputFile": "Components/ProjectDetailsView/ProjectDetailsView.razor.scss"
+  },
+  {
+    "outputFile": "Components/Login/LoginDisplay.razor.css",
+    "inputFile": "Components/Login/LoginDisplay.razor.scss"
   }
 ]
