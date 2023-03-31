@@ -1,5 +1,4 @@
 ﻿using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Repositories;
 
@@ -13,5 +12,5 @@ public interface IProjectsRepository
 
     Task<ProjectUpdateDto> UpdateAsync(ProjectUpdateDto project);
 
-    Task<int> DeleteAsync(int id);
+    Task<int?> DeleteAsync(int id);
 }
