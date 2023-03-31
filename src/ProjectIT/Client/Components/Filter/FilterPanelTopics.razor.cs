@@ -14,14 +14,14 @@ public partial class FilterPanelTopics
     }
 
     [Parameter]
-    public EventCallback<FilterTag> DataChanged { get; init; }
+    public EventCallback<FilterTagTopic> DataChanged { get; init; }
 
     [Parameter]
-    public EventCallback<IList<FilterTag>> OnInitializedData { get; set; }
+    public EventCallback<IList<FilterTagTopic>> OnInitializedData { get; set; }
     
-    public IList<FilterTag> Data { get; set; } = new List<FilterTag>();
+    public IList<FilterTagTopic> Data { get; set; } = new List<FilterTagTopic>();
 
-    public IList<FilterTag> ShownData { get; set; } = null!;
+    public IList<FilterTagTopic> ShownData { get; set; } = null!;
 
     private readonly IList<CategoryStatus> _categories = new List<CategoryStatus>();
 
@@ -60,7 +60,7 @@ public partial class FilterPanelTopics
 
         foreach (Topic topic in topics)
         {
-            Data.Add(new FilterTag { Tag = topic.Name, Category = topic.Category });
+            Data.Add(new FilterTagTopic { Tag = topic.Name, Category = topic.Category });
         }
 
         foreach (TopicCategory topicCategory in Enum.GetValues<TopicCategory>())
@@ -72,11 +72,11 @@ public partial class FilterPanelTopics
 
         if (OnInitializedData.HasDelegate)
         {
-            OnInitializedData.InvokeAsync(Data.Select(ft => new FilterTag { Tag = ft.Tag, Category = ft.Category }).ToList());
+            OnInitializedData.InvokeAsync(Data.Select(ft => new FilterTagTopic { Tag = ft.Tag, Category = ft.Category }).ToList());
         }
     }
 
-    private Task CheckboxChecked(ChangeEventArgs e, FilterTag filterTag)
+    private Task CheckboxChecked(ChangeEventArgs e, FilterTagTopic filterTag)
     {
         Data.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = (bool)e.Value!;
 

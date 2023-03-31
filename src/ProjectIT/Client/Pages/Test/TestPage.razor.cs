@@ -19,6 +19,11 @@ public partial class TestPage
         Tags = Tags.Concat(data).ToList();
     }
 
+    private void FilterPanelTopicInitialized(IList<FilterTagTopic> data)
+    {
+        Tags = Tags.Concat(data).ToList();
+    }
+
     private void OnTagClickedInFilterPanel(FilterTag filterTag)
     {
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;

@@ -16,26 +16,26 @@
             </div>
             <div style="position: sticky;">
                 <div class="my-4">
-                    <FilterPanelTopics OnInitializedData="FilterPanelInitialized" DataChanged="OnTagClickedInFilterPanel" />
+                    <FilterPanelTopics OnInitializedData="FilterPanelTopicsInitialized" DataChanged="OnTagClickedInFilterPanelTopics" />
                 </div>
             
                 <div class="my-4">
                     <FilterPanelSimple Title="Semester"
                                        Type="FilterType.Semester"
-                                       OnInitializedData="FilterPanelInitialized"
-                                       DataChanged="OnTagClickedInFilterPanel" />
+                                       OnInitializedData="(data) => FilterPanelInitialized(FilterType.Semester, data)"
+                                       DataChanged="(filterTag) => OnTagClickedInFilterPanel(FilterType.Semester, filterTag)" />
                 </div>
                 <div class="my-4">
                     <FilterPanelSimple Title="ECTS Points"
                                        Type="FilterType.ECTS"
-                                       OnInitializedData="FilterPanelInitialized"
-                                       DataChanged="OnTagClickedInFilterPanel" />
+                                       OnInitializedData="(data) => FilterPanelInitialized(FilterType.ECTS, data)"
+                                       DataChanged="(filterTag) => OnTagClickedInFilterPanel(FilterType.ECTS, filterTag)" />
                 </div>
                 <div class="my-4">
                     <FilterPanelSimple Title="Languages"
                                        Type="FilterType.Language"
-                                       OnInitializedData="FilterPanelInitialized"
-                                       DataChanged="OnTagClickedInFilterPanel" />
+                                       OnInitializedData="(data) => FilterPanelInitialized(FilterType.Language, data)"
+                                       DataChanged="(filterTag) => OnTagClickedInFilterPanel(FilterType.Language, filterTag)" />
                 </div>
             </div>
         </div>

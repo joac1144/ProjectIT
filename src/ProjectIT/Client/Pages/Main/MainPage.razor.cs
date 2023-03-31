@@ -1,6 +1,5 @@
 using ProjectIT.Client.Components.Filter;
 using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages.Main;
@@ -13,11 +12,11 @@ public partial class MainPage
 
     private IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
 
-    private IList<FilterTagTopic> Topics { get; set; }
-    private IList<FilterTag> Programmes { get; set; }
-    private IList<FilterTag> ECTS { get; set; }
-    private IList<FilterTag> Semester { get; set; }
-    private IList<FilterTag> Languages { get; set; }
+    private IList<FilterTagTopic>? Topics { get; set; }
+    private IList<FilterTag>? Programmes { get; set; }
+    private IList<FilterTag>? ECTSs { get; set; }
+    private IList<FilterTag>? Semesters { get; set; }
+    private IList<FilterTag>? Languages { get; set; }
 
     private int projectCardCount;
 
@@ -27,14 +26,67 @@ public partial class MainPage
         shownProjects = projects;
     }
 
-    private void FilterPanelInitialized(IList<FilterTag> data)
+    private void FilterPanelInitialized(FilterType type, IList<FilterTag> data)
     {
+        switch (type)
+        {
+            case FilterType.Programme:
+                Programmes = data;
+                break;
+            case FilterType.ECTS:
+                ECTSs = data;
+                break;
+            case FilterType.Semester:
+                Semesters = data;
+                break;
+            case FilterType.Language:
+                Languages = data;
+                break;
+        }
         Tags = Tags.Concat(data).ToList();
     }
 
-    private void OnTagClickedInFilterPanel(FilterTag filterTag)
+    private void FilterPanelTopicsInitialized(IList<FilterTagTopic> data)
+    {
+        Topics = data;
+        Tags = Tags.Concat(data).ToList();
+    }
+
+    private void OnTagClickedInFilterPanel(FilterType type, FilterTag filterTag)
     {
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
+
+        switch (type)
+        {
+            case FilterType.Programme:
+                //shownProjects
+                break;
+            case FilterType.ECTS:
+                break;
+            case FilterType.Semester:
+                break;
+            case FilterType.Language:
+                break;
+        }
+
+        // Filter by topics
+
+
+        shownProjects = shownProjects?.Where(
+            p => p.Topics.Where(t => Topics!.Where(ft => ft.Selected).Select(ft => ft.Tag).Contains(t.Name)).Any()
+        ).ToList();
+    }
+
+    private void OnTagClickedInFilterPanelTopics(FilterTag filterTag)
+    {
+
+    }
+
+    private void FilterProjectsByTopic()
+    {
+        shownProjects = projects?.Where(
+            p => p.Topics.Where(t => Topics!.Where(ft => ft.Selected).Select(ft => ft.Tag).Contains(t.Name)).Any()
+        ).ToList();
     }
 
     private void FilterProjectsBySearch(string query)
@@ -45,7 +97,7 @@ public partial class MainPage
         }
         else
         {
-            shownProjects = projects?.Where(
+            shownProjects = shownProjects?.Where(
                 p => p.Topics.Where(t => t.Name == query).Any() 
                 || p.Title.Contains(query, StringComparison.OrdinalIgnoreCase) 
                 || p.Description.Contains(query, StringComparison.OrdinalIgnoreCase)
@@ -55,6 +107,6 @@ public partial class MainPage
 
     private void UpdateProjectCardCount()
     {
-
+        projectCardCount = projectCardCount + 3;
     }
 }
