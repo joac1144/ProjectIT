@@ -87,7 +87,7 @@ public class ProjectsRepository : IProjectsRepository
             CoSupervisor = project.CoSupervisor
         };
 
-        if (String.IsNullOrEmpty(entity.Title) || String.IsNullOrEmpty(entity.Description) || entity.Topics.IsNullOrEmpty<Topic>() ||
+        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.Description) || entity.Topics.IsNullOrEmpty<Topic>() ||
             entity.Languages.IsNullOrEmpty<Language>() || entity.Programmes.IsNullOrEmpty() || entity.Ects == null || 
             entity.Semester == null || entity.Supervisor == null)
                 throw new ArgumentNullException();

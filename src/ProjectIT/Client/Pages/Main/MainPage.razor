@@ -18,7 +18,6 @@
                 <div class="my-4">
                     <FilterPanelTopics OnInitializedData="FilterPanelTopicsInitialized" DataChanged="OnTagClickedInFilterPanelTopics" />
                 </div>
-            
                 <div class="my-4">
                     <FilterPanelSimple Title="Semester"
                                        Type="FilterType.Semester"
@@ -45,7 +44,13 @@
             </div>
             <div class="mb-4 row">
                 <div class="col-md-8">
-                    <TagsDisplay @bind-Tags="Tags" />
+                    <TagsDisplay @bind-Tags="Tags" TagsAreClickable="true" />
+                    @if (Tags.Any(t => t.Selected))
+                    {
+                        <span class="clearbtn ms-3">
+                            <button class="clear-btn p-0" @onclick="ClearFilters">Clear filters</button>
+                        </span>
+                    }
                 </div>
                 <div class="col-2 offset-md-2 marg p-0">
                     <div>
@@ -57,7 +62,7 @@
             </div>
             @if (shownProjects != null)
             {
-                <Virtualize TItem="ProjectDetailsDto" Items="@shownProjects.Take(projectCardCount).ToList()" Context="project">
+                <Virtualize TItem="ProjectDetailsDto" Items="@shownProjects" Context="project">
                         <ProjectCard Title="@project.Title"
                                         Description="@project.Description"
                                         Semester= "@project.Semester"

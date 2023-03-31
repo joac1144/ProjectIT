@@ -11,19 +11,13 @@ public partial class TagsDisplay
     [Parameter]
     public EventCallback<IList<FilterTag>> TagsChanged { get; set; }
 
+    [Parameter]
+    public bool TagsAreClickable { get; set; }
+
     private Task TagClicked(FilterTag filterTag)
     {
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = false;
 
-        return TagsChanged.InvokeAsync(Tags);
-    }
-
-    private Task ClearFilters()
-    {        
-        foreach (FilterTag tag in Tags)
-        {
-            Tags.Where(ft => ft.Tag == tag.Tag).Single().Selected = false;
-        }
         return TagsChanged.InvokeAsync(Tags);
     }
 }

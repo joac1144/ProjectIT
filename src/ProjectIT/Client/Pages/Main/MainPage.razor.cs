@@ -59,34 +59,25 @@ public partial class MainPage
         switch (type)
         {
             case FilterType.Programme:
-                //shownProjects
+                shownProjects = shownProjects?.Where(p => p.Programmes.Where(prog => prog.ToString() == filterTag.Tag).Any()).ToList();
                 break;
             case FilterType.ECTS:
+                shownProjects = shownProjects?.Where(p => p.Ects.ToString() == filterTag.Tag).ToList();
                 break;
             case FilterType.Semester:
+                shownProjects = shownProjects?.Where(p => $"{p.Semester?.Season} {p.Semester?.Year}" == filterTag.Tag).ToList();
                 break;
             case FilterType.Language:
+                shownProjects = shownProjects?.Where(p => p.Languages.Where(lang => lang.ToString() == filterTag.Tag).Any()).ToList();
                 break;
         }
-
-        // Filter by topics
-
-
-        shownProjects = shownProjects?.Where(
-            p => p.Topics.Where(t => Topics!.Where(ft => ft.Selected).Select(ft => ft.Tag).Contains(t.Name)).Any()
-        ).ToList();
     }
 
     private void OnTagClickedInFilterPanelTopics(FilterTag filterTag)
     {
-
-    }
-
-    private void FilterProjectsByTopic()
-    {
-        shownProjects = projects?.Where(
-            p => p.Topics.Where(t => Topics!.Where(ft => ft.Selected).Select(ft => ft.Tag).Contains(t.Name)).Any()
-        ).ToList();
+        Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
+        
+        shownProjects = shownProjects?.Where(p => p.Topics.Where(topic => Topics!.Where(ft => ft.Selected).Select(ft => ft.Tag).Contains(topic.Name)).Any()).ToList();
     }
 
     private void FilterProjectsBySearch(string query)
@@ -102,6 +93,14 @@ public partial class MainPage
                 || p.Title.Contains(query, StringComparison.OrdinalIgnoreCase) 
                 || p.Description.Contains(query, StringComparison.OrdinalIgnoreCase)
             ).ToList();
+        }
+    }
+
+    private void ClearFilters()
+    {        
+        foreach (FilterTag tag in Tags)
+        {
+            Tags.Where(ft => ft.Tag == tag.Tag).Single().Selected = false;
         }
     }
 

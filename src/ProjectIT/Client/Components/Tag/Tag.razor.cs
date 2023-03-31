@@ -9,5 +9,8 @@ public partial class Tag
     public string Text { get; set; } = string.Empty;
 
     [Parameter]
+    public bool IsDisabled { get; set; }
+
+    [Parameter]
     public EventCallback<MouseEventArgs> OnClicked { get; set; }
 }
