@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectIT.Server.Repositories;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
+using System.Net;
 
 namespace ProjectIT.Server.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ProjectsController : ControllerBase
@@ -49,9 +49,13 @@ public class ProjectsController : ControllerBase
         return Ok(data);
     }
 
-    [HttpDelete]
-    public ActionResult<int> Delete(int id)
+    [HttpDelete("{id}")]
+    public async Task<int?> Delete(int id)
     {
-        return Ok();
+        var response = await _repository.DeleteAsync(id);
+
+        if (response == null) return null;
+
+        return response;
     }
 }

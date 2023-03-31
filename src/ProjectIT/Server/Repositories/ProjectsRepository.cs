@@ -103,8 +103,19 @@ public class ProjectsRepository : IProjectsRepository
         throw new NotImplementedException();
     }
 
-    public async Task<int> DeleteAsync(int id)
+    public async Task<int?> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var project = await _context.Projects.Where(project => project.Id == id).Include(p => p.Topics).SingleOrDefaultAsync();
+
+        if(project == null) 
+        {
+            return null;
+        }
+
+        _context.Projects.Remove(project);
+
+        await _context.SaveChangesAsync();
+
+        return project.Id;
     }
 }

@@ -187,6 +187,25 @@ public class ProjectsRepositoryTests : IDisposable
         await Assert.ThrowsAsync<ArgumentNullException>(() => _projectsRepository.CreateAsync(project));
     }
 
+    [Fact]
+    public async Task DeleteAsync_ExistingId_ProjectDeleted()
+    {
+        var result = await _projectsRepository.DeleteAsync(1);
+
+        var project = await _projectsRepository.ReadByIdAsync(1);
+
+        project.Should().BeNull();
+        result.Should().Be(1);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_NonExistingId_ReturnsNull() 
+    {
+        var result = await _projectsRepository.DeleteAsync(3);
+
+        result.Should().BeNull();
+    }
+
     public void Dispose()
     {
         _context.Dispose();
