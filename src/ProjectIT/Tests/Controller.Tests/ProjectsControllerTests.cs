@@ -93,7 +93,7 @@ public class ProjectsControllerTests
     }
 
     [Fact]
-    public async void Delete_ReturnsId() 
+    public async void Delete_ExistingId_ReturnsId() 
     {
         var repository = new Mock<IProjectsRepository>();
         repository.Setup(pr => pr.DeleteAsync(1)).ReturnsAsync(1);
@@ -105,7 +105,7 @@ public class ProjectsControllerTests
     }
 
     [Fact]
-    public async void Delete_NonExistingId_ReturnsId()
+    public async void Delete_NonExistingId_ReturnsNull()
     {
         var repository = new Mock<IProjectsRepository>();
         repository.Setup(pr => pr.DeleteAsync(70)).ReturnsAsync(default(int?));

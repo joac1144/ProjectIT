@@ -105,12 +105,13 @@ public class ProjectsRepository : IProjectsRepository
 
     public async Task<int?> DeleteAsync(int id)
     {
-        var project = await _context.Projects.Where(project => project.Id == id).Include(p => p.Topics).SingleOrDefaultAsync();
+        var project = await _context.Projects
+            .Where(project => project.Id == id)
+            .Include(p => p.Topics)
+            .SingleOrDefaultAsync();
 
-        if(project == null) 
-        {
+        if (project == null)
             return null;
-        }
 
         _context.Projects.Remove(project);
 

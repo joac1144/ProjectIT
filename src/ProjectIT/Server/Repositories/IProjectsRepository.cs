@@ -1,6 +1,4 @@
-﻿using System.Net;
-using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Models;
+﻿using ProjectIT.Shared.Dtos.Projects;
 
 namespace ProjectIT.Server.Repositories;
 

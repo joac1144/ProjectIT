@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectIT.Server.Repositories;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
-using System.Net;
 
 namespace ProjectIT.Server.Controllers;
 
@@ -32,7 +31,8 @@ public class ProjectsController : ControllerBase
     {
         var project = await _repository.ReadByIdAsync(id);
 
-        if (project == null) return null;
+        if (project == null) 
+            return null;
 
         return project;
     }
@@ -54,7 +54,8 @@ public class ProjectsController : ControllerBase
     {
         var response = await _repository.DeleteAsync(id);
 
-        if (response == null) return null;
+        if (response == null) 
+            return null;
 
         return response;
     }
