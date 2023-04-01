@@ -5,7 +5,7 @@ namespace ProjectIT.Client.Pages.Test;
 
 public partial class TestPage
 {
-    public IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
+    public List<FilterTag> Tags { get; set; } = new List<FilterTag>();
 
     private string? GptResult;
 

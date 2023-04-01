@@ -21,31 +21,31 @@
                 <div class="my-4">
                     <FilterPanelSimple Title="Semester"
                                        Type="FilterType.Semester"
-                                       OnInitializedData="(data) => FilterPanelInitialized(FilterType.Semester, data)"
+                                       OnInitializedData="(data) => FilterPanelInitialized(data)"
                                        DataChanged="(filterTag) => OnTagClickedInFilterPanel(FilterType.Semester, filterTag)" />
                 </div>
                 <div class="my-4">
                     <FilterPanelSimple Title="ECTS Points"
                                        Type="FilterType.ECTS"
-                                       OnInitializedData="(data) => FilterPanelInitialized(FilterType.ECTS, data)"
+                                       OnInitializedData="(data) => FilterPanelInitialized(data)"
                                        DataChanged="(filterTag) => OnTagClickedInFilterPanel(FilterType.ECTS, filterTag)" />
                 </div>
                 <div class="my-4">
                     <FilterPanelSimple Title="Languages"
                                        Type="FilterType.Language"
-                                       OnInitializedData="(data) => FilterPanelInitialized(FilterType.Language, data)"
+                                       OnInitializedData="(data) => FilterPanelInitialized(data)"
                                        DataChanged="(filterTag) => OnTagClickedInFilterPanel(FilterType.Language, filterTag)" />
                 </div>
             </div>
         </div>
         <div class="col-md-6 main-view-size">
             <div class="mb-4">
-                <SearchField PlaceholderText="Search projects..." Height="2.4rem" Width="43rem" OnInputValueChanged="FilterProjectsBySearch" />
+                <SearchField @ref="searchField" PlaceholderText="Search projects..." Height="2.4rem" Width="43rem" OnInputValueChanged="FilterProjects" />
             </div>
             <div class="mb-4 row">
                 <div class="col-md-8">
-                    <TagsDisplay @bind-Tags="Tags" TagsAreClickable="true" />
-                    @if (Tags.Any(t => t.Selected))
+                    <TagsDisplay @bind-Tags="tags" TagsAreClickable="true" />
+                    @if (tags.Any(t => t.Selected))
                     {
                         <span class="clearbtn ms-3">
                             <button class="clear-btn p-0" @onclick="ClearFilters">Clear filters</button>

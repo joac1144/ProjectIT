@@ -12,4 +12,9 @@ public class Semester
 
     [Required]
     public int Year { get; set; }
+
+    public override string ToString()
+    {
+        return $"{Season} {Year}";
+    }
 }

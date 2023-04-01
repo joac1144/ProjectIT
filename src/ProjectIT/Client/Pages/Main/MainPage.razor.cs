@@ -1,4 +1,5 @@
 using ProjectIT.Client.Components.Filter;
+using ProjectIT.Client.Components.Search;
 using ProjectIT.Shared.Dtos.Projects;
 using System.Net.Http.Json;
 
@@ -6,91 +7,168 @@ namespace ProjectIT.Client.Pages.Main;
 
 public partial class MainPage
 {
-    private ICollection<ProjectDetailsDto>? projects;
+    private List<ProjectDetailsDto> projects = new();
 
-    private ICollection<ProjectDetailsDto>? shownProjects;
+    private List<ProjectDetailsDto> shownProjects = new();
 
-    private IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
+    private List<FilterTag> tags = new();
 
-    private IList<FilterTagTopic>? Topics { get; set; }
-    private IList<FilterTag>? Programmes { get; set; }
-    private IList<FilterTag>? ECTSs { get; set; }
-    private IList<FilterTag>? Semesters { get; set; }
-    private IList<FilterTag>? Languages { get; set; }
+    private readonly List<FilterTag>? _activeTopics = new();
+    private readonly List<FilterTag>? _activeProgrammes = new();
+    private readonly List<FilterTag>? _activeECTSs = new();
+    private readonly List<FilterTag>? _activeSemesters = new();
+    private readonly List<FilterTag>? _activeLanguages = new();
 
-    private int projectCardCount;
+    private SearchField? searchField;
 
     protected async override Task OnInitializedAsync()
     {
-        projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects"))?.ToList();
+        projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects"))?.ToList()!;
         shownProjects = projects;
     }
 
-    private void FilterPanelInitialized(FilterType type, IList<FilterTag> data)
+    private void FilterPanelInitialized(IList<FilterTag> data)
     {
-        switch (type)
-        {
-            case FilterType.Programme:
-                Programmes = data;
-                break;
-            case FilterType.ECTS:
-                ECTSs = data;
-                break;
-            case FilterType.Semester:
-                Semesters = data;
-                break;
-            case FilterType.Language:
-                Languages = data;
-                break;
-        }
-        Tags = Tags.Concat(data).ToList();
+        tags = tags.Concat(data).ToList();
     }
 
     private void FilterPanelTopicsInitialized(IList<FilterTagTopic> data)
     {
-        Topics = data;
-        Tags = Tags.Concat(data).ToList();
+        tags = tags.Concat(data).ToList();
     }
 
     private void OnTagClickedInFilterPanel(FilterType type, FilterTag filterTag)
     {
-        Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
+        tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
 
-        switch (type)
+        if (filterTag.Selected)
         {
-            case FilterType.Programme:
-                shownProjects = shownProjects?.Where(p => p.Programmes.Where(prog => prog.ToString() == filterTag.Tag).Any()).ToList();
-                break;
-            case FilterType.ECTS:
-                shownProjects = shownProjects?.Where(p => p.Ects.ToString() == filterTag.Tag).ToList();
-                break;
-            case FilterType.Semester:
-                shownProjects = shownProjects?.Where(p => $"{p.Semester?.Season} {p.Semester?.Year}" == filterTag.Tag).ToList();
-                break;
-            case FilterType.Language:
-                shownProjects = shownProjects?.Where(p => p.Languages.Where(lang => lang.ToString() == filterTag.Tag).Any()).ToList();
-                break;
-        }
-    }
-
-    private void OnTagClickedInFilterPanelTopics(FilterTag filterTag)
-    {
-        Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
-        
-        shownProjects = shownProjects?.Where(p => p.Topics.Where(topic => Topics!.Where(ft => ft.Selected).Select(ft => ft.Tag).Contains(topic.Name)).Any()).ToList();
-    }
-
-    private void FilterProjectsBySearch(string query)
-    {
-        if (string.IsNullOrWhiteSpace(query))
-        {
-            shownProjects = projects;
+            switch (type)
+            {
+                case FilterType.Programme:
+                    _activeProgrammes?.Add(filterTag);
+                    break;
+                case FilterType.ECTS:
+                    _activeECTSs?.Add(filterTag);
+                    break;
+                case FilterType.Semester:
+                    _activeSemesters?.Add(filterTag);
+                    break;
+                case FilterType.Language:
+                    _activeLanguages?.Add(filterTag);
+                    break;
+            }
         }
         else
         {
-            shownProjects = shownProjects?.Where(
-                p => p.Topics.Where(t => t.Name == query).Any() 
-                || p.Title.Contains(query, StringComparison.OrdinalIgnoreCase) 
+            switch (type)
+            {
+                case FilterType.Programme:
+                    _activeProgrammes?.Remove(filterTag);
+                    break;
+                case FilterType.ECTS:
+                    _activeECTSs?.Remove(filterTag);
+                    break;
+                case FilterType.Semester:
+                    _activeSemesters?.Remove(filterTag);
+                    break;
+                case FilterType.Language:
+                    _activeLanguages?.Remove(filterTag);
+                    break;
+            }
+        }
+
+        FilterProjects(searchField?.SearchString);
+    }
+
+    private void OnTagClickedInFilterPanelTopics(FilterTagTopic filterTag)
+    {
+        tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
+
+        if (filterTag.Selected)
+        {
+            _activeTopics?.Add(filterTag);
+        }
+        else
+        {
+            _activeTopics?.Remove(filterTag);
+        }
+    }
+
+    private void FilterProjects(string? searchFieldQuery)
+    {
+        List<ProjectDetailsDto> filteredByLanguages = new();
+        List<ProjectDetailsDto> filteredBySemesters = new();
+        List<ProjectDetailsDto> filteredByEcts = new();
+        List<ProjectDetailsDto> filteredByProgrammes = new();
+        List<ProjectDetailsDto> filteredByTopics = new();
+        List<ProjectDetailsDto>? filteredBySearch = new();
+
+        foreach (FilterTag filterTag in _activeLanguages!)
+        {
+            filteredByLanguages = projects!
+                .Intersect(projects?.Where(project => project.Languages.Select(lang => lang.ToString()).Contains(filterTag.Tag))!)
+                .Union(filteredByLanguages)
+                .ToList();
+        }
+        foreach (FilterTag filterTag in _activeSemesters!)
+        {
+            filteredBySemesters = projects!
+                .Intersect(projects?.Where(project => project.Semester?.ToString() == filterTag.Tag)!)
+                .Union(filteredBySemesters)
+                .ToList();
+        }
+        foreach (FilterTag filterTag in _activeECTSs!)
+        {
+            filteredByEcts = projects!
+                .Intersect(projects?.Where(project => project.Ects.ToString() == filterTag.Tag)!)
+                .Union(filteredByEcts)
+                .ToList();
+        }
+        foreach (FilterTag filterTag in _activeProgrammes!)
+        {
+            filteredByProgrammes = projects!
+                .Intersect(projects?.Where(project => project.Programmes.Select(prog => prog.ToString()).Contains(filterTag.Tag))!)
+                .Union(filteredByProgrammes)
+                .ToList();
+        }
+        foreach (FilterTag filterTag in _activeTopics!)
+        {
+            filteredByTopics = projects!
+                .Intersect(projects?.Where(project => project.Topics.Select(topic => topic.Name).Contains(filterTag.Tag))!)
+                .Union(filteredByTopics)
+                .ToList();
+        }
+
+        filteredBySearch = FilterProjectsBySearch(searchFieldQuery);
+
+        filteredByLanguages = filteredByLanguages.Any() ? filteredByLanguages : projects;
+        filteredBySemesters = filteredBySemesters.Any() ? filteredBySemesters : projects;
+        filteredByEcts = filteredByEcts.Any() ? filteredByEcts : projects;
+        filteredByProgrammes = filteredByProgrammes.Any() ? filteredByProgrammes : projects;
+        filteredByTopics = filteredByTopics.Any() ? filteredByTopics : projects;
+
+        shownProjects = projects
+            .Intersect(filteredByLanguages)
+            .Intersect(filteredBySemesters)
+            .Intersect(filteredByEcts)
+            .Intersect(filteredByProgrammes)
+            .Intersect(filteredByTopics)
+            .Intersect(filteredBySearch!)
+            .ToList();
+    }
+
+    private List<ProjectDetailsDto>? FilterProjectsBySearch(string? query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return projects;
+        }
+        else
+        {
+            return projects.Where(
+                p => p.Topics.Where(t => t.Name == query).Any()
+                || p.Title.Contains(query, StringComparison.OrdinalIgnoreCase)
                 || p.Description.Contains(query, StringComparison.OrdinalIgnoreCase)
             ).ToList();
         }
@@ -98,14 +176,12 @@ public partial class MainPage
 
     private void ClearFilters()
     {        
-        foreach (FilterTag tag in Tags)
-        {
-            Tags.Where(ft => ft.Tag == tag.Tag).Single().Selected = false;
-        }
-    }
-
-    private void UpdateProjectCardCount()
-    {
-        projectCardCount = projectCardCount + 3;
+        tags.ForEach(ft => ft.Selected = false);
+        _activeLanguages?.Clear();
+        _activeSemesters?.Clear();
+        _activeECTSs?.Clear();
+        _activeProgrammes?.Clear();
+        _activeTopics?.Clear();
+        FilterProjects(searchField?.SearchString);
     }
 }

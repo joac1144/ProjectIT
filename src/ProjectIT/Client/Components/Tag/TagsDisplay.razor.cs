@@ -6,10 +6,10 @@ namespace ProjectIT.Client.Components.Tag;
 public partial class TagsDisplay
 {
     [Parameter]
-    public IList<FilterTag> Tags { get; set; } = null!;
+    public List<FilterTag> Tags { get; set; } = null!;
 
     [Parameter]
-    public EventCallback<IList<FilterTag>> TagsChanged { get; set; }
+    public EventCallback<List<FilterTag>> TagsChanged { get; set; }
 
     [Parameter]
     public bool TagsAreClickable { get; set; }

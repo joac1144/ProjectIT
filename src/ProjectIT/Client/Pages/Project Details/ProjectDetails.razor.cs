@@ -16,7 +16,7 @@ public partial class ProjectDetails
     
     private string panelWidth = "250px";
 
-    public IList<FilterTag>? Topics { get; set; }
+    public List<FilterTag>? Topics { get; set; }
 
     private void ApplyProject(NavigationManager navigationManager)
     {
