@@ -7,6 +7,9 @@ namespace ProjectIT.Client.Components.ProjectCard;
 public partial class ProjectCard
 {
     [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
     public string Title { get; set; } = string.Empty;
 
     [Parameter]

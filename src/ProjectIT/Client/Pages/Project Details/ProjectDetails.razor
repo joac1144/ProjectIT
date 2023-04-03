@@ -1,4 +1,4 @@
-@page "/project-details"
+@page "/project-details/{id:int}"
 @using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.Search
@@ -64,7 +64,7 @@ else
             </div>
             <div class="py-2">
                 <Panel Title="Topics" Width="@panelWidth">
-                    <TagsDisplay Tags="Topics" />
+                    <TagsDisplay Tags="project.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
                 </Panel>
             </div>
         </div>
@@ -80,16 +80,19 @@ else
                     </p>
                 </Panel>
             </div>
-            <div>
-                <Panel Title="Co-supervisor" Width="@panelWidth">
-                    <p class="fw-normal pt-2">
-                    <h6 class="fw-bold"> Info: </h6>
-                        @project.CoSupervisor?.FullName <br>
-                        @project.CoSupervisor?.Email <br>
-                        @project.CoSupervisor?.Profession
-                    </p>
-                </Panel>
-            </div>
+            @if (project.CoSupervisor != null)
+            {
+                <div>
+                    <Panel Title="Co-supervisor" Width="@panelWidth">
+                        <p class="fw-normal pt-2">
+                        <h6 class="fw-bold"> Info: </h6>
+                            @project.CoSupervisor?.FullName <br>
+                            @project.CoSupervisor?.Email <br>
+                            @project.CoSupervisor?.Profession
+                        </p>
+                    </Panel>
+                </div>
+            }
             <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply
             </button>
         </div>

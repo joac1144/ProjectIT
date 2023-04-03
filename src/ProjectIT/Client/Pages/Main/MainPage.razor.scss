@@ -18,13 +18,13 @@
     padding-right: 4rem;
 }
 
-.clear-btn:focus, .clear-btn:active {
+.btn:focus, .btn:active {
     outline: none !important;
     box-shadow: none;
 }
 
-.clearbtn :hover{
-   text-decoration: underline;
+.clearbtn :hover {
+    text-decoration: underline;
 }
 
 @media (max-width: 1220px) {

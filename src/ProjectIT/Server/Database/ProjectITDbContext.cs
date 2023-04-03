@@ -43,5 +43,9 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
         modelBuilder.Entity<Semester>()
             .Property(s => s.Season)
             .HasConversion<string>();
+
+        modelBuilder.Entity<Topic>()
+            .Property(t => t.Category)
+            .HasConversion<string>();
     }
 }

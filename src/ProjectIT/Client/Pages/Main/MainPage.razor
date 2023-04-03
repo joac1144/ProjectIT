@@ -6,6 +6,7 @@
 @using ProjectIT.Client.Http;
 @using ProjectIT.Shared.Dtos.Projects;
 @inject AnonymousClient anonymousClient
+@inject NavigationManager navigationManager
 
 <div class="mt-3">
     <div class="row justify-content-center">
@@ -14,27 +15,27 @@
                 <p class="h1 fw-bold">@shownProjects?.Count()</p>
                 <p class="h6">Projects found</p>
             </div>
-            <div style="position: sticky;">
+            <div>
                 <div class="my-4">
-                    <FilterPanelTopics OnInitializedData="FilterPanelTopicsInitialized" DataChanged="OnTagClickedInFilterPanelTopics" />
+                    <FilterPanelTopics OnInitializedData="FilterPanelTopicsInitialized" DataChanged="OnFilterPanelTopicsTagChanged" />
                 </div>
                 <div class="my-4">
                     <FilterPanelSimple Title="Semester"
                                        Type="FilterType.Semester"
                                        OnInitializedData="(data) => FilterPanelInitialized(data)"
-                                       DataChanged="(filterTag) => OnTagClickedInFilterPanel(FilterType.Semester, filterTag)" />
+                                       DataChanged="OnFilterPanelTagChanged" />
                 </div>
                 <div class="my-4">
                     <FilterPanelSimple Title="ECTS Points"
                                        Type="FilterType.ECTS"
                                        OnInitializedData="(data) => FilterPanelInitialized(data)"
-                                       DataChanged="(filterTag) => OnTagClickedInFilterPanel(FilterType.ECTS, filterTag)" />
+                                       DataChanged="OnFilterPanelTagChanged" />
                 </div>
                 <div class="my-4">
                     <FilterPanelSimple Title="Languages"
                                        Type="FilterType.Language"
                                        OnInitializedData="(data) => FilterPanelInitialized(data)"
-                                       DataChanged="(filterTag) => OnTagClickedInFilterPanel(FilterType.Language, filterTag)" />
+                                       DataChanged="OnFilterPanelTagChanged" />
                 </div>
             </div>
         </div>
@@ -44,11 +45,11 @@
             </div>
             <div class="mb-4 row">
                 <div class="col-md-8">
-                    <TagsDisplay @bind-Tags="tags" TagsAreClickable="true" />
+                    <TagsDisplay @bind-Tags="tags" TagsAreClickable="true" OnTagClicked="OnTagClickedInTagsDisplay" />
                     @if (tags.Any(t => t.Selected))
                     {
                         <span class="clearbtn ms-3">
-                            <button class="clear-btn p-0" @onclick="ClearFilters">Clear filters</button>
+                            <button class="btn p-0" @onclick="ClearFilters">Clear filters</button>
                         </span>
                     }
                 </div>
@@ -63,12 +64,13 @@
             @if (shownProjects != null)
             {
                 <Virtualize TItem="ProjectDetailsDto" Items="@shownProjects" Context="project">
-                        <ProjectCard Title="@project.Title"
-                                        Description="@project.Description"
-                                        Semester= "@project.Semester"
-                                        Ects="@project.Ects"
-                                        Supervisor="@project.Supervisor"
-                                        Programmes="@project.Programmes" />
+                        <ProjectCard Id="project.Id"
+                                     Title="@project.Title"
+                                     Description="@project.Description"
+                                     Semester= "@project.Semester"
+                                     Ects="@project.Ects"
+                                     Supervisor="@project.Supervisor"
+                                     Programmes="@project.Programmes" />
                 </Virtualize>
             }
         </div>

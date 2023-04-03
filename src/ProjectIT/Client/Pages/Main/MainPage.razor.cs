@@ -13,11 +13,11 @@ public partial class MainPage
 
     private List<FilterTag> tags = new();
 
-    private readonly List<FilterTag>? _activeTopics = new();
-    private readonly List<FilterTag>? _activeProgrammes = new();
-    private readonly List<FilterTag>? _activeECTSs = new();
-    private readonly List<FilterTag>? _activeSemesters = new();
-    private readonly List<FilterTag>? _activeLanguages = new();
+    private List<FilterTagTopic>? activeTopics = new();
+    private readonly List<FilterTagSimple>? _activeProgrammes = new();
+    private readonly List<FilterTagSimple>? _activeECTSs = new();
+    private readonly List<FilterTagSimple>? _activeSemesters = new();
+    private readonly List<FilterTagSimple>? _activeLanguages = new();
 
     private SearchField? searchField;
 
@@ -27,7 +27,7 @@ public partial class MainPage
         shownProjects = projects;
     }
 
-    private void FilterPanelInitialized(IList<FilterTag> data)
+    private void FilterPanelInitialized(IList<FilterTagSimple> data)
     {
         tags = tags.Concat(data).ToList();
     }
@@ -37,65 +37,91 @@ public partial class MainPage
         tags = tags.Concat(data).ToList();
     }
 
-    private void OnTagClickedInFilterPanel(FilterType type, FilterTag filterTag)
+    private void OnTagClickedInTagsDisplay(FilterTag filterTag)
+    {
+        RemoveTagFromActives(filterTag);
+
+        FilterProjects();
+    }
+
+    private void AddTagToActives(FilterTagSimple filterTag)
+    {
+        switch (filterTag.FilterType)
+        {
+            case FilterType.Programme:
+                _activeProgrammes?.Add(filterTag);
+                break;
+            case FilterType.ECTS:
+                _activeECTSs?.Add(filterTag);
+                break;
+            case FilterType.Semester:
+                _activeSemesters?.Add(filterTag);
+                break;
+            case FilterType.Language:
+                _activeLanguages?.Add(filterTag);
+                break;
+        }
+    }
+
+    private void RemoveTagFromActives(FilterTag filterTag)
+    {
+        if (filterTag.GetType() == typeof(FilterTagTopic))
+        {
+            activeTopics = activeTopics?.Where(ft => ft.Tag != filterTag.Tag).ToList();
+        }
+        else
+        {
+            switch (((FilterTagSimple)filterTag).FilterType)
+            {
+                case FilterType.Programme:
+                    _activeProgrammes?.Remove((FilterTagSimple)filterTag);
+                    break;
+                case FilterType.ECTS:
+                    _activeECTSs?.Remove((FilterTagSimple)filterTag);
+                    break;
+                case FilterType.Semester:
+                    _activeSemesters?.Remove((FilterTagSimple)filterTag);
+                    break;
+                case FilterType.Language:
+                    _activeLanguages?.Remove((FilterTagSimple)filterTag);
+                    break;
+            }
+        }
+    }
+
+    private void OnFilterPanelTagChanged(FilterTagSimple filterTag)
     {
         tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
 
         if (filterTag.Selected)
         {
-            switch (type)
-            {
-                case FilterType.Programme:
-                    _activeProgrammes?.Add(filterTag);
-                    break;
-                case FilterType.ECTS:
-                    _activeECTSs?.Add(filterTag);
-                    break;
-                case FilterType.Semester:
-                    _activeSemesters?.Add(filterTag);
-                    break;
-                case FilterType.Language:
-                    _activeLanguages?.Add(filterTag);
-                    break;
-            }
+            AddTagToActives(filterTag);
         }
         else
         {
-            switch (type)
-            {
-                case FilterType.Programme:
-                    _activeProgrammes?.Remove(filterTag);
-                    break;
-                case FilterType.ECTS:
-                    _activeECTSs?.Remove(filterTag);
-                    break;
-                case FilterType.Semester:
-                    _activeSemesters?.Remove(filterTag);
-                    break;
-                case FilterType.Language:
-                    _activeLanguages?.Remove(filterTag);
-                    break;
-            }
+            RemoveTagFromActives(filterTag);
         }
 
-        FilterProjects(searchField?.SearchString);
+        FilterProjects();
     }
 
-    private void OnTagClickedInFilterPanelTopics(FilterTagTopic filterTag)
+    private void OnFilterPanelTopicsTagChanged(FilterTagTopic filterTag)
     {
         tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
-
+        
         if (filterTag.Selected)
         {
-            _activeTopics?.Add(filterTag);
+            activeTopics?.Add(filterTag);
         }
         else
         {
-            _activeTopics?.Remove(filterTag);
+            activeTopics?.Remove(filterTag);
         }
+
+        FilterProjects();
     }
 
-    private void FilterProjects(string? searchFieldQuery)
+    private void FilterProjects()
     {
         List<ProjectDetailsDto> filteredByLanguages = new();
         List<ProjectDetailsDto> filteredBySemesters = new();
@@ -132,7 +158,7 @@ public partial class MainPage
                 .Union(filteredByProgrammes)
                 .ToList();
         }
-        foreach (FilterTag filterTag in _activeTopics!)
+        foreach (FilterTag filterTag in activeTopics!)
         {
             filteredByTopics = projects!
                 .Intersect(projects?.Where(project => project.Topics.Select(topic => topic.Name).Contains(filterTag.Tag))!)
@@ -140,7 +166,7 @@ public partial class MainPage
                 .ToList();
         }
 
-        filteredBySearch = FilterProjectsBySearch(searchFieldQuery);
+        filteredBySearch = FilterProjectsBySearch(searchField?.SearchString);
 
         filteredByLanguages = filteredByLanguages.Any() ? filteredByLanguages : projects;
         filteredBySemesters = filteredBySemesters.Any() ? filteredBySemesters : projects;
@@ -175,13 +201,13 @@ public partial class MainPage
     }
 
     private void ClearFilters()
-    {        
+    {
         tags.ForEach(ft => ft.Selected = false);
         _activeLanguages?.Clear();
         _activeSemesters?.Clear();
         _activeECTSs?.Clear();
         _activeProgrammes?.Clear();
-        _activeTopics?.Clear();
-        FilterProjects(searchField?.SearchString);
+        activeTopics?.Clear();
+        FilterProjects();
     }
 }

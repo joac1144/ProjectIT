@@ -14,9 +14,15 @@ public partial class TagsDisplay
     [Parameter]
     public bool TagsAreClickable { get; set; }
 
+    [Parameter]
+    public EventCallback<FilterTag> OnTagClicked { get; set; }
+
     private Task TagClicked(FilterTag filterTag)
     {
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = false;
+
+        if (OnTagClicked.HasDelegate)
+            OnTagClicked.InvokeAsync(filterTag);
 
         return TagsChanged.InvokeAsync(Tags);
     }

@@ -8,7 +8,7 @@
         @if (filterTag.Selected)
         {
             <span>
-                <Tag Text="@filterTag.Tag" IsDisabled=@(!TagsAreClickable) OnClicked="() => TagClicked(filterTag)" />
+                <TagBox Tag="@filterTag" IsDisabled=@(!TagsAreClickable) OnClicked="() => TagClicked(filterTag)" />
             </span>
         }
     }
