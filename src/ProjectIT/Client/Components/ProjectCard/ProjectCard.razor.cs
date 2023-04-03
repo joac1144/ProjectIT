@@ -29,20 +29,4 @@ public partial class ProjectCard
 
     [Parameter]
     public Ects? Ects { get; set; }
-
-    [Parameter]
-    public EventCallback AfterRender { get; set; }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (AfterRender.HasDelegate)
-        {
-            AfterRender.InvokeAsync();
-        }
-    }
-
-    private void OnProjectCardClicked()
-    {
-        // Logic to remove project from current search.
-    }
 }
