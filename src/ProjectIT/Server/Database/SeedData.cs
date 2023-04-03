@@ -58,7 +58,7 @@ public static class SeedData
                 {
                     Title = "ProjectIT",
                     Description = "A project management system for students at IT University of Copenhagen",
-                    Topics = context.Topics.Take(5).ToList(),
+                    Topics = new[] { topic4, topic11 },
                     Languages = new[]
                     {
                         Language.English,
