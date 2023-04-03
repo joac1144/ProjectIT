@@ -27,7 +27,7 @@
                 @category.Category.ToString()
             </button>
             <div class=@($"{(category.Collapsed ? "collapse" : "")}") id=@($"{category.Category.ToString()}Collapse")>
-                @foreach (FilterTag filterTag in ShownData.Where(ft => ft.Category == category.Category))
+                @foreach (FilterTagTopic filterTag in ShownData.Where(ft => ft.Category == category.Category))
                 {
                     <div class="form-check fw-normal">
                         <input class="form-check-input rounded-0" type="checkbox" id=@($"{filterTag.Tag.Replace(" ", "")}Checkbox") @onchange="(e) => CheckboxChecked(e, filterTag)" checked="@filterTag.Selected">

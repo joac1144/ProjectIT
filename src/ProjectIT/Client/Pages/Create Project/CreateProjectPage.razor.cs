@@ -28,7 +28,7 @@ public partial class CreateProjectPage
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User; 
     }
 
-    private void FilterPanelsInitialized(IList<FilterTag> data)
+    private void FilterPanelsInitialized(IList<FilterTagSimple> data)
     {
         Tags = Tags.Concat(data).ToList();
     }

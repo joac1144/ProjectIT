@@ -7,6 +7,9 @@ namespace ProjectIT.Client.Components.ProjectCard;
 public partial class ProjectCard
 {
     [Parameter]
+    public int Id { get; set; }
+
+    [Parameter]
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
@@ -19,16 +22,11 @@ public partial class ProjectCard
     public Supervisor? CoSupervisor { get; set; }
 
     [Parameter]
-    public IEnumerable<Programme> Educations { get; set; } = null!;
+    public IEnumerable<Programme> Programmes { get; set; } = null!;
 
     [Parameter]
-    public Semester Date { get; set; } = null!;
+    public Semester Semester { get; set; } = null!;
 
     [Parameter]
     public Ects? Ects { get; set; }
-
-    private void OnProjectCardClicked()
-    {
-        // Logic to remove project from current search.
-    }
 }

@@ -1,47 +1,57 @@
-@page "/mainpage"
+@page "/"
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.ProjectCard
 @using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
+@using ProjectIT.Client.Http;
+@using ProjectIT.Shared.Dtos.Projects;
+@inject AnonymousClient anonymousClient
+@inject NavigationManager navigationManager
 
 <div class="mt-3">
     <div class="row justify-content-center">
         <div class="col-md-3 filter-size">
             <div class="d-flex flex-column justify-content-center px-4">
-                <p class="h1 fw-bold">2</p>
+                <p class="h1 fw-bold">@shownProjects?.Count()</p>
                 <p class="h6">Projects found</p>
             </div>
-            <!-- filtering options -->
-            <div class="my-4">
-                <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
-            </div>
-            
-            <div class="my-4">
-                <FilterPanelSimple Title="Semester"
-                                Type="FilterType.Semester"
-                                OnInitializedData="FilterPanelsInitialized"
-                                DataChanged="OnTagClickedInFilterPanel" />
-            </div>
-            <div class="my-4">
-                <FilterPanelSimple Title="ECTS Points"
-                                Type="FilterType.ECTS"
-                                OnInitializedData="FilterPanelsInitialized"
-                                DataChanged="OnTagClickedInFilterPanel" />
-            </div>
-            <div class="my-4">
-                <FilterPanelSimple Title="Languages"
-                                Type="FilterType.Language"
-                                OnInitializedData="FilterPanelsInitialized"
-                                DataChanged="OnTagClickedInFilterPanel" />
+            <div>
+                <div class="my-4">
+                    <FilterPanelTopics OnInitializedData="FilterPanelTopicsInitialized" DataChanged="OnFilterPanelTopicsTagChanged" />
+                </div>
+                <div class="my-4">
+                    <FilterPanelSimple Title="Semester"
+                                       Type="FilterType.Semester"
+                                       OnInitializedData="(data) => FilterPanelInitialized(data)"
+                                       DataChanged="OnFilterPanelTagChanged" />
+                </div>
+                <div class="my-4">
+                    <FilterPanelSimple Title="ECTS Points"
+                                       Type="FilterType.ECTS"
+                                       OnInitializedData="(data) => FilterPanelInitialized(data)"
+                                       DataChanged="OnFilterPanelTagChanged" />
+                </div>
+                <div class="my-4">
+                    <FilterPanelSimple Title="Languages"
+                                       Type="FilterType.Language"
+                                       OnInitializedData="(data) => FilterPanelInitialized(data)"
+                                       DataChanged="OnFilterPanelTagChanged" />
+                </div>
             </div>
         </div>
         <div class="col-md-6 main-view-size">
             <div class="mb-4">
-                <SearchField PlaceholderText="Search projects..." Height="2.4rem" Width="43rem" />
+                <SearchField @ref="searchField" PlaceholderText="Search projects..." Height="2.4rem" Width="43rem" OnInputValueChanged="FilterProjects" />
             </div>
             <div class="mb-4 row">
                 <div class="col-md-8">
-                    <TagsDisplay @bind-Tags="Tags" />
+                    <TagsDisplay @bind-Tags="tags" TagsAreClickable="true" OnTagClicked="OnTagClickedInTagsDisplay" />
+                    @if (tags.Any(t => t.Selected))
+                    {
+                        <span class="clearbtn ms-3">
+                            <button class="btn p-0" @onclick="ClearFilters">Clear filters</button>
+                        </span>
+                    }
                 </div>
                 <div class="col-2 offset-md-2 marg p-0">
                     <div>
@@ -51,33 +61,18 @@
                     </div>
                 </div>
             </div>
-
-            <!-- project proposal cards -->
-            <div>
-                <ProjectCard Title="@title" Description="@description"
-                        Date= "@date" Ects="@ects" Supervisor="@supervisor" Educations="@educations" ></ProjectCard>
-
-                <ProjectCard Title="@title" Description="@description"
-                        Date= "@date" Ects="@ects" Supervisor="@supervisor" CoSupervisor="@coSupervisor" Educations="@educations" ></ProjectCard>
-                
-                <ProjectCard Title="@title" Description="@description"
-                        Date= "@date" Ects="@ects" Supervisor="@supervisor" Educations="@educations" ></ProjectCard>
-
-                <ProjectCard Title="@title" Description="@description"
-                        Date= "@date" Ects="@ects" Supervisor="@supervisor" CoSupervisor="@coSupervisor" Educations="@educations" ></ProjectCard>
-               
-                <ProjectCard Title="@title" Description="@description"
-                        Date= "@date" Ects="@ects" Supervisor="@supervisor" Educations="@educations" ></ProjectCard>
-
-                <ProjectCard Title="@title" Description="@description"
-                        Date= "@date" Ects="@ects" Supervisor="@supervisor" CoSupervisor="@coSupervisor" Educations="@educations" ></ProjectCard>
-               
-                <ProjectCard Title="@title" Description="@description"
-                        Date= "@date" Ects="@ects" Supervisor="@supervisor" Educations="@educations" ></ProjectCard>
-
-                <ProjectCard Title="@title" Description="@description"
-                        Date= "@date" Ects="@ects" Supervisor="@supervisor" CoSupervisor="@coSupervisor" Educations="@educations" ></ProjectCard>
-            </div>
+            @if (shownProjects != null)
+            {
+                <Virtualize TItem="ProjectDetailsDto" Items="@shownProjects" Context="project">
+                        <ProjectCard Id="project.Id"
+                                     Title="@project.Title"
+                                     Description="@project.Description"
+                                     Semester= "@project.Semester"
+                                     Ects="@project.Ects"
+                                     Supervisor="@project.Supervisor"
+                                     Programmes="@project.Programmes" />
+                </Virtualize>
+            }
         </div>
     </div>
 </div>

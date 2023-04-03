@@ -5,7 +5,7 @@ namespace ProjectIT.Client.Pages.Test;
 
 public partial class TestPage
 {
-    public IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
+    public List<FilterTag> Tags { get; set; } = new List<FilterTag>();
 
     private string? GptResult;
 
@@ -15,6 +15,11 @@ public partial class TestPage
     }
 
     private void FilterPanelsInitialized(IList<FilterTag> data)
+    {
+        Tags = Tags.Concat(data).ToList();
+    }
+
+    private void FilterPanelTopicInitialized(IList<FilterTagTopic> data)
     {
         Tags = Tags.Concat(data).ToList();
     }

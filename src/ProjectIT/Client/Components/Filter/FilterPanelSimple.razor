@@ -3,7 +3,7 @@
 <Panel Title="@Title">
     @if (Data != null)
     {
-        foreach (FilterTag filterTag in Data)
+        foreach (FilterTagSimple filterTag in Data)
         {
             <div class="form-check fw-normal">
                 <input class="form-check-input rounded-0" type="checkbox" id=@($"{filterTag.Tag}Checkbox") @onchange="(e) => CheckboxChecked(e, filterTag)" checked="@filterTag.Selected">

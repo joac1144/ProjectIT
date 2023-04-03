@@ -18,21 +18,9 @@
 
         <SearchField PlaceholderText="This search field has correct length and height" Height="2.4rem" Width="43rem" />
 
-        <FilterPanelSimple Title="Languages"
-                   Type="FilterType.Language"
-                   OnInitializedData="FilterPanelsInitialized"
-                   DataChanged="OnTagClickedInFilterPanel" />
+        <FilterPanelTopics OnInitializedData="FilterPanelTopicInitialized" DataChanged="OnTagClickedInFilterPanel" />
 
-        <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
-
-        <FilterPanelTopics OnInitializedData="FilterPanelsInitialized" DataChanged="OnTagClickedInFilterPanel" />
-
-        <TagsDisplay @bind-Tags="Tags" />
-
-        <FilterPanelSimple Title="Semester" 
-                   Type="FilterType.Semester"
-                   OnInitializedData="FilterPanelsInitialized"
-                   DataChanged="OnTagClickedInFilterPanel" />
+        <FilterPanelTopics OnInitializedData="FilterPanelTopicInitialized" DataChanged="OnTagClickedInFilterPanel" />
 
         @if (GptResult != null)
         {

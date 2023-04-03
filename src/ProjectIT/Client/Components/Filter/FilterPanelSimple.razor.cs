@@ -9,13 +9,13 @@ public partial class FilterPanelSimple
     public string Title { get; init; } = null!;
 
     [Parameter]
-    public IList<FilterTag> Data { get; set; } = new List<FilterTag>();
+    public IList<FilterTagSimple> Data { get; set; } = new List<FilterTagSimple>();
 
     [Parameter]
-    public EventCallback<FilterTag> DataChanged { get; init; }
+    public EventCallback<FilterTagSimple> DataChanged { get; init; }
 
     [Parameter]
-    public EventCallback<IList<FilterTag>> OnInitializedData { get; set; }
+    public EventCallback<IList<FilterTagSimple>> OnInitializedData { get; set; }
 
     [Parameter]
     public FilterType Type { get; init; }
@@ -27,27 +27,27 @@ public partial class FilterPanelSimple
             case FilterType.Programme:
                 foreach (Programme programme in Enum.GetValues<Programme>())
                 {
-                    Data.Add(new FilterTag { Tag = programme.ToString() });
+                    Data.Add(new FilterTagSimple { Tag = programme.ToString(), FilterType = FilterType.Programme });
                 }
                 break;
             case FilterType.ECTS:
                 foreach (Ects ects in Enum.GetValues<Ects>())
                 {
-                    Data.Add(new FilterTag { Tag = ects.ToString() });
+                    Data.Add(new FilterTagSimple { Tag = ects.ToString(), FilterType = FilterType.ECTS });
                 }
                 break;
             case FilterType.Semester:
                 DateTime date = DateTime.Now;
                 foreach (Season season in Enum.GetValues<Season>())
                 {
-                    Data.Add(new FilterTag { Tag = $"{season} {date.Year}" });
-                    Data.Add(new FilterTag { Tag = $"{season} {date.Year + 1}" });
+                    Data.Add(new FilterTagSimple { Tag = $"{season} {date.Year}", FilterType = FilterType.Semester });
+                    Data.Add(new FilterTagSimple { Tag = $"{season} {date.Year + 1}", FilterType = FilterType.Semester });
                 }
                 break;
             case FilterType.Language:
                 foreach (Language lang in Enum.GetValues<Language>())
                 {
-                    Data.Add(new FilterTag { Tag = lang.ToString() });
+                    Data.Add(new FilterTagSimple { Tag = lang.ToString(), FilterType = FilterType.Language });
                 }
                 break;
         }
@@ -58,7 +58,7 @@ public partial class FilterPanelSimple
         }
     }
 
-    private Task CheckboxChecked(ChangeEventArgs e, FilterTag filterTag)
+    private Task CheckboxChecked(ChangeEventArgs e, FilterTagSimple filterTag)
     {
         Data.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = (bool)e.Value!;
 
