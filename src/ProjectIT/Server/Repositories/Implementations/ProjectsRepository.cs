@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ProjectIT.Server.Repositories;
+namespace ProjectIT.Server.Repositories.Implementations;
 
 public class ProjectsRepository : IProjectsRepository
 {
