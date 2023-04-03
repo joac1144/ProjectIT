@@ -31,7 +31,8 @@ public class ProjectsController : ControllerBase
     {
         var project = await _repository.ReadByIdAsync(id);
 
-        if (project == null) return null;
+        if (project == null) 
+            return null;
 
         return project;
     }
@@ -48,9 +49,14 @@ public class ProjectsController : ControllerBase
         return Ok(data);
     }
 
-    [HttpDelete]
-    public ActionResult<int> Delete(int id)
+    [HttpDelete("{id}")]
+    public async Task<int?> Delete(int id)
     {
-        return Ok();
+        var response = await _repository.DeleteAsync(id);
+
+        if (response == null) 
+            return null;
+
+        return response;
     }
 }

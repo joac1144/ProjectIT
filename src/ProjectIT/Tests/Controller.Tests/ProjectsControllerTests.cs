@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ProjectIT.Server.Controllers;
 using ProjectIT.Server.Repositories;
@@ -24,7 +23,7 @@ public class ProjectsControllerTests
     }
 
     [Fact]
-    public async void GetById_NonExistingId_ReturnsNotFound()
+    public async void GetById_NonExistingId_ReturnsNull()
     {
         // Arrange.
         var repository = new Mock<IProjectsRepository>();
@@ -90,6 +89,30 @@ public class ProjectsControllerTests
         var result = await controller.Post(project);
 
         // Assert.
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async void Delete_ExistingId_ReturnsId() 
+    {
+        var repository = new Mock<IProjectsRepository>();
+        repository.Setup(pr => pr.DeleteAsync(1)).ReturnsAsync(1);
+        var controller = new ProjectsController(repository.Object);
+
+        var result = await controller.Delete(1);
+
+        result.Should().Be(1);
+    }
+
+    [Fact]
+    public async void Delete_NonExistingId_ReturnsNull()
+    {
+        var repository = new Mock<IProjectsRepository>();
+        repository.Setup(pr => pr.DeleteAsync(70)).ReturnsAsync(default(int?));
+        var controller = new ProjectsController(repository.Object);
+
+        var result = await controller.Delete(70);
+
         result.Should().BeNull();
     }
 }
