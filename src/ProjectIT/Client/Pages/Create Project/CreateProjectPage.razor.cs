@@ -12,7 +12,7 @@ namespace ProjectIT.Client.Pages.Create_Project;
 public partial class CreateProjectPage
 {
     public IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
-    
+
     public IList<Project> Projects { get; set; } = new List<Project>();
 
     public Project Project { get; set; } = new Project();
@@ -23,9 +23,15 @@ public partial class CreateProjectPage
 
     private string? tagName;
 
+    private IEnumerable<Topic>? topics;
+    private IEnumerable<string>? topicNames;
+
     protected override async Task OnInitializedAsync()
     {
-        authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User; 
+        authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+
+        topics = await httpClient.GetFromJsonAsync<IEnumerable<Topic>>("topics");
+        topicNames = topics?.Select(t => t.Name);
     }
 
     private void FilterPanelsInitialized(IList<FilterTagSimple> data)
@@ -38,7 +44,7 @@ public partial class CreateProjectPage
         Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
     }
 
-    public async Task SubmitProjectAsync()
+    private async Task SubmitProjectAsync()
     {
         var project = new ProjectCreateDto()
         {
@@ -66,9 +72,8 @@ public partial class CreateProjectPage
         }
     }
 
-    public async Task CancelProjectAsync()
+    private void CancelProjectAsync()
     {
-        navManager.NavigateTo("MainPage");
+        navManager.NavigateTo("/");
     }
-
 }

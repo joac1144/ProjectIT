@@ -38,11 +38,13 @@
                                 DataChanged="OnTagClickedInFilterPanel" />
             </div>
             <div class="my-4">
-                <Panel Title="Project Info">
-                    <SearchField PlaceholderText="Add topics..." />
-                    <RadzenAutoComplete @bind-Value="tagName" Data=@Tags TextProperty="@tagName" PlaceholderText="Add topics..." Style="width: 13rem" />
-
-                </Panel>
+                @if (topics != null)
+                {
+                    <Panel Title="Topics">
+                        <SearchField PlaceholderText="Add topics..." />
+                        <RadzenAutoComplete @bind-Value="tagName" Data=@topicNames TextProperty="@tagName" PlaceholderText="Add topics..." Style="width: 13rem" />
+                    </Panel>
+                }
             </div>
         </div>
         <div class="col-md-6 main-view-size">
@@ -62,7 +64,6 @@
                         </button>
                     </div>
                 </EditForm>
-                
             </div>
         </div>
     </div>
