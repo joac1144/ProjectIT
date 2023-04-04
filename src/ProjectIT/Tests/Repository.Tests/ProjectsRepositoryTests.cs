@@ -157,7 +157,7 @@ public class ProjectsRepositoryTests : IDisposable
         var actualResult = await _context.Projects.FindAsync(resultId);
 
         actualResult.Should().NotBeNull().And.Match<Project>(p => p.Title == project.Title && p.Description == project.Description);
-        actualResult.Id.Should().Be(resultId);
+        actualResult!.Id.Should().Be(resultId);
     }
 
     [Fact]

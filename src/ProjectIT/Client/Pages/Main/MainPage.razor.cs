@@ -8,6 +8,9 @@ namespace ProjectIT.Client.Pages.Main;
 public partial class MainPage
 {
     private List<ProjectDetailsDto> projects = new();
+    private List<Sort> sortValues = Enum.GetValues<Sort>().ToList();
+    private string? sortValue;
+    private string sortSemester = Sort.Semester.ToString();
 
     private List<ProjectDetailsDto> shownProjects = new();
 
@@ -25,6 +28,7 @@ public partial class MainPage
     {
         projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects"))?.ToList()!;
         shownProjects = projects;
+        OnSort(sortSemester);
     }
 
     private void FilterPanelInitialized(IList<FilterTagSimple> data)
@@ -223,5 +227,22 @@ public partial class MainPage
         _activeProgrammes.Clear();
         activeTopics.Clear();
         FilterProjects();
+    }
+
+
+    private void OnSort(object value) 
+    {
+        if (shownProjects != null && value.GetType() == typeof(string))
+        {
+            switch (value)
+            {
+                case nameof(Sort.Semester):
+                    shownProjects = shownProjects.OrderBy(p => p.Semester).ToList();
+                    break;
+                case nameof(Sort.ECTS):
+                    shownProjects = shownProjects.OrderBy(p => p.Ects).ToList();
+                    break;
+            }
+        }
     }
 }

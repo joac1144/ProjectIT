@@ -89,8 +89,8 @@ public class ProjectsRepository : IProjectsRepository
         };
 
         if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.Description) || entity.Topics.IsNullOrEmpty<Topic>() ||
-            entity.Languages.IsNullOrEmpty<Language>() || entity.Programmes.IsNullOrEmpty() || entity.Ects == null || 
-            entity.Semester == null || entity.Supervisor == null)
+            entity.Languages.IsNullOrEmpty<Language>() || entity.Programmes.IsNullOrEmpty() || entity.Ects is null || 
+            entity.Semester is null || entity.Supervisor is null)
                 throw new ArgumentNullException();
         
         _context.Projects.Add(entity);
