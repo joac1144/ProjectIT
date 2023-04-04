@@ -102,7 +102,7 @@ public class ProjectsRepository : IProjectsRepository
     {
         var foundProject = await _context.Projects.FindAsync(project.Id);
 
-        if(foundProject == null) return null;
+        if (foundProject == null) return null;
 
 
         foundProject.Title = project.Title;
