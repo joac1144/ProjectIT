@@ -38,11 +38,6 @@ public class Semester : IComparable<Semester>
         return semester1.Year < semester2.Year || (semester1.Year == semester2.Year && semester1.Season < semester2.Season);
     }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Season, Year);
-    }
-
     public int CompareTo(Semester? other)
     {
         if (other is null)
@@ -62,5 +57,18 @@ public class Semester : IComparable<Semester>
         {
             return -1;
         }
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (this == (Semester)obj!)
+            return true;
+        else
+            return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Season, Year);
     }
 }
