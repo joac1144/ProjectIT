@@ -104,7 +104,6 @@ public class ProjectsRepository : IProjectsRepository
 
         if (foundProject == null) return null;
 
-
         foundProject.Title = project.Title;
         foundProject.Description = project.Description;
         foundProject.Topics = project.Topics;
@@ -118,7 +117,6 @@ public class ProjectsRepository : IProjectsRepository
         await _context.SaveChangesAsync();
 
         return project.Id;
-
     }
 
     public async Task<int?> DeleteAsync(int id)
