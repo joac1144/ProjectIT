@@ -257,6 +257,5 @@ public class ProjectsRepositoryTests : IDisposable
     public void Dispose()
     {
         _context.Dispose();
-        
     }
 }
