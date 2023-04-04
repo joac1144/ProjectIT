@@ -152,6 +152,5 @@ public class ProjectsControllerTests
         var result = await controller.Update(400, ProjectUpdateDto);
 
         result.Should().BeNull();
-
     }
 }
