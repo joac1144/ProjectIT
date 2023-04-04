@@ -16,33 +16,38 @@
             <div class="my-4">
                 <FilterPanelSimple Title="Programme"
                                    Type="FilterType.Programme"
-                                   OnInitializedData="FilterPanelsInitialized"
                                    DataChanged="OnTagClickedInFilterPanel" />
             </div>
             <div class="my-4">
                 <FilterPanelSimple Title="ECTS Points"
-                                Type="FilterType.ECTS"
-                                OnInitializedData="FilterPanelsInitialized"
-                                DataChanged="OnTagClickedInFilterPanel" />
+                                   Type="FilterType.ECTS"
+                                   DataChanged="OnTagClickedInFilterPanel" />
             </div>
             <div class="my-4">
                 <FilterPanelSimple Title="Semester"
-                                Type="FilterType.Semester"
-                                OnInitializedData="FilterPanelsInitialized"
-                                DataChanged="OnTagClickedInFilterPanel" />
+                                   Type="FilterType.Semester"
+                                   DataChanged="OnTagClickedInFilterPanel" />
             </div>
             <div class="my-4">
                 <FilterPanelSimple Title="Languages"
-                                Type="FilterType.Language"
-                                OnInitializedData="FilterPanelsInitialized"
-                                DataChanged="OnTagClickedInFilterPanel" />
+                                   Type="FilterType.Language"
+                                   DataChanged="OnTagClickedInFilterPanel" />
             </div>
             <div class="my-4">
                 @if (topics != null)
                 {
                     <Panel Title="Topics">
-                        <SearchField PlaceholderText="Add topics..." />
-                        <RadzenAutoComplete @bind-Value="tagName" Data=@topicNames TextProperty="@tagName" PlaceholderText="Add topics..." Style="width: 13rem" />
+                        <RadzenDropDown @bind-Value=currentTopic 
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                        Data=@topics
+                                        DisabledProperty="Category" 
+                                        ValueProperty="Name" 
+                                        TextProperty="Name" 
+                                        Style="width: 100%; max-width: 400px;">
+                            <Template>
+                                @(context.Name ?? $"{context.Name}")
+                            </Template>
+                        </RadzenDropDown>
                     </Panel>
                 }
             </div>

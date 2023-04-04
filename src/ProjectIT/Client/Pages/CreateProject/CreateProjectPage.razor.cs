@@ -4,15 +4,12 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using ProjectIT.Client.Components.Filter;
 using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
-namespace ProjectIT.Client.Pages.Create_Project;
+namespace ProjectIT.Client.Pages.CreateProject;
 
 public partial class CreateProjectPage
 {
-    public IList<FilterTag> Tags { get; set; } = new List<FilterTag>();
-
     public IList<Project> Projects { get; set; } = new List<Project>();
 
     public Project Project { get; set; } = new Project();
@@ -21,10 +18,9 @@ public partial class CreateProjectPage
 
     private string? descriptionHtml;
 
-    private string? tagName;
-
     private IEnumerable<Topic>? topics;
     private IEnumerable<string>? topicNames;
+    private Topic? currentTopic;
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,14 +30,9 @@ public partial class CreateProjectPage
         topicNames = topics?.Select(t => t.Name);
     }
 
-    private void FilterPanelsInitialized(IList<FilterTagSimple> data)
-    {
-        Tags = Tags.Concat(data).ToList();
-    }
-
     private void OnTagClickedInFilterPanel(FilterTag filterTag)
     {
-        Tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
+        
     }
 
     private async Task SubmitProjectAsync()

@@ -36,7 +36,7 @@
     "inputFile": "Components/Login/LoginDisplay.razor.scss"
   },
   {
-    "outputFile": "Pages/Create Project/CreateProjectPage.razor.css",
-    "inputFile": "Pages/Create Project/CreateProjectPage.razor.scss"
+    "outputFile": "Pages/CreateProject/CreateProjectPage.razor.css",
+    "inputFile": "Pages/CreateProject/CreateProjectPage.razor.scss"
   }
 ]
