@@ -53,12 +53,8 @@
                         </span>
                     }
                 </div>
-                <div class="col-2 offset-md-2 marg p-0">
-                    <div>
-                        <button class="btn border px-2 py-0 btn-light dropdown-toggle" type="button" id="sort-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                            Sort By
-                        </button>
-                    </div>
+                <div class="col-2 marg p-0">
+                        <RadzenDropDown TValue="string" @bind-Value=@sortValue Data=@(sortValues.Select(sortVal => sortVal.ToString())) Change="@OnSort" Placeholder="Sort by" Style="width: 100%; max-width: 20rem;" />
                 </div>
             </div>
             @if (shownProjects != null)
