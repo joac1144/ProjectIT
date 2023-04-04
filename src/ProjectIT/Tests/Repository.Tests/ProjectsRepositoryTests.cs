@@ -1,3 +1,4 @@
+using FluentAssertions.Execution;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
@@ -206,8 +207,58 @@ public class ProjectsRepositoryTests : IDisposable
         result.Should().BeNull();
     }
 
+    [Fact]
+    public async Task UpdateAsync_ExistingId_ProjectUpdated()
+    {
+        var projectUpdateDto = new ProjectUpdateDto
+        {
+            Id = 1,
+            Title = "TitleUpdated",
+            Description = "DescriptionUpdated",
+            Topics = new Topic[] { },
+            Languages = new[] { Language.Danish },
+            Programmes = new[] { Programme.MCS },
+            Ects = Ects.Master,
+            Semester = new() { Season = Season.Autumn, Year = 2025 },
+            Supervisor = new() { FullName = "testUpdated", Email = "testUpdated", Topics = new Topic[] { }, Profession = "testUpdated"},
+        };
+
+        var resultId = await _projectsRepository.UpdateAsync(projectUpdateDto);
+
+        var updatedProject = await _projectsRepository.ReadByIdAsync(resultId);
+
+        updatedProject.Should().Match<ProjectDetailsDto>(p => p.Title == projectUpdateDto.Title &&
+                                                         p.Description == projectUpdateDto.Description &&
+                                                         p.Topics == projectUpdateDto.Topics &&
+                                                         p.Languages == projectUpdateDto.Languages &&
+                                                         p.Programmes == projectUpdateDto.Programmes &&
+                                                         p.Ects == projectUpdateDto.Ects &&
+                                                         p.Semester == projectUpdateDto.Semester &&
+                                                         p.Supervisor == projectUpdateDto.Supervisor 
+                                                        );
+
+        updatedProject?.Id.Should().Be(resultId);
+
+    }
+
+    [Fact]
+    public async Task UpdateAsync_NonExistingId_ReturnsNull() 
+    {
+        var projectUpdateDto = new ProjectUpdateDto
+        {
+            Id = 10
+        };
+
+        var result = await _projectsRepository.UpdateAsync(projectUpdateDto);
+
+        result.Should().BeNull();
+    }
+
     public void Dispose()
     {
         _context.Dispose();
+        
     }
+
+    
 }

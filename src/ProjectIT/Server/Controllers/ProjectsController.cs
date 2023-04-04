@@ -44,9 +44,13 @@ public class ProjectsController : ControllerBase
     }
 
     [HttpPut]
-    public ActionResult<Project> Update(ProjectUpdateDto data)
+    public async Task<int?> Update(ProjectUpdateDto data)
     {
-        return Ok(data);
+        var response = await _repository.UpdateAsync(data);
+
+        if(response == null) return null;
+
+        return response;
     }
 
     [HttpDelete("{id}")]
@@ -54,8 +58,7 @@ public class ProjectsController : ControllerBase
     {
         var response = await _repository.DeleteAsync(id);
 
-        if (response == null) 
-            return null;
+        if (response == null) return null;
 
         return response;
     }

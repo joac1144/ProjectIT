@@ -42,7 +42,7 @@ public class ProjectsRepository : IProjectsRepository
         });
     }
 
-    public async Task<ProjectDetailsDto?> ReadByIdAsync(int id)
+    public async Task<ProjectDetailsDto?> ReadByIdAsync(int? id)
     {
         var project = await _context.Projects
             .Where(p => p.Id == id)
@@ -98,9 +98,27 @@ public class ProjectsRepository : IProjectsRepository
         return entity.Id;
     }
 
-    public async Task<ProjectUpdateDto> UpdateAsync(ProjectUpdateDto project)
+    public async Task<int?> UpdateAsync(ProjectUpdateDto project)
     {
-        throw new NotImplementedException();
+        var foundProject = await _context.Projects.FindAsync(project.Id);
+
+        if(foundProject == null) return null;
+
+
+        foundProject.Title = project.Title;
+        foundProject.Description = project.Description;
+        foundProject.Topics = project.Topics;
+        foundProject.Languages = project.Languages;
+        foundProject.Programmes = project.Programmes;
+        foundProject.Ects = project.Ects;
+        foundProject.Semester = project.Semester;
+        foundProject.Supervisor = project.Supervisor;
+        foundProject.CoSupervisor = project.CoSupervisor;
+
+        await _context.SaveChangesAsync();
+
+        return project.Id;
+
     }
 
     public async Task<int?> DeleteAsync(int id)
