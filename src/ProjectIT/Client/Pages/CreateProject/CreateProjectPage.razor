@@ -1,6 +1,4 @@
 @page "/create-project"
-@using Microsoft.AspNetCore.Components.Authorization;
-@using Microsoft.JSInterop;
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.ProjectCard
 @using ProjectIT.Client.Components.Search
@@ -42,7 +40,7 @@
                         <RadzenDropDown @bind-Value=currentTopic 
                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                         Data=@topics
-                                        DisabledProperty="Category" 
+                                        DisabledProperty="IsGroup"
                                         ValueProperty="Name" 
                                         TextProperty="Name" 
                                         Style="width: 100%; max-width: 400px;">

@@ -10,6 +10,11 @@ namespace ProjectIT.Client.Pages.CreateProject;
 
 public partial class CreateProjectPage
 {
+    private class TopicGroupData : Topic
+    {
+        public bool IsGroup => Name != null;
+    }
+
     public IList<Project> Projects { get; set; } = new List<Project>();
 
     public Project Project { get; set; } = new Project();
@@ -18,7 +23,7 @@ public partial class CreateProjectPage
 
     private string? descriptionHtml;
 
-    private IEnumerable<Topic>? topics;
+    private IEnumerable<TopicGroupData>? topics;
     private IEnumerable<string>? topicNames;
     private Topic? currentTopic;
 
@@ -26,7 +31,16 @@ public partial class CreateProjectPage
     {
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
-        topics = await httpClient.GetFromJsonAsync<IEnumerable<Topic>>("topics");
+        topics = (await httpClient.GetFromJsonAsync<IEnumerable<Topic>>("topics"))!.Select(t => new TopicGroupData { Id = t.Id, Name = t.Name, Category = t.Category });
+
+        topics = topics?.GroupBy(t => t.Category)
+            .SelectMany(i => new TopicGroupData[] { new TopicGroupData { Category = i.Key } }
+                .Concat(i.Select(o
+                => new TopicGroupData
+                {
+                    Name = o.Name
+                })));
+
         topicNames = topics?.Select(t => t.Name);
     }
 
