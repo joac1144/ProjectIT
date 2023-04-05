@@ -71,7 +71,7 @@
             }
             @if (filteredProjects!.Count > pageSize)
             {
-                <div class="pageButtonsDiv my-3">
+                <div class="pageButtonsDiv my-3 py-2">
                     <button class="btn mx-1 rounded rounded-5 btn bg-black text-white" @onclick="@(e => NewPage("prev"))"> Previous </button>
 
                     @for (int i = 0; i < totalPages; i++)
