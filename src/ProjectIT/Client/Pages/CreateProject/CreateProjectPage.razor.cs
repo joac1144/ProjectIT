@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using ProjectIT.Client.Components.Filter;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Client.Pages.CreateProject;
 
 public partial class CreateProjectPage
 {
-    private class TopicGroupData : Topic
+    private class TopicGroupData : TopicCategory
     {
         public bool IsGroup => Name != null;
     }
@@ -24,24 +25,23 @@ public partial class CreateProjectPage
     private string? descriptionHtml;
 
     private IEnumerable<TopicGroupData>? topics;
-    private IEnumerable<string>? topicNames;
     private Topic? currentTopic;
 
     protected override async Task OnInitializedAsync()
     {
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
-        topics = (await httpClient.GetFromJsonAsync<IEnumerable<Topic>>("topics"))!.Select(t => new TopicGroupData { Id = t.Id, Name = t.Name, Category = t.Category });
+        topics = (await httpClient.GetFromJsonAsync<IEnumerable<Topic>>("topics"))!
+                    .Select(t => new TopicGroupData { Id = t.Id, Name = t.Name, Category = t.Category });
 
         topics = topics?.GroupBy(t => t.Category)
             .SelectMany(i => new TopicGroupData[] { new TopicGroupData { Category = i.Key } }
-                .Concat(i.Select(o
-                => new TopicGroupData
-                {
-                    Name = o.Name
-                })));
+                .Concat(i.Select(o =>
+                    new TopicGroupData
+                    {
+                        Name = o.Name
+                    })));
 
-        topicNames = topics?.Select(t => t.Name);
     }
 
     private void OnTagClickedInFilterPanel(FilterTag filterTag)

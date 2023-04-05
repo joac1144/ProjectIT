@@ -37,12 +37,15 @@
                 @if (topics != null)
                 {
                     <Panel Title="Topics">
-                        <RadzenDropDown @bind-Value=currentTopic 
+                        <RadzenDropDown @bind-Value=currentTopic
+                                        AllowClear="true"
+                                        AllowFiltering="true"
+                                        ClearSearchAfterSelection="true"
                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                         Data=@topics
                                         DisabledProperty="IsGroup"
-                                        ValueProperty="Name" 
-                                        TextProperty="Name" 
+                                        ValueProperty="Name"
+                                        TextProperty="Name"
                                         Style="width: 100%; max-width: 400px;">
                             <Template>
                                 @(context.Name ?? $"{context.Name}")
