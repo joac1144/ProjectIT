@@ -18,6 +18,7 @@ builder.Services.AddDbContext<ProjectITDbContext>(options =>
 
 builder.Services.AddScoped<IProjectITDbContext, ProjectITDbContext>();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
+builder.Services.AddScoped<IRequestsRepository, RequestRepository>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
