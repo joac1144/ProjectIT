@@ -5,8 +5,11 @@
 @using ProjectIT.Client.Components.Tag
 @using ProjectIT.Client.Components.Panel
 @using Microsoft.AspNetCore.Components.Forms
+@using ProjectIT.Client.Http;
+@using ProjectIT.Shared.Enums;
+@using ProjectIT.Shared.Models;
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject HttpClient httpClient
+@inject AnonymousClient httpClient
 @inject NavigationManager navManager
 @inject IJSRuntime JSRuntime
 
@@ -19,17 +22,27 @@
                                    DataChanged="OnTagClickedInFilterPanel" />
             </div>
             <div class="my-4">
-                <FilterPanelSimple Title="ECTS Points"
-                                   Type="FilterType.ECTS"
-                                   DataChanged="OnTagClickedInFilterPanel" />
+                <Panel Title="ECTS Points">
+                    <RadzenRadioButtonList Data="ectsWrappers" @bind-Value=project.Ects TValue="Ects?" TextProperty="StringValue" ValueProperty="Ects" />
+                </Panel>
             </div>
             <div class="my-4">
-                <FilterPanelSimple Title="Semester"
-                                   Type="FilterType.Semester"
-                                   DataChanged="OnTagClickedInFilterPanel" />
+                @{
+                    DateTime date = DateTime.Now;
+                }
+                <Panel Title="Semester">
+                    <RadzenRadioButtonList @bind-Value=project.Semester TValue="Semester">
+                        <Items>
+                            <RadzenRadioButtonListItem Text=@($"Spring {date.Year}") Value="new Semester { Season = Season.Spring, Year = date.Year }" />
+                            <RadzenRadioButtonListItem Text=@($"Autumn {date.Year}") Value="new Semester { Season = Season.Autumn, Year = date.Year }" />
+                            <RadzenRadioButtonListItem Text=@($"Spring {date.Year + 1}") Value="new Semester { Season = Season.Spring, Year = date.Year + 1 }" />
+                            <RadzenRadioButtonListItem Text=@($"Autumn {date.Year + 1}") Value="new Semester { Season = Season.Autumn, Year = date.Year + 1 }" />
+                        </Items>
+                    </RadzenRadioButtonList>
+                </Panel>
             </div>
             <div class="my-4">
-                <FilterPanelSimple Title="Languages"
+                <FilterPanelSimple Title="Language"
                                    Type="FilterType.Language"
                                    DataChanged="OnTagClickedInFilterPanel" />
             </div>
@@ -37,29 +50,34 @@
                 @if (topics != null)
                 {
                     <Panel Title="Topics">
-                        <RadzenDropDown @bind-Value=currentTopic
-                                        AllowClear="true"
+                        <RadzenDropDown @ref="topicSelector"
+                                        TValue="Topic"
+                                        Placeholder="Select topics"
                                         AllowFiltering="true"
                                         ClearSearchAfterSelection="true"
                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                         Data=@topics
-                                        DisabledProperty="IsGroup"
+                                        Change="OnTopicSelectedInList"
                                         ValueProperty="Name"
                                         TextProperty="Name"
                                         Style="width: 100%; max-width: 400px;">
                             <Template>
-                                @(context.Name ?? $"{context.Name}")
+                                @context.Name
                             </Template>
                         </RadzenDropDown>
+                        @foreach (var topic in projectTopics)
+                        {
+                            <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false" OnClicked="() => OnSelectedTopicClicked(topic)" />
+                        }
                     </Panel>
                 }
             </div>
         </div>
         <div class="col-md-6 main-view-size">
             <div>
-                <EditForm Model="@Project" OnSubmit="SubmitProjectAsync">
+                <EditForm Model="@project" OnSubmit="SubmitProjectAsync">
                     <p class="fs-7 fw-bold">Title</p>
-                    <InputText class="border border-0 shadow rounded-1 fs-7 px-3 mb-4" style="width: 45rem; height: 2.5rem" @bind-Value="Project.Title" placeholder="Title here..." />
+                    <InputText class="border border-0 shadow rounded-1 fs-7 px-3 mb-4" style="width: 45rem; height: 2.5rem" @bind-Value="project!.Title" placeholder="Title here..." />
                     <p class="fs-7 fw-bold">Description</p>
                     <RadzenHtmlEditor @bind-Value="@descriptionHtml" class="border border-0 shadow mb-4" style="height:40rem; width: 45rem" />
                     
