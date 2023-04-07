@@ -17,12 +17,22 @@
         <div class="col-md-3 filter-size">
             <div class="my-4">
                 <Panel Title="Programmes">
-                    <RadzenCheckBoxList Data="@(Enum.GetValues<Programme>())" @bind-Value=@projectProgrammes TValue="Programme" TextProperty="StringValue" ValueProperty="Programme" />
+                    <RadzenCheckBoxList TValue="Programme"
+                                        Data="@programmeWrappers" 
+                                        @bind-Value=@projectProgrammes 
+                                        TextProperty="StringValue"
+                                        ValueProperty="Programme" 
+                                        Orientation="Orientation.Vertical" />
                 </Panel>
             </div>
             <div class="my-4">
                 <Panel Title="ECTS Points">
-                    <RadzenRadioButtonList Data="ectsWrappers" @bind-Value=project.Ects TValue="Ects?" TextProperty="StringValue" ValueProperty="Ects" Orientation="Orientation.Vertical" class="radio-button-item-margin" />
+                    <RadzenRadioButtonList TValue="Ects?" 
+                                           Data="ectsWrappers"
+                                           @bind-Value=project.Ects
+                                           TextProperty="StringValue"
+                                           ValueProperty="Ects" 
+                                           Orientation="Orientation.Vertical" />
                 </Panel>
             </div>
             <div class="my-4">
@@ -42,7 +52,12 @@
             </div>
             <div class="my-4">
                 <Panel Title="Language">
-                    <RadzenCheckBoxList Data="@(Enum.GetValues<Language>())" @bind-Value=@projectLanguages TValue="Language" TextProperty="StringValue" ValueProperty="Language" />
+                    <RadzenCheckBoxList TValue="Language"
+                                        Data="@languageWrappers" 
+                                        @bind-Value=@projectLanguages 
+                                        TextProperty="StringValue" 
+                                        ValueProperty="Language" 
+                                        Orientation="Orientation.Vertical"  />
                 </Panel>
             </div>
             <div class="my-4">

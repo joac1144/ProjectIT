@@ -32,6 +32,8 @@ public partial class CreateProjectPage
 
     private IEnumerable<Topic> topics;
     private readonly IEnumerable<EctsWrapper> ectsWrappers = Enum.GetValues<Ects>().Select(ects => new EctsWrapper { Ects = ects });
+    private readonly IEnumerable<ProgrammeWrapper> programmeWrappers = Enum.GetValues<Programme>().Select(prog => new ProgrammeWrapper { Programme = prog });
+    private readonly IEnumerable<LanguageWrapper> languageWrappers = Enum.GetValues<Language>().Select(lang => new LanguageWrapper { Language = lang });
 
     private readonly Project project = new();
     private string? descriptionHtml;
@@ -72,7 +74,7 @@ public partial class CreateProjectPage
         SortTopics();
     }
 
-    private void SortTopics() => topics = topics.OrderBy(t => nameof(t.Category)).ThenBy(t => t.Name);
+    private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
 
     private async Task SubmitProjectAsync()
     {
