@@ -15,8 +15,19 @@ public partial class CreateProjectPage
     private class EctsWrapper
     {
         public Ects Ects { get; set; }
-
         public string StringValue => Ects.ToString();
+    }
+
+    private class ProgrammeWrapper
+    {
+        public Programme Programme { get; set; }
+        public string StringValue => Programme.ToString();
+    }
+
+    private class LanguageWrapper
+    {
+        public Language Language { get; set; }
+        public string StringValue => Language.ToString();
     }
 
     private IEnumerable<Topic> topics;
@@ -24,8 +35,8 @@ public partial class CreateProjectPage
 
     private readonly Project project = new();
     private string? descriptionHtml;
-    private readonly List<Programme> projectProgrammes = new();
-    private readonly List<Language> projectLanguages = new();
+    private IEnumerable<Programme>? projectProgrammes;
+    private IEnumerable<Language>? projectLanguages;
     private readonly List<Topic> projectTopics = new();
 
     private RadzenDropDown<Topic>? topicSelector;
@@ -41,34 +52,6 @@ public partial class CreateProjectPage
             throw new Exception("Could not load topics");
 
         SortTopics();
-    }
-
-    private void OnTagClickedInFilterPanel(FilterTagSimple filterTag)
-    {
-        if (filterTag.Selected)
-        {
-            switch (filterTag.FilterType)
-            {
-                case FilterType.Programme:
-                    projectProgrammes.Add((Programme)Enum.Parse(typeof(Programme), filterTag.Tag));
-                    break;
-                case FilterType.Language:
-                    projectLanguages.Add((Language)Enum.Parse(typeof(Language), filterTag.Tag));
-                    break;
-            }
-        }
-        else
-        {
-            switch (filterTag.FilterType)
-            {
-                case FilterType.Programme:
-                    projectProgrammes.Remove((Programme)Enum.Parse(typeof(Programme), filterTag.Tag));
-                    break;
-                case FilterType.Language:
-                    projectLanguages.Remove((Language)Enum.Parse(typeof(Language), filterTag.Tag));
-                    break;
-            }
-        }
     }
 
     private void OnTopicSelectedInList(object value)
@@ -98,8 +81,8 @@ public partial class CreateProjectPage
             Title = project.Title,
             Description = descriptionHtml!,
             Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-            Languages = projectLanguages,
-            Programmes = projectProgrammes,
+            Languages = projectLanguages!,
+            Programmes = projectProgrammes!,
             Ects = project.Ects,
             Semester = project.Semester,
             Supervisor = new Supervisor 
