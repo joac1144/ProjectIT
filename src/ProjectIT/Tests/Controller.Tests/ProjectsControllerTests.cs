@@ -130,7 +130,8 @@ public class ProjectsControllerTests
         repository.Setup(pr => pr.UpdateAsync(ProjectUpdateDto)).ReturnsAsync(1);
         var controller = new ProjectsController(repository.Object);
 
-        var result = await controller.Update(ProjectUpdateDto);
+
+        var result = await controller.Update(1, ProjectUpdateDto);
 
         result.Should().Be(1);
     }
@@ -149,9 +150,9 @@ public class ProjectsControllerTests
         repository.Setup(pr => pr.UpdateAsync(ProjectUpdateDto)).ReturnsAsync(default(int?));
         var controller = new ProjectsController(repository.Object);
 
-        var result = await controller.Update(ProjectUpdateDto);
+
+        var result = await controller.Update(400, ProjectUpdateDto);
 
         result.Should().BeNull();
-
     }
 }

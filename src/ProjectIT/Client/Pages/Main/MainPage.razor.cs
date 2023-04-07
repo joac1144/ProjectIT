@@ -8,7 +8,11 @@ namespace ProjectIT.Client.Pages.Main;
 public partial class MainPage
 {
     private List<ProjectDetailsDto> projects = new();
+    private List<Sort> sortValues = Enum.GetValues<Sort>().ToList();
+    private string? sortValue;
+    private string sortSemester = Sort.Semester.ToString();
 
+    private List<ProjectDetailsDto> filteredProjects = new();
     private List<ProjectDetailsDto> shownProjects = new();
 
     private List<FilterTag> tags = new();
@@ -21,10 +25,31 @@ public partial class MainPage
 
     private SearchField? searchField;
 
+    private int pageSize = 10;
+    private int totalPages;
+    private int currentPage;
+
     protected async override Task OnInitializedAsync()
     {
         projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects"))?.ToList()!;
-        shownProjects = projects;
+        filteredProjects = projects;
+        OnSort(sortSemester);
+    }
+
+    private void UpdateProjects(int pageNumber)
+    {
+        shownProjects = filteredProjects.Skip(pageNumber * pageSize).Take(pageSize).ToList();
+        totalPages = (int)Math.Ceiling(filteredProjects.Count() / (decimal)pageSize);
+        currentPage = pageNumber;
+    }
+
+    private void NewPage(string buttonType)
+    {
+        if (buttonType == "next" && currentPage != totalPages - 1) currentPage++;
+
+        if (buttonType == "prev" && currentPage != 0) currentPage--;
+
+        UpdateProjects(currentPage);
     }
 
     private void FilterPanelInitialized(IList<FilterTagSimple> data)
@@ -188,7 +213,7 @@ public partial class MainPage
 
         filteredBySearch = FilterProjectsBySearch(searchField?.SearchString);
 
-        shownProjects = projects
+        filteredProjects = projects
             .Intersect(filteredByLanguages)
             .Intersect(filteredBySemesters)
             .Intersect(filteredByEcts)
@@ -196,6 +221,8 @@ public partial class MainPage
             .Intersect(filteredByTopics)
             .Intersect(filteredBySearch!)
             .ToList();
+
+        UpdateProjects(0);
     }
 
     private List<ProjectDetailsDto>? FilterProjectsBySearch(string? query)
@@ -223,5 +250,24 @@ public partial class MainPage
         _activeProgrammes.Clear();
         activeTopics.Clear();
         FilterProjects();
+        OnSort(sortValue ?? nameof(Sort.Semester));
+    }
+
+
+    private void OnSort(object value) 
+    {
+        if (filteredProjects != null && value.GetType() == typeof(string))
+        {
+            switch (value)
+            {
+                case nameof(Sort.Semester):
+                    filteredProjects = filteredProjects.OrderBy(p => p.Semester).ToList();
+                    break;
+                case nameof(Sort.ECTS):
+                    filteredProjects = filteredProjects.OrderBy(p => p.Ects).ToList();
+                    break;
+            }
+            UpdateProjects(currentPage);
+        }
     }
 }

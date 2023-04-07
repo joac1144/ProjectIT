@@ -12,7 +12,7 @@
     <div class="row justify-content-center">
         <div class="col-md-3 filter-size">
             <div class="d-flex flex-column justify-content-center px-4">
-                <p class="h1 fw-bold">@shownProjects?.Count()</p>
+                <p class="h1 fw-bold">@filteredProjects?.Count()</p>
                 <p class="h6">Projects found</p>
             </div>
             <div>
@@ -53,15 +53,11 @@
                         </span>
                     }
                 </div>
-                <div class="col-2 offset-md-2 marg p-0">
-                    <div>
-                        <button class="btn border px-2 py-0 btn-light dropdown-toggle" type="button" id="sort-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                            Sort By
-                        </button>
-                    </div>
+                <div class="col-2 marg p-0">
+                        <RadzenDropDown TValue="string" @bind-Value=@sortValue Data=@(sortValues.Select(sortVal => sortVal.ToString())) Change="@OnSort" Placeholder="Sort by" Style="width: 100%; max-width: 20rem;" />
                 </div>
             </div>
-            @if (shownProjects != null)
+            @if (filteredProjects != null)
             {
                 <Virtualize TItem="ProjectDetailsDto" Items="@shownProjects" Context="project">
                         <ProjectCard Id="project.Id"
@@ -72,6 +68,21 @@
                                      Supervisor="@project.Supervisor"
                                      Programmes="@project.Programmes" />
                 </Virtualize>
+            }
+            @if (filteredProjects!.Count > pageSize)
+            {
+                <div class="pageButtonsDiv my-3 py-2">
+                    <button class="btn mx-1 rounded rounded-5 btn bg-black text-white" @onclick="@(e => NewPage("prev"))"> Previous </button>
+
+                    @for (int i = 0; i < totalPages; i++)
+                    {
+                        var pageNumber = i;
+                        <button class="btn mx-1 rounded rounded-5 @(currentPage == pageNumber ? "bg-white text-black shadow" : "bg-black text-white")"
+                        @onclick="@(e => UpdateProjects(pageNumber))"> @(i+1)</button>
+                    }
+
+                    <button class="btn mx-1 rounded rounded-5 bg-black text-white" @onclick="@(e => NewPage("next"))"> Next </button>
+                </div>
             }
         </div>
     </div>
