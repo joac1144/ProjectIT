@@ -27,6 +27,14 @@
     text-decoration: underline;
 }
 
+.pageButtonsDiv
+{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    text-align: center;;
+}
+
 @media (max-width: 1220px) {
     .main-view-size {
         width: 40rem;
