@@ -43,7 +43,6 @@ public class ProjectsController : ControllerBase
         return await _repository.CreateAsync(project);
     }
 
-
     [HttpPut("{id}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
