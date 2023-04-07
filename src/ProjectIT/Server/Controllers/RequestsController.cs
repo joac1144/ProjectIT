@@ -6,7 +6,6 @@ namespace ProjectIT.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-
 public class RequestsController : ControllerBase
 {
     private readonly IRequestsRepository _repository;
@@ -40,17 +39,5 @@ public class RequestsController : ControllerBase
     public async Task<int?> Post(RequestCreateDto request)
     {
         return await _repository.CreateAsync(request);
-    }
-
-    [HttpPut]
-    public async Task<int?> Update(RequestUpdateDto data)
-    {
-        return null;
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<int?> Delete(int id)
-    {
-        return null;
     }
 }

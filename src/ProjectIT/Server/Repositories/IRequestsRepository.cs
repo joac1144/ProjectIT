@@ -9,8 +9,4 @@ public interface IRequestsRepository
     Task<RequestDetailsDto?> ReadByIdAsync(int? id);
 
     Task<int?> CreateAsync(RequestCreateDto request);
-
-    Task<int?> UpdateAsync(RequestUpdateDto request);
-
-    Task<int?> DeleteAsync(int id);
 }

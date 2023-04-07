@@ -161,6 +161,7 @@ public class RequestsRepositoryTests : IDisposable
     public async void ReadByIdAsync_NonExistingId_ReturnsNull()
     {
         RequestDetailsDto? result = await _requestsRepository.ReadByIdAsync(420);
+
         result.Should().BeNull();
     }
 
@@ -172,8 +173,5 @@ public class RequestsRepositoryTests : IDisposable
         result.Should().NotBeNull().And.Match<RequestDetailsDto>(r => r.Title == "RequestTitle2");
     }
 
-    public void Dispose()
-    {
-        _context.Dispose();
-    }
+    public void Dispose() => _context.Dispose();
 }

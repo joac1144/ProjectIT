@@ -1,4 +1,3 @@
-
 using System.ComponentModel.DataAnnotations;
 using ProjectIT.Shared.Enums;
 
@@ -35,5 +34,4 @@ public class Request
 
     [Required]
     public Semester? Semester { get; set; }
-
 }

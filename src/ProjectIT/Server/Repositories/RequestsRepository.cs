@@ -14,32 +14,6 @@ public class RequestRepository : IRequestsRepository
         _context = context;
     }
 
-    public async Task<int?> CreateAsync(RequestCreateDto request)
-    {
-        var entity = new Request
-        {
-            Title = request.Title,
-            Description = request.Description,
-            Topics = request.Topics,
-            Languages = request.Languages,
-            Programmes = request.Programmes,
-            Members = request.Members,
-            Supervisors = request.Supervisors,
-            Ects = request.Ects,
-            Semester = request.Semester
-        };
-
-        _context.Requests.Add(entity);
-        await _context.SaveChangesAsync();
-
-        return entity.Id;
-    }
-
-    public Task<int?> DeleteAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<IEnumerable<RequestDetailsDto>> ReadAllAsync()
     {
         var requests = await _context.Requests
@@ -84,8 +58,24 @@ public class RequestRepository : IRequestsRepository
         };
     }
 
-    public Task<int?> UpdateAsync(RequestUpdateDto request)
+    public async Task<int?> CreateAsync(RequestCreateDto request)
     {
-        throw new NotImplementedException();
+        var entity = new Request
+        {
+            Title = request.Title,
+            Description = request.Description,
+            Topics = request.Topics,
+            Languages = request.Languages,
+            Programmes = request.Programmes,
+            Members = request.Members,
+            Supervisors = request.Supervisors,
+            Ects = request.Ects,
+            Semester = request.Semester
+        };
+
+        _context.Requests.Add(entity);
+        await _context.SaveChangesAsync();
+
+        return entity.Id;
     }
 }
