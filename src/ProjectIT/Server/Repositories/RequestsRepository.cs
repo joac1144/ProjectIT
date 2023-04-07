@@ -42,7 +42,6 @@ public class RequestRepository : IRequestsRepository
 
     public async Task<IEnumerable<RequestDetailsDto>> ReadAllAsync()
     {
-
         var requests = await _context.Requests
             .Include(p => p.Topics)
             .Include(p => p.Supervisors)
@@ -63,8 +62,8 @@ public class RequestRepository : IRequestsRepository
                 Ects = r.Ects,
                 Semester = r.Semester
             });
-
     }
+    
     public async Task<RequestDetailsDto?> ReadByIdAsync(int? id)
     {
         var request = await _context.Requests.FindAsync(id);
@@ -83,8 +82,6 @@ public class RequestRepository : IRequestsRepository
             Ects = request.Ects,
             Semester = request.Semester
         };
-
-
     }
 
     public Task<int?> UpdateAsync(RequestUpdateDto request)
