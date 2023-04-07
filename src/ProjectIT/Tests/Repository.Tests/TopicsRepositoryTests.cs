@@ -47,15 +47,12 @@ public class TopicsRepositoryTests : IDisposable
     }
 
     [Fact]
-    public async void ReadAllAsync_ReturnsAllProjects()
+    public async void ReadAllAsync_ReturnsAllTopics()
     {
         IEnumerable<Topic> result = await _topicsRepository.ReadAllAsync();
 
         result.Should().NotBeNull().And.Match<IEnumerable<Topic>>(topics => topics.First().Name == "Machine learning" && topics.Last().Name == "C#");
     }
 
-    public void Dispose()
-    {
-        _context.Dispose();
-    }
+    public void Dispose() => _context.Dispose();
 }

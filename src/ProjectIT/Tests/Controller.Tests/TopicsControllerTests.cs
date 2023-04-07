@@ -8,7 +8,7 @@ namespace Controller.Tests;
 public class TopicsControllerTests
 {
     [Fact]
-    public async void GetAll_ReturnsProjects()
+    public async void GetAll_ReturnsTopics()
     {
         // Arrange.
         var repository = new Mock<ITopicsRepository>();
