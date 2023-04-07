@@ -24,11 +24,13 @@ public partial class CreateProjectPage
 
     private readonly Project project = new();
     private string? descriptionHtml;
+    private readonly List<Programme> projectProgrammes = new();
+    private readonly List<Language> projectLanguages = new();
     private readonly List<Topic> projectTopics = new();
 
     private RadzenDropDown<Topic>? topicSelector;
 
-    private ClaimsPrincipal authUser;
+    private ClaimsPrincipal? authUser;
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,9 +43,32 @@ public partial class CreateProjectPage
         SortTopics();
     }
 
-    private void OnTagClickedInFilterPanel(FilterTag filterTag)
+    private void OnTagClickedInFilterPanel(FilterTagSimple filterTag)
     {
-        // Add tag to relevant list
+        if (filterTag.Selected)
+        {
+            switch (filterTag.FilterType)
+            {
+                case FilterType.Programme:
+                    projectProgrammes.Add((Programme)Enum.Parse(typeof(Programme), filterTag.Tag));
+                    break;
+                case FilterType.Language:
+                    projectLanguages.Add((Language)Enum.Parse(typeof(Language), filterTag.Tag));
+                    break;
+            }
+        }
+        else
+        {
+            switch (filterTag.FilterType)
+            {
+                case FilterType.Programme:
+                    projectProgrammes.Remove((Programme)Enum.Parse(typeof(Programme), filterTag.Tag));
+                    break;
+                case FilterType.Language:
+                    projectLanguages.Remove((Language)Enum.Parse(typeof(Language), filterTag.Tag));
+                    break;
+            }
+        }
     }
 
     private void OnTopicSelectedInList(object value)
@@ -72,12 +97,19 @@ public partial class CreateProjectPage
         {
             Title = project.Title,
             Description = descriptionHtml!,
-            Topics = projectTopics,
-            Languages = project.Languages,
-            Programmes = project.Programmes,
+            Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+            Languages = projectLanguages,
+            Programmes = projectProgrammes,
             Ects = project.Ects,
             Semester = project.Semester,
-            Supervisor = project.Supervisor,
+            Supervisor = new Supervisor 
+            {
+                Id = (new Random()).Next(20, 5000),
+                FullName = authUser?.Identity?.Name!,
+                Email = "jkof@itu.dk",
+                Profession = "Professor",
+                Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "test", Category = TopicCategory.SoftwareEngineering } }
+            },
             CoSupervisor = project.CoSupervisor
         };
 
@@ -86,7 +118,8 @@ public partial class CreateProjectPage
         if (response.IsSuccessStatusCode)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
-            navManager.NavigateTo("MainPage");
+            // Navigate to "my projects" page.
+            navManager.NavigateTo("/");
         }
         else
         {

@@ -4,7 +4,6 @@
 @using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
 @using ProjectIT.Client.Components.Panel
-@using Microsoft.AspNetCore.Components.Forms
 @using ProjectIT.Client.Http;
 @using ProjectIT.Shared.Enums;
 @using ProjectIT.Shared.Models;
@@ -23,7 +22,7 @@
             </div>
             <div class="my-4">
                 <Panel Title="ECTS Points">
-                    <RadzenRadioButtonList Data="ectsWrappers" @bind-Value=project.Ects TValue="Ects?" TextProperty="StringValue" ValueProperty="Ects" />
+                    <RadzenRadioButtonList Data="ectsWrappers" @bind-Value=project.Ects TValue="Ects?" TextProperty="StringValue" ValueProperty="Ects" Orientation="Orientation.Vertical" class="radio-button-item-margin" />
                 </Panel>
             </div>
             <div class="my-4">
