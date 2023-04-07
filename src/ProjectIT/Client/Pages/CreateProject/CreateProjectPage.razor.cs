@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
-using ProjectIT.Client.Components.Filter;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
@@ -76,6 +75,11 @@ public partial class CreateProjectPage
 
     private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
 
+    private void OnAddTopicButtonClicked()
+    {
+        // Add ability to add new topic.
+    }
+
     private async Task SubmitProjectAsync()
     {
         var newProject = new ProjectCreateDto()
@@ -97,6 +101,11 @@ public partial class CreateProjectPage
             },
             CoSupervisor = project.CoSupervisor
         };
+
+        if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
+        {
+            // A new topic was added, open dialog to confirm and to add category.
+        }
 
         var response = await httpClient.Client.PostAsJsonAsync("projects", newProject);
 

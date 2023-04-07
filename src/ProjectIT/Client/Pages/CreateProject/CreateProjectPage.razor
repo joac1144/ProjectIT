@@ -64,21 +64,26 @@
                 @if (topics != null)
                 {
                     <Panel Title="Topics">
-                        <RadzenDropDown @ref="topicSelector"
-                                        TValue="Topic"
-                                        Placeholder="Select topics"
-                                        AllowFiltering="true"
-                                        ClearSearchAfterSelection="true"
-                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                        Data=@topics
-                                        Change="OnTopicSelectedInList"
-                                        ValueProperty="Name"
-                                        TextProperty="Name"
-                                        Style="width: 100%; max-width: 400px;">
-                            <Template>
-                                @context.Name
-                            </Template>
-                        </RadzenDropDown>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <RadzenDropDown @ref="topicSelector"
+                                            TValue="Topic"
+                                            Placeholder="Select topics"
+                                            AllowFiltering="true"
+                                            ClearSearchAfterSelection="true"
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            Data=@topics
+                                            Change="OnTopicSelectedInList"
+                                            ValueProperty="Name"
+                                            TextProperty="Name"
+                                            class="flex-grow-1">
+                                <Template>
+                                    @context.Name
+                                </Template>
+                            </RadzenDropDown>
+                            <button class="bg-transparent border-0 add-topic-image-size" @onclick="OnAddTopicButtonClicked">
+                                <img class="rotate-45 w-100 h-100" src="images/baseline_clear_24.png" alt="Add new topic">
+                            </button>
+                        </div>
                         @foreach (var topic in projectTopics)
                         {
                             <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false" OnClicked="() => OnSelectedTopicClicked(topic)" />
