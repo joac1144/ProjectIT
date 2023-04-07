@@ -102,7 +102,6 @@ public class ProjectsRepository : IProjectsRepository
     {
         var foundProject = await _context.Projects.FindAsync(project.Id);
 
-
         if (foundProject == null) return null;
 
         foundProject.Title = project.Title;
@@ -118,7 +117,6 @@ public class ProjectsRepository : IProjectsRepository
         await _context.SaveChangesAsync();
 
         return project.Id;
-
     }
 
     public async Task<int?> DeleteAsync(int id)
