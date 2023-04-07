@@ -23,7 +23,7 @@ public record RequestCreateDto
     [Required]
     public IEnumerable<Programme> Programmes { get; set; } = null!;
 
-    public IEnumerable<Student>? Members { get; set; }
+    public IEnumerable<Student> Members { get; set; } = null!;
 
     [Required]
     public IEnumerable<Supervisor> Supervisors { get; set; } = null!;

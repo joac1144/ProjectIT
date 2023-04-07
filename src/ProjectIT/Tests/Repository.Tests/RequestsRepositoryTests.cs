@@ -30,7 +30,13 @@ public class RequestsRepositoryTests : IDisposable
                 Topics = new Topic[] { },
                 Languages = new[] { Language.Danish },
                 Programmes = new[] { Programme.BSWU },
-                Members = new Student[] { },
+                Members = new Student[] {
+                    new Student
+                    {
+                        FullName = "Current student2",
+                        Email = "klfwe@krld.dk"
+                    }
+                },
                 Supervisors = new Supervisor[]
                 {
                     new Supervisor
@@ -69,7 +75,13 @@ public class RequestsRepositoryTests : IDisposable
                 {
                     Programme.BSWU
                 },
-                Members = new Student[] { },
+                Members = new Student[] {
+                    new Student
+                    {
+                        FullName = "Current student3",
+                        Email = "efw@rldæ.dk"
+                    }
+                },
                 Supervisors = new Supervisor[]
                 {
                     new Supervisor
@@ -123,7 +135,13 @@ public class RequestsRepositoryTests : IDisposable
             {
                 Programme.BSWU
             },
-            Members = new Student[] { },
+            Members = new Student[] {
+                new Student
+                {
+                    FullName = "Current student",
+                    Email = "jlds@itu.dk",
+                }
+            },
             Supervisors = new Supervisor[]
             {
                 new Supervisor
