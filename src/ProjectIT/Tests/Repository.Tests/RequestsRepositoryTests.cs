@@ -1,4 +1,3 @@
-
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
@@ -11,7 +10,6 @@ namespace Repository.Tests;
 
 public class RequestsRepositoryTests : IDisposable
 {
-
     private readonly IProjectITDbContext _context;
     private readonly IRequestsRepository _requestsRepository;
 
@@ -45,33 +43,32 @@ public class RequestsRepositoryTests : IDisposable
                 },
                 Ects = Ects.Bachelor,
                 Semester = new() { Season = Season.Autumn, Year = 2025 },
-
             },
             new Request
             {
                 Title = "RequestTitle2",
                 Description = "RequestDescription2",
                 Topics = new[]
-                        {
-                            new Topic
-                            {
-                                Name = "Request Topic",
-                                Category = TopicCategory.ArtificialIntelligence
-                            },
-                            new Topic
-                            {
-                                Name = "Request Topic 2",
-                                Category = TopicCategory.SoftwareEngineering
-                            }
-                        },
+                {
+                    new Topic
+                    {
+                        Name = "Request Topic",
+                        Category = TopicCategory.ArtificialIntelligence
+                    },
+                    new Topic
+                    {
+                        Name = "Request Topic 2",
+                        Category = TopicCategory.SoftwareEngineering
+                    }
+                },
                 Languages = new[]
-                        {
-                            Language.English
-                        },
+                {
+                    Language.English
+                },
                 Programmes = new[]
-                        {
-                            Programme.BSWU
-                        },
+                {
+                    Programme.BSWU
+                },
                 Members = new Student[] { },
                 Supervisors = new Supervisor[]
                 {
@@ -106,26 +103,26 @@ public class RequestsRepositoryTests : IDisposable
             Title = "RequestTest",
             Description = "Request Test Desc",
             Topics = new[]
-                    {
-                        new Topic
-                        {
-                            Name = "Request Test Topic",
-                            Category = TopicCategory.ArtificialIntelligence
-                        },
-                        new Topic
-                        {
-                            Name = "Request Test Topic 2",
-                            Category = TopicCategory.SoftwareEngineering
-                        }
-                    },
+            {
+                new Topic
+                {
+                    Name = "Request Test Topic",
+                    Category = TopicCategory.ArtificialIntelligence
+                },
+                new Topic
+                {
+                    Name = "Request Test Topic 2",
+                    Category = TopicCategory.SoftwareEngineering
+                }
+            },
             Languages = new[]
-                    {
-                        Language.English
-                    },
+            {
+                Language.English
+            },
             Programmes = new[]
-                    {
-                        Programme.BSWU
-                    },
+            {
+                Programme.BSWU
+            },
             Members = new Student[] { },
             Supervisors = new Supervisor[]
             {
