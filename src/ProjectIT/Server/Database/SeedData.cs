@@ -57,8 +57,8 @@ public static class SeedData
                 new Project
                 {
                     Title = "ProjectIT",
-                    Description = "A project management system for students at IT University of Copenhagen",
-                    Topics = context.Topics.Take(5).ToList(),
+                    DescriptionHtml = "A project management system for students at IT University of Copenhagen",
+                    Topics = new[] { topic4, topic11 },
                     Languages = new[]
                     {
                         Language.English,
@@ -81,7 +81,7 @@ public static class SeedData
                 new Project
                 {
                     Title = "Test",
-                    Description = "Test desc",
+                    DescriptionHtml = "Test desc",
                     Topics = new[]
                     {
                         new Topic
@@ -121,7 +121,7 @@ public static class SeedData
                 new Project
                 {
                     Title = "Implementing a New Cybersecurity Solution",
-                    Description = "Our company has identified a need for a new cybersecurity solution to better protect our network and data from potential threats. The current system is outdated and has shown vulnerabilities in recent testing.\r\n\r\nThe objective of this project is to research, evaluate, and implement a new cybersecurity solution that meets our company's specific needs and requirements. This will involve analyzing different options available in the market, comparing their features and benefits, and selecting the most suitable one.\r\n\r\nThe new solution will be installed and configured by our IT team, and all relevant stakeholders will be trained on its use and functionality. Regular testing and monitoring will be conducted to ensure the system is functioning as intended and providing the necessary protection.\r\n\r\nThe successful completion of this project will result in a more secure network and data environment, providing peace of mind for our company and its customers.",
+                    DescriptionHtml = "Our company has identified a need for a new cybersecurity solution to better protect our network and data from potential threats. The current system is outdated and has shown vulnerabilities in recent testing.\r\n\r\nThe objective of this project is to research, evaluate, and implement a new cybersecurity solution that meets our company's specific needs and requirements. This will involve analyzing different options available in the market, comparing their features and benefits, and selecting the most suitable one.\r\n\r\nThe new solution will be installed and configured by our IT team, and all relevant stakeholders will be trained on its use and functionality. Regular testing and monitoring will be conducted to ensure the system is functioning as intended and providing the necessary protection.\r\n\r\nThe successful completion of this project will result in a more secure network and data environment, providing peace of mind for our company and its customers.",
                     Topics = new List<Topic>() { topic8, topic9 },
                     Languages = new[]
                     {
@@ -149,7 +149,7 @@ public static class SeedData
                 new Project
                 {
                     Title = "Cloud-based Backup and Disaster Recovery System",
-                    Description = "Objective: To implement a cloud-based backup and disaster recovery system to ensure business continuity and data protection in the event of a disaster or system failure. Scope: The project will involve the identification of critical business data and systems, selection of a suitable cloud-based backup and disaster recovery solution, and the implementation and testing of the system. The project team will also develop a training program for end-users and IT staff on the use and maintenance of the new system.",
+                    DescriptionHtml = "Objective: To implement a cloud-based backup and disaster recovery system to ensure business continuity and data protection in the event of a disaster or system failure. Scope: The project will involve the identification of critical business data and systems, selection of a suitable cloud-based backup and disaster recovery solution, and the implementation and testing of the system. The project team will also develop a training program for end-users and IT staff on the use and maintenance of the new system.",
                     Topics = context.Topics.Skip(4).Take(1).ToList(),
                     Languages = new[]
                     {
@@ -177,7 +177,7 @@ public static class SeedData
                 new Project
                 {
                     Title = "Implementing a Password Management System",
-                    Description = "Problem: The organization currently faces security risks due to the lack of a centralized password management system. Employees use weak or easily guessable passwords, reuse passwords across multiple accounts, and store them insecurely. This makes the organization vulnerable to data breaches and unauthorized access.",
+                    DescriptionHtml = "Problem: The organization currently faces security risks due to the lack of a centralized password management system. Employees use weak or easily guessable passwords, reuse passwords across multiple accounts, and store them insecurely. This makes the organization vulnerable to data breaches and unauthorized access.",
                     Topics = context.Topics.Skip(1).Take(1).ToList(),
                     Languages = new[]
                     {
@@ -210,7 +210,7 @@ public static class SeedData
                 var project = new Project
                 {
                     Title = "Project " + random.Next(1, 1000),
-                    Description = "Description " + random.Next(1, 1000),
+                    DescriptionHtml = "Description " + random.Next(1, 1000),
                     Topics = context.Topics.Skip(12).Take(2).ToList(),
                     Languages = new List<Language>()
                     {

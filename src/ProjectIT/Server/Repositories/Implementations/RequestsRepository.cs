@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
+using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Dtos.Requests;
 using ProjectIT.Shared.Models;
 
-namespace ProjectIT.Server.Repositories;
+namespace ProjectIT.Server.Repositories.Implementations;
 
 public class RequestRepository : IRequestsRepository
 {
@@ -37,7 +38,7 @@ public class RequestRepository : IRequestsRepository
                 Semester = r.Semester
             });
     }
-    
+
     public async Task<RequestDetailsDto?> ReadByIdAsync(int? id)
     {
         var request = await _context.Requests.FindAsync(id);

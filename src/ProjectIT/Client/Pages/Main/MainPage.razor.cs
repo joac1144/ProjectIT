@@ -236,7 +236,7 @@ public partial class MainPage
             return projects.Where(
                 p => p.Topics.Any(topic => topic.Name.Equals(query, StringComparison.OrdinalIgnoreCase))
                 || p.Title.Contains(query, StringComparison.OrdinalIgnoreCase)
-                || p.Description.Contains(query, StringComparison.OrdinalIgnoreCase)
+                || p.DescriptionHtml.Contains(query, StringComparison.OrdinalIgnoreCase)
             ).ToList();
         }
     }

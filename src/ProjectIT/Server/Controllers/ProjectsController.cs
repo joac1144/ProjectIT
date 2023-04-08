@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProjectIT.Server.Repositories;
+using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
 

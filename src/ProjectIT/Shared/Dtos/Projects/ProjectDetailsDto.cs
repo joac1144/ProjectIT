@@ -17,7 +17,7 @@ public record ProjectDetailsDto
 
     [Required]
     [StringLength(4400)]
-    public string Description { get; set; } = null!;
+    public string DescriptionHtml { get; set; } = null!;
 
     [Required]
     public IEnumerable<Topic> Topics { get; set; } = null!;

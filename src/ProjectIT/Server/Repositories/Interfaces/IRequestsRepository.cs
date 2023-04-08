@@ -1,6 +1,6 @@
 using ProjectIT.Shared.Dtos.Requests;
 
-namespace ProjectIT.Server.Repositories;
+namespace ProjectIT.Server.Repositories.Interfaces;
 
 public interface IRequestsRepository
 {

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using ProjectIT.Server.Repositories;
+using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Dtos.Requests;
 
 namespace ProjectIT.Server.Controllers;

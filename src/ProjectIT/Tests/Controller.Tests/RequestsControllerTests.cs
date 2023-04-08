@@ -1,6 +1,6 @@
 using Moq;
 using ProjectIT.Server.Controllers;
-using ProjectIT.Server.Repositories;
+using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Dtos.Requests;
 
 namespace Controller.Tests;

@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ProjectIT.Server.Repositories;
+namespace ProjectIT.Server.Repositories.Implementations;
 
 public class ProjectsRepository : IProjectsRepository
 {
@@ -30,7 +31,7 @@ public class ProjectsRepository : IProjectsRepository
         {
             Id = p.Id,
             Title = p.Title,
-            Description = p.Description,
+            DescriptionHtml = p.DescriptionHtml,
             Topics = p.Topics,
             Languages = p.Languages,
             Programmes = p.Programmes,
@@ -60,7 +61,7 @@ public class ProjectsRepository : IProjectsRepository
         {
             Id = project.Id,
             Title = project.Title,
-            Description = project.Description,
+            DescriptionHtml = project.DescriptionHtml,
             Topics = project.Topics,
             Languages = project.Languages,
             Programmes = project.Programmes,
@@ -77,7 +78,7 @@ public class ProjectsRepository : IProjectsRepository
         var entity = new Project
         {
             Title = project.Title,
-            Description = project.Description,
+            DescriptionHtml = project.DescriptionHtml,
             Topics = project.Topics,
             Languages = project.Languages,
             Programmes = project.Programmes,
@@ -87,7 +88,7 @@ public class ProjectsRepository : IProjectsRepository
             CoSupervisor = project.CoSupervisor
         };
 
-        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.Description) || entity.Topics.IsNullOrEmpty<Topic>() ||
+        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) || entity.Topics.IsNullOrEmpty<Topic>() ||
             entity.Languages.IsNullOrEmpty<Language>() || entity.Programmes.IsNullOrEmpty() || entity.Ects is null || 
             entity.Semester is null || entity.Supervisor is null)
                 throw new ArgumentNullException();
@@ -105,7 +106,7 @@ public class ProjectsRepository : IProjectsRepository
         if (foundProject == null) return null;
 
         foundProject.Title = project.Title;
-        foundProject.Description = project.Description;
+        foundProject.DescriptionHtml = project.DescriptionHtml;
         foundProject.Topics = project.Topics;
         foundProject.Languages = project.Languages;
         foundProject.Programmes = project.Programmes;
