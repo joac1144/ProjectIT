@@ -10,6 +10,8 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Project> Projects { get; set; } = null!;
 
+    public DbSet<Request> Requests { get; set; } = null!;
+
     public ProjectITDbContext(DbContextOptions<ProjectITDbContext> options) : base(options)
     {
     }
@@ -47,5 +49,30 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
         modelBuilder.Entity<Topic>()
             .Property(t => t.Category)
             .HasConversion<string>();
+
+        modelBuilder.Entity<Request>()
+            .Property(r => r.Languages)
+            .HasConversion(
+                e => string.Join(",", e.Select(x => x.ToString()).ToArray()),
+                e => e.Split(new[] { ',' })
+                    .Select(x => Enum.Parse(typeof(Language), x))
+                    .Cast<Language>()
+                    .ToList()
+            );
+
+        modelBuilder.Entity<Request>()
+            .Property(r => r.Programmes)
+            .HasConversion(
+                e => string.Join(",", e.Select(x => x.ToString()).ToArray()),
+                e => e.Split(new[] { ',' })
+                    .Select(x => Enum.Parse(typeof(Programme), x))
+                    .Cast<Programme>()
+                    .ToList()
+            );
+
+        modelBuilder.Entity<Request>()
+            .Property(p => p.Ects)
+            .HasConversion<string>();
+
     }
 }

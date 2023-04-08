@@ -1,4 +1,3 @@
-using FluentAssertions.Execution;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
@@ -45,26 +44,26 @@ public class ProjectsRepositoryTests : IDisposable
                 Title = "Test",
                 DescriptionHtml = "Test desc",
                 Topics = new[]
-                        {
-                            new Topic
-                            {
-                                Name = "Test Topic",
-                                Category = TopicCategory.ArtificialIntelligence
-                            },
-                            new Topic
-                            {
-                                Name = "Test Topic 2",
-                                Category = TopicCategory.SoftwareEngineering
-                            }
-                        },
+                {
+                    new Topic
+                    {
+                        Name = "Test Topic",
+                        Category = TopicCategory.ArtificialIntelligence
+                    },
+                    new Topic
+                    {
+                        Name = "Test Topic 2",
+                        Category = TopicCategory.SoftwareEngineering
+                    }
+                },
                 Languages = new[]
-                        {
-                            Language.English
-                        },
+                {
+                    Language.English
+                },
                 Programmes = new[]
-                        {
-                            Programme.BSWU
-                        },
+                {
+                    Programme.BSWU
+                },
                 Ects = Ects.Bachelor,
                 Semester = new()
                 {
@@ -239,7 +238,6 @@ public class ProjectsRepositoryTests : IDisposable
                                                         );
 
         updatedProject?.Id.Should().Be(resultId);
-
     }
 
     [Fact]
@@ -255,8 +253,5 @@ public class ProjectsRepositoryTests : IDisposable
         result.Should().BeNull();
     }
 
-    public void Dispose()
-    {
-        _context.Dispose();
-    }
+    public void Dispose() => _context.Dispose();
 }
