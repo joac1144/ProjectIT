@@ -85,7 +85,7 @@ public partial class CreateProjectPage
         var newProject = new ProjectCreateDto()
         {
             Title = project.Title,
-            Description = descriptionHtml!,
+            DescriptionHtml = descriptionHtml!,
             Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
             Languages = projectLanguages!,
             Programmes = projectProgrammes!,

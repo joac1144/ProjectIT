@@ -123,7 +123,7 @@ public class ProjectsControllerTests
         {
             Id = 1,
             Title = "MyProject",
-            Description = "This is my description"
+            DescriptionHtml = "This is my description"
         };
 
         var repository = new Mock<IProjectsRepository>();
@@ -142,7 +142,7 @@ public class ProjectsControllerTests
         {
             Id = 400,
             Title = "MyProject",
-            Description = "This is my description"
+            DescriptionHtml = "This is my description"
         };
 
         var repository = new Mock<IProjectsRepository>();

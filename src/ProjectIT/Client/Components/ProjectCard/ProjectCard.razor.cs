@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
+using System.Text.RegularExpressions;
 
 namespace ProjectIT.Client.Components.ProjectCard;
 
@@ -13,7 +14,7 @@ public partial class ProjectCard
     public string Title { get; set; } = string.Empty;
 
     [Parameter]
-    public string Description { get; set; } = string.Empty;
+    public string DescriptionHtml { get; set; } = string.Empty;
 
     [Parameter]
     public Supervisor Supervisor { get; set; } = null!;
@@ -29,4 +30,6 @@ public partial class ProjectCard
 
     [Parameter]
     public Ects? Ects { get; set; }
+
+    public string Description => Regex.Replace(DescriptionHtml, "<[^>]*>", "");
 }

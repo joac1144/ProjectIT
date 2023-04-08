@@ -31,7 +31,7 @@ public class ProjectsRepositoryTests : IDisposable
             new Project
             {
                 Title = "Title", 
-                Description = "Description",
+                DescriptionHtml = "Description",
                 Topics = new Topic[] { },
                 Languages = new[] { Language.English },
                 Programmes = new[] { Programme.BDS },
@@ -43,7 +43,7 @@ public class ProjectsRepositoryTests : IDisposable
             new Project
             {
                 Title = "Test",
-                Description = "Test desc",
+                DescriptionHtml = "Test desc",
                 Topics = new[]
                         {
                             new Topic
@@ -117,7 +117,7 @@ public class ProjectsRepositoryTests : IDisposable
         var project = new ProjectCreateDto
         {
             Title = "Test",
-            Description = "Test desc",
+            DescriptionHtml = "Test desc",
             Topics = new[]
                     {
                         new Topic
@@ -157,7 +157,7 @@ public class ProjectsRepositoryTests : IDisposable
         var resultId = await _projectsRepository.CreateAsync(project);
         var actualResult = await _context.Projects.FindAsync(resultId);
 
-        actualResult.Should().NotBeNull().And.Match<Project>(p => p.Title == project.Title && p.Description == project.Description);
+        actualResult.Should().NotBeNull().And.Match<Project>(p => p.Title == project.Title && p.DescriptionHtml == project.DescriptionHtml);
         actualResult!.Id.Should().Be(resultId);
     }
 
@@ -167,7 +167,7 @@ public class ProjectsRepositoryTests : IDisposable
         var project = new ProjectCreateDto
         {
             Title = String.Empty,
-            Description = "Test desc",
+            DescriptionHtml = "Test desc",
             Topics = Array.Empty<Topic>(),
             Languages = Array.Empty<Language>(),
             Programmes = Array.Empty<Programme>(),
@@ -215,7 +215,7 @@ public class ProjectsRepositoryTests : IDisposable
         {
             Id = 1,
             Title = "TitleUpdated",
-            Description = "DescriptionUpdated",
+            DescriptionHtml = "DescriptionUpdated",
             Topics = new Topic[] { },
             Languages = new[] { Language.Danish },
             Programmes = new[] { Programme.MCS },
@@ -229,7 +229,7 @@ public class ProjectsRepositoryTests : IDisposable
         var updatedProject = await _projectsRepository.ReadByIdAsync(resultId);
 
         updatedProject.Should().Match<ProjectDetailsDto>(p => p.Title == projectUpdateDto.Title &&
-                                                         p.Description == projectUpdateDto.Description &&
+                                                         p.DescriptionHtml == projectUpdateDto.DescriptionHtml &&
                                                          p.Topics == projectUpdateDto.Topics &&
                                                          p.Languages == projectUpdateDto.Languages &&
                                                          p.Programmes == projectUpdateDto.Programmes &&
