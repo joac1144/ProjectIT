@@ -48,11 +48,8 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ProjectITDbContext>();
-    context.Database.EnsureDeleted();
-    context.Database.EnsureCreated();
-    SeedData.SeedTopics(context);
-    SeedData.SeedUsers(context);
-    SeedData.SeedProjects(context);
+    context.Database.Migrate();
+    SeedData.Seed(context);
 }
 
 app.UseHttpsRedirection();
