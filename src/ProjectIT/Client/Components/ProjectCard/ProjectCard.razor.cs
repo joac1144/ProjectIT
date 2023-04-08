@@ -31,7 +31,7 @@ public partial class ProjectCard
     [Parameter]
     public Ects? Ects { get; set; }
 
-    public string Description
+    private string Description
     {
         get
         {
