@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using ProjectIT.Server.Database;
-using ProjectIT.Server.Repositories;
 using ProjectIT.Server.Repositories.Implementations;
 using ProjectIT.Server.Repositories.Interfaces;
 
