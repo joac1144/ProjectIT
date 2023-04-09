@@ -1,6 +1,6 @@
 using Moq;
 using ProjectIT.Server.Controllers;
-using ProjectIT.Server.Repositories;
+using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Dtos.Projects;
 
 namespace Controller.Tests;
@@ -112,6 +112,44 @@ public class ProjectsControllerTests
         var controller = new ProjectsController(repository.Object);
 
         var result = await controller.Delete(70);
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async void Update_ExistingId_ReturnsId()
+    {
+        var ProjectUpdateDto = new ProjectUpdateDto
+        {
+            Id = 1,
+            Title = "MyProject",
+            DescriptionHtml = "This is my description"
+        };
+
+        var repository = new Mock<IProjectsRepository>();
+        repository.Setup(pr => pr.UpdateAsync(ProjectUpdateDto)).ReturnsAsync(1);
+        var controller = new ProjectsController(repository.Object);
+
+        var result = await controller.Update(1, ProjectUpdateDto);
+
+        result.Should().Be(1);
+    }
+
+    [Fact]
+    public async void Update_NonExistingId_ReturnsNull()
+    {
+        var ProjectUpdateDto = new ProjectUpdateDto
+        {
+            Id = 400,
+            Title = "MyProject",
+            DescriptionHtml = "This is my description"
+        };
+
+        var repository = new Mock<IProjectsRepository>();
+        repository.Setup(pr => pr.UpdateAsync(ProjectUpdateDto)).ReturnsAsync(default(int?));
+        var controller = new ProjectsController(repository.Object);
+
+        var result = await controller.Update(400, ProjectUpdateDto);
 
         result.Should().BeNull();
     }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProjectIT.Server.Repositories;
+using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
 
@@ -43,19 +43,25 @@ public class ProjectsController : ControllerBase
         return await _repository.CreateAsync(project);
     }
 
-    [HttpPut]
-    public ActionResult<Project> Update(ProjectUpdateDto data)
+    [HttpPut("{id}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<int?> Update(int id, [FromBody]ProjectUpdateDto data)
     {
-        return Ok(data);
+        if (id != data.Id) 
+            return null;
+        else
+            return await _repository.UpdateAsync(data);
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
     public async Task<int?> Delete(int id)
     {
         var response = await _repository.DeleteAsync(id);
 
-        if (response == null) 
-            return null;
+        if (response == null) return null;
 
         return response;
     }
