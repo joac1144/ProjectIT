@@ -29,7 +29,7 @@ public partial class ProjectCard
     public Semester Semester { get; set; } = null!;
 
     [Parameter]
-    public Ects? Ects { get; set; }
+    public Ects Ects { get; set; }
 
     private string Description
     {

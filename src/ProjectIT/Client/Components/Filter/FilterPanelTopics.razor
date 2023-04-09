@@ -1,7 +1,7 @@
 ﻿@using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Components.Search
-@using ProjectIT.Shared.Enums;
-@using ProjectIT.Shared.Models;
+@using ProjectIT.Shared.Enums
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
 
 <Panel Title="Topics">
     <SearchField PlaceholderText="Search topics..." OnInputValueChanged="(val) => SearchTopics(val)" Width="100%" />
@@ -24,7 +24,7 @@
                     aria-expanded="false"
                     aria-controls=@($"{category.Category.ToString()}Collapse")
                 @onclick="(() => category.Collapsed = !category.Collapsed)">
-                @category.Category.ToString()
+                @category.Category.GetTranslatedString(EnumsLocalizer)
             </button>
             <div class=@($"{(category.Collapsed ? "collapse" : "")}") id=@($"{category.Category.ToString()}Collapse")>
                 @foreach (FilterTagTopic filterTag in ShownData.Where(ft => ft.Category == category.Category))

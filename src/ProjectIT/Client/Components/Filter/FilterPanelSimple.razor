@@ -1,14 +1,37 @@
 ﻿@using ProjectIT.Client.Components.Panel
+@using ProjectIT.Shared.Enums;
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
 
 <Panel Title="@Title">
     @if (Data != null)
+            {
+    foreach (FilterTagSimple filterTag in Data)
     {
-        foreach (FilterTagSimple filterTag in Data)
-        {
-            <div class="form-check fw-normal">
-                <input class="form-check-input rounded-0" type="checkbox" id=@($"{filterTag.Tag}Checkbox") @onchange="(e) => CheckboxChecked(e, filterTag)" checked="@filterTag.Selected">
-                <label class="form-check-label" for=@($"{filterTag.Tag}Checkbox")>
-                    @filterTag.Tag
+        <div class="form-check fw-normal">
+            <input class="form-check-input rounded-0" type="checkbox" id=@($"{filterTag.Tag}Checkbox") @onchange="(e) => CheckboxChecked(e, filterTag)" checked="@filterTag.Selected">
+            <label class="form-check-label" for=@($"{filterTag.Tag}Checkbox")>
+                    @{
+                        string translatedString = string.Empty;
+                        switch (Type)
+                        {
+                            case FilterType.Programme:
+                                translatedString = ((Enum)Enum.Parse(typeof(Programme), filterTag.Tag)).GetTranslatedString(EnumsLocalizer);
+                                break;
+                            case FilterType.ECTS:
+                                translatedString = ((Enum)Enum.Parse(typeof(Ects), filterTag.Tag)).GetTranslatedString(EnumsLocalizer);
+                                break;
+                            case FilterType.Semester:
+                                var semesterSplitInSeasonAndYear = filterTag.Tag.Split(" ");
+                                string season = semesterSplitInSeasonAndYear[0];
+                                string year = semesterSplitInSeasonAndYear[1];
+                                translatedString = $"{((Enum)Enum.Parse(typeof(Season), season)).GetTranslatedString(EnumsLocalizer)} {year}";
+                                break;
+                            case FilterType.Language:
+                                translatedString = ((Enum)Enum.Parse(typeof(Language), filterTag.Tag)).GetTranslatedString(EnumsLocalizer);
+                                break;
+                        }
+                    }
+                    @translatedString
                 </label>
             </div>
         }

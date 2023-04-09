@@ -1,10 +1,14 @@
 using System.Net.Http.Json;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Extensions;
 using ProjectIT.Shared.Models;
+using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
 
 namespace ProjectIT.Client.Pages.CreateProject;
@@ -14,28 +18,32 @@ public partial class CreateProjectPage
     private class EctsWrapper
     {
         public Ects Ects { get; set; }
-        public string StringValue => Ects.ToString();
+        public string StringValue { get; set; } = string.Empty;
     }
 
     private class ProgrammeWrapper
     {
         public Programme Programme { get; set; }
-        public string StringValue => Programme.ToString();
+        public string StringValue { get; set; } = string.Empty;
     }
 
     private class LanguageWrapper
     {
         public Language Language { get; set; }
-        public string StringValue => Language.ToString();
+        public string StringValue { get; set; } = string.Empty;
     }
 
-    private IEnumerable<Topic> topics;
-    private readonly IEnumerable<EctsWrapper> ectsWrappers = Enum.GetValues<Ects>().Select(ects => new EctsWrapper { Ects = ects });
-    private readonly IEnumerable<ProgrammeWrapper> programmeWrappers = Enum.GetValues<Programme>().Select(prog => new ProgrammeWrapper { Programme = prog });
-    private readonly IEnumerable<LanguageWrapper> languageWrappers = Enum.GetValues<Language>().Select(lang => new LanguageWrapper { Language = lang });
+    [Inject]
+    private IStringLocalizer<EnumsResource> EnumsLocalizer { get; set; } = default!;
+
+    private IEnumerable<Topic> topics = null!;
+    private IEnumerable<EctsWrapper>? ectsWrappers;
+    private IEnumerable<ProgrammeWrapper>? programmeWrappers;
+    private IEnumerable<LanguageWrapper>? languageWrappers;
 
     private readonly Project project = new();
     private string? descriptionHtml;
+    private Ects? projectEcts;
     private IEnumerable<Programme>? projectProgrammes;
     private IEnumerable<Language>? projectLanguages;
     private readonly List<Topic> projectTopics = new();
@@ -46,6 +54,10 @@ public partial class CreateProjectPage
 
     protected override async Task OnInitializedAsync()
     {
+        ectsWrappers = Enum.GetValues<Ects>().Select(ects => new EctsWrapper { Ects = ects, StringValue = ects.GetTranslatedString(EnumsLocalizer) });
+        programmeWrappers = Enum.GetValues<Programme>().Select(prog => new ProgrammeWrapper { Programme = prog, StringValue = prog.GetTranslatedString(EnumsLocalizer) });
+        languageWrappers = Enum.GetValues<Language>().Select(lang => new LanguageWrapper { Language = lang, StringValue = lang.GetTranslatedString(EnumsLocalizer) });
+
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
         topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>("topics"))!;
@@ -89,7 +101,7 @@ public partial class CreateProjectPage
             Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
             Languages = projectLanguages!,
             Programmes = projectProgrammes!,
-            Ects = project.Ects,
+            Ects = (Ects)projectEcts!,
             Semester = project.Semester,
             Supervisor = new Supervisor 
             {
