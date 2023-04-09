@@ -38,5 +38,13 @@
   {
     "outputFile": "Pages/CreateProject/CreateProjectPage.razor.css",
     "inputFile": "Pages/CreateProject/CreateProjectPage.razor.scss"
+  },
+  {
+    "outputFile": "Components/SupervisorCard/SupervisorCard.razor.css",
+    "inputFile": "Components/SupervisorCard/SupervisorCard.razor.scss"
+  },
+  {
+    "outputFile": "Pages/SupervisorsList/SupervisorList.razor.css",
+    "inputFile": "Pages/SupervisorsList/SupervisorList.razor.scss"
   }
 ]
