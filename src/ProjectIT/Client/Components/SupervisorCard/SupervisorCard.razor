@@ -10,7 +10,7 @@
                 <div class="fs-4 fw-bold truncate-text col-md-6">@FullName</div>
             </div>
             <div class="d-flex justify-content-around">
-                @* <TagsDisplay Tags="Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" /> *@
+                <TagsDisplay Tags="Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
             </div>
         </div>
     </a>

@@ -1,0 +1,40 @@
+.main-view-size {
+    width: 47rem;
+    height: 100%;
+}
+
+.filter-size {
+    padding: 0;
+    width: fit-content;
+    margin-left: 5rem;
+    padding-right: 4rem;
+}
+
+.btn:focus, .btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.clearbtn :hover {
+    text-decoration: underline;
+}
+
+.pageButtonsDiv
+{
+    position: relative;
+    bottom: 0;
+    width: 79%;
+    text-align: center;;
+}
+
+@media (max-width: 1220px) {
+    .main-view-size {
+        width: 40rem;
+    }
+    .filter-size {
+        padding: 0;
+        width: fit-content;
+        margin-left: 0;
+        padding-right: 0;
+    }
+}

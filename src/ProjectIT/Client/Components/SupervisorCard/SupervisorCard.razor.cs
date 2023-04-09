@@ -15,9 +15,4 @@ public partial class SupervisorCard
 
     [Parameter]
     public IEnumerable<Topic> Topics { get; set; } = null!;
-
-    protected override async Task OnInitializedAsync()
-    {
-        Topics = await httpClient.GetFromJsonAsync<IEnumerable<Topic>>($"supervisors/{Id}/topics");
-    }
 }

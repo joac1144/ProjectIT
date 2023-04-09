@@ -1,22 +1,26 @@
 @page "/supervisor-list"
+@using ProjectIT.Client.Http;
+@using ProjectIT.Client.Components.Filter
+@using ProjectIT.Client.Components.Search
+@using ProjectIT.Client.Components.Tag
+@using ProjectIT.Shared.Dtos.Users;
 @using ProjectIT.Client.Components.SupervisorCard
+@inject AnonymousClient anonymousClient
 
-<div>Supervisors for projects and theses</div>
-
-@* <div class="mt-3">
-    <div class="row justify-content-center">
+<div class="mt-3">
+    <div class="d-flex row justify-content-center">
         <div class="col-md-3 filter-size">
             <div class="d-flex flex-column justify-content-center px-4">
-                <p class="h1 fw-bold">23</p>
+                <p class="h1 fw-bold">@filteredSupervisors?.Count()</p>
                 <p class="h6">Supervisors found</p>
             </div>
             <div class="my-4">
                 <FilterPanelTopics OnInitializedData="FilterPanelTopicsInitialized" DataChanged="OnFilterPanelTopicsTagChanged" />
             </div>
         </div>
-        <div class="col-md-6 main-view-size">
+        <div class="col-md-5 main-view-size">
             <div class="mb-4">
-                <SearchField @ref="searchField" PlaceholderText="Search supervisors..." Height="2.4rem" Width="43rem" OnInputValueChanged="FilterSupervisors" />
+                <SearchField @ref="searchField" PlaceholderText="Search supervisors..." Height="2.4rem" Width="35rem" OnInputValueChanged="FilterSupervisors" />
             </div>
             <div class="mb-4 row">
                 <TagsDisplay @bind-Tags="tags" TagsAreClickable="true" OnTagClicked="OnTagClickedInTagsDisplay" />
@@ -30,8 +34,8 @@
             @if (filteredSupervisors != null)
             {
                 <Virtualize TItem="SupervisorDetailsDto" Items="@shownSupervisors" Context="supervisor">
-                        <SupervisorCard FullName = supervisor.FullName
-                                        Topics = supervisor.Topics />
+                        <SupervisorCard FullName = "@supervisor.FullName"
+                                        Topics = "@supervisor.Topics" />
                 </Virtualize>
             }
             @if (filteredSupervisors!.Count > pageSize)
@@ -51,4 +55,4 @@
             }
         </div>
     </div>
-</div> *@
+</div>
