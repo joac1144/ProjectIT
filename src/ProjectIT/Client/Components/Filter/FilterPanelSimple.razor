@@ -4,12 +4,12 @@
 
 <Panel Title="@Title">
     @if (Data != null)
-            {
-    foreach (FilterTagSimple filterTag in Data)
     {
-        <div class="form-check fw-normal">
-            <input class="form-check-input rounded-0" type="checkbox" id=@($"{filterTag.Tag}Checkbox") @onchange="(e) => CheckboxChecked(e, filterTag)" checked="@filterTag.Selected">
-            <label class="form-check-label" for=@($"{filterTag.Tag}Checkbox")>
+        foreach (FilterTagSimple filterTag in Data)
+        {
+            <div class="form-check fw-normal">
+                <input class="form-check-input rounded-0" type="checkbox" id=@($"{filterTag.Tag}Checkbox") @onchange="(e) => CheckboxChecked(e, filterTag)" checked="@filterTag.Selected">
+                <label class="form-check-label" for=@($"{filterTag.Tag}Checkbox")>
                     @{
                         string translatedString = string.Empty;
                         switch (Type)
