@@ -27,7 +27,7 @@ public record ProjectCreateDto
     public IEnumerable<Programme> Programmes { get; set; } = null!;
 
     [Required]
-    public Ects? Ects { get; set; }
+    public Ects Ects { get; set; }
 
     [Required]
     public Semester? Semester { get; set; }
