@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using ProjectIT.Client;
 using Radzen;
 using ProjectIT.Client.Http;
+using System.Globalization;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -24,5 +25,10 @@ builder.Services.AddMsalAuthentication(options =>
     options.ProviderOptions.DefaultAccessTokenScopes.Add("api://9d371fdd-2916-4308-99be-ee0d7ccf75b6/API.Access");
     options.ProviderOptions.LoginMode = "redirect";
 });
+
+CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
+
+builder.Services.AddLocalization();
 
 await builder.Build().RunAsync();
