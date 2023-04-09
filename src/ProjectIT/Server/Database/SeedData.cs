@@ -30,6 +30,13 @@ public static class SeedData
     private static Topic topic14 = new() { Name = "C", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic15 = new() { Name = "Assembly", Category = TopicCategory.ProgrammingLanguages };
 
+    public static void Seed(ProjectITDbContext context)
+    {
+        SeedTopics(context);
+        SeedUsers(context);
+        SeedProjects(context);
+    }
+
     public static void SeedTopics(ProjectITDbContext context)
     {
         if (!context.Topics.Any())
@@ -203,7 +210,7 @@ public static class SeedData
                     Students = new Student[] { }
                 }
             );
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < 15; i++)
             {
                 var random = new Random();
 

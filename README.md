@@ -19,6 +19,22 @@ Username: postgres
 Password: postgres
 ```
 
-## Running the application
+## Using the application
+
+### Creating and applying migrations
+
+Make sure you have EF tools installed:
+
+```$ dotnet tool install --global dotnet-ef```
+
+Create new migration:
+
+```$ dotnet ef migrations add <migration name>```
+
+Apply migration / update database:
+
+```$ dotnet ef database update```
+
+### Running the application
 
 `cd` into `ProjectIT/src/ProjectIT/Server` and run app with `dotnet run`.
