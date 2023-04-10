@@ -38,5 +38,10 @@
   {
     "outputFile": "Pages/CreateProject/CreateProjectPage.razor.css",
     "inputFile": "Pages/CreateProject/CreateProjectPage.razor.scss"
+  },
+  {
+    "outputFile": "Pages/CreateRequest/CreateRequestPage.razor.css",
+    "inputFile": "Pages/CreateRequest/CreateRequestPage.razor.scss"
   }
+    
 ]
