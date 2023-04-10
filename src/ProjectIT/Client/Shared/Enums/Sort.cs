@@ -1,4 +1,4 @@
-namespace ProjectIT.Client.Pages.Main;
+namespace ProjectIT.Client.Shared.Enums;
 
 public enum Sort
 {

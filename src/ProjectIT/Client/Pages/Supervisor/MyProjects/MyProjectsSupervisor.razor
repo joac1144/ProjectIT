@@ -1,0 +1,44 @@
+﻿@page "/my-projects"
+@using ProjectIT.Client.Components.ProjectCard
+@using ProjectIT.Client.Components.SortDropdown
+@inject NavigationManager navigationManager
+
+<PageTitle>My Projects</PageTitle>
+
+<div class="d-flex flex-column align-items-center">
+    <div class="d-inline-flex flex-column align-items-center">
+        <h3 class="fw-bold d-block">My projects</h3>
+        <div class="d-flex justify-content-between">
+            <button @onclick="@(() => navigationManager.NavigateTo("/create-project"))">Create new project</button>
+            <SortDropdown SortValues="@_sortValues" SortValue="@sortValue" SortValueChanged="OnSort" />
+        </div>
+        @if (projects != null)
+        {
+            var appliedProjects = projects.Where(p => p.Students.Count() > 0);
+
+            if (appliedProjects.Any())
+            {
+                <span>Applied</span>
+                @foreach (var project in appliedProjects)
+                {
+                    <ProjectCard Id="@project.Id"
+                                 Title="@project.Title"
+                                 DescriptionHtml="@project.DescriptionHtml"
+                                 Programmes="@project.Programmes"
+                                 Ects="@project.Ects"
+                                 Semester="@project.Semester" />
+                }
+            }
+            <span>-------------------------------------------------------------------</span>
+            foreach (var project in projects.Where(p => p.Students == null || p.Students.Count() == 0))
+            {
+                <ProjectCard Id="@project.Id"
+                         Title="@project.Title"
+                         DescriptionHtml="@project.DescriptionHtml"
+                         Programmes="@project.Programmes"
+                         Ects="@project.Ects"
+                         Semester="@project.Semester" />
+            }
+        }
+    </div>
+</div>

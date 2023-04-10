@@ -1,0 +1,3 @@
+﻿<div class="col-2 marg p-0">
+    <RadzenDropDown TValue="object" @bind-Value=@SortValue Data=@(SortValues.Select(sortVal => sortVal.ToString())) Change="OnChange" Placeholder="Sort by..." Style="width: 100%; max-width: 20rem;" />
+</div>

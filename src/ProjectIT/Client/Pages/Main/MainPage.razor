@@ -2,6 +2,7 @@
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.ProjectCard
 @using ProjectIT.Client.Components.Search
+@using ProjectIT.Client.Components.SortDropdown
 @using ProjectIT.Client.Components.Tag
 @using ProjectIT.Client.Http;
 @using ProjectIT.Shared.Dtos.Projects;
@@ -53,9 +54,7 @@
                         </span>
                     }
                 </div>
-                <div class="col-2 marg p-0">
-                        <RadzenDropDown TValue="string" @bind-Value=@sortValue Data=@(sortValues.Select(sortVal => sortVal.ToString())) Change="@OnSort" Placeholder="Sort by" Style="width: 100%; max-width: 20rem;" />
-                </div>
+                <SortDropdown SortValue="@sortValue" SortValueChanged="@OnSort" SortValues="@sortValues" />
             </div>
             @if (filteredProjects != null)
             {

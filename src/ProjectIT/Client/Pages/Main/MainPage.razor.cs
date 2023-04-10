@@ -1,5 +1,6 @@
 using ProjectIT.Client.Components.Filter;
 using ProjectIT.Client.Components.Search;
+using ProjectIT.Client.Shared.Enums;
 using ProjectIT.Shared.Dtos.Projects;
 using System.Net.Http.Json;
 
@@ -253,9 +254,9 @@ public partial class MainPage
         OnSort(sortValue ?? nameof(Sort.Semester));
     }
 
-
-    private void OnSort(object value) 
+    private void OnSort(object value)
     {
+        sortValue = value.ToString();
         if (filteredProjects != null && value.GetType() == typeof(string))
         {
             switch (value)

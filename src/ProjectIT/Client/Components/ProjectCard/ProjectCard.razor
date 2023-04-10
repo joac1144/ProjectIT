@@ -40,19 +40,22 @@
                     </div>
                 </div>
 
-                <div class="d-flex">
-                    <img src="images\supervisor.png" width="23rem" height="23rem">
-                    <span class="mx-1"></span>
-                    <div class="fs-7">
-                        @Supervisor.FullName
-                        @if (CoSupervisor != null)
-                        {
-                            <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
-                            <br>
-                            @CoSupervisor.FullName
-                        }
+                @if (Supervisor != null)
+                {
+                    <div class="d-flex">
+                        <img src="images\supervisor.png" width="23rem" height="23rem">
+                        <span class="mx-1"></span>
+                        <div class="fs-7">
+                            @Supervisor.FullName
+                            @if (CoSupervisor != null)
+                            {
+                                <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
+                                <br>
+                                @CoSupervisor.FullName
+                            }
+                        </div>
                     </div>
-                </div>
+                }
             </div>
             <hr>
             @if (CoSupervisor != null)
