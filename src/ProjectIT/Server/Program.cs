@@ -19,6 +19,7 @@ builder.Services.AddDbContext<ProjectITDbContext>(options =>
 
 builder.Services.AddScoped<IProjectITDbContext, ProjectITDbContext>();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
+builder.Services.AddScoped<ITopicsRepository, TopicsRepository>();
 builder.Services.AddScoped<IRequestsRepository, RequestRepository>();
 builder.Services.AddScoped<ISupervisorsRepository, SupervisorsRepository>();
 
@@ -48,11 +49,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ProjectITDbContext>();
-    context.Database.EnsureDeleted();
-    context.Database.EnsureCreated();
-    SeedData.SeedTopics(context);
-    SeedData.SeedUsers(context);
-    SeedData.SeedProjects(context);
+    SeedData.Seed(context);
 }
 
 app.UseHttpsRedirection();

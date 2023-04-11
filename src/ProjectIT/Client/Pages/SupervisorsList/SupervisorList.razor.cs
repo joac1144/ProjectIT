@@ -116,7 +116,7 @@ public partial class SupervisorList
         else
         {
             return supervisors.Where(
-                p => p.Topics.Any(topic => topic.Name.Equals(query, StringComparison.OrdinalIgnoreCase))
+                p => p.Topics.Any(topic => topic.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
                 || p.FullName.Contains(query, StringComparison.OrdinalIgnoreCase)
             ).ToList();
         }

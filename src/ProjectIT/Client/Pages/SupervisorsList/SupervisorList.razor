@@ -22,7 +22,7 @@
             <div class="mb-4">
                 <SearchField @ref="searchField" PlaceholderText="Search supervisors..." Height="2.4rem" Width="35rem" OnInputValueChanged="FilterSupervisors" />
             </div>
-            <div class="mb-4 row">
+            <div class="tags-display-size mb-4">
                 <TagsDisplay @bind-Tags="tags" TagsAreClickable="true" OnTagClicked="OnTagClickedInTagsDisplay" />
                 @if (tags.Any(t => t.Selected))
                 {
