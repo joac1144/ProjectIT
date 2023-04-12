@@ -214,7 +214,7 @@ public static class SeedData
                     Students = new Student[] { }
                 }
             );
-            for (int i = 0; i < 26; i++)
+            for (int i = 0; i < 15; i++)
             {
                 var random = new Random();
 
