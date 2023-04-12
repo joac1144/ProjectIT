@@ -32,9 +32,6 @@ public partial class ProjectCard
     public Ects Ects { get; set; }
 
     [Parameter]
-    public bool IsOnMyProjects { get; set; }
-
-    [Parameter]
     public string? CssClasses { get; set; }
 
     private string Description

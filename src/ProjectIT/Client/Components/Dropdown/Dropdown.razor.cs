@@ -12,4 +12,7 @@ public partial class Dropdown
 
     [Parameter]
     public RenderFragment? DropdownItems { get; set; }
+
+    [Parameter]
+    public string? CssClasses { get; set; }
 }

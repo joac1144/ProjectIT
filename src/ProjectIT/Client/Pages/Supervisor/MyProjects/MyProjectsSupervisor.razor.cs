@@ -1,7 +1,8 @@
-﻿using ProjectIT.Client.Shared.Enums;
+﻿using Microsoft.JSInterop;
+using ProjectIT.Client.Components.Modal;
+using ProjectIT.Client.Shared.Enums;
 using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Enums;
-using ProjectIT.Shared.Models;
+using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages.Supervisor.MyProjects;
 
@@ -12,38 +13,12 @@ public partial class MyProjectsSupervisor
     private string? sortValue;
     private readonly IEnumerable<Sort> _sortValues = Enum.GetValues<Sort>();
 
+    private Modal<ProjectDetailsDto>? modal;
+
     protected override async Task OnInitializedAsync()
     {
         // Fetch supervisor's projects.
-        projects = new List<ProjectDetailsDto>() 
-        {
-            new ProjectDetailsDto 
-            {
-                Id = 777, 
-                Title = "Test", 
-                DescriptionHtml = "Some description",
-                Programmes = new[] { Programme.BDS },
-                Ects = Ects.Bachelor,
-                Languages = new[] { Language.English },
-                Semester = new() { Season = Season.Autumn, Year = 2024 },
-                Topics = new[] { new Topic { Name = "Topic for testing", Category = TopicCategory.Security } },
-                Supervisor = new() { FullName = "Test Supervisor name", Email = "somemail@itu.dk", Profession = "mmm", Topics = Array.Empty<Topic>() },
-                Students = new[] { new Student { FullName = "Test Student name", Email = "teststudent@itu.dk", Programme = Programme.MGAMES } }
-            },
-            new ProjectDetailsDto
-            {
-                Id = 666,
-                Title = "Test 2",
-                DescriptionHtml = "Some description 2",
-                Programmes = new[] { Programme.BSWU },
-                Ects = Ects.Master,
-                Languages = new[] { Language.English },
-                Semester = new() { Season = Season.Autumn, Year = 2024 },
-                Topics = new[] { new Topic { Name = "Topic for testing", Category = TopicCategory.Security } },
-                Supervisor = new() { FullName = "Test Supervisor name", Email = "somemail@itu.dk", Profession = "mmm", Topics = Array.Empty<Topic>() },
-                Students = Array.Empty<Student>()
-            }
-        }; /*await httpClient.GetFromJsonAsync<IEnumerable<Supervisor>>("supervisors").Select(supervisor => supervisor.Projects);*/
+        projects = await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects"); /*await httpClient.GetFromJsonAsync<IEnumerable<Supervisor>>("supervisors").Where(...).Select(supervisor => supervisor.Projects);*/
     }
 
     private void OnSort(object value)
@@ -63,8 +38,13 @@ public partial class MyProjectsSupervisor
         }
     }
 
-    private void DeleteProject(int id)
+    private async void DeleteProject(int id)
     {
+        var response = httpClient.DeleteAsync($"projects/{id}");
 
+        if (!response.Result.IsSuccessStatusCode)
+        {
+            await jsRuntime.InvokeAsync<string>("alert", $"Something went wrong deleting project with id {id}.");
+        }
     }
 }

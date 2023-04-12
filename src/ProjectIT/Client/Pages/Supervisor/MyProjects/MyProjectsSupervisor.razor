@@ -1,7 +1,11 @@
 ﻿@page "/my-projects"
 @using ProjectIT.Client.Components.Dropdown
+@using ProjectIT.Client.Components.Modal
 @using ProjectIT.Client.Components.ProjectCard
+@using ProjectIT.Shared.Dtos.Projects;
 @inject NavigationManager navigationManager
+@inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
 
 <PageTitle>My Projects</PageTitle>
 
@@ -17,6 +21,7 @@
                             Placeholder="Sort by"
                             Style="width: 20%; max-width: 20rem;" />
         </div>
+        
         @if (projects != null)
         {
             var appliedProjects = projects.Where(p => p.Students.Count() > 0);
@@ -26,35 +31,52 @@
                 <span class="my-3 fs-6">Applied projects</span>
                 @foreach (var project in appliedProjects)
                 {
-                    <ProjectCard IsOnMyProjects="true"
-                                 Id="@project.Id"
-                                 Title="@project.Title"
-                                 DescriptionHtml="@project.DescriptionHtml"
-                                 Programmes="@project.Programmes"
-                                 Ects="@project.Ects"
-                                 Semester="@project.Semester" />
+                    <div class="d-flex flex-row align-items-center">
+                        <ProjectCard Id="@project.Id"
+                                        Title="@project.Title"
+                                        DescriptionHtml="@project.DescriptionHtml"
+                                        Programmes="@project.Programmes"
+                                        Ects="@project.Ects"
+                                        Semester="@project.Semester" />
 
-                    <Dropdown BootstrapIcon="gear-fill">
-                        <DropdownItems>
-                            <DropdownItem Text="Edit" OnClick="@(() => navigationManager.NavigateTo($"/my-projects/{project.Id}/edit"))" />
-                            <hr class="dropdown-divider" />
-                            <DropdownItem Text="Delete" OnClick="() => DeleteProject(project.Id)" />
-                        </DropdownItems>
-                    </Dropdown>
+                        <Dropdown BootstrapIcon="gear-fill" CssClasses="ms-2">
+                            <DropdownItems>
+                                <DropdownItem Text="Edit" OnClick="@(() => navigationManager.NavigateTo($"/my-projects/{project.Id}/edit"))" />
+                                <hr class="dropdown-divider" />
+                                <DropdownItem Text="Delete" OpensModal="true" ModalIdentifier="deleteProjectConfirmation" OnClick="() => modal?.OpenModal(project)" />
+                            </DropdownItems>
+                        </Dropdown>
+                    </div>
                 }
                 <hr class="w-50 align-self-center">
             }
             foreach (var project in projects.Where(p => p.Students == null || p.Students.Count() == 0))
             {
-                <ProjectCard IsOnMyProjects="true"
-                             Id="@project.Id"
-                             Title="@project.Title"
-                             DescriptionHtml="@project.DescriptionHtml"
-                             Programmes="@project.Programmes"
-                             Ects="@project.Ects"
-                             Semester="@project.Semester"
-                             CssClasses="mt-3" />
+                <div class="d-flex flex-row">
+                    <ProjectCard Id="@project.Id"
+                                    Title="@project.Title"
+                                    DescriptionHtml="@project.DescriptionHtml"
+                                    Programmes="@project.Programmes"
+                                    Ects="@project.Ects"
+                                    Semester="@project.Semester"
+                                    CssClasses="mt-3" />
+                    <Dropdown BootstrapIcon="gear-fill" CssClasses="ms-2">
+                        <DropdownItems>
+                            <DropdownItem Text="Edit" OnClick="@(() => navigationManager.NavigateTo($"/my-projects/{project.Id}/edit"))" />
+                            <hr class="dropdown-divider" />
+                            <DropdownItem Text="Delete" OpensModal="true" ModalIdentifier="deleteProjectConfirmation" OnClick="() => modal?.OpenModal(project)" />
+                        </DropdownItems>
+                    </Dropdown>
+                </div>
             }
         }
     </div>
 </div>
+<Modal @ref="modal" T="ProjectDetailsDto" Identifier="deleteProjectConfirmation" Title="Delete project?" CloseButtonText="Cancel">
+    <Body>
+        @($"Are you sure you want to delete the project \"{modal?.Data.Title}\"?")
+    </Body>
+    <Buttons>
+        <button type="button" class="btn btn-black" @onclick="() => DeleteProject(modal!.Data.Id)">Delete</button>
+    </Buttons>
+</Modal>
