@@ -12,7 +12,6 @@
             <RadzenCheckBoxList TValue="Programme" Data="@programmeWrappers" @bind-Value=@requestProgrammes
                 TextProperty="StringValue" ValueProperty="Programme" Orientation="Orientation.Vertical" />
         </Panel>
-
         <Panel Title="ECTS">
             <RadzenRadioButtonList TValue="Ects?" Data="ectsWrappers" @bind-Value=request.Ects
                 TextProperty="StringValue" ValueProperty="Ects" Orientation="Orientation.Vertical" />
@@ -34,12 +33,10 @@
                 </Items>
             </RadzenRadioButtonList>
         </Panel>
-
         <Panel Title="Languages">
             <RadzenCheckBoxList TValue="Language" Data="@languageWrappers" @bind-Value=@requestLanguages
                 TextProperty="StringValue" ValueProperty="Language" Orientation="Orientation.Vertical" />
         </Panel>
-
         <Panel Title="Group members">
             <div class="d-flex flex-column gap-2">
                 @for (int i = 0; i < groupMembers; i++)
@@ -51,7 +48,6 @@
                 }
             </div>
         </Panel>
-
     </div>
     <div class="d-flex flex-column">
         <EditForm Model="@request" OnSubmit="SubmitRequestAsync">
@@ -69,7 +65,6 @@
                     Send
                 </button>
             </div>
-
         </EditForm>
     </div>
     <div class="d-flex flex-column my-4 py-3 gap-4">
@@ -83,7 +78,7 @@
                 {
                     <button
                         class="border border-dark rounded rounded-3 px-2 m-1 fs-8 bg-pink bg-opacity-10 d-inline-block tag-width">
-                        @topic.Name<!--!-->
+                        @topic.Name
                         <img class="ms-1" src="images/baseline_clear_24.png" @onclick="@(e => DeleteTopic(topic))"
                             alt="Clear" width="9" height="9">
                     </button>
@@ -100,7 +95,7 @@
                 {
                     <button
                         class="border border-dark rounded rounded-3 px-2 m-1 fs-8 bg-pink bg-opacity-10 d-inline-block tag-width">
-                        @supervisor.FullName<!--!-->
+                        @supervisor.FullName
                         <img class="ms-1" src="images/baseline_clear_24.png" @onclick="@(e => DeleteSupervisor(supervisor))"
                             alt="Clear" width="9" height="9">
                     </button>
