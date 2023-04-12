@@ -17,6 +17,12 @@
             <div class="my-4">
                 <FilterPanelTopics OnInitializedData="FilterPanelTopicsInitialized" DataChanged="OnFilterPanelTopicsTagChanged" />
             </div>
+            <div class="my-4">
+                    <FilterPanelSimple Title="Supervisor status"
+                                       Type="FilterType.SupervisorStatus"
+                                       OnInitializedData="(data) => FilterPanelInitialized(data)"
+                                       DataChanged="OnFilterPanelTagChanged" />
+            </div>
         </div>
         <div class="col-md-5 main-view-size">
             <div class="mb-4">
@@ -34,7 +40,8 @@
             @if (filteredSupervisors != null)
             {
                 <Virtualize TItem="SupervisorDetailsDto" Items="@shownSupervisors" Context="supervisor">
-                        <SupervisorCard FullName = "@supervisor.FullName"
+                        <SupervisorCard Id = "@supervisor.Id"
+                                        FullName = "@supervisor.FullName"
                                         Topics = "@supervisor.Topics" />
                 </Virtualize>
             }

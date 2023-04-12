@@ -30,7 +30,7 @@ public record ProjectCreateDto
     public Ects Ects { get; set; }
 
     [Required]
-    public Semester? Semester { get; set; }
+    public Semester Semester { get; set; } = null!;
 
     [Required]
     public Supervisor Supervisor { get; set; } = null!;

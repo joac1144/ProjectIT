@@ -28,7 +28,7 @@ public class SupervisorsRepository : ISupervisorsRepository
             Email = p.Email,
             Topics = p.Topics,
             Profession = p.Profession,
-            Programme = p.Programme
+            Status = p.Status
         });
 
     }
@@ -50,7 +50,7 @@ public class SupervisorsRepository : ISupervisorsRepository
             Email = supervisor.Email,
             Topics = supervisor.Topics,
             Profession = supervisor.Profession,
-            Programme = supervisor.Programme
+            Status = supervisor.Status
         };
     }
 }

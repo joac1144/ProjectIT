@@ -17,6 +17,7 @@ public partial class SupervisorList
 
     private List<FilterTag> tags = new();
     private List<FilterTagTopic> activeTopics = new();
+    private readonly List<FilterTagSimple> _activeSupervisorStatuses = new();
 
     private SearchField? searchField;
 
@@ -47,6 +48,11 @@ public partial class SupervisorList
         UpdateSupervisors(currentPage);
     }
 
+    private void FilterPanelInitialized(IList<FilterTagSimple> data)
+    {
+        tags = tags.Concat(data).ToList();
+    }
+
     private void FilterPanelTopicsInitialized(IList<FilterTagTopic> data)
     {
         tags = tags.Concat(data).ToList();
@@ -59,9 +65,31 @@ public partial class SupervisorList
         FilterSupervisors();
     }
 
+    private void AddTagToActives(FilterTagSimple filterTag)
+    {
+        switch (filterTag.FilterType)
+        {
+            case FilterType.SupervisorStatus:
+                _activeSupervisorStatuses.Add(filterTag);
+                break;
+        }
+    }
+
     private void RemoveTagFromActives(FilterTag filterTag)
     {
-        activeTopics = activeTopics.Where(ft => ft.Tag != filterTag.Tag).ToList();
+        if (filterTag.GetType() == typeof(FilterTagTopic))
+        {
+            activeTopics = activeTopics.Where(ft => ft.Tag != filterTag.Tag).ToList();
+        }
+        else
+        {
+            switch (((FilterTagSimple)filterTag).FilterType)
+            {
+                case FilterType.SupervisorStatus:
+                    _activeSupervisorStatuses.Remove((FilterTagSimple)filterTag);
+                    break;
+            }
+        }
     }
 
     private void OnFilterPanelTopicsTagChanged(FilterTagTopic filterTag)
@@ -80,10 +108,28 @@ public partial class SupervisorList
         FilterSupervisors();
     }
 
+    private void OnFilterPanelTagChanged(FilterTagSimple filterTag)
+    {
+        tags.Where(ft => ft.Tag == filterTag.Tag).Single().Selected = filterTag.Selected;
+
+        if (filterTag.Selected)
+        {
+            AddTagToActives(filterTag);
+        }
+        else
+        {
+            RemoveTagFromActives(filterTag);
+        }
+
+        FilterSupervisors();
+    }
+
     private void FilterSupervisors()
     {
         List<SupervisorDetailsDto> filteredByTopics = supervisors;
         List<SupervisorDetailsDto>? filteredBySearch = supervisors;
+        List<SupervisorDetailsDto> filteredBySupervisorStatuses = supervisors;
+
 
         if (activeTopics.Any())
         {
@@ -96,12 +142,24 @@ public partial class SupervisorList
                     .ToList();
             }
         }
+        if (_activeSupervisorStatuses.Any())
+        {
+            filteredBySupervisorStatuses = new List<SupervisorDetailsDto>();
+            foreach (FilterTag filterTag in _activeSupervisorStatuses)
+            {
+                filteredBySupervisorStatuses = supervisors!
+                    .Intersect(supervisors?.Where(supervisor => supervisor.Status.ToString() == filterTag.Tag)!)
+                    .Union(filteredBySupervisorStatuses)
+                    .ToList();
+            }
+        }
 
         filteredBySearch = FilterSupervisorsBySearch(searchField?.SearchString);
 
         filteredSupervisors = supervisors
             .Intersect(filteredByTopics)
             .Intersect(filteredBySearch!)
+            .Intersect(filteredBySupervisorStatuses)
             .ToList();
 
         UpdateSupervisors(0);
@@ -126,6 +184,7 @@ public partial class SupervisorList
     {
         tags.ForEach(ft => ft.Selected = false);
         activeTopics.Clear();
+        _activeSupervisorStatuses.Clear();
         FilterSupervisors();
     }
 }
