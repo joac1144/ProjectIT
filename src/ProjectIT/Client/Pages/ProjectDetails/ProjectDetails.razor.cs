@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components;
 using ProjectIT.Shared.Dtos.Projects;
 using System.Net.Http.Json;
 
-namespace ProjectIT.Client.Pages.Project_Details;
+namespace ProjectIT.Client.Pages.ProjectDetails;
 
 public partial class ProjectDetails
 {
