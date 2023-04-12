@@ -4,7 +4,6 @@ using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 
-
 namespace ProjectIT.Client.Pages.CreateRequest;
 
 public partial class CreateRequestPage
@@ -26,7 +25,6 @@ public partial class CreateRequestPage
         public Language Language { get; set; }
         public string StringValue => Language.ToString();
     }
-
 
     private readonly IEnumerable<EctsWrapper> ectsWrappers = Enum.GetValues<Ects>().Select(ects => new EctsWrapper { Ects = ects });
 
@@ -57,9 +55,9 @@ public partial class CreateRequestPage
             Profession = "Monkey",
             Topics = new Topic[] { }
         };
-
         supervisors?.Add(supervisor);
     }
+    
     private void DeleteSupervisor(Supervisor supervisor) => supervisors?.Remove(supervisor);
 
     private async void SubmitRequestAsync()
@@ -77,7 +75,6 @@ public partial class CreateRequestPage
             Semester = request.Semester
         };
 
-
         var response = await httpClient.Client.PostAsJsonAsync("https://localhost:7094/requests", requestDto);
 
         if (response.IsSuccessStatusCode)
@@ -88,12 +85,10 @@ public partial class CreateRequestPage
         {
             //Do something
         }
-
     }
 
     private void CancelRequest()
     {
         navManager.NavigateTo("/");
     }
-
 }
