@@ -21,6 +21,15 @@ public static class SeedData
     private static Topic topic14 = new() { Name = "C", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic15 = new() { Name = "Assembly", Category = TopicCategory.ProgrammingLanguages };
 
+    private static Supervisor supervisor1 = new() { FullName = "John Andersen Doe", Email = "hed@itr.dk", Profession = "Professor", Topics = new List<Topic>() { topic7, topic9, topic14, topic4, topic12 } };
+    private static Supervisor supervisor2 = new() { FullName = "Alice Jones", Email = "hedef@itr.dk", Profession = "PhD Student", Topics = new List<Topic>() { topic3, topic1, topic2, topic15, topic12 } };
+    private static Supervisor supervisor3 = new() { FullName = "John Smith", Email = "hevdfd@itr.dk", Profession = "Professor", Topics = new List<Topic>() { topic3, topic2, topic13, topic6, topic7 } };
+    private static Supervisor supervisor4 = new() { FullName = "Sarah Lee", Email = "hebgfd@itr.dk", Profession = "Professor", Topics = new List<Topic>() { topic8, topic6, topic13 } };
+    private static Student student1 = new() { FullName = "Josefine Henriksen", Email = "hehngd@itr.dk" };
+    private static Student student2 = new() { FullName = "Kristian Jespersen", Email = "hmgjhed@itr.dk" };
+    private static Student student3 = new() { FullName = "Michael Davis", Email = "hessdd@itr.dk" };
+    private static Student student4 = new() { FullName = "Olivia Brown", Email = "hentd@itr.dk" };
+
     private static Project project1 = new()
     {
         Title = "Test",
@@ -97,16 +106,6 @@ public static class SeedData
         SeedUsers(context);
         SeedProjects(context);
     }
-
-    private static Supervisor supervisor1 = new() { FullName = "John Andersen Doe", Email = "hed@itr.dk", Profession = "Professor", Topics = new List<Topic>() { topic7, topic9, topic14, topic4, topic12 } };
-    private static Supervisor supervisor2 = new() { FullName = "Alice Jones", Email = "hedef@itr.dk", Profession = "PhD Student", Topics = new List<Topic>() { topic3, topic1, topic2, topic15, topic12 } };
-    private static Supervisor supervisor3 = new() { FullName = "John Smith", Email = "hevdfd@itr.dk", Profession = "Professor", Topics = new List<Topic>() { topic3, topic2, topic13, topic6, topic7 } };
-    private static Supervisor supervisor4 = new() { FullName = "Sarah Lee", Email = "hebgfd@itr.dk", Profession = "Professor", Topics = new List<Topic>() { topic8, topic6, topic13 } };
-    private static Student student1 = new() { FullName = "Josefine Henriksen", Email = "hehngd@itr.dk" };
-    private static Student student2 = new() { FullName = "Kristian Jespersen", Email = "hmgjhed@itr.dk" };
-    private static Student student3 = new() { FullName = "Michael Davis", Email = "hessdd@itr.dk" };
-    private static Student student4 = new() { FullName = "Olivia Brown", Email = "hentd@itr.dk" };
-
 
     public static void SeedTopics(ProjectITDbContext context)
     {
