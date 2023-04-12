@@ -36,7 +36,7 @@ public class ProjectsRepositoryTests : IDisposable
                 Programmes = new[] { Programme.BDS },
                 Ects = Ects.Bachelor,
                 Semester = new() { Season = Season.Spring, Year = 2024 },
-                Supervisor = new() { FullName = "test", Email = "test", Topics = new Topic[] { }, Profession = "test" },
+                Supervisor = new() { FullName = "test", Email = "test", Topics = new Topic[] { }, Profession = SupervisorProfession.FullProfessor, Status = SupervisorStatus.Available },
                 Students = new Student[] { }
             },
             new Project
@@ -75,7 +75,8 @@ public class ProjectsRepositoryTests : IDisposable
                     FullName = "Joachim Alexander Kofoed",
                     Email = "jkof@itu.dk",
                     Topics = new Topic[] { },
-                    Profession = "Professor"
+                    Profession = SupervisorProfession.FullProfessor,
+                    Status = SupervisorStatus.Inactive
                 },
                 Students = new Student[] { }
             }
@@ -149,7 +150,8 @@ public class ProjectsRepositoryTests : IDisposable
                 FullName = "Henrik Kjeldsen",
                 Email = "henk@itu.dk",
                 Topics = new Topic[] { },
-                Profession = "Professor"
+                Profession = SupervisorProfession.FullProfessor,
+                Status = SupervisorStatus.Available
             }
         };
         
@@ -181,7 +183,8 @@ public class ProjectsRepositoryTests : IDisposable
                 FullName = "Henrik Kjeldsen",
                 Email = "henk@itu.dk",
                 Topics = new Topic[] { },
-                Profession = "Professor"
+                Profession = SupervisorProfession.FullProfessor,
+                Status = SupervisorStatus.LimitedSupervision
             }
         };
 
@@ -220,7 +223,7 @@ public class ProjectsRepositoryTests : IDisposable
             Programmes = new[] { Programme.MCS },
             Ects = Ects.Master,
             Semester = new() { Season = Season.Autumn, Year = 2025 },
-            Supervisor = new() { FullName = "testUpdated", Email = "testUpdated", Topics = new Topic[] { }, Profession = "testUpdated"},
+            Supervisor = new() { FullName = "testUpdated", Email = "testUpdated", Topics = new Topic[] { }, Profession = SupervisorProfession.FullProfessor, Status = SupervisorStatus.Available },
         };
 
         var resultId = await _projectsRepository.UpdateAsync(projectUpdateDto);

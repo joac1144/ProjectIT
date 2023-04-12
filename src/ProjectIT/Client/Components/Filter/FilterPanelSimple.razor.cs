@@ -50,6 +50,12 @@ public partial class FilterPanelSimple
                     Data.Add(new FilterTagSimple { Tag = lang.ToString(), FilterType = FilterType.Language });
                 }
                 break;
+            case FilterType.SupervisorStatus:
+                foreach (SupervisorStatus st in Enum.GetValues<SupervisorStatus>())
+                {
+                    Data.Add(new FilterTagSimple { Tag = st.ToString(), FilterType = FilterType.SupervisorStatus });
+                }
+                break;
         }
 
         if (OnInitializedData.HasDelegate)

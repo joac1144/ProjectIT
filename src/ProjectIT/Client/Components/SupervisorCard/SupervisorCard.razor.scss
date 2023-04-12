@@ -1,0 +1,13 @@
+.card-size {
+    width: 35rem;
+    height: 8rem;
+}
+
+.card-wrapper {
+    pointer-events: none;
+}
+
+.card-zoom:hover .card-wrapper {
+    transform: scale(1.05);
+    transition-duration: 0.2s;
+}

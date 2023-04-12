@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using ProjectIT.Server.Database;
-using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Server.Repositories.Implementations;
+using ProjectIT.Server.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +21,7 @@ builder.Services.AddScoped<IProjectITDbContext, ProjectITDbContext>();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 builder.Services.AddScoped<ITopicsRepository, TopicsRepository>();
 builder.Services.AddScoped<IRequestsRepository, RequestRepository>();
+builder.Services.AddScoped<ISupervisorsRepository, SupervisorsRepository>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

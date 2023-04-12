@@ -36,6 +36,20 @@
     "inputFile": "Components/Login/LoginDisplay.razor.scss"
   },
   {
+    "outputFile": "Pages/CreateProject/CreateProjectPage.razor.css",
+    "inputFile": "Pages/CreateProject/CreateProjectPage.razor.scss"
+  },
+  {
+    "outputFile": "Components/SupervisorCard/SupervisorCard.razor.css",
+    "inputFile": "Components/SupervisorCard/SupervisorCard.razor.scss"
+  },
+  {
+    "outputFile": "Pages/SupervisorsList/SupervisorList.razor.css",
+    "inputFile": "Pages/SupervisorsList/SupervisorList.razor.scss"
+  },
+  {
+    "outputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.css",
+    "inputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.scss"
     "outputFile": "Pages/Supervisor/CreateProject/CreateProjectPage.razor.css",
     "inputFile": "Pages/Supervisor/CreateProject/CreateProjectPage.razor.scss"
   },

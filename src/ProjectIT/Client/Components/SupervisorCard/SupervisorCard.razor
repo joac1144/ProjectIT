@@ -1,0 +1,19 @@
+@using ProjectIT.Client.Components.Tag
+@using ProjectIT.Client.Components.Filter
+@inject HttpClient httpClient
+
+<div class="card-zoom card-size mb-3">
+    <a href=@($"supervisor-details/{Id}") class="link-dark text-decoration-none card-size d-block">
+        <div class="shadow rounded bg-white rounded-1 px-4 py-2 mb-3 card-size overflow-hidden card-wrapper">
+            <div class="row">
+                <img src=@("https://wallpapers.com/images/hd/cool-profile-pictures-hoodie-cat-6dkl56hixhnq590g.jpg") class="rounded-circle img-fluid col-md-3" />
+                <div class="col-md-9">
+                    <div class="fs-4 fw-bold truncate-text pb-2">@FullName</div>
+                    <div class="d-flex flex-start flex-wrap">
+                        <TagsDisplay Tags="Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

@@ -5,5 +5,6 @@ public enum FilterType
     Programme,
     ECTS,
     Semester,
-    Language
+    Language,
+    SupervisorStatus
 }
