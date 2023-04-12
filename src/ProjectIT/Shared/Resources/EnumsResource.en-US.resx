@@ -183,4 +183,37 @@
   <data name="TopicCategory.SoftwareEngineering" xml:space="preserve">
     <value>Software engineering</value>
   </data>
+  <data name="SupervisorProfession.FullProfessor" xml:space="preserve">
+    <value>Full professor</value>
+  </data>
+  <data name="SupervisorProfession.AssociateProfessor" xml:space="preserve">
+    <value>Associate professor</value>
+  </data>
+  <data name="SupervisorProfession.AssistantProfessor" xml:space="preserve">
+    <value>Assistant professor</value>
+  </data>
+  <data name="SupervisorProfession.AdjunctProfessor" xml:space="preserve">
+    <value>Adjunct professor</value>
+  </data>
+  <data name="SupervisorProfession.ExternalProfessor" xml:space="preserve">
+    <value>External professor</value>
+  </data>
+  <data name="SupervisorProfession.ResearchProfessor" xml:space="preserve">
+    <value>Research professor</value>
+  </data>
+  <data name="SupervisorProfession.Lecturer" xml:space="preserve">
+    <value>Lecturer</value>
+  </data>
+  <data name="SupervisorProfession.PhdStudent" xml:space="preserve">
+    <value>PhD student</value>
+  </data>
+  <data name="SupervisorStatus.Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="SupervisorStatus.LimitedSupervision" xml:space="preserve">
+    <value>Limited supervision</value>
+  </data>
+  <data name="SupervisorStatus.Inactive" xml:space="preserve">
+    <value>Inactive</value>
+  </data>
 </root>

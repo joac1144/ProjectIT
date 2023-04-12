@@ -108,7 +108,8 @@ public partial class CreateProjectPage
                 Id = (new Random()).Next(20, 5000),
                 FullName = authUser?.Identity?.Name!,
                 Email = "jkof@itu.dk",
-                Profession = "Professor",
+                Profession = SupervisorProfession.FullProfessor,
+                Status = SupervisorStatus.Available,
                 Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "test", Category = TopicCategory.SoftwareEngineering } }
             },
             CoSupervisor = project.CoSupervisor

@@ -12,6 +12,7 @@
 @attribute [Authorize]
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
 
 <PageTitle> Project Details </PageTitle>
 <br>
@@ -74,9 +75,12 @@ else
                 <Panel Title="Supervisor" Width="@panelWidth">
                     <p class="fw-normal pt-2">
                     <h6 class="fw-bold"> Info: </h6>
+                    <div class="lh-lg">
                         @project.Supervisor.FullName <br>
                         @project.Supervisor.Email <br>
-                        @project.Supervisor.Profession
+                        @project.Supervisor.Profession.GetTranslatedString(EnumsLocalizer) <br>
+                        <span class="border rounded rounded-3 px-2 fs-8 bg-success text-white d-inline-block">@project.Supervisor.Status.GetTranslatedString(EnumsLocalizer)</span>
+                    </div>
                     </p>
                 </Panel>
             </div>
@@ -86,9 +90,12 @@ else
                     <Panel Title="Co-supervisor" Width="@panelWidth">
                         <p class="fw-normal pt-2">
                         <h6 class="fw-bold"> Info: </h6>
-                            @project.CoSupervisor?.FullName <br>
-                            @project.CoSupervisor?.Email <br>
-                            @project.CoSupervisor?.Profession
+                            <div class="lh-lg">
+                        @project.CoSupervisor?.FullName <br>
+                        @project.CoSupervisor?.Email <br>
+                        @project.CoSupervisor?.Profession.GetTranslatedString(EnumsLocalizer) <br>
+                        <span class="border rounded rounded-3 px-2 fs-8 bg-success text-white d-inline-block">@project.CoSupervisor?.Status.GetTranslatedString(EnumsLocalizer)</span>
+                    </div>
                         </p>
                     </Panel>
                 </div>

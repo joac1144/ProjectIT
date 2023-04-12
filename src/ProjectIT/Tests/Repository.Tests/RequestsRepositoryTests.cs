@@ -45,7 +45,8 @@ public class RequestsRepositoryTests : IDisposable
                         FullName = "RequestSupervisor",
                         Email = "RequestSupervisor@mail.dk",
                         Topics = new Topic[] { },
-                        Profession = "RequestSupervisorProfession"
+                        Profession = SupervisorProfession.AssistantProfessor,
+                        Status = SupervisorStatus.Available
                     }
                 },
                 Ects = Ects.Bachelor,
@@ -90,7 +91,8 @@ public class RequestsRepositoryTests : IDisposable
                         FullName = "RequestSupervisor2",
                         Email = "RequestSupervisor2@mail.dk",
                         Topics = new Topic[] { },
-                        Profession = "RequestSupervisorProfession2"
+                        Profession = SupervisorProfession.ExternalProfessor,
+                        Status = SupervisorStatus.Inactive
                     }
                 },
                 Ects = Ects.Bachelor,
@@ -150,7 +152,8 @@ public class RequestsRepositoryTests : IDisposable
                     FullName = "Henrik Kjeldsen",
                     Email = "henk@itu.dk",
                     Topics = new Topic[] { },
-                    Profession = "Professor"
+                    Profession = SupervisorProfession.Lecturer,
+                    Status = SupervisorStatus.LimitedSupervision
                 }
             },
             Ects = Ects.Bachelor,
