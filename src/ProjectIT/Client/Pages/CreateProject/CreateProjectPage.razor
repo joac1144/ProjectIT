@@ -18,20 +18,20 @@
             <div class="my-4">
                 <Panel Title="Programmes">
                     <RadzenCheckBoxList TValue="Programme"
-                                        Data="@programmeWrappers" 
-                                        @bind-Value=@projectProgrammes 
+                                        Data="@programmeWrappers"
+                                        @bind-Value=@projectProgrammes
                                         TextProperty="StringValue"
-                                        ValueProperty="Programme" 
+                                        ValueProperty="Programme"
                                         Orientation="Orientation.Vertical" />
                 </Panel>
             </div>
             <div class="my-4">
                 <Panel Title="ECTS Points">
-                    <RadzenRadioButtonList TValue="Ects?" 
+                    <RadzenRadioButtonList TValue="Ects?"
                                            Data="ectsWrappers"
-                                           @bind-Value=project.Ects
+                                           @bind-Value=projectEcts
                                            TextProperty="StringValue"
-                                           ValueProperty="Ects" 
+                                           ValueProperty="Ects"
                                            Orientation="Orientation.Vertical" />
                 </Panel>
             </div>
@@ -53,11 +53,11 @@
             <div class="my-4">
                 <Panel Title="Language">
                     <RadzenCheckBoxList TValue="Language"
-                                        Data="@languageWrappers" 
-                                        @bind-Value=@projectLanguages 
-                                        TextProperty="StringValue" 
-                                        ValueProperty="Language" 
-                                        Orientation="Orientation.Vertical"  />
+                                        Data="@languageWrappers"
+                                        @bind-Value=@projectLanguages
+                                        TextProperty="StringValue"
+                                        ValueProperty="Language"
+                                        Orientation="Orientation.Vertical" />
                 </Panel>
             </div>
             <div class="my-4">

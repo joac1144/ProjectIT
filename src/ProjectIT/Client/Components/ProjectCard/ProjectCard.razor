@@ -1,3 +1,5 @@
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
+
 <div class="card-zoom card-size mb-3">
     <a href=@($"project-details/{Id}") class="link-dark text-decoration-none card-size d-block">
         <div class="shadow rounded bg-white rounded-1 px-4 py-4 mb-3 card-size overflow-hidden card-wrapper">
@@ -26,7 +28,7 @@
                     <img src="images\hashtags.png" width="22rem" height="22rem">
                     <span class="mx-1"></span>
                     <div class="fs-7">
-                        @Ects.ToString()
+                        @Ects.GetTranslatedString(EnumsLocalizer)
                     </div>
                 </div>
 
