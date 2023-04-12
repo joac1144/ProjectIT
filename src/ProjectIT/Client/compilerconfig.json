@@ -38,5 +38,9 @@
   {
     "outputFile": "Pages/Supervisor/CreateProject/CreateProjectPage.razor.css",
     "inputFile": "Pages/Supervisor/CreateProject/CreateProjectPage.razor.scss"
+  },
+  {
+    "outputFile": "Components/Dropdown/DropdownItem.razor.css",
+    "inputFile": "Components/Dropdown/DropdownItem.razor.scss"
   }
 ]

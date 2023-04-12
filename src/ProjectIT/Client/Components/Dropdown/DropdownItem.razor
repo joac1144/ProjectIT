@@ -1,0 +1,9 @@
+﻿<button type="button" class="btn border-0 dropdown-item" @onclick="OnClick">@Text</button>
+
+@code {
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+}

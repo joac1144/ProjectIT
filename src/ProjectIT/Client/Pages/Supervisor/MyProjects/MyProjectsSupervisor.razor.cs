@@ -9,7 +9,7 @@ public partial class MyProjectsSupervisor
 {
     private IEnumerable<ProjectDetailsDto> projects; // List of supervisor's projects
 
-    private object? sortValue;
+    private string? sortValue;
     private readonly IEnumerable<Sort> _sortValues = Enum.GetValues<Sort>();
 
     protected override async Task OnInitializedAsync()
@@ -48,9 +48,9 @@ public partial class MyProjectsSupervisor
 
     private void OnSort(object value)
     {
-        sortValue = value;
         if (projects != null && value.GetType() == typeof(string))
         {
+            sortValue = value.ToString();
             switch (value)
             {
                 case nameof(Sort.Semester):
@@ -61,5 +61,10 @@ public partial class MyProjectsSupervisor
                     break;
             }
         }
+    }
+
+    private void DeleteProject(int id)
+    {
+
     }
 }
