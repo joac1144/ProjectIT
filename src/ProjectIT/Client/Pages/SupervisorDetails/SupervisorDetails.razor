@@ -1,0 +1,84 @@
+@page "/supervisor-details/{id:int}"
+@using ProjectIT.Client.Components.Panel
+@using ProjectIT.Client.Components.Tag
+@using ProjectIT.Client.Components.Filter
+@using ProjectIT.Client.Components.ProjectCard
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
+
+<PageTitle> Supervisor details </PageTitle>
+<br>
+
+@if (supervisor == null)
+{
+    <div class="d-flex align-items-center justify-content-center h-100">
+        <div class="spinner-border spinner" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-flex flex-row justify-content-center panel-gap">
+        <div class="d-flex flex-column">
+            <div>
+                <img src=@("https://wallpapers.com/images/hd/cool-profile-pictures-hoodie-cat-6dkl56hixhnq590g.jpg") width="160rem" class="rounded-circle img-fluid" />
+            </div>
+        </div>
+        <div>
+            <div class="mb-4">
+                <h1 class="fw-bold"> @supervisor.FullName </h1>
+            </div>
+            @* @if (supervisor.Projects.Count > 0)
+            {
+                var supervisorProjects = supervisor.Projects;
+
+                if (supervisorProjects.Any())
+                {
+                    @foreach (var project in supervisorProjects)
+                    {
+                        <ProjectCard Id="@project.Id"
+                                     Title="@project.Title"
+                                     DescriptionHtml="@project.DescriptionHtml"
+                                     Programmes="@project.Programmes"
+                                     Ects="@project.Ects"
+                                     Semester="@project.Semester" />
+                    }
+                }
+            }
+            else
+            { *@
+                <h3 class="text-secondary">@supervisor.FullName has not posted any projects yet.</h3>
+            @* } *@
+        </div>
+        <div class="d-flex flex-column">
+            <div>
+                <Panel Title="Supervisor" Width="@panelWidth">
+                    <p class="fw-normal pt-2">
+                    <h6 class="fw-bold"> Info: </h6>
+                    <div class="lh-lg">
+                        @supervisor.FullName <br>
+                        @supervisor.Email <br>
+                        @supervisor.Profession.GetTranslatedString(EnumsLocalizer) <br>
+                        <span class="border rounded rounded-4 mt-2 px-3 fs-8 bg-success text-white d-inline-block">@supervisor.Status.GetTranslatedString(EnumsLocalizer)</span>
+                    </div>
+                    </p>
+                </Panel>
+            </div>
+            <div class="my-4">
+                <Panel title="Topics" Width="@panelWidth">
+                    <div class="d-flex flex-start flex-wrap py-2">
+                        <TagsDisplay Tags="supervisor.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                    </div>
+                </Panel>
+            </div>
+            <div class="d-flex justify-content-center">
+                <button @onclick="(() => RequestSupervision(navigationManager))" type="button" class="btn bg-black text-white fw-bold px-3 py-1" style="width: fit-content;"> Request Supervision </button>
+            </div>
+        </div>
+    </div>
+}
