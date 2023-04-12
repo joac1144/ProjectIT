@@ -15,8 +15,8 @@ public partial class SupervisorDetails
 
     private void RequestSupervision(NavigationManager navigationManager)
     {
-        // should go to create request page and pre-select the given supervisor.
-        navigationManager.NavigateTo("/");
+        /// Should also pre-select the given supervisor in the create request page.
+        // navigationManager.NavigateTo("create-request");
     }
 
     protected override async Task OnInitializedAsync()
