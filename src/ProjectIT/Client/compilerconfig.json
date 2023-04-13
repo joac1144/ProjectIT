@@ -50,9 +50,5 @@
   {
     "outputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.css",
     "inputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.scss"
-  },
-  {
-    "outputFile": "Components/Dropdown/DropdownItem.razor.css",
-    "inputFile": "Components/Dropdown/DropdownItem.razor.scss"
   }
 ]

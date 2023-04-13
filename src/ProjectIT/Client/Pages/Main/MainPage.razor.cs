@@ -256,7 +256,6 @@ public partial class MainPage
 
     private void OnSort(object value)
     {
-        sortValue = value.ToString();
         if (filteredProjects != null && value.GetType() == typeof(string))
         {
             switch (value)
