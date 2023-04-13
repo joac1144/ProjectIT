@@ -22,8 +22,8 @@ public record SupervisorDetailsDto
     public IEnumerable<Topic> Topics { get; set; } = null!;
 
     [Required]
-    public string Profession { get; set; } = null!;
+    public SupervisorProfession Profession { get; set; }
 
-    // For Co-supervisors that might be PhD or Master students.
-    public Programme? Programme { get; set; } = null!;
+    [Required]
+    public SupervisorStatus Status { get; set; }
 }

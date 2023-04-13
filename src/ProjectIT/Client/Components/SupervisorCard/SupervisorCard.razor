@@ -3,7 +3,7 @@
 @inject HttpClient httpClient
 
 <div class="card-zoom card-size mb-3">
-    <a href="/supervisor-list" class="link-dark text-decoration-none card-size d-block">
+    <a href=@($"supervisor-details/{Id}") class="link-dark text-decoration-none card-size d-block">
         <div class="shadow rounded bg-white rounded-1 px-4 py-2 mb-3 card-size overflow-hidden card-wrapper">
             <div class="row">
                 <img src=@("https://wallpapers.com/images/hd/cool-profile-pictures-hoodie-cat-6dkl56hixhnq590g.jpg") class="rounded-circle img-fluid col-md-3" />

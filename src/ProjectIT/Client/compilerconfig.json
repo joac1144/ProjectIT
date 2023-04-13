@@ -50,5 +50,9 @@
   {
     "outputFile": "Pages/SupervisorsList/SupervisorList.razor.css",
     "inputFile": "Pages/SupervisorsList/SupervisorList.razor.scss"
+  },
+  {
+    "outputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.css",
+    "inputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.scss"
   }
 ]

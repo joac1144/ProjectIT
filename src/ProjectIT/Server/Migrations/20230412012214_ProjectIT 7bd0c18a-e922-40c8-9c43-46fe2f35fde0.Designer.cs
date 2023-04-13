@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProjectIT.Server.Database;
@@ -11,9 +12,11 @@ using ProjectIT.Server.Database;
 namespace ProjectIT.Server.Migrations
 {
     [DbContext(typeof(ProjectITDbContext))]
-    partial class ProjectITDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230412012214_ProjectIT 7bd0c18a-e922-40c8-9c43-46fe2f35fde0")]
+    partial class ProjectIT7bd0c18ae92240c89c4346fe2f35fde0
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,9 +219,6 @@ namespace ProjectIT.Server.Migrations
 
                     b.ToTable("Users", t =>
                         {
-                            t.Property("Programme")
-                                .HasColumnName("Student_Programme");
-
                             t.Property("RequestId")
                                 .HasColumnName("Student_RequestId");
                         });
@@ -232,9 +232,6 @@ namespace ProjectIT.Server.Migrations
 
                     b.Property<string>("Profession")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Programme")
                         .HasColumnType("text");
 
                     b.Property<int?>("RequestId")

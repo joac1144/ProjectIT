@@ -81,10 +81,17 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
             .HasConversion<string>();
 
         modelBuilder.Entity<Supervisor>()
-            .Property(s => s.Programme)
+            .Property(s => s.Profession)
             .HasConversion(
                 p => p.ToString(),
-                p => (Programme)Enum.Parse(typeof(Programme), p)
+                p => (SupervisorProfession)Enum.Parse(typeof(SupervisorProfession), p)
+            );
+
+        modelBuilder.Entity<Supervisor>()
+            .Property(s => s.Status)
+            .HasConversion(
+                p => p.ToString(),
+                p => (SupervisorStatus)Enum.Parse(typeof(SupervisorStatus), p)
             );
     }
 }
