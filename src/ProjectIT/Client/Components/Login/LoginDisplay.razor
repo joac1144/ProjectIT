@@ -4,12 +4,16 @@
 
 <AuthorizeView>
     <Authorized>
-        <div>
-            <a class="cursor-pointer text-decoration-none fw-bold text-white p-3" @onclick="BeginLogOut"> Log out </a>
-            <img style="height: 40px; padding-right: 7px;" src="images/profile_icon.png" alt="Pic not found" />
+        <div class="me-3 d-flex align-items-center">
+            <div class="dimensions decoration-on-hover d-flex align-items-center">
+                <a class="text-decoration-none fw-bold text-white px-3 py-4" @onclick="BeginLogOut"> Log out </a>
+            </div>
+            <img style="height: 40px; padding-right: 7px;" src="images/profile_icon.png" />
         </div>
     </Authorized>
     <NotAuthorized>
-        <a class="text-decoration-none fw-bold text-white p-3 cursor-pointer" @onclick="BeginLogIn"> Log in </a> 
+        <div class="me-3">
+            <a class="decoration-on-hover text-decoration-none fw-bold text-white pb-4 me-2" @onclick="BeginLogIn"> Log in </a> 
+        </div>
     </NotAuthorized>
 </AuthorizeView>

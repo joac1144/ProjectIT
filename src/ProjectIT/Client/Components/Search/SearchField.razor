@@ -1,6 +1,9 @@
 ﻿<div class="px-3 rounded-pill bg-white border-dark border-1 border-style-solid d-inline-flex justify-content-start align-items-center" style=@($"height: {Height}; width: {Width};")>
-    <div class="d-flex align-items-center" style="height: 100%;">
-        <img class="w-auto h-75" src="lib/bootstrap-icons/search.svg" alt="Search" />
-    </div>
+    @if (ShowSearchIcon)
+    {
+        <div class="d-flex align-items-center" style="height: 100%;">
+            <img class="w-auto h-75" src="lib/bootstrap-icons/search.svg" alt="Search" />
+        </div>
+    }
     <input class="border-0 px-2 w-100" type="text" placeholder="@PlaceholderText" @bind-value="SearchString" @oninput="((e) => OnInput(e.Value?.ToString()!))" />
 </div>

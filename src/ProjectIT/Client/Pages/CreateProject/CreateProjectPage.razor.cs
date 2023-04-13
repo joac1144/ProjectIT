@@ -50,6 +50,8 @@ public partial class CreateProjectPage
 
     private RadzenDropDown<Topic>? topicSelector;
 
+    private string? topicName;
+
     private ClaimsPrincipal? authUser;
 
     protected override async Task OnInitializedAsync()
@@ -87,9 +89,11 @@ public partial class CreateProjectPage
 
     private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
 
-    private void OnAddTopicButtonClicked()
+    private void OnAddNewTopicFromSearchClicked() 
     {
-        // Add ability to add new topic.
+        if (!string.IsNullOrWhiteSpace(topicName) || topics.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
+            projectTopics.Add(new Topic { Name = topicName! });
+        topicName = string.Empty;
     }
 
     private async Task SubmitProjectAsync()

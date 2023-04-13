@@ -9,5 +9,17 @@
 }
 
 .tag-width {
-    width: max-content;
+    width: fit-content;
+}
+
+.btn-style {
+    width: 10rem;
+}
+
+.rotate-45 {
+    transform: rotate(45deg);
+}
+
+.add-image-size {
+    width: 28px;
 }
