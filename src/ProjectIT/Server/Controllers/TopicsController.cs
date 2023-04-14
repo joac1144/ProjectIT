@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectIT.Shared.Models;
 using ProjectIT.Server.Repositories.Interfaces;
+using ProjectIT.Shared;
 
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route(ApiEndpoints.Topics)]
 public class TopicsController : ControllerBase
 {
     private readonly ITopicsRepository _repository;

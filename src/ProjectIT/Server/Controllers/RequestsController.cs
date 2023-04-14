@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectIT.Server.Repositories.Interfaces;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Requests;
 
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route(ApiEndpoints.Requests)]
 public class RequestsController : ControllerBase
 {
     private readonly IRequestsRepository _repository;

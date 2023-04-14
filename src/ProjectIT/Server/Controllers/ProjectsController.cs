@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectIT.Server.Repositories.Interfaces;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route(ApiEndpoints.Projects)]
 public class ProjectsController : ControllerBase
 {
     private readonly IProjectsRepository _repository;

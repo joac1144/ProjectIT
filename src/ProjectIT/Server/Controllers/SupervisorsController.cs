@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectIT.Server.Repositories.Interfaces;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Users;
 
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route(ApiEndpoints.Supervisors)]
 public class SupervisorsController : ControllerBase
 {
     private readonly ISupervisorsRepository _repository;
