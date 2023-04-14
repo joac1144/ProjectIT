@@ -4,7 +4,7 @@ using ProjectIT.Client.Shared.Enums;
 using ProjectIT.Shared.Dtos.Projects;
 using System.Net.Http.Json;
 
-namespace ProjectIT.Client.Pages.Supervisor.MyProjects;
+namespace ProjectIT.Client.Pages.Supervisors.MyProjects;
 
 public partial class MyProjectsSupervisor
 {

@@ -11,7 +11,7 @@ using ProjectIT.Shared.Models;
 using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
 
-namespace ProjectIT.Client.Pages.Supervisor.CreateProject;
+namespace ProjectIT.Client.Pages.Supervisors.CreateProject;
 
 public partial class CreateProjectPage
 {
