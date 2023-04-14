@@ -14,6 +14,9 @@ public partial class SearchField
     public string Width { get; init; } = "250px";
 
     [Parameter]
+    public bool ShowSearchIcon { get; init; } = true;
+
+    [Parameter]
     public EventCallback<string> OnInputValueChanged { get; set; }
 
     public string? SearchString { get; set; }

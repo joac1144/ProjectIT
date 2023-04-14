@@ -1,22 +1,36 @@
 @using ProjectIT.Client.Components.Login
+@inject NavigationManager Navigation
 
 <body>
     <nav class="navbar">
         <div class="d-flex align-items-center">
             <div class="d-flex flex-column justify-content-center py-2 px-3">
-                <img src="images/projectIT_main_logo.jpg" alt="">
-                <h4 class="text-white"> ProjectIT </h4>
+                <img src="images/projectIT_main_logo.jpg">
+                <h5 class="text-white"> ProjectIT </h5>
             </div>
-            <div style=" border-right: 2px solid white;height: 50px;width: 20px; "></div>
+            <div class="line-style"></div>
             <h5 class="text-white p-3"> IT UNIVERSITETET I KØBENHAVN</h5>
-            <span style="width: 40px;"> </span>
-            <div class="d-flex" style="gap: 50px;">
-                <a class="text-decoration-none fw-bold p-1 text-white" href="/"> Home </a>
-                <a class="text-decoration-none fw-bold p-1 text-white" href="Counter"> Counter </a>
-                <a class="text-decoration-none fw-bold p-1 text-white" href="FetchData"> Fetch Data </a>
-                <a class="text-decoration-none fw-bold p-1 text-white" href="TestPage"> Test </a>
-                <a class="text-decoration-none fw-bold p-1 text-white" href="create-project"> Create Project </a>
-                <a class="text-decoration-none fw-bold p-1 text-white" href="supervisor-list"> Supervisors </a>
+            <div class="d-flex ms-4">
+                <div class="decoration-on-hover dimensions d-flex align-items-center">
+                    <div>
+                        <a class=@($"text-decoration-none link-padding py-4 fw-bold text-white {(activeTab == home ? "active" : "")}") href="/" @onclick="() => SetActiveTab(home)"> Home </a>
+                    </div>
+                </div>
+                <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
+                    <div>
+                        <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == createProject ? "active" : "")}") href="create-project" @onclick="() => SetActiveTab(createProject)"> Create Project </a>
+                    </div>
+                </div>
+                <div class="decoration-on-hover dimensions d-flex mx-4 align-items-center justify-content-center">
+                    <div>
+                        <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == createRequest ? "active" : "")}") href="create-request" @onclick="() => SetActiveTab(createRequest)"> Create Request </a>
+                    </div>
+                </div>
+                <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
+                    <div>
+                        <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == supervisors ? "active" : "")}") href="supervisor-list" @onclick="() => SetActiveTab(supervisors)"> Supervisors </a>
+                    </div>
+                </div>
             </div>
         </div>
         <LoginDisplay />

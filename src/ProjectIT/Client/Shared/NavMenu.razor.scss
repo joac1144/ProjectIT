@@ -6,10 +6,30 @@
 
 .navbar {
     background-color: rgba(0, 0, 0, 0.96);
-    height: 5rem;
+    height: 4.7rem;
     width: 100%;
 }
 
-a:hover {
-    border-bottom: 3px solid white;
+.active {
+    border-bottom: 4px solid white !important;
+}
+
+.decoration-on-hover:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.line-style {
+    border-right: 2px solid white; 
+    height: 50px; 
+    width: 0px;
+}
+
+.dimensions {
+    height: 4.7rem;
+    width: 7rem;
+}
+
+.link-padding {
+    padding-right: 2.3rem;
+    padding-left: 2.3rem;
 }
