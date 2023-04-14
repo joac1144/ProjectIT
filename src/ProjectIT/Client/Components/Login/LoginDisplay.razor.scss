@@ -1,3 +1,16 @@
-.cursor-pointer {
+a:hover {
     cursor: pointer;
+}
+
+.decoration-on-hover:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dimensions {
+    height: 4.7rem;
+}
+
+.link-padding {
+    padding-right: 1rem;
+    padding-left: 1rem;
 }

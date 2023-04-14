@@ -40,6 +40,10 @@
     "inputFile": "Pages/Supervisor/CreateProject/CreateProjectPage.razor.scss"
   },
   {
+    "outputFile": "Pages/CreateRequest/CreateRequestPage.razor.css",
+    "inputFile": "Pages/CreateRequest/CreateRequestPage.razor.scss"
+  },
+  {
     "outputFile": "Components/SupervisorCard/SupervisorCard.razor.css",
     "inputFile": "Components/SupervisorCard/SupervisorCard.razor.scss"
   },
