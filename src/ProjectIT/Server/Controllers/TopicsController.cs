@@ -5,7 +5,7 @@ using ProjectIT.Server.Repositories.Interfaces;
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class TopicsController : ControllerBase
 {
     private readonly ITopicsRepository _repository;

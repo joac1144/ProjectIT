@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
-using Microsoft.JSInterop;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Requests;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Extensions;
@@ -73,10 +73,10 @@ public partial class CreateRequestPage
 
     private async Task getSupervisorsAndTopicsData()
     {
-        topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>("topics"))!;
+        topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
             throw new Exception("Could not load topics");
-        supervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>("supervisors"))!;
+        supervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!;
         if (supervisors == null)
             throw new Exception("Could not load supervisors");
     }

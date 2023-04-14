@@ -5,7 +5,7 @@ using ProjectIT.Shared.Dtos.Users;
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class SupervisorsController : ControllerBase
 {
     private readonly ISupervisorsRepository _repository;

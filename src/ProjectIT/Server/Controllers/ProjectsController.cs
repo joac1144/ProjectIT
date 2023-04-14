@@ -7,7 +7,7 @@ using ProjectIT.Shared.Models;
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class ProjectsController : ControllerBase
 {
     private readonly IProjectsRepository _repository;

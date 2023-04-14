@@ -1,9 +1,7 @@
-using Microsoft.AspNetCore.Components;
 using ProjectIT.Client.Components.Filter;
 using ProjectIT.Client.Components.Search;
-using ProjectIT.Shared.Dtos.Topics;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Users;
-using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages.SupervisorsList;
@@ -27,7 +25,7 @@ public partial class SupervisorList
 
     protected async override Task OnInitializedAsync()
     {
-        supervisors = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<SupervisorDetailsDto>>("supervisors"))?.ToList()!;
+        supervisors = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<SupervisorDetailsDto>>(ApiEndpoints.Supervisors))?.ToList()!;
         filteredSupervisors = supervisors;
         UpdateSupervisors(0);
     }
@@ -35,7 +33,7 @@ public partial class SupervisorList
     private void UpdateSupervisors(int pageNumber)
     {
         shownSupervisors = filteredSupervisors.Skip(pageNumber * pageSize).Take(pageSize).ToList();
-        totalPages = (int)Math.Ceiling(filteredSupervisors.Count() / (decimal)pageSize);
+        totalPages = (int)Math.Ceiling(filteredSupervisors.Count / (decimal)pageSize);
         currentPage = pageNumber;
     }
 

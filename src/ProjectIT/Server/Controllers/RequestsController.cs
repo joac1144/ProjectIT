@@ -5,7 +5,7 @@ using ProjectIT.Shared.Dtos.Requests;
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class RequestsController : ControllerBase
 {
     private readonly IRequestsRepository _repository;
