@@ -1,4 +1,5 @@
 @using ProjectIT.Client.Components.Login
+@inject NavigationManager Navigation
 
 <body>
     <nav class="navbar">
@@ -9,7 +10,7 @@
             </div>
             <div class="line-style"></div>
             <h5 class="text-white p-3"> IT UNIVERSITETET I KØBENHAVN</h5>
-            <div class="d-flex gap-4 ms-4">
+            <div class="d-flex ms-4">
                 <div class="decoration-on-hover dimensions d-flex align-items-center">
                     <div>
                         <a class=@($"text-decoration-none link-padding py-4 fw-bold text-white {(activeTab == home ? "active" : "")}") href="/" @onclick="() => SetActiveTab(home)"> Home </a>
@@ -20,7 +21,7 @@
                         <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == createProject ? "active" : "")}") href="create-project" @onclick="() => SetActiveTab(createProject)"> Create Project </a>
                     </div>
                 </div>
-                <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
+                <div class="decoration-on-hover dimensions d-flex mx-4 align-items-center justify-content-center">
                     <div>
                         <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == createRequest ? "active" : "")}") href="create-request" @onclick="() => SetActiveTab(createRequest)"> Create Request </a>
                     </div>
