@@ -67,7 +67,7 @@ public static class SeedData
             Email = "jkof@itu.dk",
             Topics = new Topic[] { },
             Profession = SupervisorProfession.FullProfessor,
-            Status = SupervisorStatus.Available
+            Status = SupervisorStatus.LimitedSupervision
         },
         Students = new Student[] { }
     };

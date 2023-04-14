@@ -11,6 +11,9 @@
 
 <div class="d-flex justify-content-center">
     <div class="d-flex flex-column">
+        <div>
+
+        </div>
         <h3 class="fw-bold d-block my-3">My projects</h3>
         <div class="d-flex justify-content-between my-4">
             <button class="rounded rounded-3 bg-black text-white px-4" @onclick="@(() => navigationManager.NavigateTo("/create-project"))">Create new project</button>
@@ -19,26 +22,25 @@
                             Data=@(_sortValues.Select(sortVal => sortVal.ToString()))
                             Change="@OnSort"
                             Placeholder="Sort by"
-                            Style="width: 20%; max-width: 20rem;" />
+                            Style="width: 20%; max-width: 20rem; margin-right: 3.5rem;" />
         </div>
         
         @if (projects != null)
         {
-            var appliedProjects = projects.Where(p => p.Students.Count() > 0);
+            var appliedProjects = projects.Where(p => p.Students.Count() > 0).ToList();
 
             if (appliedProjects.Any())
             {
                 <span class="my-3 fs-6">Applied projects</span>
-                @foreach (var project in appliedProjects)
-                {
+                <Virtualize TItem="ProjectDetailsDto" Items="@appliedProjects" Context="project">
                     <div class="d-flex flex-row align-items-center">
-                        <ProjectCard Id="@project.Id"
-                                        Title="@project.Title"
-                                        DescriptionHtml="@project.DescriptionHtml"
-                                        Programmes="@project.Programmes"
-                                        Ects="@project.Ects"
-                                        Semester="@project.Semester" />
-
+                        <ProjectCard Id="project.Id"
+                                    Title="@project.Title"
+                                    DescriptionHtml="@project.DescriptionHtml"
+                                    Semester= "@project.Semester"
+                                    Ects="@project.Ects"
+                                    Supervisor="@project.Supervisor"
+                                    Programmes="@project.Programmes" />
                         <Dropdown BootstrapIcon="gear-fill" CssClasses="ms-2">
                             <DropdownItems>
                                 <DropdownItem Text="Edit" OnClick="@(() => navigationManager.NavigateTo($"/my-projects/{project.Id}/edit"))" />
@@ -47,19 +49,22 @@
                             </DropdownItems>
                         </Dropdown>
                     </div>
-                }
+                </Virtualize>
                 <hr class="w-50 align-self-center">
             }
-            foreach (var project in projects.Where(p => p.Students == null || p.Students.Count() == 0))
-            {
-                <div class="d-flex flex-row">
-                    <ProjectCard Id="@project.Id"
-                                    Title="@project.Title"
-                                    DescriptionHtml="@project.DescriptionHtml"
-                                    Programmes="@project.Programmes"
-                                    Ects="@project.Ects"
-                                    Semester="@project.Semester"
-                                    CssClasses="mt-3" />
+
+            var nonAppliedProjects = projects.Where(p => p.Students == null || p.Students.Count() == 0).ToList();
+
+            <Virtualize TItem="ProjectDetailsDto" Items="@nonAppliedProjects" Context="project">
+                <div class="d-flex flex-row align-items-center">
+                    <ProjectCard Id="project.Id"
+                                Title="@project.Title"
+                                DescriptionHtml="@project.DescriptionHtml"
+                                Semester= "@project.Semester"
+                                Ects="@project.Ects"
+                                Supervisor="@project.Supervisor"
+                                Programmes="@project.Programmes"
+                                CssClasses="mt-3" />
                     <Dropdown BootstrapIcon="gear-fill" CssClasses="ms-2">
                         <DropdownItems>
                             <DropdownItem Text="Edit" OnClick="@(() => navigationManager.NavigateTo($"/my-projects/{project.Id}/edit"))" />
@@ -68,7 +73,7 @@
                         </DropdownItems>
                     </Dropdown>
                 </div>
-            }
+            </Virtualize>
         }
     </div>
 </div>
