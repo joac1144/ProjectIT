@@ -79,7 +79,7 @@ else
                         @project.Supervisor.FullName <br>
                         @project.Supervisor.Email <br>
                         @project.Supervisor.Profession.GetTranslatedString(EnumsLocalizer) <br>
-                        <span class="border rounded rounded-3 px-2 fs-8 bg-success text-white d-inline-block">@project.Supervisor.Status.GetTranslatedString(EnumsLocalizer)</span>
+                        <span class=@($"border rounded rounded-3 px-2 fs-8 text-white d-inline-block {statusSupervisor} ")>@project.Supervisor.Status.GetTranslatedString(EnumsLocalizer)</span>
                     </div>
                     </p>
                 </Panel>
@@ -94,7 +94,7 @@ else
                         @project.CoSupervisor?.FullName <br>
                         @project.CoSupervisor?.Email <br>
                         @project.CoSupervisor?.Profession.GetTranslatedString(EnumsLocalizer) <br>
-                        <span class="border rounded rounded-3 px-2 fs-8 bg-success text-white d-inline-block">@project.CoSupervisor?.Status.GetTranslatedString(EnumsLocalizer)</span>
+                        <span class=@($"border rounded rounded-3 px-2 fs-8 text-white d-inline-block {statusCoSupervisor} ")>@project.CoSupervisor?.Status.GetTranslatedString(EnumsLocalizer)</span>
                     </div>
                         </p>
                     </Panel>

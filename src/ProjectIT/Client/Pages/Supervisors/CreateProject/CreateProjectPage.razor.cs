@@ -11,7 +11,7 @@ using ProjectIT.Shared.Models;
 using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
 
-namespace ProjectIT.Client.Pages.CreateProject;
+namespace ProjectIT.Client.Pages.Supervisors.CreateProject;
 
 public partial class CreateProjectPage
 {
@@ -107,7 +107,7 @@ public partial class CreateProjectPage
             Programmes = projectProgrammes!,
             Ects = (Ects)projectEcts!,
             Semester = project.Semester,
-            Supervisor = new Supervisor 
+            Supervisor = new()
             {
                 Id = (new Random()).Next(20, 5000),
                 FullName = authUser?.Identity?.Name!,

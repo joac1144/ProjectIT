@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectIT.Shared", "Shared\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{86943479-31F1-4DB3-8957-87A59740FC42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller.Tests", "Tests\Controller.Tests\Controller.Tests.csproj", "{094FA044-E5A4-4590-B9AB-18DFB3603BC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller.Tests", "Tests\Controller.Tests\Controller.Tests.csproj", "{094FA044-E5A4-4590-B9AB-18DFB3603BC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository.Tests", "Tests\Repository.Tests\Repository.Tests.csproj", "{8F96B081-5315-44D6-B29F-D761B48D37C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository.Tests", "Tests\Repository.Tests\Repository.Tests.csproj", "{8F96B081-5315-44D6-B29F-D761B48D37C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,11 +45,11 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {996ADE03-0DD5-41DF-BD99-EBC6AC5EE410}
-	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{094FA044-E5A4-4590-B9AB-18DFB3603BC7} = {86943479-31F1-4DB3-8957-87A59740FC42}
 		{8F96B081-5315-44D6-B29F-D761B48D37C0} = {86943479-31F1-4DB3-8957-87A59740FC42}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {996ADE03-0DD5-41DF-BD99-EBC6AC5EE410}
 	EndGlobalSection
 EndGlobal
