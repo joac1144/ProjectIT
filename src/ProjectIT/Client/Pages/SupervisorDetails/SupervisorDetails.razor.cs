@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Users;
 using ProjectIT.Shared.Enums;
 using System.Net.Http.Json;
@@ -24,11 +25,11 @@ public partial class SupervisorDetails
 
     protected override async Task OnInitializedAsync()
     {
-        supervisor = await httpClient.GetFromJsonAsync<SupervisorDetailsDto>($"supervisors/{Id}");
-        setSupervisorStatus(supervisor!.Status);
+        supervisor = await httpClient.GetFromJsonAsync<SupervisorDetailsDto>($"{ApiEndpoints.Supervisors}/{Id}");
+        SetSupervisorStatus(supervisor!.Status);
     }
 
-    private void setSupervisorStatus(SupervisorStatus supervisorStatus)
+    private void SetSupervisorStatus(SupervisorStatus supervisorStatus)
     {
         switch (supervisorStatus)
         {
