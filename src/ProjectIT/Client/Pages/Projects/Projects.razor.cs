@@ -4,14 +4,14 @@ using ProjectIT.Client.Shared.Enums;
 using ProjectIT.Shared.Dtos.Projects;
 using System.Net.Http.Json;
 
-namespace ProjectIT.Client.Pages.Main;
+namespace ProjectIT.Client.Pages.Projects;
 
-public partial class MainPage
+public partial class Projects
 {
     private List<ProjectDetailsDto> projects = new();
-    private List<Sort> sortValues = Enum.GetValues<Sort>().ToList();
+    private readonly List<Sort> sortValues = Enum.GetValues<Sort>().ToList();
     private string? sortValue;
-    private string sortSemester = Sort.Semester.ToString();
+    private readonly string sortSemester = Sort.Semester.ToString();
 
     private List<ProjectDetailsDto> filteredProjects = new();
     private List<ProjectDetailsDto> shownProjects = new();
@@ -26,7 +26,7 @@ public partial class MainPage
 
     private SearchField? searchField;
 
-    private int pageSize = 10;
+    private readonly int pageSize = 10;
     private int totalPages;
     private int currentPage;
 
