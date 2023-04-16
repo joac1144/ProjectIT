@@ -2,11 +2,12 @@
 using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
+using ProjectIT.Shared;
 
 namespace ProjectIT.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route(ApiEndpoints.Gpt)]
 public class GptController : ControllerBase
 {
     private readonly IConfiguration _configuration;

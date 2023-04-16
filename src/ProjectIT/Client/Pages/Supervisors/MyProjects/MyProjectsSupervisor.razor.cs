@@ -1,6 +1,7 @@
 ﻿using Microsoft.JSInterop;
 using ProjectIT.Client.Components.Modal;
 using ProjectIT.Client.Shared.Enums;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using System.Net.Http.Json;
 
@@ -18,7 +19,7 @@ public partial class MyProjectsSupervisor
     protected override async Task OnInitializedAsync()
     {
         // Fetch supervisor's projects.
-        projects = await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects"); /*await httpClient.GetFromJsonAsync<IEnumerable<Supervisor>>("supervisors").Where(...).Select(supervisor => supervisor.Projects);*/
+        projects = await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects); /*await httpClient.GetFromJsonAsync<IEnumerable<Supervisor>>("supervisors").Where(...).Select(supervisor => supervisor.Projects);*/
     }
 
     private void OnSort(object value)
@@ -40,7 +41,7 @@ public partial class MyProjectsSupervisor
 
     private async void DeleteProject(int id)
     {
-        var response = httpClient.DeleteAsync($"projects/{id}");
+        var response = httpClient.DeleteAsync($"{ApiEndpoints.Projects}/{id}");
 
         if (!response.Result.IsSuccessStatusCode)
         {

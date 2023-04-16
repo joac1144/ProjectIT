@@ -1,4 +1,5 @@
 using ProjectIT.Client.Components.Filter;
+using ProjectIT.Shared;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages.Test;
@@ -31,7 +32,7 @@ public partial class TestPage
 
     private async Task GetGptChatCompletion()
     {
-        var response = await httpClient.PostAsJsonAsync("gpt", "Write a project description about a project which purpose is to make it easier for students to find a relevant project and supervisor for their bachelor project");
+        var response = await httpClient.PostAsJsonAsync(ApiEndpoints.Gpt, "Write a project description about a project which purpose is to make it easier for students to find a relevant project and supervisor for their bachelor project");
 
         GptResult = await response.Content.ReadAsStringAsync();
     }

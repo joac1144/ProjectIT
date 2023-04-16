@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
 using System.Net.Http.Json;
@@ -23,12 +24,12 @@ public partial class ProjectDetails
 
     protected override async Task OnInitializedAsync()
     {
-        project = await httpClient.GetFromJsonAsync<ProjectDetailsDto>($"projects/{Id}");
-        setSupervisorStatus(project!.Supervisor.Status);
-        setCoSupervisorStatus(project.CoSupervisor?.Status);
+        project = await httpClient.GetFromJsonAsync<ProjectDetailsDto>($"{ApiEndpoints.Projects}/{Id}");
+        SetSupervisorStatus(project!.Supervisor.Status);
+        SetCoSupervisorStatus(project.CoSupervisor?.Status);
     }
 
-    private void setSupervisorStatus(SupervisorStatus supervisorStatus)
+    private void SetSupervisorStatus(SupervisorStatus supervisorStatus)
     {
         switch (supervisorStatus)
         {
@@ -44,7 +45,7 @@ public partial class ProjectDetails
         }
     }
 
-    private void setCoSupervisorStatus(SupervisorStatus? coSupervisorStatus)
+    private void SetCoSupervisorStatus(SupervisorStatus? coSupervisorStatus)
     {
         switch (coSupervisorStatus)
         {
