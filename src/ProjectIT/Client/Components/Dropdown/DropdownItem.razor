@@ -1,0 +1,8 @@
+﻿@if (OpensModal)
+{
+    <button type="button" class="btn border-0 dropdown-item" @onclick="OnClick" data-bs-toggle="modal" data-bs-target=@($"#{ModalIdentifier}Modal")>@Text</button>
+}
+else
+{
+    <button type="button" class="btn border-0 dropdown-item" @onclick="OnClick">@Text</button>
+}

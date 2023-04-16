@@ -64,7 +64,7 @@ else
                         @supervisor.FullName <br>
                         @supervisor.Email <br>
                         @supervisor.Profession.GetTranslatedString(EnumsLocalizer) <br>
-                        <span class="border rounded rounded-4 mt-2 px-3 fs-8 bg-success text-white d-inline-block">@supervisor.Status.GetTranslatedString(EnumsLocalizer)</span>
+                        <span class=@($"border rounded rounded-4 mt-2 px-3 fs-8 bg-success text-white d-inline-block {statusSupervisor} ")>@supervisor.Status.GetTranslatedString(EnumsLocalizer)</span>
                     </div>
                     </p>
                 </Panel>

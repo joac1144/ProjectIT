@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
@@ -10,7 +9,6 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
     public DbSet<Topic> Topics { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Project> Projects { get; set; } = null!;
-
     public DbSet<Request> Requests { get; set; } = null!;
 
     public ProjectITDbContext(DbContextOptions<ProjectITDbContext> options) : base(options)
@@ -82,16 +80,10 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
 
         modelBuilder.Entity<Supervisor>()
             .Property(s => s.Profession)
-            .HasConversion(
-                p => p.ToString(),
-                p => (SupervisorProfession)Enum.Parse(typeof(SupervisorProfession), p)
-            );
+            .HasConversion<string>();
 
         modelBuilder.Entity<Supervisor>()
             .Property(s => s.Status)
-            .HasConversion(
-                p => p.ToString(),
-                p => (SupervisorStatus)Enum.Parse(typeof(SupervisorStatus), p)
-            );
+            .HasConversion<string>();
     }
 }

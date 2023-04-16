@@ -54,7 +54,12 @@
                     }
                 </div>
                 <div class="col-2 marg p-0">
-                        <RadzenDropDown TValue="string" @bind-Value=@sortValue Data=@(sortValues.Select(sortVal => sortVal.ToString())) Change="@OnSort" Placeholder="Sort by" Style="width: 100%; max-width: 20rem;" />
+                    <RadzenDropDown TValue="string"
+                                    @bind-Value=@sortValue
+                                    Data=@(sortValues.Select(sortVal => sortVal.ToString()))
+                                    Change="@OnSort"
+                                    Placeholder="Sort by"
+                                    Style="width: 100%; max-width: 20rem;" />
                 </div>
             </div>
             @if (filteredProjects != null)

@@ -1,0 +1,15 @@
+﻿<div class=@($"dropdown {CssClasses}")>
+    <button class="btn shadow-none" type="button" data-bs-toggle="dropdown" id="projectCardDropdownButton" aria-haspopup="true" aria-expanded="false">
+        @if (BootstrapIcon != null)
+        {
+            <img src=@($"lib/bootstrap-icons/{BootstrapIcon}.svg") alt="@Text" width="18" height="18">
+        }
+        @if (Text != null)
+        {
+            @Text
+        }
+    </button>
+    <div class="dropdown-menu shadow p-2 rounded rounded-2" aria-labelledby="projectCardDropdownButton">
+        @DropdownItems
+    </div>
+</div>

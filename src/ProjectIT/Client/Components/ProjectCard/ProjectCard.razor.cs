@@ -31,6 +31,9 @@ public partial class ProjectCard
     [Parameter]
     public Ects Ects { get; set; }
 
+    [Parameter]
+    public string? CssClasses { get; set; }
+
     private string Description
     {
         get

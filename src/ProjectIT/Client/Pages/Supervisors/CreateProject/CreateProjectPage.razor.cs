@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Extensions;
@@ -11,7 +12,7 @@ using ProjectIT.Shared.Models;
 using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
 
-namespace ProjectIT.Client.Pages.CreateProject;
+namespace ProjectIT.Client.Pages.Supervisors.CreateProject;
 
 public partial class CreateProjectPage
 {
@@ -62,7 +63,7 @@ public partial class CreateProjectPage
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
-        topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>("topics"))!;
+        topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
             throw new Exception("Could not load topics");
 
@@ -107,7 +108,7 @@ public partial class CreateProjectPage
             Programmes = projectProgrammes!,
             Ects = (Ects)projectEcts!,
             Semester = project.Semester,
-            Supervisor = new Supervisor 
+            Supervisor = new()
             {
                 Id = (new Random()).Next(20, 5000),
                 FullName = authUser?.Identity?.Name!,
@@ -124,7 +125,7 @@ public partial class CreateProjectPage
             // A new topic was added, open dialog to confirm and to add category.
         }
 
-        var response = await httpClient.Client.PostAsJsonAsync("projects", newProject);
+        var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
 
         if (response.IsSuccessStatusCode)
         {

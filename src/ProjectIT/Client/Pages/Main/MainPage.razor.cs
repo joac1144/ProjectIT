@@ -1,5 +1,7 @@
 using ProjectIT.Client.Components.Filter;
 using ProjectIT.Client.Components.Search;
+using ProjectIT.Client.Shared.Enums;
+using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using System.Net.Http.Json;
 
@@ -31,7 +33,7 @@ public partial class MainPage
 
     protected async override Task OnInitializedAsync()
     {
-        projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("https://localhost:7094/projects"))?.ToList()!;
+        projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))?.ToList()!;
         filteredProjects = projects;
         OnSort(sortSemester);
     }
@@ -253,8 +255,7 @@ public partial class MainPage
         OnSort(sortValue ?? nameof(Sort.Semester));
     }
 
-
-    private void OnSort(object value) 
+    private void OnSort(object value)
     {
         if (filteredProjects != null && value.GetType() == typeof(string))
         {
