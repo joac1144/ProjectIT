@@ -1,0 +1,22 @@
+.button-dropdown-gap {
+    gap: 250px;
+}
+
+.btn:focus,
+.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+@media (max-width: 1220px) {
+    .main-view-size {
+        width: 40rem;
+    }
+
+    .filter-size {
+        padding: 0;
+        width: fit-content;
+        margin-left: 0;
+        padding-right: 0;
+    }
+}

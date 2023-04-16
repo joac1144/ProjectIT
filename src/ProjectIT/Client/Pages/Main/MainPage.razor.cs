@@ -31,7 +31,7 @@ public partial class MainPage
 
     protected async override Task OnInitializedAsync()
     {
-        projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("projects"))?.ToList()!;
+        projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>("https://localhost:7094/projects"))?.ToList()!;
         filteredProjects = projects;
         OnSort(sortSemester);
     }

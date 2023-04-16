@@ -12,8 +12,8 @@ using ProjectIT.Server.Database;
 namespace ProjectIT.Server.Migrations
 {
     [DbContext(typeof(ProjectITDbContext))]
-    [Migration("20230409024819_ProjectIT 7e2df268-21d2-4b92-81c8-8bc67df45f29")]
-    partial class ProjectIT7e2df26821d24b9281c88bc67df45f29
+    [Migration("20230415230355_testMigration")]
+    partial class testMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,6 +236,10 @@ namespace ProjectIT.Server.Migrations
 
                     b.Property<int?>("RequestId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasIndex("RequestId");
 

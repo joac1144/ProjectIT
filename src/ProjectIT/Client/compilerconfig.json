@@ -54,5 +54,9 @@
   {
     "outputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.css",
     "inputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.scss"
+  },
+  {
+    "outputFile": "Pages/ViewStudentRequests/ViewRequestsPage.razor.css",
+    "inputFile": "Pages/ViewStudentRequests/ViewRequestsPage.razor.scss"
   }
 ]

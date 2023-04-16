@@ -98,6 +98,7 @@ public static class SeedData
         SeedTopics(context);
         SeedUsers(context);
         SeedProjects(context);
+        SeedRequests(context);
     }
 
     private static Supervisor supervisor1 = new() { FullName = "John Andersen Doe", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic7, topic9, topic14, topic4, topic12 }, Status = SupervisorStatus.LimitedSupervision };
@@ -264,5 +265,83 @@ public static class SeedData
             }
         }
         context.SaveChanges();
+    }
+
+    public static void SeedRequests(ProjectITDbContext context)
+    {
+        if (!context.Requests.Any())
+        {
+            context.Requests.AddRange
+            (
+                new Request[]
+                {
+
+                    new Request
+                    {
+                        Title = "Request01",
+                        Description = "Request01Desc",
+                        Topics = new Topic[] { topic3, topic4 },
+                        Languages = new Language[] { Language.Danish, Language.English },
+                        Programmes = new Programme[] { Programme.BSWU },
+                        Members = new Student[]
+                        {
+                            new Student
+                            {
+                                FullName = "Student01",
+                                Email = "Student01@mail.dk"
+                            }
+
+                        },
+                        Supervisors = new Supervisor[]
+                        {
+                            new Supervisor
+                            {
+                                FullName = "Supervisor01",
+                                Email = "Supervisor01@mail.dk"
+                            }
+                        },
+                        Ects = Ects.Bachelor,
+                        Semester = new Semester { Season = Season.Spring, Year = 2024 }
+
+                    },
+                    new Request
+                    {
+                        Title = "Request02",
+                        Description = "Request02Desc",
+                        Topics = new Topic[] { topic3, topic4 },
+                        Languages = new Language[] { Language.Danish, Language.English },
+                        Programmes = new Programme[] { Programme.BSWU, Programme.BDS },
+                        Members = new Student[]
+                        {
+                            new Student
+                            {
+                                FullName = "Student01",
+                                Email = "Student01@mail.dk"
+                            },
+                            new Student
+                            {
+                                FullName = "Student02",
+                                Email = "Student02@mail.dk"
+                            }
+
+                        },
+                        Supervisors = new Supervisor[]
+                        {
+                            new Supervisor
+                            {
+                                FullName = "Supervisor01",
+                                Email = "Supervisor01@mail.dk"
+                            }
+                        },
+                        Ects = Ects.Five,
+                        Semester = new Semester { Season = Season.Spring, Year = 2025 }
+
+                    }
+                }
+            );
+        }
+
+        context.SaveChanges();
+
     }
 }

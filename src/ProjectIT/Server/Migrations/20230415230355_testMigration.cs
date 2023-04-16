@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ProjectIT.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class testMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -88,6 +88,7 @@ namespace ProjectIT.Server.Migrations
                     ProjectId = table.Column<int>(type: "integer", nullable: true),
                     Student_RequestId = table.Column<int>(type: "integer", nullable: true),
                     Profession = table.Column<string>(type: "text", nullable: true),
+                    Status = table.Column<string>(type: "text", nullable: true),
                     RequestId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>

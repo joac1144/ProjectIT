@@ -1,0 +1,52 @@
+@page "/view-requests"
+@using ProjectIT.Client.Http;
+@using ProjectIT.Client.Components.Filter
+@using ProjectIT.Client.Components.Search
+@using ProjectIT.Client.Components.Tag
+@using ProjectIT.Shared.Dtos.Users
+@using ProjectIT.Shared.Dtos.Requests
+@using ProjectIT.Client.Components.SupervisorCard
+@using ProjectIT.Client.Components.RequestCard
+@inject AnonymousClient anonymousClient
+@inject NavigationManager navManager
+
+
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-column gap-4">
+        <h3 class="fw-bold"> My requests</h3>
+        <div class="d-flex flex-row button-dropdown-gap" style="gap: 250px;">
+            <button type="button" class="btn btn-primary bg-dark" onclick=@NavigateToCreateRequest> Create new request </button>
+            <div>
+                <RadzenDropDown TValue="string" @bind-Value=@sortValue Data=@(sortValues.Select(sortVal => sortVal.ToString())) Placeholder="Sort by" Style="width: 100%; max-width: 20rem;" />
+            </div>
+
+        </div>
+        @if (filteredRequests != null)
+        {
+            <Virtualize TItem="RequestDetailsDto" Items="@shownRequests" Context="request">
+                <RequestCard Id="@request.Id"
+                             Title="@request.Title"
+                             Programmes="@request.Programmes"
+                             Ects="@request.Ects"
+                             Season="@request.Semester.Season"
+                             Year="@request.Semester.Year"
+                             GroupMembers="@request.Members.Count()"
+                             Description="@request.Description"
+                            />
+            </Virtualize>
+            <hr>
+        } 
+        <div class="d-flex justify-content-center">
+            <button class="btn mx-1 rounded rounded-5 btn bg-black text-white" @onclick="@(e => NewPage("prev"))"> Previous </button>
+
+            @for (int i = 0; i < totalPages; i++)
+            {
+                var pageNumber = i;
+                <button class="btn mx-1 rounded rounded-5 @(currentPage == pageNumber ? "bg-white text-black shadow" : "bg-black text-white")"
+                @onclick="@(e => UpdateRequests(pageNumber))"> @(i+1)</button>
+            }
+            
+            <button class="btn mx-1 rounded rounded-5 bg-black text-white" @onclick="@(e => NewPage("next"))"> Next </button>
+        </div>
+    </div>
+</div>
