@@ -4,16 +4,7 @@ namespace ProjectIT.Client.Shared;
 
 public partial class NavMenu
 {
-    private string activeTab = null!;
+    private string activeTab = PageUrls.Projects;
 
-    protected override void OnInitialized()
-    {
-        Navigation.NavigateTo(PageUrls.LandingPage);
-        activeTab = PageUrls.Projects;
-    }
-
-    private void SetActiveTab(string val)
-    {
-        activeTab = val;
-    }
+    private void SetActiveTab(string val) => activeTab = val;
 }

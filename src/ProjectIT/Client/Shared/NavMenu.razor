@@ -15,6 +15,21 @@
                 <NotAuthorized>
                     <div class="d-flex ms-4">
                         <div class="decoration-on-hover dimensions d-flex align-items-center">
+                            <div>
+                                <a class=@($"text-decoration-none link-padding py-4 fw-bold text-white {(activeTab == PageUrls.Projects ? "active" : "")}") href="@PageUrls.Projects" @onclick="() => SetActiveTab(PageUrls.Projects)">Projects</a>
+                            </div>
+                        </div>
+                        <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
+                            <div>
+                                <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.Supervisors ? "active" : "")}") href="@PageUrls.Supervisors" @onclick="() => SetActiveTab(PageUrls.Supervisors)">Supervisors</a>
+                            </div>
+                        </div>
+                    </div>
+                </NotAuthorized>
+                <Authorized>
+                    @if (context.User.IsInRole(AppRoles.Student))
+                    {
+                        <div class="d-flex ms-4">
                             <div class="decoration-on-hover dimensions d-flex align-items-center">
                                 <div>
                                     <a class=@($"text-decoration-none link-padding py-4 fw-bold text-white {(activeTab == PageUrls.Projects ? "active" : "")}") href="@PageUrls.Projects" @onclick="() => SetActiveTab(PageUrls.Projects)">Projects</a>
@@ -25,28 +40,9 @@
                                     <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.Supervisors ? "active" : "")}") href="@PageUrls.Supervisors" @onclick="() => SetActiveTab(PageUrls.Supervisors)">Supervisors</a>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </NotAuthorized>
-                <Authorized>
-                    @if (context.User.IsInRole(AppRoles.Student))
-                    {
-                        <div class="d-flex ms-4">
-                            <div class="decoration-on-hover dimensions d-flex align-items-center">
-                                <div class="decoration-on-hover dimensions d-flex align-items-center">
-                                    <div>
-                                        <a class=@($"text-decoration-none link-padding py-4 fw-bold text-white {(activeTab == PageUrls.Projects ? "active" : "")}") href="@PageUrls.Projects" @onclick="() => SetActiveTab(PageUrls.Projects)">Projects</a>
-                                    </div>
-                                </div>
-                                <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
-                                    <div>
-                                        <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.Supervisors ? "active" : "")}") href="@PageUrls.Supervisors" @onclick="() => SetActiveTab(PageUrls.Supervisors)">Supervisors</a>
-                                    </div>
-                                </div>
-                                <div class="decoration-on-hover dimensions d-flex mx-4 align-items-center justify-content-center">
-                                    <div>
-                                        <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.CreateRequest ? "active" : "")}") href="@PageUrls.CreateRequest" @onclick="() => SetActiveTab(PageUrls.CreateRequest)">Create Request</a>
-                                    </div>
+                            <div class="decoration-on-hover dimensions d-flex mx-4 align-items-center justify-content-center">
+                                <div>
+                                    <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.CreateRequest ? "active" : "")}") href="@PageUrls.CreateRequest" @onclick="() => SetActiveTab(PageUrls.CreateRequest)">Create Request</a>
                                 </div>
                             </div>
                         </div>
