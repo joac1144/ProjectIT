@@ -1,10 +1,11 @@
-@page "/supervisor-details/{id:int}"
+@attribute [Route(PageUrls.SupervisorDetails)]
 @using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Components.Tag
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.ProjectCard
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using ProjectIT.Client.Constants;
 @attribute [Authorize]
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient

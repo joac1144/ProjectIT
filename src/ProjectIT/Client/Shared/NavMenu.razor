@@ -1,4 +1,5 @@
 @using ProjectIT.Client.Components.Login
+@using ProjectIT.Client.Constants;
 @inject NavigationManager Navigation
 
 <body>
@@ -6,28 +7,13 @@
         <div class="d-flex align-items-center">
             <div class="d-flex flex-column justify-content-center py-2 px-3">
                 <img src="images/projectit-logo.png" width="70rem">
-                <h5 class="text-white"> ProjectIT </h5>
+                <h5 class="text-white">ProjectIT</h5>
             </div>
             <div class="line-style"></div>
             <h5 class="text-white p-3"> IT UNIVERSITETET I KØBENHAVN</h5>
             <AuthorizeView>
                 <NotAuthorized>
-                    <div class="decoration-on-hover dimensions d-flex align-items-center">
-                        <div class="decoration-on-hover dimensions d-flex align-items-center">
-                            <div>
-                                <a class=@($"text-decoration-none link-padding py-4 fw-bold text-white {(activeTab == PageUrls.Projects ? "active" : "")}") href="@PageUrls.Projects" @onclick="() => SetActiveTab(PageUrls.Projects)">Projects</a>
-                            </div>
-                        </div>
-                        <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
-                            <div>
-                                <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.Supervisors ? "active" : "")}") href="@PageUrls.Supervisors" @onclick="() => SetActiveTab(PageUrls.Supervisors)">Supervisors</a>
-                            </div>
-                        </div>
-                    </div>
-                </NotAuthorized>
-                <Authorized>
-                    @if (context.User.IsInRole("Student"))
-                    {
+                    <div class="d-flex ms-4">
                         <div class="decoration-on-hover dimensions d-flex align-items-center">
                             <div class="decoration-on-hover dimensions d-flex align-items-center">
                                 <div>
@@ -39,14 +25,33 @@
                                     <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.Supervisors ? "active" : "")}") href="@PageUrls.Supervisors" @onclick="() => SetActiveTab(PageUrls.Supervisors)">Supervisors</a>
                                 </div>
                             </div>
-                            <div class="decoration-on-hover dimensions d-flex mx-4 align-items-center justify-content-center">
-                                <div>
-                                    <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.CreateRequest ? "active" : "")}") href="@PageUrls.CreateRequest" @onclick="() => SetActiveTab(PageUrls.CreateRequest)">Create Request</a>
+                        </div>
+                    </div>
+                </NotAuthorized>
+                <Authorized>
+                    @if (context.User.IsInRole(AppRoles.Student))
+                    {
+                        <div class="d-flex ms-4">
+                            <div class="decoration-on-hover dimensions d-flex align-items-center">
+                                <div class="decoration-on-hover dimensions d-flex align-items-center">
+                                    <div>
+                                        <a class=@($"text-decoration-none link-padding py-4 fw-bold text-white {(activeTab == PageUrls.Projects ? "active" : "")}") href="@PageUrls.Projects" @onclick="() => SetActiveTab(PageUrls.Projects)">Projects</a>
+                                    </div>
+                                </div>
+                                <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
+                                    <div>
+                                        <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.Supervisors ? "active" : "")}") href="@PageUrls.Supervisors" @onclick="() => SetActiveTab(PageUrls.Supervisors)">Supervisors</a>
+                                    </div>
+                                </div>
+                                <div class="decoration-on-hover dimensions d-flex mx-4 align-items-center justify-content-center">
+                                    <div>
+                                        <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.CreateRequest ? "active" : "")}") href="@PageUrls.CreateRequest" @onclick="() => SetActiveTab(PageUrls.CreateRequest)">Create Request</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     }
-                    else if (context.User.IsInRole("Supervisor"))
+                    else if (context.User.IsInRole(AppRoles.Supervisor))
                     {
                         <div class="d-flex ms-4">
                             <div class="decoration-on-hover dimensions d-flex align-items-center">
@@ -64,7 +69,7 @@
                                     <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.CreateProject ? "active" : "")}") href="@PageUrls.CreateProject" @onclick="() => SetActiveTab(PageUrls.CreateProject)">Create Project</a>
                                 </div>
                             </div>
-                        </div>        
+                        </div>
                     }
                 </Authorized>
             </AuthorizeView>

@@ -1,3 +1,5 @@
+using ProjectIT.Client.Constants;
+
 namespace ProjectIT.Client.Shared;
 
 public partial class NavMenu
@@ -6,7 +8,7 @@ public partial class NavMenu
 
     protected override void OnInitialized()
     {
-        Navigation.NavigateTo("/");
+        Navigation.NavigateTo(PageUrls.LandingPage);
         activeTab = PageUrls.Projects;
     }
 

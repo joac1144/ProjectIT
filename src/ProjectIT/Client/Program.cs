@@ -19,12 +19,14 @@ builder.Services.AddHttpClient<AnonymousClient>(client => client.BaseAddress = n
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("ProjectIT.ServerAPI"));
 
-builder.Services.AddMsalAuthentication(options =>
+builder.Services.AddMsalAuthentication<RemoteAuthenticationState, CustomUserAccount>(options =>
 {
     builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
     options.ProviderOptions.DefaultAccessTokenScopes.Add("api://9d371fdd-2916-4308-99be-ee0d7ccf75b6/API.Access");
     options.ProviderOptions.LoginMode = "redirect";
-});
+    options.UserOptions.RoleClaim = "appRole";
+})
+.AddAccountClaimsPrincipalFactory<RemoteAuthenticationState, CustomUserAccount, CustomAccountFactory>();
 
 CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("en-US");
