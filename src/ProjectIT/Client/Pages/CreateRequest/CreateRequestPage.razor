@@ -1,4 +1,5 @@
 @attribute [Route(PageUrls.CreateRequest)]
+@using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Authorization;
 @using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Components.Search
@@ -11,6 +12,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AnonymousClient httpClient
 @inject NavigationManager navManager
+@attribute [Authorize(Roles = AppRoles.Student)]
 
 <div class="d-flex flex-row justify-content-center gap-5">
     <div class="d-flex flex-column my-4 py-3 gap-4">

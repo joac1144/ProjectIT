@@ -1,4 +1,5 @@
 @attribute [Route(PageUrls.CreateProject)]
+@using Microsoft.AspNetCore.Authorization;
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.ProjectCard
 @using ProjectIT.Client.Components.Search
@@ -12,6 +13,7 @@
 @inject AnonymousClient httpClient
 @inject NavigationManager navManager
 @inject IJSRuntime JSRuntime
+@attribute [Authorize(Roles = AppRoles.Supervisor)]
 
 <div class="d-flex flex-row justify-content-center gap-5">
     <div class="d-flex flex-column my-4 py-3 gap-4 filter-size">
