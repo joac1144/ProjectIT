@@ -1,8 +1,9 @@
-@page "/"
+@attribute [Route(PageUrls.Projects)]
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.ProjectCard
 @using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
+@using ProjectIT.Client.Constants;
 @using ProjectIT.Client.Http;
 @using ProjectIT.Shared.Dtos.Projects;
 @inject AnonymousClient anonymousClient

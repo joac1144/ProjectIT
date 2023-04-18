@@ -20,8 +20,8 @@
     "inputFile": "Components/Filter/FilterPanelTopics.razor.scss"
   },
   {
-    "outputFile": "Pages/Main/MainPage.razor.css",
-    "inputFile": "Pages/Main/MainPage.razor.scss"
+    "outputFile": "Pages/Projects/Projects.razor.css",
+    "inputFile": "Pages/Projects/Projects.razor.scss"
   },
   {
     "outputFile": "Pages/ProjectDetails/ProjectDetails.razor.css",

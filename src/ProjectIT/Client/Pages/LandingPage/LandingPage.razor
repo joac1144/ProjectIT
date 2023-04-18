@@ -1,0 +1,10 @@
+﻿@attribute [Route(PageUrls.LandingPage)]
+@using ProjectIT.Client.Constants;
+@inject NavigationManager navigationManager
+
+@code {
+    protected override void OnInitialized()
+    {
+        navigationManager.NavigateTo("/projects");
+    }
+}

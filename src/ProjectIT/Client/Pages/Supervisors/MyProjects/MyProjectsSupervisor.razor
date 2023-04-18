@@ -1,11 +1,14 @@
-﻿@page "/my-projects"
+﻿@attribute [Route(PageUrls.MyProjects)]
 @using ProjectIT.Client.Components.Dropdown
 @using ProjectIT.Client.Components.Modal
 @using ProjectIT.Client.Components.ProjectCard
+@using Microsoft.AspNetCore.Authorization;
+@using ProjectIT.Client.Constants;
 @using ProjectIT.Shared.Dtos.Projects;
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
 @inject IJSRuntime jsRuntime
+@attribute [Authorize(Roles = AppRoles.Supervisor)]
 
 <PageTitle>My Projects</PageTitle>
 
