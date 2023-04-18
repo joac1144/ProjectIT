@@ -56,7 +56,6 @@ public partial class CreateRequestPage
     private IEnumerable<Topic> topics = null!;
     private IEnumerable<Supervisor> supervisors = null!;
     private string? topicName;
-    private string? supervisorName;
     private readonly Request request = new();
     private ClaimsPrincipal? authUser;
 
@@ -69,6 +68,8 @@ public partial class CreateRequestPage
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         
         await getSupervisorsAndTopicsData();
+        SortTopics();
+        SortSupervisors();
     }
 
     private async Task getSupervisorsAndTopicsData()
@@ -107,12 +108,14 @@ public partial class CreateRequestPage
     {
         requestTopics.Remove(topic);
         topics = topics.Append(topic);
+        SortTopics();
     }
 
     private void OnSelectedSupervisorClicked(Supervisor supervisor)
     {
         requestSupervisors.Remove(supervisor);
         supervisors = supervisors.Append(supervisor);
+        SortSupervisors();
     }
 
     private void OnAddNewTopicFromSearchClicked()
@@ -121,6 +124,10 @@ public partial class CreateRequestPage
             requestTopics.Add(new Topic { Name = topicName! });
         topicName = string.Empty;
     }
+
+    private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
+
+    private void SortSupervisors() => supervisors = supervisors.OrderBy(s => s.FullName);
     
     private async void SubmitRequestAsync()
     {
