@@ -5,8 +5,7 @@ namespace ProjectIT.Shared.Models;
 
 public class Supervisor : User
 {
-    [Required]
-    public IEnumerable<Topic> Topics { get; set; } = null!;
+    public IEnumerable<Topic>? Topics { get; set; }
 
     [Required]
     public SupervisorProfession Profession { get; set; }

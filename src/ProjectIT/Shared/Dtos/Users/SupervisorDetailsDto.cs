@@ -18,8 +18,7 @@ public record SupervisorDetailsDto
     [EmailAddress]
     public string Email { get; set; } = null!;
 
-    [Required]
-    public IEnumerable<Topic> Topics { get; set; } = null!;
+    public IEnumerable<Topic>? Topics { get; set; }
 
     [Required]
     public SupervisorProfession Profession { get; set; }

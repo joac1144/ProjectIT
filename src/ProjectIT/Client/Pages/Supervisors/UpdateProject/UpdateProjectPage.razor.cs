@@ -12,9 +12,9 @@ using ProjectIT.Shared.Models;
 using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
 
-namespace ProjectIT.Client.Pages.Supervisors.CreateProject;
+namespace ProjectIT.Client.Pages.Supervisors.UpdateProject;
 
-public partial class CreateProjectPage
+public partial class UpdateProjectPage
 {
     private class EctsWrapper
     {
@@ -34,6 +34,9 @@ public partial class CreateProjectPage
         public string StringValue { get; set; } = string.Empty;
     }
 
+    [Parameter]
+    public int Id { get; set; }
+
     [Inject]
     private IStringLocalizer<EnumsResource> EnumsLocalizer { get; set; } = default!;
 
@@ -43,12 +46,8 @@ public partial class CreateProjectPage
     private IEnumerable<ProgrammeWrapper>? programmeWrappers;
     private IEnumerable<LanguageWrapper>? languageWrappers;
 
-    private readonly Project project = new();
-    private string? descriptionHtml;
-    private Ects? projectEcts;
-    private IEnumerable<Programme>? projectProgrammes;
-    private IEnumerable<Language>? projectLanguages;
-    private readonly List<Topic> projectTopics = new();
+    private ProjectUpdateDto? projectToBeUpdated = new();
+    private List<Topic> projectTopics = new();
     private Supervisor? projectCoSupervisor = null!;
 
     private RadzenDropDown<Topic>? topicSelector;
@@ -66,7 +65,13 @@ public partial class CreateProjectPage
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
+        projectToBeUpdated = await httpClient.Client.GetFromJsonAsync<ProjectUpdateDto>($"{ApiEndpoints.Projects}/{Id}");
+
+        projectTopics = projectToBeUpdated!.Topics.ToList();
+        projectCoSupervisor = projectToBeUpdated.CoSupervisor;
+        
         await getSupervisorsAndTopicsData();
+        UnionTopicsListWithUpdatedProjectTopics();
         SortTopics();
         SortSupervisors();
     }
@@ -108,6 +113,12 @@ public partial class CreateProjectPage
         }
     }
 
+    private void UnionTopicsListWithUpdatedProjectTopics() {
+        topics = topics.Union(projectTopics.Select(t => new Topic { Name = t.Name }));
+
+        SortTopics();
+    }
+
     private void OnSelectedTopicClicked(Topic topic)
     {
         projectTopics.Remove(topic);
@@ -123,7 +134,7 @@ public partial class CreateProjectPage
     }
 
     private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
-    
+
     private void SortSupervisors() => coSupervisors = coSupervisors.OrderBy(s => s.FullName);
 
     private void OnAddNewTopicFromSearchClicked() 
@@ -133,41 +144,28 @@ public partial class CreateProjectPage
         topicName = string.Empty;
     }
 
-    private void AssignCoSupervisorIfNotNull()
-    {
-        // if projectcosupervisor is null, newProject.CoSupervisor should be null. Otherwise, create a new instance of the newProject.CoSupervisor with the values given from projectcosupervisor.
-        project.CoSupervisor = projectCoSupervisor is not null ? new Supervisor { Id = projectCoSupervisor.Id, FullName = projectCoSupervisor.FullName } : null;
-    }
-
     private async Task SubmitProjectAsync()
-    {       
-        var newProject = new ProjectCreateDto()
+    {
+        var updatedProject = new ProjectUpdateDto()
         {
-            Title = project.Title,
-            DescriptionHtml = descriptionHtml!,
-            Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-            Languages = projectLanguages!,
-            Programmes = projectProgrammes!,
-            Ects = (Ects)projectEcts!,
-            Semester = project.Semester,
-            Supervisor = new()
-            {
-                Id = (new Random()).Next(20, 5000),
-                FullName = authUser?.Identity?.Name!,
-                Email = "jkof@itu.dk",
-                Profession = SupervisorProfession.FullProfessor,
-                Status = SupervisorStatus.Available,
-                Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "test", Category = TopicCategory.SoftwareEngineering } }
-            },
-            CoSupervisor = projectCoSupervisor
+            Id = projectToBeUpdated!.Id,
+            Title = projectToBeUpdated!.Title,
+            DescriptionHtml = projectToBeUpdated.DescriptionHtml,
+            Topics = projectToBeUpdated.Topics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+            Languages = projectToBeUpdated.Languages,
+            Programmes = projectToBeUpdated.Programmes,
+            Ects = projectToBeUpdated.Ects,
+            Semester = projectToBeUpdated.Semester,
+            Supervisor = projectToBeUpdated.Supervisor,
+            CoSupervisor = projectToBeUpdated.CoSupervisor
         };
 
-        if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
+        if (updatedProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
         {
             // A new topic was added, open dialog to confirm and to add category.
         }
 
-        var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
+        var response = await httpClient.Client.PutAsJsonAsync(ApiEndpoints.Projects, updatedProject);
 
         if (response.IsSuccessStatusCode)
         {
@@ -182,6 +180,6 @@ public partial class CreateProjectPage
 
     private void CancelProjectAsync()
     {
-        navManager.NavigateTo($"my-projects");
+        navManager.NavigateTo("my-projects");
     }
 }

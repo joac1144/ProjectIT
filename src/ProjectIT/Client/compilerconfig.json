@@ -40,6 +40,10 @@
     "inputFile": "Pages/Supervisors/CreateProject/CreateProjectPage.razor.scss"
   },
   {
+    "outputFile": "Pages/Supervisors/UpdateProject/UpdateProjectPage.razor.css",
+    "inputFile": "Pages/Supervisors/UpdateProject/UpdateProjectPage.razor.scss"
+  },
+  {
     "outputFile": "Pages/CreateRequest/CreateRequestPage.razor.css",
     "inputFile": "Pages/CreateRequest/CreateRequestPage.razor.scss"
   },
