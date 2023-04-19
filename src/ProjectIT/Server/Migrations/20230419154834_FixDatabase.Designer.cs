@@ -12,8 +12,8 @@ using ProjectIT.Server.Database;
 namespace ProjectIT.Server.Migrations
 {
     [DbContext(typeof(ProjectITDbContext))]
-    [Migration("20230419032457_UpdatedContext")]
-    partial class UpdatedContext
+    [Migration("20230419154834_FixDatabase")]
+    partial class FixDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

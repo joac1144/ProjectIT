@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ProjectIT.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdatedContext : Migration
+    public partial class FixDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

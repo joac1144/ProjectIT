@@ -50,8 +50,9 @@ namespace ProjectIT.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("SemesterId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Semester")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("SupervisorId")
                         .HasColumnType("integer");
@@ -65,11 +66,9 @@ namespace ProjectIT.Server.Migrations
 
                     b.HasIndex("CoSupervisorId");
 
-                    b.HasIndex("SemesterId");
-
                     b.HasIndex("SupervisorId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Project", (string)null);
                 });
 
             modelBuilder.Entity("ProjectIT.Shared.Models.Request", b =>
@@ -97,8 +96,9 @@ namespace ProjectIT.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("SemesterId")
-                        .HasColumnType("integer");
+                    b.Property<string>("Semester")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -107,29 +107,79 @@ namespace ProjectIT.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SemesterId");
-
-                    b.ToTable("Requests");
+                    b.ToTable("Request", (string)null);
                 });
 
-            modelBuilder.Entity("ProjectIT.Shared.Models.Semester", b =>
+            modelBuilder.Entity("ProjectIT.Shared.Models.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnOrder(1);
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Season")
+                    b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnOrder(4);
 
-                    b.Property<int>("Year")
-                        .HasColumnType("integer");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Programme")
+                        .HasColumnType("text")
+                        .HasColumnOrder(5);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Semester");
+                    b.ToTable("Student", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectIT.Shared.Models.Supervisor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(1);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Profession")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(6);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Supervisor", (string)null);
                 });
 
             modelBuilder.Entity("ProjectIT.Shared.Models.Topic", b =>
@@ -148,99 +198,99 @@ namespace ProjectIT.Server.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("RequestId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("SupervisorId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.ToTable("Topic", (string)null);
+                });
+
+            modelBuilder.Entity("ProjectStudent", b =>
+                {
+                    b.Property<int>("ProjectsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ProjectsId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("ProjectStudent");
+                });
+
+            modelBuilder.Entity("ProjectTopic", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TopicsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ProjectId", "TopicsId");
+
+                    b.HasIndex("TopicsId");
+
+                    b.ToTable("ProjectTopic");
+                });
+
+            modelBuilder.Entity("RequestStudent", b =>
+                {
+                    b.Property<int>("MembersId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("RequestId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MembersId", "RequestId");
 
                     b.HasIndex("RequestId");
 
-                    b.HasIndex("SupervisorId");
-
-                    b.ToTable("Topics");
+                    b.ToTable("RequestStudent");
                 });
 
-            modelBuilder.Entity("ProjectIT.Shared.Models.User", b =>
+            modelBuilder.Entity("RequestSupervisor", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("RequestsId")
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<int>("SupervisorsId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("RequestsId", "SupervisorsId");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasIndex("SupervisorsId");
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-
-                    b.UseTphMappingStrategy();
+                    b.ToTable("RequestSupervisor");
                 });
 
-            modelBuilder.Entity("ProjectIT.Shared.Models.Student", b =>
+            modelBuilder.Entity("RequestTopic", b =>
                 {
-                    b.HasBaseType("ProjectIT.Shared.Models.User");
-
-                    b.Property<int?>("Programme")
+                    b.Property<int>("RequestId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ProjectId")
+                    b.Property<int>("TopicsId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RequestId")
-                        .HasColumnType("integer");
+                    b.HasKey("RequestId", "TopicsId");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("TopicsId");
 
-                    b.HasIndex("RequestId");
-
-                    b.ToTable("Users", t =>
-                        {
-                            t.Property("RequestId")
-                                .HasColumnName("Student_RequestId");
-                        });
-
-                    b.HasDiscriminator().HasValue("Student");
+                    b.ToTable("RequestTopic");
                 });
 
-            modelBuilder.Entity("ProjectIT.Shared.Models.Supervisor", b =>
+            modelBuilder.Entity("SupervisorTopic", b =>
                 {
-                    b.HasBaseType("ProjectIT.Shared.Models.User");
-
-                    b.Property<string>("Profession")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("RequestId")
+                    b.Property<int>("SupervisorId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("TopicsId")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("RequestId");
+                    b.HasKey("SupervisorId", "TopicsId");
 
-                    b.HasDiscriminator().HasValue("Supervisor");
+                    b.HasIndex("TopicsId");
+
+                    b.ToTable("SupervisorTopic");
                 });
 
             modelBuilder.Entity("ProjectIT.Shared.Models.Project", b =>
@@ -249,88 +299,110 @@ namespace ProjectIT.Server.Migrations
                         .WithMany()
                         .HasForeignKey("CoSupervisorId");
 
-                    b.HasOne("ProjectIT.Shared.Models.Semester", "Semester")
-                        .WithMany()
-                        .HasForeignKey("SemesterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ProjectIT.Shared.Models.Supervisor", "Supervisor")
-                        .WithMany()
+                        .WithMany("Projects")
                         .HasForeignKey("SupervisorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CoSupervisor");
 
-                    b.Navigation("Semester");
-
                     b.Navigation("Supervisor");
                 });
 
-            modelBuilder.Entity("ProjectIT.Shared.Models.Request", b =>
+            modelBuilder.Entity("ProjectStudent", b =>
                 {
-                    b.HasOne("ProjectIT.Shared.Models.Semester", "Semester")
+                    b.HasOne("ProjectIT.Shared.Models.Project", null)
                         .WithMany()
-                        .HasForeignKey("SemesterId")
+                        .HasForeignKey("ProjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Semester");
+                    b.HasOne("ProjectIT.Shared.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("ProjectIT.Shared.Models.Topic", b =>
+            modelBuilder.Entity("ProjectTopic", b =>
                 {
                     b.HasOne("ProjectIT.Shared.Models.Project", null)
-                        .WithMany("Topics")
-                        .HasForeignKey("ProjectId");
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectIT.Shared.Models.Topic", null)
+                        .WithMany()
+                        .HasForeignKey("TopicsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RequestStudent", b =>
+                {
+                    b.HasOne("ProjectIT.Shared.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ProjectIT.Shared.Models.Request", null)
-                        .WithMany("Topics")
-                        .HasForeignKey("RequestId");
+                        .WithMany()
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RequestSupervisor", b =>
+                {
+                    b.HasOne("ProjectIT.Shared.Models.Request", null)
+                        .WithMany()
+                        .HasForeignKey("RequestsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ProjectIT.Shared.Models.Supervisor", null)
-                        .WithMany("Topics")
-                        .HasForeignKey("SupervisorId");
+                        .WithMany()
+                        .HasForeignKey("SupervisorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("ProjectIT.Shared.Models.Student", b =>
+            modelBuilder.Entity("RequestTopic", b =>
                 {
-                    b.HasOne("ProjectIT.Shared.Models.Project", null)
-                        .WithMany("Students")
-                        .HasForeignKey("ProjectId");
-
                     b.HasOne("ProjectIT.Shared.Models.Request", null)
-                        .WithMany("Members")
-                        .HasForeignKey("RequestId");
+                        .WithMany()
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectIT.Shared.Models.Topic", null)
+                        .WithMany()
+                        .HasForeignKey("TopicsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SupervisorTopic", b =>
+                {
+                    b.HasOne("ProjectIT.Shared.Models.Supervisor", null)
+                        .WithMany()
+                        .HasForeignKey("SupervisorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectIT.Shared.Models.Topic", null)
+                        .WithMany()
+                        .HasForeignKey("TopicsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProjectIT.Shared.Models.Supervisor", b =>
                 {
-                    b.HasOne("ProjectIT.Shared.Models.Request", null)
-                        .WithMany("Supervisors")
-                        .HasForeignKey("RequestId");
-                });
-
-            modelBuilder.Entity("ProjectIT.Shared.Models.Project", b =>
-                {
-                    b.Navigation("Students");
-
-                    b.Navigation("Topics");
-                });
-
-            modelBuilder.Entity("ProjectIT.Shared.Models.Request", b =>
-                {
-                    b.Navigation("Members");
-
-                    b.Navigation("Supervisors");
-
-                    b.Navigation("Topics");
-                });
-
-            modelBuilder.Entity("ProjectIT.Shared.Models.Supervisor", b =>
-                {
-                    b.Navigation("Topics");
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }
