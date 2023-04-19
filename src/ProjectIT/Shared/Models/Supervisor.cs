@@ -15,5 +15,5 @@ public class Supervisor : User
 
     public IEnumerable<Project> Projects { get; set; } = null!;
 
-    public IEnumerable<Request> Requests { get; set; } = null!;
+    public IEnumerable<Request> ReceivedRequests { get; set; } = null!;
 }

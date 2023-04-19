@@ -6,5 +6,5 @@ public class Student : User
 {
     public Programme? Programme { get; init; } = null!;
 
-    public IEnumerable<Project> Projects { get; init; } = null!;
+    public IEnumerable<Project> AppliedProjects { get; init; } = null!;
 }

@@ -42,7 +42,7 @@
             {
                 <Virtualize TItem="SupervisorDetailsDto" Items="@shownSupervisors" Context="supervisor">
                         <SupervisorCard Id="@supervisor.Id"
-                                        Name=@($"{supervisor.FirstName} {supervisor.LastName}")
+                                        Name="@supervisor.FullName"
                                         Topics="@supervisor.Topics" />
                 </Virtualize>
             }

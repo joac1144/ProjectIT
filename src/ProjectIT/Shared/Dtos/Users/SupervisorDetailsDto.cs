@@ -28,4 +28,6 @@ public record SupervisorDetailsDto
 
     [Required]
     public SupervisorStatus Status { get; set; }
+
+    public string FullName => $"{FirstName} {LastName}";
 }

@@ -9,7 +9,7 @@ namespace ProjectIT.Client.Pages.Supervisors.MyProjects;
 
 public partial class MyProjectsSupervisor
 {
-    private IEnumerable<ProjectDetailsDto> projects; // List of supervisor's projects
+    private IEnumerable<ProjectDetailsDto>? projects;
 
     private string? sortValue;
     private readonly IEnumerable<Sort> _sortValues = Enum.GetValues<Sort>();

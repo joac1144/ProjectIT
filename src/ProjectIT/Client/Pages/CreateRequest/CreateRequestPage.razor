@@ -103,7 +103,7 @@
                 <div class="d-flex flex-start flex-wrap">
                     @foreach (var supervisor in requestSupervisors)
                     {
-                        <TagBox Tag="@(new FilterTag { Tag = $"{supervisor.FirstName} {supervisor.LastName}"})" IsDisabled="false" OnClicked="() => OnSelectedSupervisorClicked(supervisor)" />
+                        <TagBox Tag="@(new FilterTag { Tag = supervisor.FullName })" IsDisabled="false" OnClicked="() => OnSelectedSupervisorClicked(supervisor)" />
                     }
                 </div>
             </div>

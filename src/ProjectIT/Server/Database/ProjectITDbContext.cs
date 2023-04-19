@@ -73,7 +73,7 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
             .WithMany(s => s.Projects);
         modelBuilder.Entity<Project>()
             .HasMany(p => p.Students)
-            .WithMany(s => s.Projects);
+            .WithMany(s => s.AppliedProjects);
 
         // Requests.
         modelBuilder.Entity<Request>()
@@ -111,7 +111,7 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
             .HasConversion(semesterConverter);
         modelBuilder.Entity<Request>()
             .HasMany(r => r.Supervisors)
-            .WithMany(s => s.Requests);
+            .WithMany(s => s.ReceivedRequests);
 
         // Topics.
         modelBuilder.Entity<Topic>()
