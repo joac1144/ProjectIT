@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectIT.Shared.Models;
 
@@ -15,4 +16,7 @@ public class User
     [Required]
     [EmailAddress]
     public string Email { get; set; } = null!;
+
+    [NotMapped]
+    public string FullName => $"{FirstName} {LastName}";
 }

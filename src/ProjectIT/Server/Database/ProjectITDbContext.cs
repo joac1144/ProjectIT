@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
@@ -30,10 +31,10 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
                 });
 
         /*** ValueComparers ***/
-        /*var valueComparer = new ValueComparer<IEnumerable<string>>(
-                    (c1, c2) => c1.SequenceEqual(c2),
-                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                    c => (IEnumerable<string>)c.ToHashSet());*/
+        static ValueComparer<IEnumerable<T>> enumListValueComparer<T>() => new(
+                (c1, c2) => c1!.SequenceEqual(c2!),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v!.GetHashCode())),
+                c => c.ToHashSet());
 
         /*** Tables ***/
         // Projects.
@@ -50,8 +51,8 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
                 e => e.Split(new[] { ',' })
                     .Select(x => Enum.Parse(typeof(Language), x))
                     .Cast<Language>()
-                    .ToList()
-            /*, valueComparer*/);
+                    .ToList(),
+                enumListValueComparer<Language>());
         modelBuilder.Entity<Project>()
             .Property(p => p.Programmes)
             .HasConversion(
@@ -59,8 +60,8 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
                 e => e.Split(new[] { ',' })
                     .Select(x => Enum.Parse(typeof(Programme), x))
                     .Cast<Programme>()
-                    .ToList()
-            /*, valueComparer*/);
+                    .ToList(), 
+                enumListValueComparer<Programme>());
         modelBuilder.Entity<Project>()
             .Property(p => p.Ects)
             .HasConversion<string>();
@@ -88,8 +89,8 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
                 e => e.Split(new[] { ',' })
                     .Select(x => Enum.Parse(typeof(Language), x))
                     .Cast<Language>()
-                    .ToList()
-            /*, valueComparer*/);
+                    .ToList(),
+                enumListValueComparer<Language>());
         modelBuilder.Entity<Request>()
             .Property(r => r.Programmes)
             .HasConversion(
@@ -97,8 +98,8 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
                 e => e.Split(new[] { ',' })
                     .Select(x => Enum.Parse(typeof(Programme), x))
                     .Cast<Programme>()
-                    .ToList()
-            /*, valueComparer*/);
+                    .ToList(),
+                enumListValueComparer<Programme>());
         modelBuilder.Entity<Request>()
             .HasMany(r => r.Members)
             .WithMany();
