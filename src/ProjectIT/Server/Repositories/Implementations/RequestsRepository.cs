@@ -20,7 +20,6 @@ public class RequestRepository : IRequestsRepository
         var requests = await _context.Requests
             .Include(p => p.Topics)
             .Include(p => p.Supervisors)
-            .Include(p => p.Semester)
             .Include(p => p.Members)
             .ToListAsync();
 

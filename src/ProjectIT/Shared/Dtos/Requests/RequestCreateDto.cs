@@ -32,5 +32,5 @@ public record RequestCreateDto
     public Ects? Ects { get; set; }
 
     [Required]
-    public Semester? Semester { get; set; }
+    public Semester Semester { get; set; } = null!;
 }
