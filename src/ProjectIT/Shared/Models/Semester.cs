@@ -1,16 +1,11 @@
-using System.ComponentModel.DataAnnotations;
 using ProjectIT.Shared.Enums;
 
 namespace ProjectIT.Shared.Models;
 
 public class Semester : IComparable<Semester>
 {
-    public int Id { get; set; }
-
-    [Required]
     public Season Season { get; set; }
 
-    [Required]
     public int Year { get; set; }
 
     public override string ToString()
@@ -20,6 +15,8 @@ public class Semester : IComparable<Semester>
 
     public static bool operator ==(Semester semester1, Semester semester2)
     {
+        if (semester1 is null || semester2 is null)
+            return false;
         return semester1.Season == semester2.Season && semester1.Year == semester2.Year;
     }
 

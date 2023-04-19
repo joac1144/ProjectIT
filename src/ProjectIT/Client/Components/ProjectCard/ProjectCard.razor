@@ -48,12 +48,12 @@
                         <img src="images\supervisor.png" width="23rem" height="23rem">
                         <span class="mx-1"></span>
                         <div class="fs-7">
-                            @Supervisor.FullName
+                            @Supervisor.FirstName @Supervisor.LastName
                             @if (CoSupervisor != null)
                             {
                                 <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
                                 <br>
-                                @CoSupervisor.FullName
+                                @CoSupervisor.FirstName @CoSupervisor.LastName
                             }
                         </div>
                     </div>

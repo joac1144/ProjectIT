@@ -127,7 +127,7 @@ public partial class CreateRequestPage
 
     private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
 
-    private void SortSupervisors() => supervisors = supervisors.OrderBy(s => s.FullName);
+    private void SortSupervisors() => supervisors = supervisors.OrderBy(s => s.FirstName).ThenBy(s => s.LastName);
     
     private async void SubmitRequestAsync()
     {

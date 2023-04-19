@@ -41,9 +41,9 @@
             @if (filteredSupervisors != null)
             {
                 <Virtualize TItem="SupervisorDetailsDto" Items="@shownSupervisors" Context="supervisor">
-                        <SupervisorCard Id = "@supervisor.Id"
-                                        FullName = "@supervisor.FullName"
-                                        Topics = "@supervisor.Topics" />
+                        <SupervisorCard Id="@supervisor.Id"
+                                        Name=@($"{supervisor.FirstName} {supervisor.LastName}")
+                                        Topics="@supervisor.Topics" />
                 </Virtualize>
             }
             @if (filteredSupervisors!.Count > pageSize)

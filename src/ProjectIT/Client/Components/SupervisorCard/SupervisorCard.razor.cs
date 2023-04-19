@@ -1,6 +1,4 @@
-using System.Net.Http.Json;
 using Microsoft.AspNetCore.Components;
-using ProjectIT.Shared.Dtos.Topics;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Client.Components.SupervisorCard;
@@ -11,7 +9,7 @@ public partial class SupervisorCard
     public int Id { get; set; }
 
     [Parameter]
-    public string FullName { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
     [Parameter]
     public IEnumerable<Topic> Topics { get; set; } = null!;

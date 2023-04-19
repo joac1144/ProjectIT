@@ -124,7 +124,7 @@ public partial class CreateProjectPage
 
     private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
     
-    private void SortSupervisors() => coSupervisors = coSupervisors.OrderBy(s => s.FullName);
+    private void SortSupervisors() => coSupervisors = coSupervisors.OrderBy(s => s.FirstName).ThenBy(s => s.LastName);
 
     private void OnAddNewTopicFromSearchClicked() 
     {
@@ -136,7 +136,7 @@ public partial class CreateProjectPage
     private void AssignCoSupervisorIfNotNull()
     {
         // if projectcosupervisor is null, newProject.CoSupervisor should be null. Otherwise, create a new instance of the newProject.CoSupervisor with the values given from projectcosupervisor.
-        project.CoSupervisor = projectCoSupervisor is not null ? new Supervisor { Id = projectCoSupervisor.Id, FullName = projectCoSupervisor.FullName } : null;
+        project.CoSupervisor = projectCoSupervisor is not null ? new Supervisor { Id = projectCoSupervisor.Id, FirstName = projectCoSupervisor.FirstName, LastName = projectCoSupervisor.LastName } : null;
     }
 
     private async Task SubmitProjectAsync()
@@ -153,8 +153,8 @@ public partial class CreateProjectPage
             Supervisor = new()
             {
                 Id = (new Random()).Next(20, 5000),
-                FullName = authUser?.Identity?.Name!,
-                Email = "jkof@itu.dk",
+                FirstName = authUser?.Identity?.Name!,
+                Email = $"{authUser?.Identity?.Name?[..4]}@itu.dk",
                 Profession = SupervisorProfession.FullProfessor,
                 Status = SupervisorStatus.Available,
                 Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "test", Category = TopicCategory.SoftwareEngineering } }

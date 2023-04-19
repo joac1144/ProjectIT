@@ -128,7 +128,6 @@ public partial class SupervisorList
         List<SupervisorDetailsDto>? filteredBySearch = supervisors;
         List<SupervisorDetailsDto> filteredBySupervisorStatuses = supervisors;
 
-
         if (activeTopics.Any())
         {
             filteredByTopics = new List<SupervisorDetailsDto>();
@@ -173,7 +172,8 @@ public partial class SupervisorList
         {
             return supervisors.Where(
                 p => p.Topics.Any(topic => topic.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
-                || p.FullName.Contains(query, StringComparison.OrdinalIgnoreCase)
+                || p.FirstName.Contains(query, StringComparison.OrdinalIgnoreCase)
+                || p.LastName.Contains(query, StringComparison.OrdinalIgnoreCase)
             ).ToList();
         }
     }

@@ -135,7 +135,7 @@ public partial class UpdateProjectPage
 
     private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
 
-    private void SortSupervisors() => coSupervisors = coSupervisors.OrderBy(s => s.FullName);
+    private void SortSupervisors() => coSupervisors = coSupervisors.OrderBy(s => s.FirstName).ThenBy(s => s.LastName);
 
     private void OnAddNewTopicFromSearchClicked() 
     {

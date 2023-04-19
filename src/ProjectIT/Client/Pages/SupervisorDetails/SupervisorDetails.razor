@@ -32,7 +32,7 @@ else
         </div>
         <div>
             <div class="mb-4">
-                <h1 class="fw-bold"> @supervisor.FullName </h1>
+                <h1 class="fw-bold">@supervisor.FirstName @supervisor.LastName</h1>
             </div>
             @* @if (supervisor.Projects.Count > 0)
             {
@@ -53,7 +53,7 @@ else
             }
             else
             { *@
-                <h6 class="text-secondary">@supervisor.FullName has not posted any projects yet.</h6>
+                <h6 class="text-secondary">@supervisor.FirstName has not posted any projects yet.</h6>
             @* } *@
         </div>
         <div class="d-flex flex-column">
@@ -62,7 +62,7 @@ else
                     <p class="fw-normal pt-2">
                     <h6 class="fw-bold"> Info: </h6>
                     <div class="lh-lg">
-                        @supervisor.FullName <br>
+                        @supervisor.FirstName @supervisor.LastName <br>
                         @supervisor.Email <br>
                         @supervisor.Profession.GetTranslatedString(EnumsLocalizer) <br>
                         <span class=@($"border rounded rounded-4 mt-2 px-3 fs-8 bg-success text-white d-inline-block {statusSupervisor} ")>@supervisor.Status.GetTranslatedString(EnumsLocalizer)</span>
@@ -72,9 +72,12 @@ else
             </div>
             <div class="my-4">
                 <Panel title="Topics" Width="@panelWidth">
-                    <div class="d-flex flex-start flex-wrap py-2">
-                        <TagsDisplay Tags="supervisor.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
-                    </div>
+                    @if (supervisor.Topics is not null)
+                    {
+                        <div class="d-flex flex-start flex-wrap py-2">
+                            <TagsDisplay Tags="supervisor.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                        </div>
+                    }
                 </Panel>
             </div>
             <div class="d-flex justify-content-center">

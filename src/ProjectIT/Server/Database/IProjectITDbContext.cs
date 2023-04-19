@@ -6,7 +6,8 @@ namespace ProjectIT.Server.Database;
 public interface IProjectITDbContext : IDisposable
 {
     DbSet<Topic> Topics { get; set; }
-    DbSet<User> Users { get; set; }
+    DbSet<Student> Students { get; set; }
+    DbSet<Supervisor> Supervisors { get; set; }
     DbSet<Project> Projects { get; set; }
     DbSet<Request> Requests { get; set; }
     int SaveChanges();

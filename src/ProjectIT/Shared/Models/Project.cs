@@ -35,6 +35,5 @@ public class Project
 
     public Supervisor? CoSupervisor { get; set; }
 
-    [Required]
-    public IEnumerable<Student> Students { get; set; } = null!;
+    public IEnumerable<Student>? Students { get; set; }
 }

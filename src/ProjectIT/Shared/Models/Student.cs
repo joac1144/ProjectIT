@@ -5,4 +5,6 @@ namespace ProjectIT.Shared.Models;
 public class Student : User
 {
     public Programme? Programme { get; init; } = null!;
+
+    public IEnumerable<Project> Projects { get; init; } = null!;
 }

@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Users;
 using ProjectIT.Server.Repositories.Interfaces;
-using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Repositories.Implementations;
 
@@ -17,25 +16,25 @@ public class SupervisorsRepository : ISupervisorsRepository
 
     public async Task<IEnumerable<SupervisorDetailsDto>> ReadAllAsync()
     {
-         var supervisors = await _context.Users.OfType<Supervisor>()
+         var supervisors = await _context.Supervisors
             .Include(p => p.Topics)
             .ToListAsync();
 
         return supervisors.Select(p => new SupervisorDetailsDto
         {
             Id = p.Id,
-            FullName = p.FullName,
+            FirstName = p.FirstName,
+            LastName = p.LastName,
             Email = p.Email,
             Topics = p.Topics,
             Profession = p.Profession,
             Status = p.Status
         });
-
     }
 
     public async Task<SupervisorDetailsDto?> ReadByIdAsync(int? id)
     {
-        var supervisor = await _context.Users.OfType<Supervisor>()
+        var supervisor = await _context.Supervisors
             .Where(p => p.Id == id)
             .Include(p => p.Topics)
             .SingleOrDefaultAsync();
@@ -46,7 +45,8 @@ public class SupervisorsRepository : ISupervisorsRepository
         return new SupervisorDetailsDto
         {
             Id = supervisor.Id,
-            FullName = supervisor.FullName,
+            FirstName = supervisor.FirstName,
+            LastName = supervisor.LastName,
             Email = supervisor.Email,
             Topics = supervisor.Topics,
             Profession = supervisor.Profession,
