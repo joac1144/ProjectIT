@@ -22,7 +22,6 @@ public class ProjectsRepository : IProjectsRepository
         var projects = await _context.Projects
             .Include(p => p.Topics)
             .Include(p => p.Supervisor)
-            .Include(p => p.Semester)
             .Include(p => p.CoSupervisor)
             .Include(p => p.Students)
             .ToListAsync();
@@ -51,7 +50,6 @@ public class ProjectsRepository : IProjectsRepository
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
             .Include(p => p.Students)
-            .Include(p => p.Semester)
             .SingleOrDefaultAsync();
 
         if (project == null)
@@ -88,8 +86,8 @@ public class ProjectsRepository : IProjectsRepository
             CoSupervisor = project.CoSupervisor
         };
 
-        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) || entity.Topics.IsNullOrEmpty<Topic>() ||
-            entity.Languages.IsNullOrEmpty<Language>() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null || entity.Supervisor is null)
+        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) || entity.Topics.IsNullOrEmpty() ||
+            entity.Languages.IsNullOrEmpty() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null || entity.Supervisor is null)
                 throw new ArgumentNullException();
         
         _context.Projects.Add(entity);

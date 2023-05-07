@@ -34,7 +34,8 @@ public class RequestsRepositoryTests : IDisposable
                 Members = new Student[] {
                     new Student
                     {
-                        FullName = "Current student2",
+                        FirstName = "Current",
+                        LastName = "student2",
                         Email = "klfwe@krld.dk"
                     }
                 },
@@ -42,7 +43,8 @@ public class RequestsRepositoryTests : IDisposable
                 {
                     new Supervisor
                     {
-                        FullName = "RequestSupervisor",
+                        FirstName = "RequestSupervisor",
+                        LastName = "",
                         Email = "RequestSupervisor@mail.dk",
                         Topics = new Topic[] { },
                         Profession = SupervisorProfession.AssistantProfessor,
@@ -80,7 +82,8 @@ public class RequestsRepositoryTests : IDisposable
                 Members = new Student[] {
                     new Student
                     {
-                        FullName = "Current student3",
+                        FirstName = "Current",
+                        LastName = "student3",
                         Email = "efw@rldæ.dk"
                     }
                 },
@@ -88,7 +91,8 @@ public class RequestsRepositoryTests : IDisposable
                 {
                     new Supervisor
                     {
-                        FullName = "RequestSupervisor2",
+                        FirstName = "RequestSupervisor2",
+                        LastName = "",
                         Email = "RequestSupervisor2@mail.dk",
                         Topics = new Topic[] { },
                         Profession = SupervisorProfession.ExternalProfessor,
@@ -141,7 +145,8 @@ public class RequestsRepositoryTests : IDisposable
             Members = new Student[] {
                 new Student
                 {
-                    FullName = "Current student",
+                    FirstName = "Current",
+                    LastName = "student",
                     Email = "jlds@itu.dk",
                 }
             },
@@ -149,7 +154,8 @@ public class RequestsRepositoryTests : IDisposable
             {
                 new Supervisor
                 {
-                    FullName = "Henrik Kjeldsen",
+                    FirstName = "Henrik",
+                    LastName = "Larsen",
                     Email = "henk@itu.dk",
                     Topics = new Topic[] { },
                     Profession = SupervisorProfession.Lecturer,

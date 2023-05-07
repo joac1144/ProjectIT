@@ -12,4 +12,8 @@ public class Supervisor : User
 
     [Required]
     public SupervisorStatus Status { get; set; }
+
+    public IEnumerable<Project> Projects { get; set; } = null!;
+
+    public IEnumerable<Request> ReceivedRequests { get; set; } = null!;
 }

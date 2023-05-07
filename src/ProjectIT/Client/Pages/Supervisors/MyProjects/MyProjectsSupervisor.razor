@@ -27,7 +27,7 @@
         
         @if (projects != null)
         {
-            var appliedProjects = projects.Where(p => p.Students.Count() > 0).ToList();
+            var appliedProjects = projects.Where(p => p.Students?.Count() > 0).ToList();
 
             if (appliedProjects.Any())
             {

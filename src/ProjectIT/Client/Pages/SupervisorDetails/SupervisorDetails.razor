@@ -32,7 +32,7 @@ else
         </div>
         <div>
             <div class="mb-4">
-                <h1 class="fw-bold"> @supervisor.FullName </h1>
+                <h1 class="fw-bold">@supervisor.FullName</h1>
             </div>
             @* @if (supervisor.Projects.Count > 0)
             {
@@ -72,9 +72,12 @@ else
             </div>
             <div class="my-4">
                 <Panel title="Topics" Width="@panelWidth">
-                    <div class="d-flex flex-start flex-wrap py-2">
-                        <TagsDisplay Tags="supervisor.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
-                    </div>
+                    @if (supervisor.Topics is not null)
+                    {
+                        <div class="d-flex flex-start flex-wrap py-2">
+                            <TagsDisplay Tags="supervisor.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                        </div>
+                    }
                 </Panel>
             </div>
             <div class="d-flex justify-content-center">

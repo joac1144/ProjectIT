@@ -128,14 +128,13 @@ public partial class SupervisorList
         List<SupervisorDetailsDto>? filteredBySearch = supervisors;
         List<SupervisorDetailsDto> filteredBySupervisorStatuses = supervisors;
 
-
         if (activeTopics.Any())
         {
             filteredByTopics = new List<SupervisorDetailsDto>();
             foreach (FilterTag filterTag in activeTopics)
             {
                 filteredByTopics = supervisors!
-                    .Intersect(supervisors?.Where(supervisor => supervisor.Topics.Select(topic => topic.Name).Contains(filterTag.Tag))!)
+                    .Intersect(supervisors?.Where(supervisor => (bool)supervisor.Topics?.Select(topic => topic.Name).Contains(filterTag.Tag)!)!)
                     .Union(filteredByTopics)
                     .ToList();
             }
@@ -172,7 +171,7 @@ public partial class SupervisorList
         else
         {
             return supervisors.Where(
-                p => p.Topics.Any(topic => topic.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
+                p => (bool)p.Topics?.Any(topic => topic.Name.Contains(query, StringComparison.OrdinalIgnoreCase))!
                 || p.FullName.Contains(query, StringComparison.OrdinalIgnoreCase)
             ).ToList();
         }

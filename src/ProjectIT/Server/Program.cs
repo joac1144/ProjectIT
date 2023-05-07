@@ -4,6 +4,7 @@ using Microsoft.Identity.Web;
 using ProjectIT.Server.Database;
 using ProjectIT.Server.Repositories.Implementations;
 using ProjectIT.Server.Repositories.Interfaces;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     },
     options => { builder.Configuration.Bind("AzureAd", options); });
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<ProjectITDbContext>(options =>
