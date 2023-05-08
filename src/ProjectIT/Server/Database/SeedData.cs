@@ -5,25 +5,18 @@ namespace ProjectIT.Server.Database;
 
 public static class SeedData
 {
-    private static Topic topic1 = new() { Name = "SomeNewTopic", Category = TopicCategory.SoftwareEngineering };
     private static Topic topic2 = new() { Name = "JavaScript", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic3 = new() { Name = "C#", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic4 = new() { Name = "F#", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic5 = new() { Name = "C++", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic6 = new() { Name = "Machine learning", Category = TopicCategory.ArtificialIntelligence };
     private static Topic topic7 = new() { Name = "Eye-tracking", Category = TopicCategory.ArtificialIntelligence };
     private static Topic topic8 = new() { Name = "Cryptography", Category = TopicCategory.Security };
     private static Topic topic9 = new() { Name = "Penetration testing", Category = TopicCategory.Security };
-    private static Topic topic10 = new() { Name = "Software engineering", Category = TopicCategory.SoftwareEngineering };
-    private static Topic topic11 = new() { Name = "Go", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic12 = new() { Name = "Ruby", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic13 = new() { Name = "Kotlin", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic14 = new() { Name = "C", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic15 = new() { Name = "Assembly", Category = TopicCategory.ProgrammingLanguages };
 
-    private static Supervisor supervisor1 = new() { FirstName = "John Andersen", LastName = "Doe", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic7, topic9, topic14, topic4, topic12 }, Status = SupervisorStatus.LimitedSupervision };
-    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "hedef@itr.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic3, topic1, topic2, topic15, topic12 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisor3 = new() { FirstName = "John", LastName = "Smith", Email = "hevdfd@itr.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic3, topic2, topic13, topic6, topic7 }, Status = SupervisorStatus.Inactive };
+    private static Supervisor supervisor1 = new() { FirstName = "John Andersen", LastName = "Doe", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic7, topic9, topic14 }, Status = SupervisorStatus.LimitedSupervision };
+    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "hedef@itr.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic2 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor3 = new() { FirstName = "John", LastName = "Smith", Email = "hevdfd@itr.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic2, topic13, topic6, topic7 }, Status = SupervisorStatus.Inactive };
     private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "hebgfd@itr.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic8, topic6, topic13 }, Status = SupervisorStatus.Available };
     private static Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "hehngd@itr.dk" };
     private static Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "hmgjhed@itr.dk" };
@@ -100,7 +93,7 @@ public static class SeedData
     {
         if (!context.Topics.Any())
         {
-            context.Topics.AddRange(topic1, topic2, topic3, topic4, topic5, topic6, topic7, topic8, topic9, topic10, topic11, topic12, topic13, topic14, topic15);
+            context.Topics.AddRange(topic2, topic5, topic6, topic7, topic8, topic9, topic13, topic14);
         }
         context.SaveChanges();
     }
@@ -215,7 +208,7 @@ public static class SeedData
                 {
                     Title = "Project " + random.Next(1, 1000),
                     DescriptionHtml = "Description " + random.Next(1, 1000),
-                    Topics = context.Topics.Skip(12).Take(2).ToList(),
+                    Topics = context.Topics.Skip(2).Take(2).ToList(),
                     Languages = new List<Language>()
                     {
                         (Language)random.Next(0, 2)
@@ -235,7 +228,7 @@ public static class SeedData
                         FirstName = "Supervisor",
                         LastName = random.Next(1, 1000).ToString(),
                         Email = "supervisor" + random.Next(1, 1000) + "@itu.dk",
-                        Topics = new List<Topic>() { topic1, topic10, topic12, topic5, topic13, topic12, topic11 },
+                        Topics = new List<Topic>() { topic5, topic13, topic6, topic7 },
                         Profession = SupervisorProfession.FullProfessor,
                         Status = (SupervisorStatus)random.Next(0,2)
                     },

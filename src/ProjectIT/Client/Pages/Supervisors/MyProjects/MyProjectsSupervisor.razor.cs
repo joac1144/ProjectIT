@@ -1,8 +1,10 @@
 ﻿using Microsoft.JSInterop;
 using ProjectIT.Client.Components.Modal;
+using ProjectIT.Client.Constants;
 using ProjectIT.Client.Shared.Enums;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages.Supervisors.MyProjects;
@@ -39,13 +41,27 @@ public partial class MyProjectsSupervisor
         }
     }
 
+    private void EditProject(int projectId)
+    {
+        navigationManager.NavigateTo($"/my-projects/{projectId}/edit");
+    }
+
     private async void DeleteProject(int id)
     {
-        var response = httpClient.DeleteAsync($"{ApiEndpoints.Projects}/{id}");
+        bool isForUserTesting = true;
 
-        if (!response.Result.IsSuccessStatusCode)
+        if (isForUserTesting)
         {
-            await jsRuntime.InvokeAsync<string>("alert", $"Something went wrong deleting project with id {id}.");
+            navigationManager.NavigateTo(PageUrls.MyProjects, true);
         }
+        else
+        {
+            var response = httpClient.DeleteAsync($"{ApiEndpoints.Projects}/{id}");
+
+            if (!response.Result.IsSuccessStatusCode)
+            {
+                await jsRuntime.InvokeAsync<string>("alert", $"Something went wrong deleting project with id {id}.");
+            }
+        }    
     }
 }

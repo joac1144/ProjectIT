@@ -1,5 +1,6 @@
 ﻿@using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Components.Search
+@using ProjectIT.Client.Http;
 @using ProjectIT.Shared.Enums
 @inject IStringLocalizer<EnumsResource> EnumsLocalizer
 
@@ -23,7 +24,7 @@
                     data-bs-target=@($"#{category.Category.ToString()}Collapse")
                     aria-expanded="false"
                     aria-controls=@($"{category.Category.ToString()}Collapse")
-                @onclick="(() => category.Collapsed = !category.Collapsed)">
+                    @onclick="(() => category.Collapsed = !category.Collapsed)">
                 @category.Category.GetTranslatedString(EnumsLocalizer)
             </button>
             <div class=@($"{(category.Collapsed ? "collapse" : "")}") id=@($"{category.Category.ToString()}Collapse")>
