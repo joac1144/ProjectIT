@@ -90,7 +90,7 @@ public class ProjectsRepository : IProjectsRepository
             entity.Languages.IsNullOrEmpty() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null || entity.Supervisor is null)
                 throw new ArgumentNullException();
         
-        _context.Projects.Add(entity);
+        _context.Projects.Attach(entity);
         await _context.SaveChangesAsync();
         
         return entity.Id;

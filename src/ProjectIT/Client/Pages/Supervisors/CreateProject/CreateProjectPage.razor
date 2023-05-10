@@ -1,6 +1,7 @@
 @attribute [Route(PageUrls.CreateProject)]
 @using Microsoft.AspNetCore.Authorization;
 @using ProjectIT.Client.Components.Filter
+@using ProjectIT.Client.Components.Modal
 @using ProjectIT.Client.Components.ProjectCard
 @using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
@@ -13,17 +14,25 @@
 @inject AnonymousClient httpClient
 @inject NavigationManager navManager
 @inject IJSRuntime JSRuntime
-@attribute [Authorize(Roles = AppRoles.Supervisor)]
+@*@attribute [Authorize(Roles = AppRoles.Supervisor)]*@
 
 <div class="d-flex flex-row justify-content-center gap-5">
     <div class="d-flex flex-column my-4 py-3 gap-4 filter-size">
         <Panel Title="Programmes">
-            <RadzenCheckBoxList TValue="Programme" Data="@programmeWrappers" @bind-Value=@projectProgrammes
-                TextProperty="StringValue" ValueProperty="Programme" Orientation="Orientation.Vertical" />
+            <RadzenCheckBoxList TValue="Programme" 
+                                Data="@programmeWrappers" 
+                                @bind-Value=@projectProgrammes
+                                TextProperty="StringValue" 
+                                ValueProperty="Programme" 
+                                Orientation="Orientation.Vertical" />
         </Panel>
         <Panel Title="ECTS Points">
-            <RadzenRadioButtonList TValue="Ects?" Data="ectsWrappers" @bind-Value=projectEcts TextProperty="StringValue"
-                ValueProperty="Ects" Orientation="Orientation.Vertical" />
+            <RadzenRadioButtonList TValue="Ects?" 
+                                   Data="ectsWrappers" 
+                                   @bind-Value=projectEcts 
+                                   TextProperty="StringValue"
+                                   ValueProperty="Ects"
+                                   Orientation="Orientation.Vertical" />
         </Panel>
     </div>
     <div class="d-flex flex-column mb-4 main-view-size">
@@ -32,8 +41,7 @@
             <InputText class="border border-0 shadow rounded-1 fs-7 px-3 mb-4" style="width: 45rem; height: 2.5rem"
                 @bind-Value="project!.Title" placeholder="Title here..." />
             <p class="fs-7 fw-bold">Description</p>
-            <RadzenHtmlEditor @bind-Value="@descriptionHtml" class="border border-0 shadow mb-4"
-                style="height:40rem; width: 45rem" />
+            <RadzenHtmlEditor @bind-Value="@descriptionHtml" class="border border-0 shadow mb-4" style="height:40rem; width: 45rem" />
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-danger fw-bold py-1 btn-style" @onclick="CancelProjectAsync">
                     Cancel
@@ -63,8 +71,12 @@
             </RadzenRadioButtonList>
         </Panel>
         <Panel Title="Language">
-            <RadzenCheckBoxList TValue="Language" Data="@languageWrappers" @bind-Value=@projectLanguages
-                TextProperty="StringValue" ValueProperty="Language" Orientation="Orientation.Vertical" />
+            <RadzenCheckBoxList TValue="Language" 
+                                Data="@languageWrappers" 
+                                @bind-Value=@projectLanguages
+                                TextProperty="StringValue"
+                                ValueProperty="Language" 
+                                Orientation="Orientation.Vertical" />
         </Panel>
         <Panel Title="Topics">
             <div class="d-flex flex-column gap-2">
@@ -133,3 +145,26 @@
         </Panel>
     </div>
 </div>
+<Modal @ref="modal" T="List<Topic>" Identifier="newTopicsCategoriesModal" Title="Please choose categories for new topics" CloseButtonText="Cancel">
+    <Body>
+        @foreach (var topic in newTopicsList!)
+        {
+            <div>
+                <p class="fs-7 fw-bold">Topic: @topic.Name</p>
+                <RadzenDropDown TValue="TopicCategory"
+                            Placeholder="Select categeory"
+                            Data=@topicCategoryWrappers
+                            ValueProperty="TopicCategory"
+                            TextProperty="StringValue"
+                            class="flex-grow-1">
+                    <Template>
+                        @context.StringValue
+                    </Template>
+                </RadzenDropDown>
+            </div>
+        }
+    </Body>
+    <Buttons>
+        <button type="button" class="btn btn-black" @onclick="() => Console.WriteLine()">Confirm</button>
+    </Buttons>
+</Modal>

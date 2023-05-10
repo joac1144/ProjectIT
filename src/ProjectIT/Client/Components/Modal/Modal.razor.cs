@@ -23,7 +23,7 @@ public partial class Modal<T>
 
     private bool isShowing;
 
-    public void OpenModal(T data)
+    public void OpenModal(T data = default!)
     {
         Data = data;
         isShowing = true;

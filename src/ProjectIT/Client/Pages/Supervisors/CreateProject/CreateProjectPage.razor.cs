@@ -1,9 +1,11 @@
 using System.Net.Http.Json;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using ProjectIT.Client.Components.Modal;
 using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
@@ -19,20 +21,26 @@ public partial class CreateProjectPage
 {
     private class EctsWrapper
     {
-        public Ects Ects { get; set; }
-        public string StringValue { get; set; } = string.Empty;
+        public Ects Ects { get; init; }
+        public string StringValue { get; init; } = string.Empty;
     }
 
     private class ProgrammeWrapper
     {
-        public Programme Programme { get; set; }
-        public string StringValue { get; set; } = string.Empty;
+        public Programme Programme { get; init; }
+        public string StringValue { get; init; } = string.Empty;
     }
 
     private class LanguageWrapper
     {
-        public Language Language { get; set; }
-        public string StringValue { get; set; } = string.Empty;
+        public Language Language { get; init; }
+        public string StringValue { get; init; } = string.Empty;
+    }
+
+    private class TopicCategoryWrapper
+    {
+        public TopicCategory TopicCategory { get; init; }
+        public string StringValue { get; init; } = string.Empty;
     }
 
     [Inject]
@@ -43,6 +51,7 @@ public partial class CreateProjectPage
     private IEnumerable<EctsWrapper>? ectsWrappers;
     private IEnumerable<ProgrammeWrapper>? programmeWrappers;
     private IEnumerable<LanguageWrapper>? languageWrappers;
+    private IEnumerable<TopicCategoryWrapper>? topicCategoryWrappers;
 
     private readonly Project project = new();
     private string? descriptionHtml;
@@ -59,11 +68,15 @@ public partial class CreateProjectPage
 
     private ClaimsPrincipal? authUser;
 
+    private Modal<List<Topic>>? modal;
+    private List<Topic>? newTopicsList;
+
     protected override async Task OnInitializedAsync()
     {
         ectsWrappers = Enum.GetValues<Ects>().Select(ects => new EctsWrapper { Ects = ects, StringValue = ects.GetTranslatedString(EnumsLocalizer) });
         programmeWrappers = Enum.GetValues<Programme>().Select(prog => new ProgrammeWrapper { Programme = prog, StringValue = prog.GetTranslatedString(EnumsLocalizer) });
         languageWrappers = Enum.GetValues<Language>().Select(lang => new LanguageWrapper { Language = lang, StringValue = lang.GetTranslatedString(EnumsLocalizer) });
+        topicCategoryWrappers = Enum.GetValues<TopicCategory>().Select(category => new TopicCategoryWrapper { TopicCategory = category, StringValue = category.ToString() });
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
@@ -161,14 +174,18 @@ public partial class CreateProjectPage
                 Email = $"{authUser?.Identity?.Name?.Replace(" ", "")[..4]}@itu.dk",
                 Profession = SupervisorProfession.FullProfessor,
                 Status = SupervisorStatus.Available,
-                Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "topicMadeByProjectCreation", Category = TopicCategory.SoftwareEngineering } }
+                Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "topicMadeByProjectCreation", Category = TopicCategory.SoftwareEngineering } },
             },
             CoSupervisor = projectCoSupervisor
         };
 
-        if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
+        var newTopics = newProject.Topics.Select(t => t).Except(topics.Select(t => t));
+
+        if (newTopics.Any())
         {
             // A new topic was added, open dialog to confirm and to add category.
+            newTopicsList = newTopics.ToList();
+            modal?.OpenModal(newTopicsList);
         }
 
         var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
