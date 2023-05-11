@@ -146,36 +146,40 @@ public partial class UpdateProjectPage
 
     private async Task SubmitProjectAsync()
     {
-        var updatedProject = new ProjectUpdateDto()
-        {
-            Id = projectToBeUpdated!.Id,
-            Title = projectToBeUpdated!.Title,
-            DescriptionHtml = projectToBeUpdated.DescriptionHtml,
-            Topics = projectToBeUpdated.Topics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-            Languages = projectToBeUpdated.Languages,
-            Programmes = projectToBeUpdated.Programmes,
-            Ects = projectToBeUpdated.Ects,
-            Semester = projectToBeUpdated.Semester,
-            Supervisor = projectToBeUpdated.Supervisor,
-            CoSupervisor = projectToBeUpdated.CoSupervisor
-        };
+        await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
+        navManager.NavigateTo("my-projects");
+        return;
 
-        if (updatedProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
-        {
-            // A new topic was added, open dialog to confirm and to add category.
-        }
+        // var updatedProject = new ProjectUpdateDto()
+        // {
+        //     Id = projectToBeUpdated!.Id,
+        //     Title = projectToBeUpdated!.Title,
+        //     DescriptionHtml = projectToBeUpdated.DescriptionHtml,
+        //     Topics = projectToBeUpdated.Topics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+        //     Languages = projectToBeUpdated.Languages,
+        //     Programmes = projectToBeUpdated.Programmes,
+        //     Ects = projectToBeUpdated.Ects,
+        //     Semester = projectToBeUpdated.Semester,
+        //     Supervisor = projectToBeUpdated.Supervisor,
+        //     CoSupervisor = projectToBeUpdated.CoSupervisor
+        // };
 
-        var response = await httpClient.Client.PutAsJsonAsync(ApiEndpoints.Projects, updatedProject);
+        // if (updatedProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
+        // {
+        //     // A new topic was added, open dialog to confirm and to add category.
+        // }
 
-        if (response.IsSuccessStatusCode)
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
-            navManager.NavigateTo("my-projects");
-        }
-        else
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
-        }
+        // var response = await httpClient.Client.PutAsJsonAsync(ApiEndpoints.Projects, updatedProject);
+
+        // if (response.IsSuccessStatusCode)
+        // {
+        //     await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
+        //     navManager.NavigateTo("my-projects");
+        // }
+        // else
+        // {
+        //     await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
+        // }
     }
 
     private void CancelProjectAsync()

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
+using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Requests;
 using ProjectIT.Shared.Enums;
@@ -9,6 +10,7 @@ using ProjectIT.Shared.Models;
 using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
 using System.Net.Http.Json;
+using Microsoft.JSInterop;
 using System.Security.Claims;
 
 namespace ProjectIT.Client.Pages.CreateRequest;
@@ -131,28 +133,38 @@ public partial class CreateRequestPage
     
     private async void SubmitRequestAsync()
     {
-        var requestDto = new RequestCreateDto
-        {
-            Title = request.Title,
-            Description = request.Description,
-            Topics = topics,
-            Languages = requestLanguages!,
-            Programmes = requestProgrammes!,
-            Members = new Student[] { },
-            Supervisors = supervisors,
-            Ects = request.Ects,
-            Semester = request.Semester
-        };
+        bool isForUserTesting = true;
 
-        var response = await httpClient.Client.PostAsJsonAsync("https://localhost:7094/requests", requestDto);
-
-        if (response.IsSuccessStatusCode)
+        if (isForUserTesting)
         {
-            navManager.NavigateTo("/");
+            await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
+            navManager.NavigateTo(PageUrls.LandingPage);
         }
         else
         {
-            //Do something
+            var requestDto = new RequestCreateDto
+            {
+                Title = request.Title,
+                Description = request.Description,
+                Topics = topics,
+                Languages = requestLanguages!,
+                Programmes = requestProgrammes!,
+                Members = new Student[] { },
+                Supervisors = supervisors,
+                Ects = request.Ects,
+                Semester = request.Semester
+            };
+
+            var response = await httpClient.Client.PostAsJsonAsync("https://localhost:7094/requests", requestDto);
+
+            if (response.IsSuccessStatusCode)
+            {
+                navManager.NavigateTo("/");
+            }
+            else
+            {
+                //Do something
+            }
         }
     }
 
