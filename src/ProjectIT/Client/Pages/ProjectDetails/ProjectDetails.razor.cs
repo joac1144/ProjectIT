@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
@@ -17,8 +18,9 @@ public partial class ProjectDetails
     private string statusSupervisor = null!;
     private string statusCoSupervisor = null!;
 
-    private void ApplyProject(NavigationManager navigationManager)
+    private async Task ApplyProject(NavigationManager navigationManager)
     {
+        await JSRuntime.InvokeAsync<string>("alert", "Project applied successfully!");
         navigationManager.NavigateTo("/");
     }
 

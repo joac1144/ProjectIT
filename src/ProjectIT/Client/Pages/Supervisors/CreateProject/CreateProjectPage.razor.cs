@@ -146,6 +146,7 @@ public partial class CreateProjectPage
 
         if (isForUserTesting)
         {
+            await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
             navManager.NavigateTo(PageUrls.MyProjects);
         }
         else
