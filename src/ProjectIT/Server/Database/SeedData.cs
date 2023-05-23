@@ -14,49 +14,14 @@ public static class SeedData
     private static Topic topic13 = new() { Name = "Kotlin", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic14 = new() { Name = "C", Category = TopicCategory.ProgrammingLanguages };
 
-    private static Supervisor supervisor1 = new() { FirstName = "John Andersen", LastName = "Doe", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic7, topic9, topic14 }, Status = SupervisorStatus.LimitedSupervision };
-    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "hedef@itr.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic2 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisor3 = new() { FirstName = "John", LastName = "Smith", Email = "hevdfd@itr.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic2, topic13, topic6, topic7 }, Status = SupervisorStatus.Inactive };
-    private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "hebgfd@itr.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic8, topic6, topic13 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor1 = new() { FirstName = "John Andersen", LastName = "Doe", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.LimitedSupervision };
+    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "hedef@itr.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor3 = new() { FirstName = "John", LastName = "Smith", Email = "hevdfd@itr.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Inactive };
+    private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "hebgfd@itr.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
     private static Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "hehngd@itr.dk" };
     private static Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "hmgjhed@itr.dk" };
     private static Student student3 = new() { FirstName = "Michael", LastName = "Davis", Email = "hessdd@itr.dk" };
     private static Student student4 = new() { FirstName = "Olivia", LastName = "Brown", Email = "hentd@itr.dk" };
-
-    private static Project project1 = new()
-    {
-        Title = "Test",
-        DescriptionHtml = "Test desc",
-        Topics = new[]
-        {
-            new Topic
-            {
-                Name = "Test Topic",
-                Category = TopicCategory.ArtificialIntelligence
-            },
-            new Topic
-            {
-                Name = "Test Topic 2",
-                Category = TopicCategory.SoftwareEngineering
-            }
-        },
-        Languages = new[]
-        {
-            Language.English
-        },
-        Programmes = new[]
-        {
-            Programme.BSWU
-        },
-        Ects = Ects.Bachelor,
-        Semester = new()
-        {
-            Season = Season.Spring,
-            Year = 2023
-        },
-        Supervisor = supervisor2,
-        Students = new Student[] { }
-    };
 
     private static Project project2 = new() 
     {
@@ -145,7 +110,6 @@ public static class SeedData
                     CoSupervisor = context.Supervisors.Skip(1).First(),
                     Students = context.Students.Take(2).ToArray()
                 },
-                // project1,
                 project2,
                 new Project
                 {
@@ -171,7 +135,7 @@ public static class SeedData
                         FirstName = "Kenneth",
                         LastName = "Mathiasen",
                         Email = "knmt@itu.dk",
-                        Topics = new Topic[] { },
+                        Topics = new Topic[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
                         Profession = SupervisorProfession.FullProfessor,
                         Status = SupervisorStatus.Available
                     },
@@ -213,7 +177,7 @@ public static class SeedData
                             FirstName = "Laura",
                             LastName = "Müller",
                             Email = "laura@itu.dk",
-                            Topics = new[] { topic5, topic6 },
+                            Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
                             Profession = SupervisorProfession.FullProfessor,
                             Status = SupervisorStatus.Available
                         },
@@ -233,7 +197,7 @@ public static class SeedData
                             FirstName = "Mark",
                             LastName = "Andersen",
                             Email = "mark@itu.dk",
-                            Topics = new[] { topic8, topic9 },
+                            Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
                             Profession = SupervisorProfession.AssociateProfessor,
                             Status = SupervisorStatus.LimitedSupervision
                         },
@@ -253,7 +217,7 @@ public static class SeedData
                         FirstName = "Emma",
                         LastName = "Larsen",
                         Email = "emma@itu.dk",
-                        Topics = new[] { topic2, topic6 },
+                        Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
                         Profession = SupervisorProfession.ExternalProfessor,
                         Status = SupervisorStatus.Available
                     },
@@ -264,7 +228,7 @@ public static class SeedData
                 {
                     Title = "AR Game Development for Education",
                     DescriptionHtml = "Objective: To develop an educational augmented reality (AR) game to engage students in interactive learning experiences. Scope: The project includes designing game mechanics, creating educational content, integrating AR features, and evaluating the game's impact on learning outcomes.",
-                    Topics = new[] { topic6, topic14 },
+                    Topics = new[] { topic6, topic14, topic13 },
                     Languages = new[] { Language.English },
                     Programmes = new[] { Programme.MGAMES },
                     Ects = Ects.Master,
@@ -274,7 +238,7 @@ public static class SeedData
                         FirstName = "Sophie",
                         LastName = "Hansen",
                         Email = "sophie@itu.dk",
-                        Topics = new[] { topic6, topic14 },
+                        Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
                         Profession = SupervisorProfession.PhdStudent,
                         Status = SupervisorStatus.Inactive
                     },
