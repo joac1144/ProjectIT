@@ -1,13 +1,10 @@
-using Microsoft.AspNetCore.Components;
 using ProjectIT.Client.Constants;
-using Microsoft.AspNetCore.Components.Routing;
 
 namespace ProjectIT.Client.Shared;
 
 public partial class NavMenu
 {
-    private string activeTab;
-
+    private string? activeTab;
 
     protected override void OnInitialized()
     {
@@ -30,5 +27,4 @@ public partial class NavMenu
 
         return PageUrls.Projects;
     }
-
 }
