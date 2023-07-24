@@ -1,10 +1,18 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
+using ProjectIT.Client.Http;
+using ProjectIT.Shared;
+using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Client.Components.Filter;
 
 public partial class FilterPanelSimple
 {
+    [Inject]
+    public AnonymousClient anonymousClient { get; set; } = null!;
+
     [Parameter]
     public string Title { get; init; } = null!;
 
@@ -20,8 +28,11 @@ public partial class FilterPanelSimple
     [Parameter]
     public FilterType Type { get; init; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        var projects = await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects);
+        var semesters = projects!.Select(project => project.Semester).Distinct().Order();
+
         switch (Type)
         {
             case FilterType.Programme:
@@ -37,11 +48,9 @@ public partial class FilterPanelSimple
                 }
                 break;
             case FilterType.Semester:
-                DateTime date = DateTime.Now;
-                foreach (Season season in Enum.GetValues<Season>())
+                foreach (Semester semester in semesters)
                 {
-                    Data.Add(new FilterTagSimple { Tag = $"{season} {date.Year}", FilterType = FilterType.Semester });
-                    Data.Add(new FilterTagSimple { Tag = $"{season} {date.Year + 1}", FilterType = FilterType.Semester });
+                    Data.Add(new FilterTagSimple { Tag = semester.ToString(), FilterType = FilterType.Semester });
                 }
                 break;
             case FilterType.Language:
@@ -60,7 +69,7 @@ public partial class FilterPanelSimple
 
         if (OnInitializedData.HasDelegate)
         {
-            OnInitializedData.InvokeAsync(Data);
+            await OnInitializedData.InvokeAsync(Data);
         }
     }
 

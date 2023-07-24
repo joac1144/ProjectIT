@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
+using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Requests;
 using ProjectIT.Shared.Enums;
@@ -9,6 +10,7 @@ using ProjectIT.Shared.Models;
 using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
 using System.Net.Http.Json;
+using Microsoft.JSInterop;
 using System.Security.Claims;
 
 namespace ProjectIT.Client.Pages.CreateRequest;
@@ -67,12 +69,12 @@ public partial class CreateRequestPage
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         
-        await getSupervisorsAndTopicsData();
+        await GetSupervisorsAndTopicsData();
         SortTopics();
         SortSupervisors();
     }
 
-    private async Task getSupervisorsAndTopicsData()
+    private async Task GetSupervisorsAndTopicsData()
     {
         topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
@@ -148,16 +150,14 @@ public partial class CreateRequestPage
 
         if (response.IsSuccessStatusCode)
         {
-            navManager.NavigateTo("/");
+            await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
+            navManager.NavigateTo(PageUrls.Projects);
         }
         else
         {
-            //Do something
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
         }
     }
 
-    private void CancelRequest()
-    {
-        navManager.NavigateTo("/");
-    }
+    private void CancelRequest() => navManager.NavigateTo(PageUrls.Projects);
 }

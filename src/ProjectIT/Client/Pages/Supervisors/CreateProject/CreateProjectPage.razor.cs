@@ -67,12 +67,12 @@ public partial class CreateProjectPage
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
-        await getSupervisorsAndTopicsData();
+        await GetSupervisorsAndTopicsData();
         SortTopics();
         SortSupervisors();
     }
 
-    private async Task getSupervisorsAndTopicsData()
+    private async Task GetSupervisorsAndTopicsData()
     {
         topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
@@ -156,9 +156,9 @@ public partial class CreateProjectPage
             Supervisor = new()
             {
                 Id = (new Random()).Next(30, 10000),
-                FirstName = string.Join(" ", superviserNameSplit?.Take(superviserNameSplit.Length-1)!),
+                FirstName = string.Join(" ", superviserNameSplit?.Take(superviserNameSplit.Length - 1)!),
                 LastName = superviserNameSplit?.Last()!,
-                Email = $"{authUser?.Identity?.Name?.Replace(" ", "")[..4]}@itu.dk",
+                Email = authUser?.FindFirst("preferred_username")?.Value!,
                 Profession = SupervisorProfession.FullProfessor,
                 Status = SupervisorStatus.Available,
                 Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "topicMadeByProjectCreation", Category = TopicCategory.SoftwareEngineering } }
