@@ -12,6 +12,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AnonymousClient httpClient
 @inject NavigationManager navManager
+@inject IJSRuntime JSRuntime
 @attribute [Authorize(Roles = AppRoles.Student)]
 
 <div class="d-flex flex-row justify-content-center gap-5">

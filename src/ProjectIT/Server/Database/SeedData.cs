@@ -5,65 +5,23 @@ namespace ProjectIT.Server.Database;
 
 public static class SeedData
 {
-    private static Topic topic1 = new() { Name = "SomeNewTopic", Category = TopicCategory.SoftwareEngineering };
     private static Topic topic2 = new() { Name = "JavaScript", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic3 = new() { Name = "C#", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic4 = new() { Name = "F#", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic5 = new() { Name = "C++", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic6 = new() { Name = "Machine learning", Category = TopicCategory.ArtificialIntelligence };
     private static Topic topic7 = new() { Name = "Eye-tracking", Category = TopicCategory.ArtificialIntelligence };
     private static Topic topic8 = new() { Name = "Cryptography", Category = TopicCategory.Security };
     private static Topic topic9 = new() { Name = "Penetration testing", Category = TopicCategory.Security };
-    private static Topic topic10 = new() { Name = "Software engineering", Category = TopicCategory.SoftwareEngineering };
-    private static Topic topic11 = new() { Name = "Go", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic12 = new() { Name = "Ruby", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic13 = new() { Name = "Kotlin", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic14 = new() { Name = "C", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic15 = new() { Name = "Assembly", Category = TopicCategory.ProgrammingLanguages };
 
-    private static Supervisor supervisor1 = new() { FirstName = "John Andersen", LastName = "Doe", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic7, topic9, topic14, topic4, topic12 }, Status = SupervisorStatus.LimitedSupervision };
-    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "hedef@itr.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic3, topic1, topic2, topic15, topic12 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisor3 = new() { FirstName = "John", LastName = "Smith", Email = "hevdfd@itr.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic3, topic2, topic13, topic6, topic7 }, Status = SupervisorStatus.Inactive };
-    private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "hebgfd@itr.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic8, topic6, topic13 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor1 = new() { FirstName = "John Andersen", LastName = "Doe", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.LimitedSupervision };
+    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "hedef@itr.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor3 = new() { FirstName = "John", LastName = "Smith", Email = "hevdfd@itr.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Inactive };
+    private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "hebgfd@itr.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
     private static Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "hehngd@itr.dk" };
     private static Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "hmgjhed@itr.dk" };
     private static Student student3 = new() { FirstName = "Michael", LastName = "Davis", Email = "hessdd@itr.dk" };
     private static Student student4 = new() { FirstName = "Olivia", LastName = "Brown", Email = "hentd@itr.dk" };
-
-    private static Project project1 = new()
-    {
-        Title = "Test",
-        DescriptionHtml = "Test desc",
-        Topics = new[]
-        {
-            new Topic
-            {
-                Name = "Test Topic",
-                Category = TopicCategory.ArtificialIntelligence
-            },
-            new Topic
-            {
-                Name = "Test Topic 2",
-                Category = TopicCategory.SoftwareEngineering
-            }
-        },
-        Languages = new[]
-        {
-            Language.English
-        },
-        Programmes = new[]
-        {
-            Programme.BSWU
-        },
-        Ects = Ects.Bachelor,
-        Semester = new()
-        {
-            Season = Season.Spring,
-            Year = 2023
-        },
-        Supervisor = supervisor2,
-        Students = new Student[] { }
-    };
 
     private static Project project2 = new() 
     {
@@ -100,7 +58,7 @@ public static class SeedData
     {
         if (!context.Topics.Any())
         {
-            context.Topics.AddRange(topic1, topic2, topic3, topic4, topic5, topic6, topic7, topic8, topic9, topic10, topic11, topic12, topic13, topic14, topic15);
+            context.Topics.AddRange(topic2, topic5, topic6, topic7, topic8, topic9, topic13, topic14);
         }
         context.SaveChanges();
     }
@@ -152,7 +110,6 @@ public static class SeedData
                     CoSupervisor = context.Supervisors.Skip(1).First(),
                     Students = context.Students.Take(2).ToArray()
                 },
-                project1,
                 project2,
                 new Project
                 {
@@ -175,10 +132,10 @@ public static class SeedData
                     },
                     Supervisor = new()
                     {
-                        FirstName = "Alaa",
-                        LastName = "",
-                        Email = "alia@itu.dk",
-                        Topics = new Topic[] { },
+                        FirstName = "Kenneth",
+                        LastName = "Mathiasen",
+                        Email = "knmt@itu.dk",
+                        Topics = new Topic[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
                         Profession = SupervisorProfession.FullProfessor,
                         Status = SupervisorStatus.Available
                     },
@@ -205,53 +162,360 @@ public static class SeedData
                     },
                     Supervisor = supervisor4,
                     Students = new Student[] { }
-                }
-            );
-            for (int i = 0; i < 15; i++)
-            {
-                var random = new Random();
-
-                var project = new Project
+                },
+                new Project
+                    {
+                        Title = "Blockchain-based Supply Chain Management System",
+                        DescriptionHtml = "Objective: To implement a blockchain-based supply chain management system for enhanced transparency and traceability of goods. Scope: The project involves analyzing the existing supply chain processes, identifying potential areas for improvement, designing and developing a blockchain solution, and testing its effectiveness in real-world scenarios.",
+                        Topics = new[] { topic5, topic6 },
+                        Languages = new[] { Language.English },
+                        Programmes = new[] { Programme.BDS },
+                        Ects = Ects.Master,
+                        Semester = new Semester { Season = Season.Spring, Year = 2024 },
+                        Supervisor = new Supervisor
+                        {
+                            FirstName = "Laura",
+                            LastName = "Müller",
+                            Email = "laura@itu.dk",
+                            Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
+                            Profession = SupervisorProfession.FullProfessor,
+                            Status = SupervisorStatus.Available
+                        },
+                        Students = new Student[] { }
+                    },
+                new Project
+                    {
+                        Title = "Data Privacy Framework for Healthcare Systems",
+                        DescriptionHtml = "Objective: To develop a comprehensive data privacy and confidentiality framework for healthcare systems to ensure the protection of sensitive patient information. Scope: The project includes conducting a risk assessment, defining privacy policies and access controls, implementing encryption and anonymization techniques, and evaluating the framework's effectiveness through testing.",
+                        Topics = new[] { topic8, topic9 },
+                        Languages = new[] { Language.English },
+                        Programmes = new[] { Programme.MDS },
+                        Ects = Ects.Master,
+                        Semester = new Semester { Season = Season.Autumn, Year = 2023 },
+                        Supervisor = new Supervisor
+                        {
+                            FirstName = "Mark",
+                            LastName = "Andersen",
+                            Email = "mark@itu.dk",
+                            Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
+                            Profession = SupervisorProfession.AssociateProfessor,
+                            Status = SupervisorStatus.LimitedSupervision
+                        },
+                        Students = new Student[] { }
+                    },
+                new Project
                 {
-                    Title = "Project " + random.Next(1, 1000),
-                    DescriptionHtml = "Description " + random.Next(1, 1000),
-                    Topics = context.Topics.Skip(12).Take(2).ToList(),
-                    Languages = new List<Language>()
-                    {
-                        (Language)random.Next(0, 2)
-                    },
-                    Programmes = new List<Programme>()
-                    {
-                        (Programme)random.Next(0, 10)
-                    },
-                    Ects = (Ects)random.Next(0, 4),
-                    Semester = new()
-                    {
-                        Season = (Season)random.Next(0, 2),
-                        Year = random.Next(2023, 2026)
-                    },
+                    Title = "Home Automation System Using Internet of Things",
+                    DescriptionHtml = "Objective: To create a smart home automation system leveraging IoT technologies to enhance convenience and energy efficiency. Scope: The project involves selecting and integrating IoT devices, designing a user-friendly interface, implementing automation rules, and evaluating the system's performance and usability.",
+                    Topics = new[] { topic2, topic6 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.BGBI },
+                    Ects = Ects.Bachelor,
+                    Semester = new Semester { Season = Season.Spring, Year = 2024 },
                     Supervisor = new Supervisor
                     {
-                        FirstName = "Supervisor",
-                        LastName = random.Next(1, 1000).ToString(),
-                        Email = "supervisor" + random.Next(1, 1000) + "@itu.dk",
-                        Topics = new List<Topic>() { topic1, topic10, topic12, topic5, topic13, topic12, topic11 },
-                        Profession = SupervisorProfession.FullProfessor,
-                        Status = (SupervisorStatus)random.Next(0,2)
+                        FirstName = "Emma",
+                        LastName = "Larsen",
+                        Email = "emma@itu.dk",
+                        Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
+                        Profession = SupervisorProfession.ExternalProfessor,
+                        Status = SupervisorStatus.Available
                     },
-                    Students = new List<Student>()
+                    CoSupervisor = supervisor2,
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "AR Game Development for Education",
+                    DescriptionHtml = "Objective: To develop an educational augmented reality (AR) game to engage students in interactive learning experiences. Scope: The project includes designing game mechanics, creating educational content, integrating AR features, and evaluating the game's impact on learning outcomes.",
+                    Topics = new[] { topic6, topic14, topic13 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.MGAMES },
+                    Ects = Ects.Master,
+                    Semester = new Semester { Season = Season.Autumn, Year = 2023 },
+                    Supervisor = new Supervisor
                     {
-                         new Student
-                         {
-                             FirstName = "Anna",
-                             LastName = "Sivertsen",
-                             Email = "asiv@itu.dk"
-                         }
-                    }
-                };
+                        FirstName = "Sophie",
+                        LastName = "Hansen",
+                        Email = "sophie@itu.dk",
+                        Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
+                        Profession = SupervisorProfession.PhdStudent,
+                        Status = SupervisorStatus.Inactive
+                    },
+                    CoSupervisor = supervisor1,
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "Robotic Business Process Optimization",
+                    DescriptionHtml = "Objective: To implement robotic process automation (RPA) techniques to optimize repetitive and time-consuming business processes. Scope: The project involves identifying target processes, designing and developing RPA workflows, integrating with existing systems, and evaluating the efficiency gains achieved through automation.",
+                    Topics = new[] { topic13, topic6 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.BDDIT },
+                    Ects = Ects.Bachelor,
+                    Semester = new Semester { Season = Season.Spring, Year = 2024 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "Robert",
+                        LastName = "Sørensen",
+                        Email = "robert@itu.dk",
+                        Topics = new[] { topic13, topic6 },
+                        Profession = SupervisorProfession.Lecturer,
+                        Status = SupervisorStatus.Available
+                    },
+                    CoSupervisor = supervisor3,
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "AI Chatbot for Customer Support",
+                    DescriptionHtml = "Objective: To develop an AI-powered chatbot to provide automated customer support and improve response times. Scope: The project includes training natural language processing models, integrating with customer support systems, implementing conversation flows, and evaluating the chatbot's accuracy and user satisfaction.",
+                    Topics = new[] { topic6, topic9 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.BSWU },
+                    Ects = Ects.Bachelor,
+                    Semester = new Semester { Season = Season.Autumn, Year = 2023 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "David",
+                        LastName = "Petersen",
+                        Email = "david@itu.dk",
+                        Topics = new[] { topic6, topic9 },
+                        Profession = SupervisorProfession.FullProfessor,
+                        Status = SupervisorStatus.Available
+                    },
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "ML-based Fraud Detection System",
+                    DescriptionHtml = "Objective: To build a machine learning-based fraud detection system that can identify and prevent fraudulent financial transactions. Scope: The project involves collecting transaction data, training fraud detection models, integrating with banking systems, and evaluating the system's effectiveness in reducing financial fraud.",
+                    Topics = new[] { topic6, topic8 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.MCS },
+                    Ects = Ects.Master,
+                    Semester = new Semester { Season = Season.Spring, Year = 2024 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "Julia",
+                        LastName = "Andersson",
+                        Email = "julia@itu.dk",
+                        Topics = new[] { topic6, topic8 },
+                        Profession = SupervisorProfession.AssociateProfessor,
+                        Status = SupervisorStatus.LimitedSupervision
+                    },
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "Computer Vision-based Quality Control System",
+                    DescriptionHtml = "Objective: To develop a computer vision-based quality control system that can automatically detect defects in manufactured products. Scope: The project includes designing image processing algorithms, training object detection models, integrating with production lines, and evaluating the system's accuracy and efficiency in detecting defects.",
+                    Topics = new[] { topic7, topic9 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.MDS },
+                    Ects = Ects.Master,
+                    Semester = new Semester { Season = Season.Autumn, Year = 2023 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "Daniel",
+                        LastName = "Hansen",
+                        Email = "daniel@itu.dk",
+                        Topics = new[] { topic7, topic9 },
+                        Profession = SupervisorProfession.AssistantProfessor,
+                        Status = SupervisorStatus.LimitedSupervision
+                    },
+                    CoSupervisor = supervisor4,
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                Title = "DL-based Image Recognition System",
+                DescriptionHtml = "Objective: To develop a deep learning-based image recognition system that enables autonomous vehicles to perceive and interpret the surrounding environment. Scope: The project involves collecting and annotating training data, designing and training convolutional neural networks, integrating with vehicle control systems, and evaluating the system's accuracy and real-time performance.",
+                Topics = new[] { topic6, topic14 },
+                Languages = new[] { Language.English },
+                Programmes = new[] { Programme.MDDIT },
+                Ects = Ects.Master,
+                Semester = new Semester { Season = Season.Spring, Year = 2024 },
+                Supervisor = new Supervisor
+                {
+                    FirstName = "Sophia",
+                    LastName = "Jensen",
+                    Email = "sophia@itu.dk",
+                    Topics = new[] { topic6, topic14 },
+                    Profession = SupervisorProfession.ExternalProfessor,
+                    Status = SupervisorStatus.Available
+                },
+                Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "Data Mining and Predictive Analytics",
+                    DescriptionHtml = "Objective: To apply data mining and predictive analytics techniques to forecast retail sales and optimize inventory management. Scope: The project includes collecting sales data, preprocessing and analyzing the data, building predictive models, and evaluating the accuracy and effectiveness of the sales forecasting system.",
+                    Topics = new[] { topic6, topic8 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.MGAMES },
+                    Ects = Ects.Master,
+                    Semester = new Semester { Season = Season.Autumn, Year = 2023 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "Oliver",
+                        LastName = "Andersen",
+                        Email = "oliver@itu.dk",
+                        Topics = new[] { topic6, topic8 },
+                        Profession = SupervisorProfession.ResearchProfessor,
+                        Status = SupervisorStatus.Available
+                    },
+                    CoSupervisor = supervisor1,
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "NLP for Sentiment Analysis in Social Media",
+                    DescriptionHtml = "Objective: To develop a natural language processing system for sentiment analysis of social media data to gain insights into public opinion and sentiment trends. Scope: The project involves collecting and preprocessing social media data, training sentiment analysis models, visualizing sentiment trends, and evaluating the accuracy of sentiment classification.",
+                    Topics = new[] { topic6, topic13 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.BSWU },
+                    Ects = Ects.Bachelor,
+                    Semester = new Semester { Season = Season.Spring, Year = 2024 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "Emily",
+                        LastName = "Møller",
+                        Email = "emily@itu.dk",
+                        Topics = new[] { topic6, topic2 },
+                        Profession = SupervisorProfession.FullProfessor,
+                        Status = SupervisorStatus.Available
+                    },
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "Cloud E-Learning Platform for Online Education",
+                    DescriptionHtml = "Objective: To develop a cloud-based e-learning platform that enables collaborative online education through virtual classrooms and interactive learning tools. Scope: The project includes designing the platform architecture, implementing communication features, integrating multimedia content, and evaluating the platform's usability and performance.",
+                    Topics = new[] { topic6, topic2 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.BDDIT },
+                    Ects = Ects.Bachelor,
+                    Semester = new Semester { Season = Season.Autumn, Year = 2023 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "William",
+                        LastName = "Lund",
+                        Email = "william@itu.dk",
+                        Topics = new[] { topic6, topic13 },
+                        Profession = SupervisorProfession.Lecturer,
+                        Status = SupervisorStatus.Available
+                    },
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "Cybersecurity Risk Assessment for Small Businesses",
+                    DescriptionHtml = "Objective: To conduct a cybersecurity risk assessment for small businesses and develop mitigation strategies to enhance their security posture. Scope: The project involves assessing vulnerabilities, analyzing threat landscape, recommending security controls, and creating cybersecurity guidelines tailored for small businesses.",
+                    Topics = new[] { topic6, topic7 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.MCS },
+                    Ects = Ects.Master,
+                    Semester = new Semester { Season = Season.Spring, Year = 2024 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "Jonathan",
+                        LastName = "Mortensen",
+                        Email = "jonathan@itu.dk",
+                        Topics = new[] { topic6, topic7 },
+                        Profession = SupervisorProfession.AssociateProfessor,
+                        Status = SupervisorStatus.Available
+                    },
+                    CoSupervisor = supervisor2,
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "Mobile App for Mental Health Monitoring",
+                    DescriptionHtml = "Objective: To develop a mobile application that enables mental health monitoring, provides personalized support, and connects users with mental health professionals. Scope: The project includes designing the user interface, implementing data collection features, integrating with external services, and evaluating the application's usability and effectiveness.",
+                    Topics = new[] { topic8, topic6 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.BGBI },
+                    Ects = Ects.Bachelor,
+                    Semester = new Semester { Season = Season.Spring, Year = 2024 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "Hannah",
+                        LastName = "Lund",
+                        Email = "hannah@itu.dk",
+                        Topics = new[] { topic8, topic6 },
+                        Profession = SupervisorProfession.AssistantProfessor,
+                        Status = SupervisorStatus.Available
+                    },
+                    Students = new Student[] { }
+                },
+            new Project
+                {
+                    Title = "Blockchain Supply Chain Traceability",
+                    DescriptionHtml = "Objective: To develop a blockchain-based solution for supply chain traceability and transparency, enabling secure and immutable tracking of products from source to destination. Scope: The project involves designing smart contracts, implementing a distributed ledger, integrating with existing supply chain systems, and evaluating the system's efficiency in enhancing traceability and transparency.",
+                    Topics = new[] { topic6, topic8 },
+                    Languages = new[] { Language.English },
+                    Programmes = new[] { Programme.MDS },
+                    Ects = Ects.Master,
+                    Semester = new Semester { Season = Season.Autumn, Year = 2023 },
+                    Supervisor = new Supervisor
+                    {
+                        FirstName = "Nathan",
+                        LastName = "Andersen",
+                        Email = "nathan@itu.dk",
+                        Topics = new[] { topic6, topic8 },
+                        Profession = SupervisorProfession.ResearchProfessor,
+                        Status = SupervisorStatus.LimitedSupervision
+                    },
+                    CoSupervisor = supervisor1,
+                    Students = new Student[] { }
+                }
+            );
+            // for (int i = 0; i < 15; i++)
+            // {
+            //     var random = new Random();
 
-                context.Projects.Add(project);
-            }
+            //     var project = new Project
+            //     {
+            //         Title = "Project " + random.Next(1, 1000),
+            //         DescriptionHtml = "Description " + random.Next(1, 1000),
+            //         Topics = context.Topics.Skip(2).Take(2).ToList(),
+            //         Languages = new List<Language>()
+            //         {
+            //             (Language)random.Next(0, 2)
+            //         },
+            //         Programmes = new List<Programme>()
+            //         {
+            //             (Programme)random.Next(0, 10)
+            //         },
+            //         Ects = (Ects)random.Next(0, 4),
+            //         Semester = new()
+            //         {
+            //             Season = (Season)random.Next(0, 2),
+            //             Year = random.Next(2023, 2026)
+            //         },
+            //         Supervisor = new Supervisor
+            //         {
+            //             FirstName = "Supervisor",
+            //             LastName = random.Next(1, 1000).ToString(),
+            //             Email = "supervisor" + random.Next(1, 1000) + "@itu.dk",
+            //             Topics = new List<Topic>() { topic5, topic13, topic6, topic7 },
+            //             Profession = SupervisorProfession.FullProfessor,
+            //             Status = (SupervisorStatus)random.Next(0,2)
+            //         },
+            //         Students = new List<Student>()
+            //         {
+            //              new Student
+            //              {
+            //                  FirstName = "Anna",
+            //                  LastName = "Sivertsen",
+            //                  Email = "asiv@itu.dk"
+            //              }
+            //         }
+            //     };
+
+            //     context.Projects.Add(project);
+            // }
         }
         context.SaveChanges();
     }

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
@@ -17,16 +19,25 @@ public partial class ProjectDetails
     private string statusSupervisor = null!;
     private string statusCoSupervisor = null!;
 
-    private void ApplyProject(NavigationManager navigationManager)
+    private async Task ApplyProject(NavigationManager navigationManager)
     {
-        navigationManager.NavigateTo("/");
+        // TODO: Add logic to apply project
+        await JSRuntime.InvokeAsync<string>("alert", "Project applied successfully!");
+        navigationManager.NavigateTo(PageUrls.Projects);
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task 
+     
+    OnInitializedAsync()
     {
         project = await httpClient.GetFromJsonAsync<ProjectDetailsDto>($"{ApiEndpoints.Projects}/{Id}");
         SetSupervisorStatus(project!.Supervisor.Status);
         SetCoSupervisorStatus(project.CoSupervisor?.Status);
+    }
+
+    private void EditProject(int projectId)
+    {
+        navigationManager.NavigateTo($"/my-projects/{projectId}/edit");
     }
 
     private void SetSupervisorStatus(SupervisorStatus supervisorStatus)

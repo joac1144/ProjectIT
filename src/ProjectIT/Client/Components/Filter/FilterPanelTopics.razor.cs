@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Json;
+using Microsoft.AspNetCore.Components;
+using ProjectIT.Client.Http;
+using ProjectIT.Client.Pages.Projects;
+using ProjectIT.Shared;
+using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
@@ -13,6 +18,9 @@ public partial class FilterPanelTopics
         public bool Collapsed { get; set; } = true;
     }
 
+    [Inject]
+    public AnonymousClient anonymousClient { get; set; } = null!;
+
     [Parameter]
     public EventCallback<FilterTagTopic> DataChanged { get; init; }
 
@@ -25,38 +33,9 @@ public partial class FilterPanelTopics
 
     private readonly IList<CategoryStatus> _categories = new List<CategoryStatus>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        // Make API call to get all existing topics in database.
-        // Temporary solution:
-        var topics = new Topic[]
-        {
-            new Topic
-            {
-                Name = "Machine learning",
-                Category = TopicCategory.ArtificialIntelligence
-            },
-            new Topic
-            {
-                Name = "Eye-tracking",
-                Category = TopicCategory.ArtificialIntelligence
-            },
-            new Topic
-            {
-                Name = "Cryptography",
-                Category = TopicCategory.Security
-            },
-            new Topic
-            {
-                Name = "Penetration testing",
-                Category = TopicCategory.Security
-            },
-            new Topic
-            {
-                Name = "Software engineering",
-                Category = TopicCategory.SoftwareEngineering
-            }
-        };
+        var topics = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))?.ToList()!;
 
         foreach (Topic topic in topics)
         {
@@ -72,7 +51,7 @@ public partial class FilterPanelTopics
 
         if (OnInitializedData.HasDelegate)
         {
-            OnInitializedData.InvokeAsync(Data.Select(ft => new FilterTagTopic { Tag = ft.Tag, Category = ft.Category }).ToList());
+            await OnInitializedData.InvokeAsync(Data.Select(ft => new FilterTagTopic { Tag = ft.Tag, Category = ft.Category }).ToList());
         }
     }
 
