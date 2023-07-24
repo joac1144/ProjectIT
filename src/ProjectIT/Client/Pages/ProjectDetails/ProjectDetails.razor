@@ -102,8 +102,26 @@ else
                     </Panel>
                 </div>
             }
-            <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> Apply
-            </button>
+            <AuthorizeView>
+                <Authorized>
+                    @if (context.User.IsInRole(AppRoles.Student))
+                        {
+                            <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> 
+                                Apply
+                            </button>
+                        }
+                    @if (context.User.IsInRole(AppRoles.Supervisor))
+                        {
+                            if (context.User.Identity!.Name == project.Supervisor.FullName)
+                            {
+                                <button @onclick="(() => EditProject(project.Id))" type="button" class="btn btn-primary fw-bold"> 
+                                    Edit
+                                </button>
+                            }
+                        }
+                </Authorized>
+            </AuthorizeView>
+            
         </div>
     </div>
 }
