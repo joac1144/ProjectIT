@@ -67,7 +67,7 @@
                                 CssClasses="mt-3" />
                     <Dropdown BootstrapIcon="gear-fill" CssClasses="ms-2">
                         <DropdownItems>
-                            <DropdownItem Text="Edit" OnClick="@(() => navigationManager.NavigateTo($"/my-projects/{project.Id}/edit"))" />
+                            <DropdownItem Text="Edit" OnClick="@(() => EditProject(project.Id))" />
                             <hr class="dropdown-divider" />
                             <DropdownItem Text="Delete" OpensModal="true" ModalIdentifier="deleteProjectConfirmation" OnClick="() => modal?.OpenModal(project)" />
                         </DropdownItems>
