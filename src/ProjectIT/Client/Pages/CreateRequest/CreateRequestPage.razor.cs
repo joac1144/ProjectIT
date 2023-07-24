@@ -69,12 +69,12 @@ public partial class CreateRequestPage
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         
-        await getSupervisorsAndTopicsData();
+        await GetSupervisorsAndTopicsData();
         SortTopics();
         SortSupervisors();
     }
 
-    private async Task getSupervisorsAndTopicsData()
+    private async Task GetSupervisorsAndTopicsData()
     {
         topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
@@ -133,43 +133,31 @@ public partial class CreateRequestPage
     
     private async void SubmitRequestAsync()
     {
-        bool isForUserTesting = true;
+        var requestDto = new RequestCreateDto
+        {
+            Title = request.Title,
+            Description = request.Description,
+            Topics = topics,
+            Languages = requestLanguages!,
+            Programmes = requestProgrammes!,
+            Members = new Student[] { },
+            Supervisors = supervisors,
+            Ects = request.Ects,
+            Semester = request.Semester
+        };
 
-        if (isForUserTesting)
+        var response = await httpClient.Client.PostAsJsonAsync("https://localhost:7094/requests", requestDto);
+
+        if (response.IsSuccessStatusCode)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
-            navManager.NavigateTo(PageUrls.LandingPage);
+            navManager.NavigateTo(PageUrls.Projects);
         }
         else
         {
-            var requestDto = new RequestCreateDto
-            {
-                Title = request.Title,
-                Description = request.Description,
-                Topics = topics,
-                Languages = requestLanguages!,
-                Programmes = requestProgrammes!,
-                Members = new Student[] { },
-                Supervisors = supervisors,
-                Ects = request.Ects,
-                Semester = request.Semester
-            };
-
-            var response = await httpClient.Client.PostAsJsonAsync("https://localhost:7094/requests", requestDto);
-
-            if (response.IsSuccessStatusCode)
-            {
-                navManager.NavigateTo("/");
-            }
-            else
-            {
-                //Do something
-            }
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
         }
     }
 
-    private void CancelRequest()
-    {
-        navManager.NavigateTo("/");
-    }
+    private void CancelRequest() => navManager.NavigateTo(PageUrls.Projects);
 }

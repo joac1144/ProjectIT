@@ -67,12 +67,12 @@ public partial class CreateProjectPage
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
 
-        await getSupervisorsAndTopicsData();
+        await GetSupervisorsAndTopicsData();
         SortTopics();
         SortSupervisors();
     }
 
-    private async Task getSupervisorsAndTopicsData()
+    private async Task GetSupervisorsAndTopicsData()
     {
         topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
@@ -142,55 +142,45 @@ public partial class CreateProjectPage
 
     private async Task SubmitProjectAsync()
     {
-        bool isForUserTesting = true;
+        var superviserNameSplit = authUser?.Identity?.Name?.Split(" ");
 
-        if (isForUserTesting)
+        var newProject = new ProjectCreateDto()
+        {
+            Title = project.Title,
+            DescriptionHtml = descriptionHtml!,
+            Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+            Languages = projectLanguages!,
+            Programmes = projectProgrammes!,
+            Ects = (Ects)projectEcts!,
+            Semester = project.Semester,
+            Supervisor = new()
+            {
+                Id = (new Random()).Next(30, 10000),
+                FirstName = string.Join(" ", superviserNameSplit?.Take(superviserNameSplit.Length - 1)!),
+                LastName = superviserNameSplit?.Last()!,
+                Email = authUser?.FindFirst("preferred_username")?.Value!,
+                Profession = SupervisorProfession.FullProfessor,
+                Status = SupervisorStatus.Available,
+                Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "topicMadeByProjectCreation", Category = TopicCategory.SoftwareEngineering } }
+            },
+            CoSupervisor = projectCoSupervisor
+        };
+
+        if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
+        {
+            // A new topic was added, open dialog to confirm and to add category.
+        }
+
+        var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
+
+        if (response.IsSuccessStatusCode)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
             navManager.NavigateTo(PageUrls.MyProjects);
         }
         else
         {
-            var superviserNameSplit = authUser?.Identity?.Name?.Split(" ");
-
-            var newProject = new ProjectCreateDto()
-            {
-                Title = project.Title,
-                DescriptionHtml = descriptionHtml!,
-                Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-                Languages = projectLanguages!,
-                Programmes = projectProgrammes!,
-                Ects = (Ects)projectEcts!,
-                Semester = project.Semester,
-                Supervisor = new()
-                {
-                    Id = (new Random()).Next(30, 10000),
-                    FirstName = string.Join(" ", superviserNameSplit?.Take(superviserNameSplit.Length - 1)!),
-                    LastName = superviserNameSplit?.Last()!,
-                    Email = $"{authUser?.Identity?.Name?.Replace(" ", "")[..4]}@itu.dk",
-                    Profession = SupervisorProfession.FullProfessor,
-                    Status = SupervisorStatus.Available,
-                    Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "topicMadeByProjectCreation", Category = TopicCategory.SoftwareEngineering } }
-                },
-                CoSupervisor = projectCoSupervisor
-            };
-
-            if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
-            {
-                // A new topic was added, open dialog to confirm and to add category.
-            }
-
-            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
-
-            if (response.IsSuccessStatusCode)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
-                navManager.NavigateTo(PageUrls.MyProjects);
-            }
-            else
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
-            }
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
         }
     }
 
