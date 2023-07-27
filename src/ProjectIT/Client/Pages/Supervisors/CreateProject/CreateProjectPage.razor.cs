@@ -129,8 +129,17 @@ public partial class CreateProjectPage
 
     private void OnAddNewTopicFromSearchClicked() 
     {
-        if (!string.IsNullOrWhiteSpace(topicName) || topics.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
-            projectTopics.Add(new Topic { Name = topicName! });
+        if (!string.IsNullOrWhiteSpace(topicName)) {
+            if (topics.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
+            {
+                var newTopic = topics.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
+                projectTopics.Add(newTopic);
+                topics = topics.Where(topic => topic.Name != newTopic.Name);
+                topicSelector?.Reset();
+            }
+            else
+                projectTopics.Add(new Topic { Name = topicName! });
+        }
         topicName = string.Empty;
     }
 
