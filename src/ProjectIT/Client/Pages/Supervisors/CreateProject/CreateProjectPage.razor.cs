@@ -145,8 +145,14 @@ public partial class CreateProjectPage
 
     private void AssignCoSupervisorIfNotNull()
     {
-        // If projectcosupervisor is null, newProject.CoSupervisor should be null. Otherwise, create a new instance of the newProject.CoSupervisor with the values given from projectcosupervisor.
-        project.CoSupervisor = projectCoSupervisor is not null ? new Supervisor { Id = projectCoSupervisor.Id, FirstName = projectCoSupervisor.FirstName, LastName = projectCoSupervisor.LastName } : null;
+        project.CoSupervisor = projectCoSupervisor is not null 
+            ? new Supervisor 
+            { 
+                Id = projectCoSupervisor.Id, 
+                FirstName = projectCoSupervisor.FirstName, 
+                LastName = projectCoSupervisor.LastName 
+            } 
+            : null;
     }
 
     private async Task SubmitProjectAsync()
