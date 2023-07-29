@@ -129,15 +129,30 @@ public partial class CreateProjectPage
 
     private void OnAddNewTopicFromSearchClicked() 
     {
-        if (!string.IsNullOrWhiteSpace(topicName) || topics.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
-            projectTopics.Add(new Topic { Name = topicName! });
+        if (!string.IsNullOrWhiteSpace(topicName)) {
+            if (topics.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
+            {
+                var newTopic = topics.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
+                projectTopics.Add(newTopic);
+                topics = topics.Where(topic => topic.Name != newTopic.Name);
+                topicSelector?.Reset();
+            }
+            else
+                projectTopics.Add(new Topic { Name = topicName! });
+        }
         topicName = string.Empty;
     }
 
     private void AssignCoSupervisorIfNotNull()
     {
-        // If projectcosupervisor is null, newProject.CoSupervisor should be null. Otherwise, create a new instance of the newProject.CoSupervisor with the values given from projectcosupervisor.
-        project.CoSupervisor = projectCoSupervisor is not null ? new Supervisor { Id = projectCoSupervisor.Id, FirstName = projectCoSupervisor.FirstName, LastName = projectCoSupervisor.LastName } : null;
+        project.CoSupervisor = projectCoSupervisor is not null 
+            ? new Supervisor 
+            { 
+                Id = projectCoSupervisor.Id, 
+                FirstName = projectCoSupervisor.FirstName, 
+                LastName = projectCoSupervisor.LastName 
+            } 
+            : null;
     }
 
     private async Task SubmitProjectAsync()

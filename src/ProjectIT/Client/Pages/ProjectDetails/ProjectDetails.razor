@@ -114,7 +114,7 @@ else
                         {
                             if (context.User.Identity!.Name == project.Supervisor.FullName)
                             {
-                                <button @onclick="(() => EditProject(project.Id))" type="button" class="btn btn-primary fw-bold"> 
+                                <button @onclick="(() => EditProject(project.Id))" type="button" class="btn fw-bold edit-btn-orange"> 
                                     Edit
                                 </button>
                             }

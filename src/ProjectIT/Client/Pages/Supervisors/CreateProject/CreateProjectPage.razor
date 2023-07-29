@@ -87,7 +87,7 @@
                     </RadzenDropDown>
                 }
                 <div class="d-flex flex-row gap-2">
-                    <form class="d-flex gap-2">
+                    <form class="d-flex gap-2" onsubmit="event.preventDefault()">
                         <SearchField PlaceholderText="Create new topics..." ShowSearchIcon="false" Width="14.5rem" OnInputValueChanged="(newVal) => topicName = newVal" />
                         <button type="reset" value="reset" class="bg-transparent border-0 add-image-size" @onclick=OnAddNewTopicFromSearchClicked>
                             <img class="rotate-45 w-100 h-70" src="images/baseline_clear_24.png" alt="Add new topic">
