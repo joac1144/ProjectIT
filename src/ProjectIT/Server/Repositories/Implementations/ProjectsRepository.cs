@@ -70,9 +70,12 @@ public class ProjectsRepository : IProjectsRepository
             Students = project.Students
         };
     }
-    
+
     public async Task<int?> CreateAsync(ProjectCreateDto project)
     {
+        Supervisor supervisor = _context.Supervisors.Single(s => s.Email == project.SupervisorEmail);
+        Supervisor? coSupervisor = _context.Supervisors.SingleOrDefault(s => s.Email == project.CoSupervisorEmail);
+
         var entity = new Project
         {
             Title = project.Title,
@@ -82,8 +85,8 @@ public class ProjectsRepository : IProjectsRepository
             Programmes = project.Programmes,
             Ects = project.Ects,
             Semester = project.Semester,
-            Supervisor = project.Supervisor,
-            CoSupervisor = project.CoSupervisor
+            Supervisor = supervisor,
+            CoSupervisor = coSupervisor
         };
 
         if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) || entity.Topics.IsNullOrEmpty() ||

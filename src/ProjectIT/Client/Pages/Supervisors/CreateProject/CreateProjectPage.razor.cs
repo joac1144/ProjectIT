@@ -153,17 +153,8 @@ public partial class CreateProjectPage
             Programmes = projectProgrammes!,
             Ects = (Ects)projectEcts!,
             Semester = project.Semester,
-            Supervisor = new()
-            {
-                Id = (new Random()).Next(30, 10000),
-                FirstName = string.Join(" ", superviserNameSplit?.Take(superviserNameSplit.Length - 1)!),
-                LastName = superviserNameSplit?.Last()!,
-                Email = authUser?.FindFirst("preferred_username")?.Value!,
-                Profession = SupervisorProfession.FullProfessor,
-                Status = SupervisorStatus.Available,
-                Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "topicMadeByProjectCreation", Category = TopicCategory.SoftwareEngineering } }
-            },
-            CoSupervisor = projectCoSupervisor
+            SupervisorEmail = authUser?.FindFirst("preferred_username")?.Value!,
+            CoSupervisorEmail = projectCoSupervisor?.Email
         };
 
         if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
