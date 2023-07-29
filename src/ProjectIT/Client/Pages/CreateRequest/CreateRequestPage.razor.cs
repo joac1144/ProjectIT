@@ -122,8 +122,17 @@ public partial class CreateRequestPage
 
     private void OnAddNewTopicFromSearchClicked()
     {
-        if (!string.IsNullOrWhiteSpace(topicName) || topics.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
-            requestTopics.Add(new Topic { Name = topicName! });
+        if (!string.IsNullOrWhiteSpace(topicName)) {
+            if (topics.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
+            {
+                var newTopic = topics.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
+                requestTopics.Add(newTopic);
+                topics = topics.Where(topic => topic.Name != newTopic.Name);
+                topicSelector?.Reset();
+            }
+            else
+                requestTopics.Add(new Topic { Name = topicName! });
+        }
         topicName = string.Empty;
     }
 

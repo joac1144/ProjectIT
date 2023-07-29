@@ -58,5 +58,9 @@
   {
     "outputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.css",
     "inputFile": "Pages/SupervisorDetails/SupervisorDetails.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Supervisors/MyProjects/MyProjectsSupervisor.razor.css",
+    "inputFile": "Pages/Supervisors/MyProjects/MyProjectsSupervisor.razor.scss"
   }
 ]
