@@ -48,20 +48,13 @@ public partial class MyProjectsSupervisor
 
     private async void DeleteProject(int id)
     {
-        bool isForUserTesting = true;
+        var response = await httpClient.DeleteAsync($"{ApiEndpoints.Projects}/{id}");
 
-        if (isForUserTesting)
+        if (!response.IsSuccessStatusCode)
         {
-            navigationManager.NavigateTo(PageUrls.MyProjects, true);
+            await jsRuntime.InvokeAsync<string>("alert", $"Something went wrong deleting project with id {id}.");
         }
-        else
-        {
-            var response = httpClient.DeleteAsync($"{ApiEndpoints.Projects}/{id}");
 
-            if (!response.Result.IsSuccessStatusCode)
-            {
-                await jsRuntime.InvokeAsync<string>("alert", $"Something went wrong deleting project with id {id}.");
-            }
-        }    
+        navigationManager.NavigateTo(PageUrls.MyProjects, true);
     }
 }
