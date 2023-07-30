@@ -7,12 +7,14 @@
 @using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Constants;
 @using ProjectIT.Client.Http;
+@using ProjectIT.Shared.Dtos.Projects;
 @using ProjectIT.Shared.Enums;
 @using ProjectIT.Shared.Models;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AnonymousClient httpClient
 @inject NavigationManager navManager
 @inject IJSRuntime JSRuntime
+@inject DialogService DialogService
 @attribute [Authorize(Roles = AppRoles.Supervisor)]
 
 <div class="d-flex flex-row justify-content-center gap-5">
@@ -92,6 +94,7 @@
                         <button type="reset" value="reset" class="bg-transparent border-0 add-image-size" @onclick=OnAddNewTopicFromSearchClicked>
                             <img class="rotate-45 w-100 h-70" src="images/baseline_clear_24.png" alt="Add new topic">
                         </button>
+                        
                     </form>
                 </div>
             </div>
@@ -133,3 +136,37 @@
         </Panel>
     </div>
 </div>
+
+
+@code {
+    int orderID = 10248;
+
+    async Task<bool> SelectTopicCategoryDialog(ProjectCreateDto newproject)
+    {
+        //var data = newproject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any();
+        var result = await DialogService.OpenAsync("Select Categories for Topics", ds =>
+    @<RadzenStack Gap="1.5rem">
+        <div class="d-flex flex-column">
+            @foreach (var topic in projectTopics)
+            {
+            <div class="d-flex flex-row align-items-center mb-2">
+        <span class="me-2">@topic.Name</span>
+            <RadzenDropDown TValue="TopicCategory" Data="@Enum.GetValues(typeof(TopicCategory))" @bind-Value="@topic.Category">
+                <Template Context="category">
+                    @((TopicCategory)Enum.Parse(typeof(TopicCategory), category.ToString()))
+                </Template>
+            </RadzenDropDown>
+        </div>
+            }
+        </div>
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenButton Text="Save" Click="() => ds.Close(true)" Style="width: 80px; background-color:black" />
+                <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+            </RadzenStack>
+        </RadzenStack>
+            </RadzenStack>
+    );
+        return result;
+    }
+}

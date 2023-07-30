@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
+using Microsoft.Graph.Models.TermStore;
 using Microsoft.JSInterop;
 using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
@@ -12,6 +13,7 @@ using ProjectIT.Shared.Extensions;
 using ProjectIT.Shared.Models;
 using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
+using Tavis.UriTemplates;
 
 namespace ProjectIT.Client.Pages.Supervisors.CreateProject;
 
@@ -34,6 +36,7 @@ public partial class CreateProjectPage
         public Language Language { get; set; }
         public string StringValue { get; set; } = string.Empty;
     }
+
 
     [Inject]
     private IStringLocalizer<EnumsResource> EnumsLocalizer { get; set; } = default!;
@@ -184,6 +187,20 @@ public partial class CreateProjectPage
         if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
         {
             // A new topic was added, open dialog to confirm and to add category.
+
+            var result =await SelectTopicCategoryDialog(newProject);
+
+            // Check if the dialog was confirmed (Save button clicked)
+            // and update the project's topics with the modified newProject topics.
+            if (result == true)
+            {
+                project.Topics = newProject.Topics.ToList();
+            }
+            else
+            {
+                // If the dialog was canceled (Cancel button clicked), do not post the project.
+                return;
+            }
         }
 
         var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
@@ -198,6 +215,7 @@ public partial class CreateProjectPage
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
         }
     }
+
 
     private void CancelProjectAsync() => navManager.NavigateTo(PageUrls.MyProjects);
 }
