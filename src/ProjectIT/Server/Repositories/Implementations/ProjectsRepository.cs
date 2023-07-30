@@ -75,12 +75,17 @@ public class ProjectsRepository : IProjectsRepository
     {
         Supervisor supervisor = _context.Supervisors.Single(s => s.Email == project.SupervisorEmail);
         Supervisor? coSupervisor = _context.Supervisors.SingleOrDefault(s => s.Email == project.CoSupervisorEmail);
+        var topics = new List<Topic>();
+        foreach (var topic in project.Topics)
+        {
+            topics.Add(_context.Topics.Single(t => t.Name == topic.Name));
+        }
 
         var entity = new Project
         {
             Title = project.Title,
             DescriptionHtml = project.DescriptionHtml,
-            Topics = project.Topics,
+            Topics = topics,
             Languages = project.Languages,
             Programmes = project.Programmes,
             Ects = project.Ects,
