@@ -38,3 +38,15 @@ Apply migration / update database:
 ### Running the application
 
 `cd` into `ProjectIT/src/ProjectIT/Server` and run app with `dotnet run`.
+
+## Test users
+
+### Test Supervisor
+Username: ```testsupervisor@projectititu.onmicrosoft.com```
+
+Password: ```Sada203599```
+
+### Test Student
+Username: ```teststudent@projectititu.onmicrosoft.com```
+
+Password: ```Roso457346```
