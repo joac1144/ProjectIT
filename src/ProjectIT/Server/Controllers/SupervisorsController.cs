@@ -23,14 +23,27 @@ public class SupervisorsController : ControllerBase
         return await _repository.ReadAllAsync();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(SupervisorDetailsDto), 200)]
     [ProducesResponseType(404)]
     public async Task<SupervisorDetailsDto?> GetById(int id)
     {
         var supervisor = await _repository.ReadByIdAsync(id);
 
-        if (supervisor == null) 
+        if (supervisor == null)
+            return null;
+
+        return supervisor;
+    }
+
+    [HttpGet("{email}")]
+    [ProducesResponseType(typeof(SupervisorDetailsDto), 200)]
+    [ProducesResponseType(404)]
+    public async Task<SupervisorDetailsDto?> GetByEmail(string email)
+    {
+        var supervisor = await _repository.ReadByUserEmailAsync(email);
+
+        if (supervisor == null)
             return null;
 
         return supervisor;

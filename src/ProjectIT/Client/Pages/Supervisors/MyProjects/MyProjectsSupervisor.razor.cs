@@ -6,6 +6,7 @@ using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace ProjectIT.Client.Pages.Supervisors.MyProjects;
 
@@ -18,10 +19,16 @@ public partial class MyProjectsSupervisor
 
     private Modal<ProjectDetailsDto>? modal;
 
+    private ClaimsPrincipal? authUser;
+
     protected override async Task OnInitializedAsync()
     {
+        authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+        string userEmail = authUser?.FindFirst("preferred_username")?.Value!;
+
         // Fetch supervisor's projects.
-        projects = await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects); /*await httpClient.GetFromJsonAsync<IEnumerable<Supervisor>>("supervisors").Where(...).Select(supervisor => supervisor.Projects);*/
+        // This might be a security flaw ???
+        projects = (await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!.Where(project => project.Supervisor.Email == userEmail);
     }
 
     private void OnSort(object value)
