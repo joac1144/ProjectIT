@@ -58,6 +58,7 @@ public partial class CreateProjectPage
     private string? topicName;
 
     private ClaimsPrincipal? authUser;
+    private string? userEmail;
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,6 +67,7 @@ public partial class CreateProjectPage
         languageWrappers = Enum.GetValues<Language>().Select(lang => new LanguageWrapper { Language = lang, StringValue = lang.GetTranslatedString(EnumsLocalizer) });
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+        userEmail = authUser?.FindFirst("preferred_username")?.Value!;
 
         await GetSupervisorsAndTopicsData();
         SortTopics();
@@ -77,7 +79,7 @@ public partial class CreateProjectPage
         topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
             throw new Exception("Could not load topics");
-        coSupervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!;
+        coSupervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!.Where(supervisor => supervisor.Email != userEmail);
         if (coSupervisors == null)
             throw new Exception("Could not load supervisors");
     }
@@ -168,17 +170,8 @@ public partial class CreateProjectPage
             Programmes = projectProgrammes!,
             Ects = (Ects)projectEcts!,
             Semester = project.Semester,
-            Supervisor = new()
-            {
-                Id = (new Random()).Next(30, 10000),
-                FirstName = string.Join(" ", superviserNameSplit?.Take(superviserNameSplit.Length - 1)!),
-                LastName = superviserNameSplit?.Last()!,
-                Email = authUser?.FindFirst("preferred_username")?.Value!,
-                Profession = SupervisorProfession.FullProfessor,
-                Status = SupervisorStatus.Available,
-                Topics = new[] { new Topic { Id = (new Random()).Next(30, 5000), Name = "topicMadeByProjectCreation", Category = TopicCategory.SoftwareEngineering } }
-            },
-            CoSupervisor = projectCoSupervisor
+            SupervisorEmail = userEmail!,
+            CoSupervisorEmail = projectCoSupervisor?.Email
         };
 
         if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())

@@ -70,20 +70,28 @@ public class ProjectsRepository : IProjectsRepository
             Students = project.Students
         };
     }
-    
+
     public async Task<int?> CreateAsync(ProjectCreateDto project)
     {
+        Supervisor supervisor = _context.Supervisors.Single(s => s.Email == project.SupervisorEmail);
+        Supervisor? coSupervisor = _context.Supervisors.SingleOrDefault(s => s.Email == project.CoSupervisorEmail);
+        var topics = new List<Topic>();
+        foreach (var topic in project.Topics)
+        {
+            topics.Add(_context.Topics.Single(t => t.Name == topic.Name));
+        }
+
         var entity = new Project
         {
             Title = project.Title,
             DescriptionHtml = project.DescriptionHtml,
-            Topics = project.Topics,
+            Topics = topics,
             Languages = project.Languages,
             Programmes = project.Programmes,
             Ects = project.Ects,
             Semester = project.Semester,
-            Supervisor = project.Supervisor,
-            CoSupervisor = project.CoSupervisor
+            Supervisor = supervisor,
+            CoSupervisor = coSupervisor
         };
 
         if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) || entity.Topics.IsNullOrEmpty() ||

@@ -83,6 +83,16 @@ public class ProjectsRepositoryTests : IDisposable
             }
         );
 
+        context.Supervisors.Add(new Supervisor
+        {
+            Email = "henk@itu.dk",
+            FirstName = "Henrik",
+            LastName = "K",
+            Profession = SupervisorProfession.FullProfessor,
+            Status = SupervisorStatus.Available,
+            Topics = new Topic[] { new Topic { Name = "test topic", Category = TopicCategory.Security } }
+        });
+
         context.SaveChanges();
 
         _context = context;
@@ -146,15 +156,7 @@ public class ProjectsRepositoryTests : IDisposable
                 Season = Season.Spring,
                 Year = 2023
             },
-            Supervisor = new()
-            {
-                FirstName = "Henrik",
-                LastName = "Kjeldsen",
-                Email = "henk@itu.dk",
-                Topics = new Topic[] { },
-                Profession = SupervisorProfession.FullProfessor,
-                Status = SupervisorStatus.Available
-            }
+            SupervisorEmail = "henk@itu.dk"
         };
         
         var resultId = await _projectsRepository.CreateAsync(project);
@@ -180,15 +182,7 @@ public class ProjectsRepositoryTests : IDisposable
                 Season = Season.Spring,
                 Year = 2023
             },
-            Supervisor = new()
-            {
-                FirstName = "Henrik",
-                LastName = "Kjeldsen",
-                Email = "henk@itu.dk",
-                Topics = new Topic[] { },
-                Profession = SupervisorProfession.FullProfessor,
-                Status = SupervisorStatus.LimitedSupervision
-            }
+            SupervisorEmail = "henk@itu.dk"
         };
 
         await Assert.ThrowsAsync<ArgumentNullException>(() => _projectsRepository.CreateAsync(project));
