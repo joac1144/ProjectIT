@@ -18,6 +18,7 @@ public static class SeedData
     private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "hedef@itr.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
     private static Supervisor supervisor3 = new() { FirstName = "John", LastName = "Smith", Email = "hevdfd@itr.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Inactive };
     private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "hebgfd@itr.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor5 = new() { FirstName = "Alaa Imad", LastName = "Abdul-Al", Email = "alia@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
     private static Supervisor supervisorTEST = new() { FirstName = "Supervisor Test", LastName = "#1", Email = "testsupervisor@projectititu.onmicrosoft.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13 }, Status = SupervisorStatus.Available };
     private static Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "hehngd@itr.dk" };
     private static Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "hmgjhed@itr.dk" };
@@ -77,7 +78,7 @@ public static class SeedData
     {
         if (!context.Supervisors.Any())
         {
-            context.Supervisors.AddRange(supervisor1, supervisor2, supervisor3, supervisor4, supervisorTEST);
+            context.Supervisors.AddRange(supervisor1, supervisor2, supervisor3, supervisor4, supervisor5, supervisorTEST);
         }
         context.SaveChanges();
     }
