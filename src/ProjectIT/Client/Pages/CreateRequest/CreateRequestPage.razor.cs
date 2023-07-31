@@ -155,7 +155,7 @@ public partial class CreateRequestPage
             Semester = request.Semester
         };
 
-        var response = await httpClient.Client.PostAsJsonAsync("https://localhost:7094/requests", requestDto);
+        var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, requestDto);
 
         if (response.IsSuccessStatusCode)
         {

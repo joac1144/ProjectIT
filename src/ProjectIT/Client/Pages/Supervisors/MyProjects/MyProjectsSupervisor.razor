@@ -8,6 +8,7 @@
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
 @inject IJSRuntime jsRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @attribute [Authorize(Roles = AppRoles.Supervisor)]
 
 <PageTitle>My Projects</PageTitle>

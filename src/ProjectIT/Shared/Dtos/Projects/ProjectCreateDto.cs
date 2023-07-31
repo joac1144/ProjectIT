@@ -33,7 +33,7 @@ public record ProjectCreateDto
     public Semester Semester { get; set; } = null!;
 
     [Required]
-    public Supervisor Supervisor { get; set; } = null!;
+    public string SupervisorEmail { get; set; } = null!;
     
-    public Supervisor? CoSupervisor { get; set; }
+    public string? CoSupervisorEmail { get; set; }
 }

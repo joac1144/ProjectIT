@@ -53,4 +53,26 @@ public class SupervisorsRepository : ISupervisorsRepository
             Status = supervisor.Status
         };
     }
+
+    public async Task<SupervisorDetailsDto?> ReadByUserEmailAsync(string? userEmail)
+    {
+        var supervisor = await _context.Supervisors
+            .Where(p => p.Email == userEmail)
+            .Include(p => p.Topics)
+            .SingleOrDefaultAsync();
+
+        if (supervisor == null)
+            return null;
+
+        return new SupervisorDetailsDto
+        {
+            Id = supervisor.Id,
+            FirstName = supervisor.FirstName,
+            LastName = supervisor.LastName,
+            Email = supervisor.Email,
+            Topics = supervisor.Topics,
+            Profession = supervisor.Profession,
+            Status = supervisor.Status
+        };
+    }
 }
