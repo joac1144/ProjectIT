@@ -159,36 +159,43 @@ public partial class CreateProjectPage
 
     private async Task SubmitProjectAsync()
     {
-        var superviserNameSplit = authUser?.Identity?.Name?.Split(" ");
-
-        var newProject = new ProjectCreateDto()
+        try
         {
-            Title = project.Title,
-            DescriptionHtml = descriptionHtml!,
-            Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-            Languages = projectLanguages!,
-            Programmes = projectProgrammes!,
-            Ects = (Ects)projectEcts!,
-            Semester = project.Semester,
-            SupervisorEmail = userEmail!,
-            CoSupervisorEmail = projectCoSupervisor?.Email
-        };
+            var superviserNameSplit = authUser?.Identity?.Name?.Split(" ");
 
-        if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
-        {
-            // A new topic was added, open dialog to confirm and to add category.
+            var newProject = new ProjectCreateDto()
+            {
+                Title = project.Title,
+                DescriptionHtml = descriptionHtml!,
+                Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+                Languages = projectLanguages!,
+                Programmes = projectProgrammes!,
+                Ects = (Ects)projectEcts!,
+                Semester = project.Semester,
+                SupervisorEmail = userEmail!,
+                CoSupervisorEmail = projectCoSupervisor?.Email
+            };
+
+            if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
+            {
+                // A new topic was added, open dialog to confirm and to add category.
+            }
+
+            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
+                navManager.NavigateTo(PageUrls.MyProjects);
+            }
+            else
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+            }
         }
-
-        var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
-
-        if (response.IsSuccessStatusCode)
+        catch
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
-            navManager.NavigateTo(PageUrls.MyProjects);
-        }
-        else
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 
