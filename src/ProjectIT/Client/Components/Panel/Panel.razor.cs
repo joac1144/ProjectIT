@@ -11,5 +11,8 @@ public partial class Panel
     public string Width { get; set; } = "300px";
 
     [Parameter]
+    public bool InputRequired { get; set; }
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 }
