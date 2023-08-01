@@ -161,8 +161,6 @@ public partial class CreateProjectPage
     {
         try
         {
-            var superviserNameSplit = authUser?.Identity?.Name?.Split(" ");
-
             var newProject = new ProjectCreateDto()
             {
                 Title = project.Title,
@@ -176,27 +174,27 @@ public partial class CreateProjectPage
                 CoSupervisorEmail = projectCoSupervisor?.Email
             };
             if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
-        {
-            // A new topic was added, open dialog to confirm and to add category.
-             var result = await SelectTopicCategoryDialog(newProject);
-
-            // Check if the dialog was confirmed (Save button clicked)
-            // and update the project's topics with the modified newProject topics.
-            if (result == true)
             {
-                project.Topics = newProject.Topics.ToList();
-            }
-            //if (result == null)
-            //{
-            //    return;
-            //}
+                // A new topic was added, open dialog to confirm and to add category.
+                 var result = await SelectTopicCategoryDialog(newProject);
 
-            else
-            {
-                // If the dialog was canceled (Cancel button clicked), do not post the project.
-                return;
+                // Check if the dialog was confirmed (Save button clicked)
+                // and update the project's topics with the modified newProject topics.
+                if (result == true)
+                {
+                    project.Topics = newProject.Topics.ToList();
+                }
+                //if (result == null)
+                //{
+                //    return;
+                //}
+
+                else
+                {
+                    // If the dialog was canceled (Cancel button clicked), do not post the project.
+                    return;
+                }
             }
-        }
 
             var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
 
