@@ -38,7 +38,12 @@ public partial class CreateProjectPage
     [Inject]
     private IStringLocalizer<EnumsResource> EnumsLocalizer { get; set; } = default!;
 
+    // All topics in database.
     private IEnumerable<Topic> topics = null!;
+
+    // All topics available in the dropdown.
+    private IEnumerable<Topic> topicsInDropdownList = null!;
+
     private IEnumerable<Supervisor> coSupervisors = null!;
     private IEnumerable<EctsWrapper>? ectsWrappers;
     private IEnumerable<ProgrammeWrapper>? programmeWrappers;
@@ -79,6 +84,9 @@ public partial class CreateProjectPage
         topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
             throw new Exception("Could not load topics");
+
+        topicsInDropdownList = topics;
+
         coSupervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!.Where(supervisor => supervisor.Email != userEmail);
         if (coSupervisors == null)
             throw new Exception("Could not load supervisors");
@@ -89,8 +97,8 @@ public partial class CreateProjectPage
         if (value != null)
         {
             string val = (string)value;
-            projectTopics.Add(topics.Single(t => t.Name == val));
-            topics = topics.Where(t => t.Name != val);
+            projectTopics.Add(topicsInDropdownList.Single(t => t.Name == val));
+            topicsInDropdownList = topicsInDropdownList.Where(t => t.Name != val);
             topicSelector?.Reset();
         }
     }
@@ -114,7 +122,7 @@ public partial class CreateProjectPage
     private void OnSelectedTopicClicked(Topic topic)
     {
         projectTopics.Remove(topic);
-        topics = topics.Append(topic);
+        topicsInDropdownList = topicsInDropdownList.Append(topic);
         SortTopics();
     }
 
@@ -125,22 +133,22 @@ public partial class CreateProjectPage
         SortSupervisors();
     }
 
-    private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
+    private void SortTopics() => topicsInDropdownList = topicsInDropdownList.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
 
     private void SortSupervisors() => coSupervisors = coSupervisors.OrderBy(s => s.FullName);
 
     private void OnAddNewTopicFromSearchClicked() 
     {
         if (!string.IsNullOrWhiteSpace(topicName)) {
-            if (topics.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
+            if (topicsInDropdownList.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
             {
-                var newTopic = topics.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
+                var newTopic = topicsInDropdownList.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
                 projectTopics.Add(newTopic);
-                topics = topics.Where(topic => topic.Name != newTopic.Name);
+                topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
                 topicSelector?.Reset();
             }
             else
-                projectTopics.Add(new Topic { Name = topicName! });
+                projectTopics.Add(new Topic { Name = topicName });
         }
         topicName = string.Empty;
     }
@@ -159,54 +167,61 @@ public partial class CreateProjectPage
 
     private async Task SubmitProjectAsync()
     {
-        var superviserNameSplit = authUser?.Identity?.Name?.Split(" ");
-
-        var newProject = new ProjectCreateDto()
+        try
         {
-            Title = project.Title,
-            DescriptionHtml = descriptionHtml!,
-            Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-            Languages = projectLanguages!,
-            Programmes = projectProgrammes!,
-            Ects = (Ects)projectEcts!,
-            Semester = project.Semester,
-            SupervisorEmail = userEmail!,
-            CoSupervisorEmail = projectCoSupervisor?.Email
-        };
-
-        if (newProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
-        {
-            // A new topic was added, open dialog to confirm and to add category.
-             var result = await SelectTopicCategoryDialog(newProject);
-
-            // Check if the dialog was confirmed (Save button clicked)
-            // and update the project's topics with the modified newProject topics.
-            if (result == true)
+            var newProject = new ProjectCreateDto()
             {
-                project.Topics = newProject.Topics.ToList();
-            }
-            //if (result == null)
-            //{
-            //    return;
-            //}
+                Title = project.Title,
+                DescriptionHtml = descriptionHtml!,
+                Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+                Languages = projectLanguages!,
+                Programmes = projectProgrammes!,
+                Ects = (Ects)projectEcts!,
+                Semester = project.Semester,
+                SupervisorEmail = userEmail!,
+                CoSupervisorEmail = projectCoSupervisor?.Email
+            };
 
+            IEnumerable<Topic> newTopics = projectTopics.Where(topic => topic.Category is null);
+
+            if (newTopics.Any())
+            {
+                // A new topic was added, open dialog to confirm and to add category.
+                 var result = await SelectTopicCategoryDialog(newTopics);
+
+                // Check if the dialog was confirmed (Save button clicked)
+                // and update the project's topics with the modified newProject topics.
+                if (result == true)
+                {
+                    project.Topics = newProject.Topics.ToList();
+                }
+                //if (result == null)
+                //{
+                //    return;
+                //}
+
+                else
+                {
+                    // If the dialog was canceled (Cancel button clicked), do not post the project.
+                    return;
+                }
+            }
+
+            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
+                navManager.NavigateTo(PageUrls.MyProjects);
+            }
             else
             {
-                // If the dialog was canceled (Cancel button clicked), do not post the project.
-                return;
+                await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             }
         }
-
-        var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
-
-        if (response.IsSuccessStatusCode)
+        catch
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
-            navManager.NavigateTo(PageUrls.MyProjects);
-        }
-        else
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 

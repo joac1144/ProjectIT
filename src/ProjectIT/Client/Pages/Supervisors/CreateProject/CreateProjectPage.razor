@@ -19,21 +19,21 @@
 
 <div class="d-flex flex-row justify-content-center gap-5">
     <div class="d-flex flex-column my-4 py-3 gap-4 filter-size">
-        <Panel Title="Programmes">
+        <Panel Title="Programmes" InputRequired="true">
             <RadzenCheckBoxList TValue="Programme" Data="@programmeWrappers" @bind-Value=@projectProgrammes
                 TextProperty="StringValue" ValueProperty="Programme" Orientation="Orientation.Vertical" />
         </Panel>
-        <Panel Title="ECTS Points">
+        <Panel Title="ECTS Points" InputRequired="true">
             <RadzenRadioButtonList TValue="Ects?" Data="ectsWrappers" @bind-Value=projectEcts TextProperty="StringValue"
                 ValueProperty="Ects" Orientation="Orientation.Vertical" />
         </Panel>
     </div>
     <div class="d-flex flex-column mb-4 main-view-size">
         <EditForm Model="@project" OnSubmit="SubmitProjectAsync">
-            <p class="fs-7 fw-bold">Title</p>
+            <p class="fs-7 fw-bold">Title <span style="color: red; font-weight: 400;"> *</span></p>
             <InputText class="border border-0 shadow rounded-1 fs-7 px-3 mb-4" style="width: 45rem; height: 2.5rem"
                 @bind-Value="project!.Title" placeholder="Title here..." />
-            <p class="fs-7 fw-bold">Description</p>
+            <p class="fs-7 fw-bold">Description <span style="color: red; font-weight: 400;"> *</span></p>
             <RadzenHtmlEditor @bind-Value="@descriptionHtml" class="border border-0 shadow mb-4"
                 style="height:40rem; width: 45rem" />
             <div class="d-flex justify-content-end">
@@ -50,7 +50,7 @@
         @{
             DateTime date = DateTime.Now;
         }
-        <Panel Title="Semester">
+        <Panel Title="Semester" InputRequired="true">
             <RadzenRadioButtonList @bind-Value=project.Semester TValue="Semester">
                 <Items>
                     <RadzenRadioButtonListItem Text=@($"Spring {date.Year}")
@@ -64,13 +64,13 @@
                 </Items>
             </RadzenRadioButtonList>
         </Panel>
-        <Panel Title="Language">
+        <Panel Title="Language" InputRequired="true">
             <RadzenCheckBoxList TValue="Language" Data="@languageWrappers" @bind-Value=@projectLanguages
                 TextProperty="StringValue" ValueProperty="Language" Orientation="Orientation.Vertical" />
         </Panel>
         <Panel Title="Topics">
             <div class="d-flex flex-column gap-2">
-                @if (topics is not null)
+                @if (topicsInDropdownList is not null)
                 {
                     <RadzenDropDown @ref="topicSelector" 
                                     TValue="Topic" 
@@ -78,7 +78,7 @@
                                     AllowFiltering="true"
                                     ClearSearchAfterSelection="true" 
                                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                    Data=@topics
+                                    Data=@topicsInDropdownList
                                     Change="OnTopicSelectedInList" 
                                     ValueProperty="Name" 
                                     TextProperty="Name"
@@ -137,21 +137,20 @@
 </div>
 
 @code {
-    async Task<dynamic> SelectTopicCategoryDialog(ProjectCreateDto newproject)
+    async Task<dynamic> SelectTopicCategoryDialog(IEnumerable<Topic> newTopics)
     {
-        //var data = newproject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any();
-        //var topicsWithoutCategories = newproject.Topics.Where(t => t.Category == default(TopicCategory)).ToList();
+        IEnumerable<TopicCategory?> topicCategories = Enum.GetValues(typeof(TopicCategory)).Cast<TopicCategory?>();
 
         var result = await DialogService.OpenAsync("Select Categories for Topics", ds =>
             @<RadzenStack Gap="1.5rem">
                 <div class="d-flex flex-column">
-                    @foreach (var topic in newproject.Topics)
+                    @foreach (var topic in newTopics)
                     {
                         <div class="d-flex flex-row align-items-center justify-content-between mb-2">
                             <span class="me-2">@topic.Name</span>
-                            <RadzenDropDown TValue="TopicCategory" Data="@Enum.GetValues(typeof(TopicCategory))" @bind-Value="@topic.Category" Placeholder="Choose category">
+                            <RadzenDropDown TValue="TopicCategory?" Data="@topicCategories" @bind-Value="@topic.Category" Placeholder="Choose a category">
                                 <Template Context="category">
-                                    @((TopicCategory)Enum.Parse(typeof(TopicCategory), category.ToString()))
+                                    @((TopicCategory?)Enum.Parse(typeof(TopicCategory), category.ToString()))
                                 </Template>
                             </RadzenDropDown>
                         </div>
