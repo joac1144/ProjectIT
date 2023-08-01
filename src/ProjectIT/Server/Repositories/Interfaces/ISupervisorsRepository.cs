@@ -7,4 +7,6 @@ public interface ISupervisorsRepository
     Task<IEnumerable<SupervisorDetailsDto>> ReadAllAsync();
 
     Task<SupervisorDetailsDto?> ReadByIdAsync(int? id);
+
+    Task<SupervisorDetailsDto?> ReadByUserEmailAsync(string? userEmail);
 }

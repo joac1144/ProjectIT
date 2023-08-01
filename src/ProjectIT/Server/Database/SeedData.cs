@@ -18,6 +18,8 @@ public static class SeedData
     private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "hedef@itr.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
     private static Supervisor supervisor3 = new() { FirstName = "John", LastName = "Smith", Email = "hevdfd@itr.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Inactive };
     private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "hebgfd@itr.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor5 = new() { FirstName = "Alaa Imad", LastName = "Abdul-Al", Email = "alia@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisorTEST = new() { FirstName = "Supervisor Test", LastName = "#1", Email = "testsupervisor@projectititu.onmicrosoft.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13 }, Status = SupervisorStatus.Available };
     private static Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "hehngd@itr.dk" };
     private static Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "hmgjhed@itr.dk" };
     private static Student student3 = new() { FirstName = "Michael", LastName = "Davis", Email = "hessdd@itr.dk" };
@@ -76,7 +78,7 @@ public static class SeedData
     {
         if (!context.Supervisors.Any())
         {
-            context.Supervisors.AddRange(supervisor1, supervisor2, supervisor3, supervisor4);
+            context.Supervisors.AddRange(supervisor1, supervisor2, supervisor3, supervisor4, supervisor5, supervisorTEST);
         }
         context.SaveChanges();
     }
@@ -224,7 +226,7 @@ public static class SeedData
                     CoSupervisor = supervisor2,
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "AR Game Development for Education",
                     DescriptionHtml = "Objective: To develop an educational augmented reality (AR) game to engage students in interactive learning experiences. Scope: The project includes designing game mechanics, creating educational content, integrating AR features, and evaluating the game's impact on learning outcomes.",
@@ -245,7 +247,7 @@ public static class SeedData
                     CoSupervisor = supervisor1,
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "Robotic Business Process Optimization",
                     DescriptionHtml = "Objective: To implement robotic process automation (RPA) techniques to optimize repetitive and time-consuming business processes. Scope: The project involves identifying target processes, designing and developing RPA workflows, integrating with existing systems, and evaluating the efficiency gains achieved through automation.",
@@ -266,7 +268,7 @@ public static class SeedData
                     CoSupervisor = supervisor3,
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "AI Chatbot for Customer Support",
                     DescriptionHtml = "Objective: To develop an AI-powered chatbot to provide automated customer support and improve response times. Scope: The project includes training natural language processing models, integrating with customer support systems, implementing conversation flows, and evaluating the chatbot's accuracy and user satisfaction.",
@@ -286,7 +288,7 @@ public static class SeedData
                     },
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "ML-based Fraud Detection System",
                     DescriptionHtml = "Objective: To build a machine learning-based fraud detection system that can identify and prevent fraudulent financial transactions. Scope: The project involves collecting transaction data, training fraud detection models, integrating with banking systems, and evaluating the system's effectiveness in reducing financial fraud.",
@@ -306,7 +308,7 @@ public static class SeedData
                     },
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "Computer Vision-based Quality Control System",
                     DescriptionHtml = "Objective: To develop a computer vision-based quality control system that can automatically detect defects in manufactured products. Scope: The project includes designing image processing algorithms, training object detection models, integrating with production lines, and evaluating the system's accuracy and efficiency in detecting defects.",
@@ -327,7 +329,7 @@ public static class SeedData
                     CoSupervisor = supervisor4,
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                 Title = "DL-based Image Recognition System",
                 DescriptionHtml = "Objective: To develop a deep learning-based image recognition system that enables autonomous vehicles to perceive and interpret the surrounding environment. Scope: The project involves collecting and annotating training data, designing and training convolutional neural networks, integrating with vehicle control systems, and evaluating the system's accuracy and real-time performance.",
@@ -347,7 +349,7 @@ public static class SeedData
                 },
                 Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "Data Mining and Predictive Analytics",
                     DescriptionHtml = "Objective: To apply data mining and predictive analytics techniques to forecast retail sales and optimize inventory management. Scope: The project includes collecting sales data, preprocessing and analyzing the data, building predictive models, and evaluating the accuracy and effectiveness of the sales forecasting system.",
@@ -368,7 +370,7 @@ public static class SeedData
                     CoSupervisor = supervisor1,
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "NLP for Sentiment Analysis in Social Media",
                     DescriptionHtml = "Objective: To develop a natural language processing system for sentiment analysis of social media data to gain insights into public opinion and sentiment trends. Scope: The project involves collecting and preprocessing social media data, training sentiment analysis models, visualizing sentiment trends, and evaluating the accuracy of sentiment classification.",
@@ -388,7 +390,7 @@ public static class SeedData
                     },
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "Cloud E-Learning Platform for Online Education",
                     DescriptionHtml = "Objective: To develop a cloud-based e-learning platform that enables collaborative online education through virtual classrooms and interactive learning tools. Scope: The project includes designing the platform architecture, implementing communication features, integrating multimedia content, and evaluating the platform's usability and performance.",
@@ -408,7 +410,7 @@ public static class SeedData
                     },
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "Cybersecurity Risk Assessment for Small Businesses",
                     DescriptionHtml = "Objective: To conduct a cybersecurity risk assessment for small businesses and develop mitigation strategies to enhance their security posture. Scope: The project involves assessing vulnerabilities, analyzing threat landscape, recommending security controls, and creating cybersecurity guidelines tailored for small businesses.",
@@ -429,7 +431,7 @@ public static class SeedData
                     CoSupervisor = supervisor2,
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "Mobile App for Mental Health Monitoring",
                     DescriptionHtml = "Objective: To develop a mobile application that enables mental health monitoring, provides personalized support, and connects users with mental health professionals. Scope: The project includes designing the user interface, implementing data collection features, integrating with external services, and evaluating the application's usability and effectiveness.",
@@ -449,7 +451,7 @@ public static class SeedData
                     },
                     Students = new Student[] { }
                 },
-            new Project
+                new Project
                 {
                     Title = "Blockchain Supply Chain Traceability",
                     DescriptionHtml = "Objective: To develop a blockchain-based solution for supply chain traceability and transparency, enabling secure and immutable tracking of products from source to destination. Scope: The project involves designing smart contracts, implementing a distributed ledger, integrating with existing supply chain systems, and evaluating the system's efficiency in enhancing traceability and transparency.",
@@ -458,15 +460,7 @@ public static class SeedData
                     Programmes = new[] { Programme.MDS },
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
-                    Supervisor = new Supervisor
-                    {
-                        FirstName = "Nathan",
-                        LastName = "Andersen",
-                        Email = "nathan@itu.dk",
-                        Topics = new[] { topic6, topic8 },
-                        Profession = SupervisorProfession.ResearchProfessor,
-                        Status = SupervisorStatus.LimitedSupervision
-                    },
+                    Supervisor = supervisorTEST,
                     CoSupervisor = supervisor1,
                     Students = new Student[] { }
                 }
