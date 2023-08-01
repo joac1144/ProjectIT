@@ -195,10 +195,10 @@ public partial class CreateProjectPage
                 {
                     project.Topics = newProject.Topics.ToList();
                 }
-                //if (result == null)
-                //{
-                //    return;
-                //}
+                if (result == null)
+                {
+                    return;
+                }
 
                 else
                 {
