@@ -70,7 +70,7 @@
         </Panel>
         <Panel Title="Topics">
             <div class="d-flex flex-column gap-2">
-                @if (topics is not null)
+                @if (topicsInDropdownList is not null)
                 {
                     <RadzenDropDown @ref="topicSelector" 
                                     TValue="Topic" 
@@ -78,7 +78,7 @@
                                     AllowFiltering="true"
                                     ClearSearchAfterSelection="true" 
                                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                    Data=@topics
+                                    Data=@topicsInDropdownList
                                     Change="OnTopicSelectedInList" 
                                     ValueProperty="Name" 
                                     TextProperty="Name"
@@ -137,21 +137,20 @@
 </div>
 
 @code {
-    async Task<dynamic> SelectTopicCategoryDialog(ProjectCreateDto newproject)
+    async Task<dynamic> SelectTopicCategoryDialog(IEnumerable<Topic> newTopics)
     {
-        //var data = newproject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any();
-        //var topicsWithoutCategories = newproject.Topics.Where(t => t.Category == default(TopicCategory)).ToList();
+        IEnumerable<TopicCategory?> topicCategories = Enum.GetValues(typeof(TopicCategory)).Cast<TopicCategory?>();
 
         var result = await DialogService.OpenAsync("Select Categories for Topics", ds =>
             @<RadzenStack Gap="1.5rem">
                 <div class="d-flex flex-column">
-                    @foreach (var topic in newproject.Topics)
+                    @foreach (var topic in newTopics)
                     {
                         <div class="d-flex flex-row align-items-center justify-content-between mb-2">
                             <span class="me-2">@topic.Name</span>
-                            <RadzenDropDown TValue="TopicCategory" Data="@Enum.GetValues(typeof(TopicCategory))" @bind-Value="@topic.Category" Placeholder="Choose category">
+                            <RadzenDropDown TValue="TopicCategory?" Data="@topicCategories" @bind-Value="@topic.Category" Placeholder="Choose a category">
                                 <Template Context="category">
-                                    @((TopicCategory)Enum.Parse(typeof(TopicCategory), category.ToString()))
+                                    @((TopicCategory?)Enum.Parse(typeof(TopicCategory), category.ToString()))
                                 </Template>
                             </RadzenDropDown>
                         </div>
