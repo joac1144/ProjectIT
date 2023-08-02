@@ -78,7 +78,7 @@ public class ProjectsRepository : IProjectsRepository
         var topics = new List<Topic>();
         foreach (var topic in project.Topics)
         {
-            topics.Add(topic);
+          topics.Add(topic);
         }
 
         var entity = new Project
