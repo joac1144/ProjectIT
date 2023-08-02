@@ -14,8 +14,9 @@
 @inject AnonymousClient httpClient
 @inject NavigationManager navManager
 @inject IJSRuntime JSRuntime
-@attribute [Authorize(Roles = AppRoles.Supervisor)]
 @inject DialogService DialogService
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
+@attribute [Authorize(Roles = AppRoles.Supervisor)]
 
 <div class="d-flex flex-row justify-content-center gap-5">
     <div class="d-flex flex-column my-4 py-3 gap-4 filter-size">
@@ -150,7 +151,7 @@
                             <span class="me-2">@topic.Name</span>
                             <RadzenDropDown TValue="TopicCategory?" Data="@topicCategories" @bind-Value="@topic.Category" Placeholder="Choose a category">
                                 <Template Context="category">
-                                    @((TopicCategory?)Enum.Parse(typeof(TopicCategory), category.ToString()))
+                                    @(((Enum)Enum.Parse(typeof(TopicCategory), category.ToString())).GetTranslatedString(EnumsLocalizer))
                                 </Template>
                             </RadzenDropDown>
                         </div>

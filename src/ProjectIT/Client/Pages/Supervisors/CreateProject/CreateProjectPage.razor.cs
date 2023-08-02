@@ -35,9 +35,6 @@ public partial class CreateProjectPage
         public string StringValue { get; set; } = string.Empty;
     }
 
-    [Inject]
-    private IStringLocalizer<EnumsResource> EnumsLocalizer { get; set; } = default!;
-
     // All topics in database.
     private IEnumerable<Topic> topics = null!;
 

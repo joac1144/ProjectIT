@@ -2,7 +2,6 @@
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Server.Repositories.Interfaces;
-using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using Microsoft.IdentityModel.Tokens;
 
@@ -78,7 +77,7 @@ public class ProjectsRepository : IProjectsRepository
         var topics = new List<Topic>();
         foreach (var topic in project.Topics)
         {
-          topics.Add(topic);
+            topics.Add(topic);
         }
 
         var entity = new Project
