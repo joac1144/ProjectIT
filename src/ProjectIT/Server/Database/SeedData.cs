@@ -24,6 +24,7 @@ public static class SeedData
     private static Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "hmgjhed@itr.dk" };
     private static Student student3 = new() { FirstName = "Michael", LastName = "Davis", Email = "hessdd@itr.dk" };
     private static Student student4 = new() { FirstName = "Olivia", LastName = "Brown", Email = "hentd@itr.dk" };
+    private static Student student5 = new() { FirstName = "Alaa", LastName = "Abdul-Al", Email = "alaamohamed@hotmail.dk" };
 
     private static Project project2 = new() 
     {
@@ -69,7 +70,7 @@ public static class SeedData
     {
         if (!context.Students.Any())
         {
-            context.Students.AddRange(student1, student2, student3, student4);
+            context.Students.AddRange(student1, student2, student3, student4, student5);
         }
         context.SaveChanges();
     }

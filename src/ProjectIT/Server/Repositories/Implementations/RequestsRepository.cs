@@ -3,6 +3,7 @@ using ProjectIT.Server.Database;
 using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Dtos.Requests;
 using ProjectIT.Shared.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ProjectIT.Server.Repositories.Implementations;
 
@@ -20,21 +21,23 @@ public class RequestRepository : IRequestsRepository
         var requests = await _context.Requests
             .Include(p => p.Topics)
             .Include(p => p.Supervisors)
-            .Include(p => p.Members)
+            .Include(p => p.ExtraMembers)
             .ToListAsync();
 
         return requests.Select(r =>
             new RequestDetailsDto
             {
                 Title = r.Title,
-                Description = r.Description,
+                DescriptionHtml = r.DescriptionHtml,
                 Topics = r.Topics,
                 Languages = r.Languages,
                 Programmes = r.Programmes,
-                Members = r.Members,
+                ExtraMembers = r.ExtraMembers,
+                Student = r.Student,
                 Supervisors = r.Supervisors,
                 Ects = r.Ects,
-                Semester = r.Semester
+                Semester = r.Semester,
+                Status = r.Status
             });
     }
 
@@ -47,31 +50,51 @@ public class RequestRepository : IRequestsRepository
         return new RequestDetailsDto
         {
             Title = request.Title,
-            Description = request.Description,
+            DescriptionHtml = request.DescriptionHtml,
             Topics = request.Topics,
             Languages = request.Languages,
+            Student = request.Student,
             Programmes = request.Programmes,
-            Members = request.Members,
+            ExtraMembers = request.ExtraMembers,
             Supervisors = request.Supervisors,
             Ects = request.Ects,
-            Semester = request.Semester
+            Semester = request.Semester,
+            Status = request.Status
         };
     }
 
     public async Task<int?> CreateAsync(RequestCreateDto request)
     {
+        Student student = _context.Students.Single(s => s.Email == request.StudentEmail);
+        var supervisorEmails = request.SupervisorEmails.ToList();
+        var supervisors = _context.Supervisors.Where(s => supervisorEmails.Contains(s.Email)).ToList();
+        var ExtraMembersEmails = request.ExtraMembersEmails?.ToList();
+        var ExtraMembers = _context.Students.Where(s => ExtraMembersEmails != null && ExtraMembersEmails.Contains(s.Email)).ToList();
+        var topics = new List<Topic>();
+        if (request.Topics is not null)
+        foreach (var topic in request.Topics)
+        {
+            topics.Add(_context.Topics.Single(t => t.Name == topic.Name));
+        }
+
         var entity = new Request
         {
             Title = request.Title,
-            Description = request.Description,
-            Topics = request.Topics,
+            DescriptionHtml = request.DescriptionHtml,
+            Topics = topics,
             Languages = request.Languages,
             Programmes = request.Programmes,
-            Members = request.Members,
-            Supervisors = request.Supervisors,
+            Student = student,
+            ExtraMembers = ExtraMembers,
+            Supervisors = supervisors,
             Ects = request.Ects,
-            Semester = request.Semester
+            Semester = request.Semester,
+            Status = request.Status
         };
+
+        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) ||
+            entity.Languages.IsNullOrEmpty() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null || entity.Student is null)
+                throw new ArgumentNullException();
 
         _context.Requests.Add(entity);
         await _context.SaveChangesAsync();

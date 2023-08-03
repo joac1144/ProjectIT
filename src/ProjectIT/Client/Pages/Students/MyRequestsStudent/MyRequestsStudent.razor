@@ -1,0 +1,89 @@
+@attribute [Route(PageUrls.MyRequests)]
+@using ProjectIT.Client.Components.Dropdown
+@using ProjectIT.Client.Components.RequestCard
+@using Microsoft.AspNetCore.Authorization;
+@using ProjectIT.Client.Constants;
+@using ProjectIT.Shared.Enums;
+@using ProjectIT.Shared.Dtos.Requests;
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = AppRoles.Student)]
+
+<PageTitle>My Requests</PageTitle>
+
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-column width-46">
+        <h3 class="fw-bold d-block my-3">My Requests</h3>
+        <div class="d-flex justify-content-between my-4">
+            <button class="rounded rounded-3 bg-black text-white px-4" @onclick="@(() => navigationManager.NavigateTo("/create-Request"))">Request Supervision</button>
+            <RadzenDropDown TValue="string"
+                            @bind-Value=@sortValue
+                            Data=@(_sortValues.Select(sortVal => sortVal.ToString()))
+                            Change="@OnSort"
+                            Placeholder="Sort by"
+                            Style="width: 20%; max-width: 20rem; margin-right: 3.5rem;" />
+        </div>
+        
+        @if (requests != null)
+        {
+            var acceptedRequests = requests.Where(r => r.Status == RequestStatus.Accepted).ToList();
+
+            if (acceptedRequests.Any())
+            {
+                <span class="my-3 fs-6">Accepted requests</span>
+                <Virtualize TItem="RequestDetailsDto" Items="@acceptedRequests" Context="request">
+                    <div class="d-flex flex-row align-items-center">
+                        <RequestCard Id="request.Id"
+                                    Title="@request.Title"
+                                    DescriptionHtml="@request.DescriptionHtml"
+                                    ExtraMembers="@request.ExtraMembers"
+                                    Semester= "@request.Semester"
+                                    Ects="@request.Ects"
+                                    Programmes="@request.Programmes"
+                                    Status = "@request.Status" />
+                    </div>
+                </Virtualize>
+                <hr class="w-50 align-self-center">
+            }
+
+            var declinedRequests = requests.Where(r => r.Status == RequestStatus.Declined).ToList();
+
+            if (declinedRequests.Any())
+            {
+                <span class="my-3 fs-6">Declined requests</span>
+                <Virtualize TItem="RequestDetailsDto" Items="@declinedRequests" Context="request">
+                    <div class="d-flex flex-row align-items-center">
+                        <RequestCard Id="request.Id"
+                                    Title="@request.Title"
+                                    DescriptionHtml="@request.DescriptionHtml"
+                                    ExtraMembers="@request.ExtraMembers"
+                                    Semester= "@request.Semester"
+                                    Ects="@request.Ects"
+                                    Programmes="@request.Programmes"
+                                    Status = "@request.Status" 
+                                    CssClasses="mt-3" />
+                    </div>
+                </Virtualize>
+                <hr class="w-50 align-self-center">
+            }
+
+            var pendingRequests = requests.Where(r => r.Status == RequestStatus.Pending).ToList();
+
+            <Virtualize TItem="RequestDetailsDto" Items="@pendingRequests" Context="request">
+                <div class="d-flex flex-row align-items-center">
+                    <RequestCard Id="request.Id"
+                                Title="@request.Title"
+                                DescriptionHtml="@request.DescriptionHtml"
+                                ExtraMembers="@request.ExtraMembers"
+                                Semester= "@request.Semester"
+                                Ects="@request.Ects"
+                                Programmes="@request.Programmes"
+                                Status = "@request.Status"
+                                CssClasses="mt-3" />
+                </div>
+            </Virtualize>
+        }
+    </div>
+</div>

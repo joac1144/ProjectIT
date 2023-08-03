@@ -41,7 +41,7 @@
                         {
                             <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
                                 <div>
-                                    <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.CreateRequest ? "active" : "")}") href="@PageUrls.CreateRequest" @onclick="() => SetActiveTab(PageUrls.CreateRequest)">Create Request</a>
+                                    <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.MyRequests ? "active" : "")}") href="@PageUrls.MyRequests" @onclick="() => SetActiveTab(PageUrls.MyRequests)">My Request</a>
                                 </div>
                             </div>
                         }

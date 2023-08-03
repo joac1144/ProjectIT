@@ -15,8 +15,7 @@ public class Project
     [StringLength(4400)]
     public string DescriptionHtml { get; set; } = null!;
 
-    [Required]
-    public IEnumerable<Topic> Topics { get; set; } = null!;
+    public IEnumerable<Topic>? Topics { get; set; }
 
     [Required]
     public IEnumerable<Language> Languages { get; set; } = null!;

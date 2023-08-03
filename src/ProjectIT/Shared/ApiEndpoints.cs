@@ -6,6 +6,7 @@ public static class ApiEndpoints
     public const string Projects = $"{prefix}projects";
     public const string Requests = $"{prefix}requests";
     public const string Supervisors = $"{prefix}supervisors";
+    public const string Students = $"{prefix}students";
     public const string Gpt = $"{prefix}gpt";
 
     private const string prefix = "api/";

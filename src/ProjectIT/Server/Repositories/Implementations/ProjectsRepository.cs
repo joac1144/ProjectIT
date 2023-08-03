@@ -76,10 +76,11 @@ public class ProjectsRepository : IProjectsRepository
         Supervisor supervisor = _context.Supervisors.Single(s => s.Email == project.SupervisorEmail);
         Supervisor? coSupervisor = _context.Supervisors.SingleOrDefault(s => s.Email == project.CoSupervisorEmail);
         var topics = new List<Topic>();
-        foreach (var topic in project.Topics)
-        {
-            topics.Add(_context.Topics.Single(t => t.Name == topic.Name));
-        }
+        if (project.Topics != null)
+            foreach (var topic in project.Topics)
+            {
+                topics.Add(_context.Topics.Single(t => t.Name == topic.Name));
+            }
 
         var entity = new Project
         {
@@ -94,7 +95,7 @@ public class ProjectsRepository : IProjectsRepository
             CoSupervisor = coSupervisor
         };
 
-        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) || entity.Topics.IsNullOrEmpty() ||
+        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) ||
             entity.Languages.IsNullOrEmpty() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null || entity.Supervisor is null)
                 throw new ArgumentNullException();
         

@@ -86,7 +86,7 @@ public partial class CreateProjectPage
 
     private void OnTopicSelectedInList(object value)
     {
-        if (value != null)
+        if (value is not null)
         {
             string val = (string)value;
             projectTopics.Add(topics.Single(t => t.Name == val));

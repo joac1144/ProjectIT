@@ -8,6 +8,10 @@
     "inputFile": "Components/ProjectCard/ProjectCard.razor.scss"
   },
   {
+    "outputFile": "Components/RequestCard/RequestCard.razor.css",
+    "inputFile": "Components/RequestCard/RequestCard.razor.scss"
+  },
+  {
     "outputFile": "Shared/NavMenu.razor.css",
     "inputFile": "Shared/NavMenu.razor.scss"
   },
@@ -44,8 +48,12 @@
     "inputFile": "Pages/Supervisors/UpdateProject/UpdateProjectPage.razor.scss"
   },
   {
-    "outputFile": "Pages/CreateRequest/CreateRequestPage.razor.css",
-    "inputFile": "Pages/CreateRequest/CreateRequestPage.razor.scss"
+    "outputFile": "Pages/Students/CreateRequest/CreateRequestPage.razor.css",
+    "inputFile": "Pages/Students/CreateRequest/CreateRequestPage.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Students/MyRequestsStudent/MyRequestsStudent.razor.css",
+    "inputFile": "Pages/Students/MyRequestsStudent/MyRequestsStudent.razor.scss"
   },
   {
     "outputFile": "Components/SupervisorCard/SupervisorCard.razor.css",
