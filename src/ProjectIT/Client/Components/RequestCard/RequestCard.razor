@@ -46,15 +46,22 @@
                     <img src="images\groups.png" width="23rem" height="23rem">
                     <span class="mx-1"></span>
                     <div class="fs-7">
-                        @MembersCount
+                        @(ExtraMembers?.Count() + 1)
                     </div>
                 </div>
 
-                <div class="d-flex">
-                    <div class="fs-7">
-                        <span class=@($"border rounded rounded-3 px-2 fs-8 text-white d-inline-block {statusRequest}")>@Status!.GetTranslatedString(EnumsLocalizer)</span>
-                    </div>
-                </div>
+                <AuthorizeView>
+                    <Authorized>
+                        @if (context.User.IsInRole(AppRoles.Student))
+                        {
+                            <div class="d-flex">
+                                <div class="fs-7">
+                                    <span class=@($"border rounded rounded-3 px-2 fs-8 text-white d-inline-block {StatusBackgroundColor}")>@Status!.ToString()</span>
+                                </div>
+                            </div>
+                        }
+                    </Authorized>
+                </AuthorizeView>
 
             </div>
             <hr>

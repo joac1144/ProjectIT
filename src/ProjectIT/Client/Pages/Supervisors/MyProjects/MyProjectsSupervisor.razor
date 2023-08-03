@@ -26,7 +26,7 @@
                             Style="width: 20%; max-width: 20rem; margin-right: 3.5rem;" />
         </div>
         
-        @if (projects != null)
+        @if (projects is not null && projects.Any())
         {
             var appliedProjects = projects.Where(p => p.Students?.Count() > 0).ToList();
 
@@ -75,6 +75,12 @@
                     </Dropdown>
                 </div>
             </Virtualize>
+        }
+        else
+        {
+            <div class="d-flex flex-column align-items-center position-absolute top-50 start-50 translate-middle">
+                <span class="my-3 fs-4 fw-bold text-black-50">You have no projects</span>
+            </div>
         }
     </div>
 </div>

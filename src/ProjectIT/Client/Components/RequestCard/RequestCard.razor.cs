@@ -16,17 +16,6 @@ public partial class RequestCard
     [Parameter]
     public string DescriptionHtml { get; set; } = string.Empty;
 
-    private int _membersCount;
-
-    private int MembersCount
-    { 
-        get => _membersCount;
-        set
-        {
-            _membersCount = ExtraMembers?.Count() + 1 ?? 1;
-        } 
-    }
-
     [Parameter]
     public IEnumerable<Student>? ExtraMembers { get; set; }
 
@@ -57,6 +46,20 @@ public partial class RequestCard
             return strippedString;
         }
     }
+
+    private string StatusBackgroundColor
+    {
+        get
+        {
+            return Status switch
+            {
+                RequestStatus.Accepted => "bg-success",
+                RequestStatus.Pending => "bg-warning",
+                RequestStatus.Declined => "bg-danger",
+                _ => "bg-secondary"
+            };
+        }
+    }
     
     private readonly Dictionary<string, string> _htmlEntitiesTable = new()
     {
@@ -76,22 +79,4 @@ public partial class RequestCard
         { "&times;", "×" },
         { "&divide;", "÷" }
     };
-
-    private string statusRequest = null!;
-
-    public void SetRequestStatus(RequestStatus? requestStatus)
-    {
-        switch (requestStatus)
-        {
-            case RequestStatus.Accepted:
-                statusRequest = "bg-success";
-                break;
-            case RequestStatus.Pending:
-                statusRequest = "bg-warning";
-                break;
-            case RequestStatus.Declined:
-                statusRequest = "bg-danger";
-                break;
-        }
-    }
 }

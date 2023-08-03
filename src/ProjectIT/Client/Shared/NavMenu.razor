@@ -54,6 +54,14 @@
                                 </div>
                             </div>
                         }
+                        @if (context.User.IsInRole(AppRoles.Supervisor))
+                        {
+                            <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
+                                <div>
+                                    <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.MyRequests ? "active" : "")}") href="@PageUrls.MyRequests" @onclick="() => SetActiveTab(PageUrls.MyRequests)">My Requests</a>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </Authorized>
             </AuthorizeView>

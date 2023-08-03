@@ -78,7 +78,15 @@ public class ProjectsRepository : IProjectsRepository
         if (project.Topics != null)
         foreach (var topic in project.Topics)
         {
-            topics.Add(topic);
+            var dbTopic = _context.Topics.SingleOrDefault(t => t.Name == topic.Name);
+            if (dbTopic == null)
+            {
+                topics.Add(new Topic { Name = topic.Name, Category = topic.Category });
+            }
+            else
+            {
+                topics.Add(dbTopic);
+            }
         }
 
         var entity = new Project

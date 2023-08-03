@@ -15,7 +15,7 @@ public partial class MyProjectsSupervisor
     private IEnumerable<ProjectDetailsDto>? projects;
 
     private string? sortValue;
-    private readonly IEnumerable<Sort> _sortValues = Enum.GetValues<Sort>();
+    private readonly IEnumerable<RegularSort> _sortValues = Enum.GetValues<RegularSort>();
 
     private Modal<ProjectDetailsDto>? modal;
 
@@ -38,10 +38,10 @@ public partial class MyProjectsSupervisor
             sortValue = value.ToString();
             switch (value)
             {
-                case nameof(Sort.Semester):
+                case nameof(RegularSort.Semester):
                     projects = projects.OrderBy(p => p.Semester).ToList();
                     break;
-                case nameof(Sort.ECTS):
+                case nameof(RegularSort.ECTS):
                     projects = projects.OrderBy(p => p.Ects).ToList();
                     break;
             }
@@ -50,7 +50,7 @@ public partial class MyProjectsSupervisor
 
     private void EditProject(int projectId)
     {
-        navigationManager.NavigateTo($"/my-projects/{projectId}/edit");
+        navigationManager.NavigateTo($"/projects/{projectId}/edit");
     }
 
     private async void DeleteProject(int id)
