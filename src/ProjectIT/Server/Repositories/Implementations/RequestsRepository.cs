@@ -20,6 +20,7 @@ public class RequestRepository : IRequestsRepository
     {
         var requests = await _context.Requests
             .Include(p => p.Topics)
+            .Include(r => r.Student)
             .Include(p => p.Supervisors)
             .Include(p => p.ExtraMembers)
             .ToListAsync();
@@ -43,7 +44,13 @@ public class RequestRepository : IRequestsRepository
 
     public async Task<RequestDetailsDto?> ReadByIdAsync(int? id)
     {
-        var request = await _context.Requests.FindAsync(id);
+        var request = await _context.Requests
+            .Where(r => r.Id == id)
+            .Include(r => r.Topics)
+            .Include(r => r.Student)
+            .Include(r => r.Supervisors)
+            .Include(r => r.ExtraMembers)
+            .SingleOrDefaultAsync();
 
         if (request == null) return null;
 
