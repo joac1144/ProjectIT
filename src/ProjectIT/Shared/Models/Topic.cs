@@ -10,5 +10,6 @@ public class Topic
     [Required]
     public string Name { get; set; } = null!;
 
-    public TopicCategory Category { get; set; }
+    [Required]
+    public TopicCategory? Category { get; set; }
 }

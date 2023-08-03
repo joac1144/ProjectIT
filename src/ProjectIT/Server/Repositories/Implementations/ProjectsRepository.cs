@@ -2,7 +2,6 @@
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Server.Repositories.Interfaces;
-using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using Microsoft.IdentityModel.Tokens;
 
@@ -77,10 +76,10 @@ public class ProjectsRepository : IProjectsRepository
         Supervisor? coSupervisor = _context.Supervisors.SingleOrDefault(s => s.Email == project.CoSupervisorEmail);
         var topics = new List<Topic>();
         if (project.Topics != null)
-            foreach (var topic in project.Topics)
-            {
-                topics.Add(_context.Topics.Single(t => t.Name == topic.Name));
-            }
+        foreach (var topic in project.Topics)
+        {
+            topics.Add(topic);
+        }
 
         var entity = new Project
         {
