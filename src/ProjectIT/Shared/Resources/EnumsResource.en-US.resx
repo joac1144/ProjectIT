@@ -216,4 +216,7 @@
   <data name="SupervisorStatus.Inactive" xml:space="preserve">
     <value>Inactive</value>
   </data>
+  <data name="TopicCategory.DataManagement" xml:space="preserve">
+    <value>Data management</value>
+  </data>
 </root>
