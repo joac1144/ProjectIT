@@ -17,15 +17,9 @@ public partial class MyProjectsSupervisor
     private readonly IEnumerable<Sort> _sortValues = Enum.GetValues<Sort>();
 
     private Modal<ProjectDetailsDto>? modal;
+    private ProjectDetailsDto modalData = new();
 
     private ClaimsPrincipal? authUser;
-
-    protected override void OnParametersSet()
-    {
-        base.OnParametersSet();
-
-        modal!.Data = new ProjectDetailsDto();
-    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,6 +46,12 @@ public partial class MyProjectsSupervisor
                     break;
             }
         }
+    }
+
+    private void OpenDeleteConfirmationModal(ProjectDetailsDto project)
+    {
+        modalData = project;
+        modal?.OpenModal(modalData);
     }
 
     private void EditProject(int projectId)
