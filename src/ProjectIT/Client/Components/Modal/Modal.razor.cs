@@ -21,17 +21,19 @@ public partial class Modal<T>
 
     public T Data { get; set; } = default!;
 
-    private bool isShowing;
+    private string displayClass = "none";
 
     public void OpenModal(T data)
     {
         Data = data;
-        isShowing = true;
+        displayClass = "block;";
+        StateHasChanged();
     }
 
     public void Hide()
     {
         Data = default!;
-        isShowing = false;
+        displayClass = "none;";
+        StateHasChanged();
     }
 }
