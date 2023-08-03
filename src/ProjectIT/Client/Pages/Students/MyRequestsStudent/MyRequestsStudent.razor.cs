@@ -24,7 +24,8 @@ public partial class MyRequestsStudent
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         string userEmail = authUser?.FindFirst("preferred_username")?.Value!;
 
-        requests = (await httpClient.GetFromJsonAsync<IEnumerable<RequestDetailsDto>>(ApiEndpoints.Requests))!.Where(request => request.Student.Email == userEmail);
+        var requestsToBeShown = (await httpClient.GetFromJsonAsync<IEnumerable<RequestDetailsDto>>(ApiEndpoints.Requests))!;
+        requests = requestsToBeShown.Where(request => request.Student.Email == userEmail);
     }
 
     private void OnSort(object value)
