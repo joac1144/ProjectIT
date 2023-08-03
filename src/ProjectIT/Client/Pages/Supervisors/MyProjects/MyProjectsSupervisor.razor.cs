@@ -4,7 +4,6 @@ using ProjectIT.Client.Constants;
 using ProjectIT.Client.Shared.Enums;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
@@ -20,6 +19,13 @@ public partial class MyProjectsSupervisor
     private Modal<ProjectDetailsDto>? modal;
 
     private ClaimsPrincipal? authUser;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        modal!.Data = new ProjectDetailsDto();
+    }
 
     protected override async Task OnInitializedAsync()
     {

@@ -1,25 +1,22 @@
 ﻿@typeparam T
 
-@if (isShowing)
-{
-    <div class="modal fade" id=@($"{Identifier}Modal") tabindex="-1" aria-labelledby=@($"{Identifier}ModalLabel") aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id=@($"{Identifier}ModalLabel")>@Title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    @Body
-                </div>
-                <div class="modal-footer d-flex justify-content-evenly">
-                    @if (CloseButtonText != string.Empty)
-                    {
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@CloseButtonText</button>
-                    }
-                    @Buttons
-                </div>
+<div class=@($"modal fade {displayClass}") id=@($"{Identifier}Modal") tabindex="-1" role="dialog" aria-labelledby=@($"{Identifier}ModalLabel")>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id=@($"{Identifier}ModalLabel")>@Title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @Body
+            </div>
+            <div class="modal-footer d-flex justify-content-evenly">
+                @if (CloseButtonText != string.Empty)
+                {
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@CloseButtonText</button>
+                }
+                @Buttons
             </div>
         </div>
     </div>
-}
+</div>

@@ -13,6 +13,14 @@
 
 <PageTitle>My Projects</PageTitle>
 
+<Modal @ref="modal" T="ProjectDetailsDto" Identifier="deleteProjectConfirmation" Title="Delete project?" CloseButtonText="Cancel">
+    <Body>
+        @($"Are you sure you want to delete the project \"{modal?.Data.Title}\"?")
+    </Body>
+    <Buttons>
+        <button type="button" class="btn btn-black" @onclick="() => DeleteProject(modal!.Data.Id)">Delete</button>
+    </Buttons>
+</Modal>
 <div class="d-flex justify-content-center">
     <div class="d-flex flex-column width-46">
         <h3 class="fw-bold d-block my-3">My projects</h3>
@@ -78,11 +86,3 @@
         }
     </div>
 </div>
-<Modal @ref="modal" T="ProjectDetailsDto" Identifier="deleteProjectConfirmation" Title="Delete project?" CloseButtonText="Cancel">
-    <Body>
-        @($"Are you sure you want to delete the project \"{modal?.Data.Title}\"?")
-    </Body>
-    <Buttons>
-        <button type="button" class="btn btn-black" @onclick="() => DeleteProject(modal!.Data.Id)">Delete</button>
-    </Buttons>
-</Modal>
