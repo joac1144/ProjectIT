@@ -28,8 +28,12 @@
     "inputFile": "Pages/ProjectDetails/ProjectDetails.razor.scss"
   },
   {
-    "outputFile": "Components/ProjectDetailsView/ProjectDetailsView.razor.css",
-    "inputFile": "Components/ProjectDetailsView/ProjectDetailsView.razor.scss"
+    "outputFile": "Pages/RequestDetails/RequestDetails.razor.css",
+    "inputFile": "Pages/RequestDetails/RequestDetails.razor.scss"
+  },
+  {
+    "outputFile": "Components/DetailsView/DetailsView.razor.css",
+    "inputFile": "Components/DetailsView/DetailsView.razor.scss"
   },
   {
     "outputFile": "Components/Login/LoginDisplay.razor.css",

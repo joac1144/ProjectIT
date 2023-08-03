@@ -15,11 +15,12 @@
 @inject HttpClient httpClient
 @inject IJSRuntime JSRuntime
 @inject IStringLocalizer<EnumsResource> EnumsLocalizer
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<PageTitle> Project Details </PageTitle>
+<PageTitle> Request Details </PageTitle>
 <br>
 
-@if (project == null)
+@if (request == null)
 {
     <div class="d-flex align-items-center justify-content-center h-100">
         <div class="spinner-border spinner" role="status">
@@ -29,36 +30,36 @@
 }
 else
 {
-    <div class="d-flex flex-row justify-content-center project-details-view">
+    <div class="d-flex flex-row justify-content-center request-details-view">
         <div class="d-flex flex-column panel-gap">
             <div>
-                <Panel Title="Project Info" Width="@panelWidth">
+                <Panel Title="Request Info" Width="@panelWidth">
                     <div class="d-flex flex-column py-2">
                         Programmes: <br>
                         <div class="d-flex programmes">
-                            @for (int i = 0; i < project.Programmes.Count(); i++)
+                            @for (int i = 0; i < request.Programmes.Count(); i++)
                             {
-                                if (i == project.Programmes.Count() - 1)
+                                if (i == request.Programmes.Count() - 1)
                                 {
-                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
+                                    <p1 class="fw-normal"> @request.Programmes.ElementAt(i).ToString() </p1>
                                 }
                                 else
                                 {
-                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
+                                    <p1 class="fw-normal"> @request.Programmes.ElementAt(i).ToString() </p1>
                                     <span class="border-start border-2 border-dark border-opacity-10"></span>
                                 }
                             }
                         </div>
                         <br>
                         ECTS Points: <br>
-                        <p1 class="fw-normal"> @project.Ects </p1> <br>
+                        <p1 class="fw-normal"> @request.Ects </p1> <br>
 
                         Semester: <br>
-                        <p1 class="fw-normal"> @project.Semester?.Season @project.Semester?.Year </p1> <br>
+                        <p1 class="fw-normal"> @request.Semester?.Season @request.Semester?.Year </p1> <br>
 
                         Languages: <br>
 
-                        @foreach (Language language in project.Languages)
+                        @foreach (Language language in request.Languages)
                         {
                             <p1 class="fw-normal"> @language </p1>
                         }
@@ -67,11 +68,11 @@ else
             </div>
             <div class="py-2">
                 <Panel Title="Topics" Width="@panelWidth">
-                    <TagsDisplay Tags="project.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                    <TagsDisplay Tags="request.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
                 </Panel>
             </div>
         </div>
-        <DetailsView Title="@project.Title" Description="@project.DescriptionHtml" />
+        <DetailsView Title="@request.Title" Description="@request.DescriptionHtml" />
         <div class="d-flex flex-column panel-gap">
             <div>
                 <Panel Title="Supervisor" Width="@panelWidth">
@@ -86,37 +87,20 @@ else
                     </p>
                 </Panel>
             </div>
-            @if (project.CoSupervisor != null)
-            {
-                <div>
-                    <Panel Title="Co-supervisor" Width="@panelWidth">
-                        <p class="fw-normal pt-2">
-                        <h6 class="fw-bold"> Info: </h6>
-                            <div class="lh-lg">
-                        @project.CoSupervisor?.FullName <br>
-                        @project.CoSupervisor?.Email <br>
-                        @project.CoSupervisor?.Profession.GetTranslatedString(EnumsLocalizer) <br>
-                        <span class=@($"border rounded rounded-3 px-2 fs-8 text-white d-inline-block {statusCoSupervisor} ")>@project.CoSupervisor?.Status.GetTranslatedString(EnumsLocalizer)</span>
-                    </div>
-                        </p>
-                    </Panel>
-                </div>
-            }
             <AuthorizeView>
                 <Authorized>
-                    @if (context.User.IsInRole(AppRoles.Student))
-                        {
-                            <button @onclick="(() => ApplyProject(navigationManager))" type="button" class="btn btn-success fw-bold"> 
-                                Apply
-                            </button>
-                        }
                     @if (context.User.IsInRole(AppRoles.Supervisor))
                         {
-                            if (context.User.Identity!.Name == project.Supervisor.FullName)
+                            if (request.Supervisors.Any(s => s.Email == userEmail))
                             {
-                                <button @onclick="(() => EditProject(project.Id))" type="button" class="btn fw-bold edit-btn-orange"> 
-                                    Edit
-                                </button>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <button @onclick="(() => AcceptRequest(request.Id))" type="button" class="btn fw-bold edit-btn-green"> 
+                                        Accept
+                                    </button>
+                                    <button @onclick="(() => DeclineRequest(request.Id))" type="button" class="btn fw-bold edit-btn-red"> 
+                                        Decline
+                                    </button>
+                                </div>
                             }
                         }
                 </Authorized>

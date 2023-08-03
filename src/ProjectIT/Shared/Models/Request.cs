@@ -13,10 +13,9 @@ public class Request
 
     [Required]
     [StringLength(4400)]
-    public string Description { get; set; } = null!;
+    public string DescriptionHtml { get; set; } = null!;
 
-    [Required]
-    public IEnumerable<Topic> Topics { get; set; } = null!;
+    public IEnumerable<Topic>? Topics { get; set; }
 
     [Required]
     public IEnumerable<Language> Languages { get; set; } = null!;
@@ -25,10 +24,12 @@ public class Request
     public IEnumerable<Programme> Programmes { get; set; } = null!;
 
     [Required]
-    public IEnumerable<Student> Members { get; set; } = null!;
+    public Student Student { get; set;} = null!;
+
+    public IEnumerable<Student>? ExtraMembers { get; set; }
 
     [Required]
-    public Ects? Ects { get; set; }
+    public Ects Ects { get; set; }
 
     [Required]
     public Semester Semester { get; set; } = null!;

@@ -26,9 +26,7 @@ public partial class ProjectDetails
         navigationManager.NavigateTo(PageUrls.Projects);
     }
 
-    protected override async Task 
-     
-    OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         project = await httpClient.GetFromJsonAsync<ProjectDetailsDto>($"{ApiEndpoints.Projects}/{Id}");
         SetSupervisorStatus(project!.Supervisor.Status);
