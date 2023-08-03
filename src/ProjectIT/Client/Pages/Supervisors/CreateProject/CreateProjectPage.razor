@@ -7,12 +7,15 @@
 @using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Constants;
 @using ProjectIT.Client.Http;
+@using ProjectIT.Shared.Dtos.Projects;
 @using ProjectIT.Shared.Enums;
 @using ProjectIT.Shared.Models;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AnonymousClient httpClient
 @inject NavigationManager navManager
 @inject IJSRuntime JSRuntime
+@inject DialogService DialogService
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
 @attribute [Authorize(Roles = AppRoles.Supervisor)]
 
 <div class="d-flex flex-row justify-content-center gap-5">
@@ -68,7 +71,7 @@
         </Panel>
         <Panel Title="Topics">
             <div class="d-flex flex-column gap-2">
-                @if (topics is not null)
+                @if (topicsInDropdownList is not null)
                 {
                     <RadzenDropDown @ref="topicSelector" 
                                     TValue="Topic" 
@@ -76,7 +79,7 @@
                                     AllowFiltering="true"
                                     ClearSearchAfterSelection="true" 
                                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                    Data=@topics
+                                    Data=@topicsInDropdownList
                                     Change="OnTopicSelectedInList" 
                                     ValueProperty="Name" 
                                     TextProperty="Name"
@@ -133,3 +136,36 @@
         </Panel>
     </div>
 </div>
+
+@code {
+    async Task<dynamic> SelectTopicCategoryDialog(IEnumerable<Topic> newTopics)
+    {
+        IEnumerable<TopicCategory?> topicCategories = Enum.GetValues(typeof(TopicCategory)).Cast<TopicCategory?>();
+
+        var result = await DialogService.OpenAsync("Select Categories for Topics", ds =>
+            @<RadzenStack Gap="1.5rem">
+                <div class="d-flex flex-column">
+                    @foreach (var topic in newTopics)
+                    {
+                        <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+                            <span class="me-2">@topic.Name</span>
+                            <RadzenDropDown TValue="TopicCategory?" Data="@topicCategories" @bind-Value="@topic.Category" Placeholder="Choose a category">
+                                <Template Context="category">
+                                    @(((Enum)Enum.Parse(typeof(TopicCategory), category.ToString())).GetTranslatedString(EnumsLocalizer))
+                                </Template>
+                            </RadzenDropDown>
+                        </div>
+                    }
+                </div>
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                    <RadzenStack Orientation="Orientation.Horizontal">
+                        <RadzenButton Text="Save" Click="() => ds.Close(true)" Style="width: 80px; background-color:black" />
+                        <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+                    </RadzenStack>
+                </RadzenStack>
+            </RadzenStack>
+        );
+
+        return result;
+    }
+}

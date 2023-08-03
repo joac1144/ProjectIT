@@ -2,7 +2,6 @@
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Server.Repositories.Interfaces;
-using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using Microsoft.IdentityModel.Tokens;
 
@@ -78,7 +77,7 @@ public class ProjectsRepository : IProjectsRepository
         var topics = new List<Topic>();
         foreach (var topic in project.Topics)
         {
-            topics.Add(_context.Topics.Single(t => t.Name == topic.Name));
+            topics.Add(topic);
         }
 
         var entity = new Project
@@ -94,7 +93,7 @@ public class ProjectsRepository : IProjectsRepository
             CoSupervisor = coSupervisor
         };
 
-        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) || entity.Topics.IsNullOrEmpty() ||
+        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) ||
             entity.Languages.IsNullOrEmpty() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null || entity.Supervisor is null)
                 throw new ArgumentNullException();
         
