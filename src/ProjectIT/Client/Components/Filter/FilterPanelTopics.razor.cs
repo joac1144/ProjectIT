@@ -39,7 +39,7 @@ public partial class FilterPanelTopics
 
         foreach (Topic topic in topics)
         {
-            Data.Add(new FilterTagTopic { Tag = topic.Name, Category = topic.Category });
+            Data.Add(new FilterTagTopic { Tag = topic.Name, Category = (TopicCategory)topic.Category! });
         }
 
         foreach (TopicCategory topicCategory in Enum.GetValues<TopicCategory>())
