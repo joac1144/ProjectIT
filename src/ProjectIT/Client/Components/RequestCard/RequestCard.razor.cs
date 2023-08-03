@@ -66,15 +66,15 @@ public partial class RequestCard
         { "&apos;", "'" },
         { "&lt;", "<" },
         { "&gt;", ">" },
-        { "&cent;", "�" },
-        { "&pound;", "�" },
-        { "&yen;", "�" },
-        { "&euro;", "�" },
-        { "&copy;", "�" },
-        { "&reg;", "�" },
-        { "&trade;", "�" },
-        { "&times;", "�" },
-        { "&divide;", "�" },
+        { "&cent;", "¢" },
+        { "&pound;", "£" },
+        { "&yen;", "¥" },
+        { "&euro;", "€" },
+        { "&copy;", "©" },
+        { "&reg;", "®" },
+        { "&trade;", "™" },
+        { "&times;", "×" },
+        { "&divide;", "÷" }
     };
 
     private string statusRequest = null!;
