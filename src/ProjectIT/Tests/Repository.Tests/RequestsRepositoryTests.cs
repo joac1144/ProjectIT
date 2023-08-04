@@ -23,22 +23,19 @@ public class RequestsRepositoryTests : IDisposable
         var context = new ProjectITDbContext(builder.Options);
         context.Database.EnsureCreated();
 
+        var student2 = new Student { FirstName = "Current", LastName = "student2", Email = "klfwe@krld.dk" };
+        var student3 = new Student { FirstName = "Current", LastName = "student3", Email = "efw@rldæ.dk" };
+
         context.AddRange(
             new Request
             {
                 Title = "RequestTitle",
-                Description = "RequestDescription",
+                DescriptionHtml = "RequestDescription",
                 Topics = new Topic[] { },
                 Languages = new[] { Language.Danish },
                 Programmes = new[] { Programme.BSWU },
-                Members = new Student[] {
-                    new Student
-                    {
-                        FirstName = "Current",
-                        LastName = "student2",
-                        Email = "klfwe@krld.dk"
-                    }
-                },
+                Student = student2,
+                ExtraMembers = new Student[] { student2 },
                 Supervisors = new Supervisor[]
                 {
                     new Supervisor
@@ -53,11 +50,12 @@ public class RequestsRepositoryTests : IDisposable
                 },
                 Ects = Ects.Bachelor,
                 Semester = new() { Season = Season.Autumn, Year = 2025 },
+                Status = RequestStatus.Pending
             },
             new Request
             {
                 Title = "RequestTitle2",
-                Description = "RequestDescription2",
+                DescriptionHtml = "RequestDescription2",
                 Topics = new[]
                 {
                     new Topic
@@ -79,14 +77,8 @@ public class RequestsRepositoryTests : IDisposable
                 {
                     Programme.BSWU
                 },
-                Members = new Student[] {
-                    new Student
-                    {
-                        FirstName = "Current",
-                        LastName = "student3",
-                        Email = "efw@rldæ.dk"
-                    }
-                },
+                Student = student3,
+                ExtraMembers = new Student[] {student3},
                 Supervisors = new Supervisor[]
                 {
                     new Supervisor
@@ -105,6 +97,27 @@ public class RequestsRepositoryTests : IDisposable
                     Season = Season.Spring,
                     Year = 2023
                 },
+                Status = RequestStatus.Pending
+            }
+        );
+
+        context.Students.Add(new Student
+        {
+            Email = "hello@itu.dk",
+            FirstName = "Ulrich",
+            LastName = "Kenneth"
+        });
+
+        context.Topics.AddRange(
+            new Topic
+            {
+                Name = "Request Test Topic",
+                Category = TopicCategory.ArtificialIntelligence
+            },
+            new Topic
+            {
+                Name = "Request Test Topic 2",
+                Category = TopicCategory.SoftwareEngineering
             }
         );
 
@@ -120,7 +133,7 @@ public class RequestsRepositoryTests : IDisposable
         var request = new RequestCreateDto
         {
             Title = "RequestTest",
-            Description = "Request Test Desc",
+            DescriptionHtml = "Request Test Desc",
             Topics = new[]
             {
                 new Topic
@@ -142,39 +155,48 @@ public class RequestsRepositoryTests : IDisposable
             {
                 Programme.BSWU
             },
-            Members = new Student[] {
-                new Student
-                {
-                    FirstName = "Current",
-                    LastName = "student",
-                    Email = "jlds@itu.dk",
-                }
-            },
-            Supervisors = new Supervisor[]
-            {
-                new Supervisor
-                {
-                    FirstName = "Henrik",
-                    LastName = "Larsen",
-                    Email = "henk@itu.dk",
-                    Topics = new Topic[] { },
-                    Profession = SupervisorProfession.Lecturer,
-                    Status = SupervisorStatus.LimitedSupervision
-                }
-            },
+            ExtraMembersEmails = new string[] {"jlds@itu.dk"},
+            SupervisorEmails = new string[] {"henk@itu.dk"},
             Ects = Ects.Bachelor,
             Semester = new()
             {
                 Season = Season.Spring,
                 Year = 2023
             },
+            Status = RequestStatus.Pending,
+            StudentEmail = "hello@itu.dk"
         };
 
         var resultId = await _requestsRepository.CreateAsync(request);
         var actualResult = await _context.Requests.FindAsync(resultId);
 
-        actualResult.Should().NotBeNull().And.Match<Request>(p => p.Title == request.Title && p.Description == request.Description);
+        actualResult.Should().NotBeNull().And.Match<Request>(p => p.Title == request.Title && p.DescriptionHtml == request.DescriptionHtml);
         actualResult?.Id.Should().Be(resultId);
+    }
+
+    [Fact]
+    public async Task CreateAsync_MandatoryFieldsNotFilledOut_ThrowsException()
+    {
+        var request = new RequestCreateDto
+        {
+            Title = String.Empty,
+            DescriptionHtml = "Test desc",
+            Topics = Array.Empty<Topic>(),
+            Languages = Array.Empty<Language>(),
+            Programmes = Array.Empty<Programme>(),
+            ExtraMembersEmails = Array.Empty<string>(),
+            SupervisorEmails = Array.Empty<string>(),
+            Ects = Ects.Bachelor,
+            Semester = new()
+            {
+                Season = Season.Spring,
+                Year = 2023
+            },
+            Status = RequestStatus.Pending,
+            StudentEmail = "hello@itu.dk"
+        };
+
+        await Assert.ThrowsAsync<ArgumentNullException>(() => _requestsRepository.CreateAsync(request));
     }
 
     [Fact]

@@ -1,0 +1,165 @@
+@attribute [Route(PageUrls.MyRequests)]
+@using ProjectIT.Client.Components.Dropdown
+@using ProjectIT.Client.Components.RequestCard
+@using Microsoft.AspNetCore.Authorization;
+@using ProjectIT.Client.Constants;
+@using ProjectIT.Shared.Enums;
+@using ProjectIT.Shared.Dtos.Requests;
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+@inject IJSRuntime jsRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>My Requests</PageTitle>
+
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-column width-46">
+        <h3 class="fw-bold d-block my-3">My requests</h3>
+        <AuthorizeView>
+            <Authorized>
+            @if (context.User.IsInRole(AppRoles.Student))
+            {
+                <div class="d-flex justify-content-between my-4">
+                    <button class="rounded rounded-3 bg-black text-white px-4" @onclick="@(() => navigationManager.NavigateTo("/create-Request"))">Create Project Request</button>
+                
+                    <RadzenDropDown TValue="string"
+                                    @bind-Value=@sortValue
+                                    Data=@(_sortValuesForStudents.Select(sortVal => sortVal.ToString()))
+                                    Change="@OnSortForStudents"
+                                    Placeholder="Sort by"
+                                    Style="width: 20%; max-width: 20rem; margin-right: 3.5rem;" />
+                </div>
+
+                @if (studentRequests is not null && studentRequests.Any())
+                {
+                    var acceptedRequests = studentRequests.Where(r => r.Status == RequestStatus.Accepted).ToList();
+
+                    if (acceptedRequests.Any())
+                    {
+                        <span class="my-3 fs-6">Accepted requests</span>
+                        <Virtualize TItem="RequestDetailsDto" Items="@acceptedRequests" Context="request">
+                            <div class="d-flex flex-row align-items-center">
+                                <RequestCard Id="request.Id"
+                                            Title="@request.Title"
+                                            DescriptionHtml="@request.DescriptionHtml"
+                                            ExtraMembers="@request.ExtraMembers"
+                                            Semester= "@request.Semester"
+                                            Ects="@request.Ects"
+                                            Programmes="@request.Programmes"
+                                            Status = "@request.Status" />
+                            </div>
+                        </Virtualize>
+                        <hr class="w-50 align-self-center">
+                    }
+
+                    var declinedRequests = studentRequests.Where(r => r.Status == RequestStatus.Declined).ToList();
+
+                    if (declinedRequests.Any())
+                    {
+                        <span class="my-3 fs-6">Declined requests</span>
+                        <Virtualize TItem="RequestDetailsDto" Items="@declinedRequests" Context="request">
+                            <div class="d-flex flex-row align-items-center">
+                                <RequestCard Id="request.Id"
+                                            Title="@request.Title"
+                                            DescriptionHtml="@request.DescriptionHtml"
+                                            ExtraMembers="@request.ExtraMembers"
+                                            Semester= "@request.Semester"
+                                            Ects="@request.Ects"
+                                            Programmes="@request.Programmes"
+                                            Status = "@request.Status" 
+                                            CssClasses="mt-3" />
+                            </div>
+                        </Virtualize>
+                        <hr class="w-50 align-self-center">
+                    }
+
+                    var pendingRequests = studentRequests.Where(r => r.Status == RequestStatus.Pending).ToList();
+
+                    if (pendingRequests.Any())
+                    {
+                        <span class="my-3 fs-6">Pending requests</span>
+                        <Virtualize TItem="RequestDetailsDto" Items="@pendingRequests" Context="request">
+                            <div class="d-flex flex-row align-items-center">
+                                <RequestCard Id="request.Id"
+                                            Title="@request.Title"
+                                            DescriptionHtml="@request.DescriptionHtml"
+                                            ExtraMembers="@request.ExtraMembers"
+                                            Semester= "@request.Semester"
+                                            Ects="@request.Ects"
+                                            Programmes="@request.Programmes"
+                                            Status = "@request.Status"
+                                            CssClasses="mt-3" />
+                            </div>
+                        </Virtualize>
+                    }
+                }
+                else
+                {
+                    <div class="d-flex flex-column align-items-center position-absolute top-50 start-50 translate-middle">
+                        <span class="my-3 fs-4 fw-bold text-black-50">You have no requests</span>
+                    </div>
+                }
+            }
+            else if (context.User.IsInRole(AppRoles.Supervisor))
+            {
+                <div class="d-flex justify-content-end my-4">                
+                    <RadzenDropDown TValue="string"
+                                    @bind-Value=@sortValue
+                                    Data=@(_sortValues.Select(sortVal => sortVal.ToString()))
+                                    Change="@OnSortForSupervisors"
+                                    Placeholder="Sort by"
+                                    Style="width: 20%; max-width: 20rem; margin-right: 3.5rem;" />
+                </div>
+                
+                @if (supervisorRequests is not null && supervisorRequests.Any())
+                {
+                    var acceptedRequests = supervisorRequests?.Where(r => r.Status == RequestStatus.Accepted).ToList();
+
+                    @if (acceptedRequests is not null && acceptedRequests.Any())
+                        {
+                            <span class="my-3 fs-6">Approved requests</span>
+                            <Virtualize TItem="RequestDetailsDto" Items="@acceptedRequests" Context="request">
+                                <div class="d-flex flex-row align-items-center">
+                                    <RequestCard Id="request.Id"
+                                                Title="@request.Title"
+                                                DescriptionHtml="@request.DescriptionHtml"
+                                                ExtraMembers="@request.ExtraMembers"
+                                                Semester= "@request.Semester"
+                                                Ects="@request.Ects"
+                                                Programmes="@request.Programmes"
+                                                Status = "@request.Status" />
+                                </div>
+                            </Virtualize>
+                            <hr class="w-50 align-self-center">
+                        }
+
+                    var pendingRequests = supervisorRequests?.Where(r => r.Status == RequestStatus.Pending).ToList();
+
+                    @if (pendingRequests is not null && pendingRequests.Any())
+                    {
+                        <span class="my-3 fs-6">Pending requests</span>
+                        <Virtualize TItem="RequestDetailsDto" Items="@pendingRequests" Context="request">
+                            <div class="d-flex flex-row align-items-center">
+                                <RequestCard Id="request.Id"
+                                            Title="@request.Title"
+                                            DescriptionHtml="@request.DescriptionHtml"
+                                            ExtraMembers="@request.ExtraMembers"
+                                            Semester= "@request.Semester"
+                                            Ects="@request.Ects"
+                                            Programmes="@request.Programmes"
+                                            Status = "@request.Status" />
+                            </div>
+                        </Virtualize>
+                    }
+                }
+                else
+                {
+                    <div class="d-flex flex-column align-items-center position-absolute top-50 start-50 translate-middle">
+                        <span class="my-3 fs-4 fw-bold text-black-50">You have no requests</span>
+                    </div>
+                }
+            }
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
