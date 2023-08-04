@@ -46,7 +46,7 @@ public partial class ProjectDetails
 
     private void EditProject(int projectId)
     {
-        navigationManager.NavigateTo($"/my-projects/{projectId}/edit");
+        navigationManager.NavigateTo($"/projects/{projectId}/edit");
     }
 
     private void SetSupervisorStatus(SupervisorStatus supervisorStatus)

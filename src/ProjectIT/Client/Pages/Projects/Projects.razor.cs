@@ -10,9 +10,10 @@ namespace ProjectIT.Client.Pages.Projects;
 public partial class Projects
 {
     private List<ProjectDetailsDto> projects = new();
-    private readonly List<Sort> sortValues = Enum.GetValues<Sort>().ToList();
+    private readonly List<RegularSort> sortValues = Enum.GetValues<RegularSort>().ToList();
     private string? sortValue;
-    private readonly string sortSemester = Sort.Semester.ToString();
+    private readonly string sortSemester = RegularSort.Semester.ToString();
+    private FilterPanelTopics? filterPanelTopicsRef;
 
     private List<ProjectDetailsDto> filteredProjects = new();
     private List<ProjectDetailsDto> shownProjects = new();
@@ -246,13 +247,20 @@ public partial class Projects
     private void ClearFilters()
     {
         tags.ForEach(ft => ft.Selected = false);
+        if (filterPanelTopicsRef is not null)
+        {
+            foreach (FilterTagTopic filterTag in filterPanelTopicsRef.Data)
+            {
+                filterTag.Selected = false;
+            }
+        }
         _activeLanguages.Clear();
         _activeSemesters.Clear();
         _activeECTSs.Clear();
         _activeProgrammes.Clear();
         activeTopics.Clear();
         FilterProjects();
-        OnSort(sortValue ?? nameof(Sort.Semester));
+        OnSort(sortValue ?? nameof(RegularSort.Semester));
     }
 
     private void OnSort(object value)
@@ -261,10 +269,10 @@ public partial class Projects
         {
             switch (value)
             {
-                case nameof(Sort.Semester):
+                case nameof(RegularSort.Semester):
                     filteredProjects = filteredProjects.OrderBy(p => p.Semester).ToList();
                     break;
-                case nameof(Sort.ECTS):
+                case nameof(RegularSort.ECTS):
                     filteredProjects = filteredProjects.OrderBy(p => p.Ects).ToList();
                     break;
             }

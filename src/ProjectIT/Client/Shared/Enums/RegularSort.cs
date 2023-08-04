@@ -1,6 +1,6 @@
 namespace ProjectIT.Client.Shared.Enums;
 
-public enum Sort
+public enum RegularSort
 {
     Semester,
     ECTS

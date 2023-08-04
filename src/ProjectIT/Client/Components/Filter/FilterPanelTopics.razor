@@ -12,26 +12,29 @@
         <div class="d-block">
             @if (category.Collapsed)
             {
-                <img class="rotate-90 d-inline-block" src="lib/bootstrap-icons/triangle-fill.svg" alt="Collapse" width="10" height="10">
+                <button class="bg-transparent border-0 p-0 m-0" @onclick="(() => category.Collapsed = !category.Collapsed)">
+                    <img class="rotate-90 d-inline-block" src="lib/bootstrap-icons/triangle-fill.svg" alt="Collapse" width="10" height="10">
+                </button>
             }
             else
             {
-                <img class="rotate-180 d-inline-block" src="lib/bootstrap-icons/triangle-fill.svg" alt="Collapse" width="10" height="10">
+                <button class="bg-transparent border-0 p-0 m-0" @onclick="(() => category.Collapsed = !category.Collapsed)">
+                    <img class="rotate-180 d-inline-block" src="lib/bootstrap-icons/triangle-fill.svg" alt="Collapse" width="10" height="10">
+                </button>
             }
-            <button class="border-0 bg-white fw-bold my-1"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target=@($"#{category.Category.ToString()}Collapse")
-                    aria-expanded="false"
-                    aria-controls=@($"{category.Category.ToString()}Collapse")
-                    @onclick="(() => category.Collapsed = !category.Collapsed)">
+            <button class="border-0 bg-white fw-bold my-1" @onclick="(() => category.Collapsed = !category.Collapsed)">
                 @category.Category.GetTranslatedString(EnumsLocalizer)
             </button>
             <div class=@($"{(category.Collapsed ? "collapse" : "")}") id=@($"{category.Category.ToString()}Collapse")>
                 @foreach (FilterTagTopic filterTag in ShownData.Where(ft => ft.Category == category.Category))
                 {
                     <div class="form-check fw-normal">
-                        <input class="form-check-input rounded-0" type="checkbox" id=@($"{filterTag.Tag.Replace(" ", "")}Checkbox") @onchange="(e) => CheckboxChecked(e, filterTag)" checked="@filterTag.Selected">
+                        <input 
+                            class="form-check-input rounded-0" 
+                            type="checkbox" 
+                            id=@($"{filterTag.Tag.Replace(" ", "")}Checkbox") 
+                            @onchange="(e) => CheckboxChecked(e, filterTag)" 
+                            checked="@filterTag.Selected">
                         <label class="form-check-label" for=@($"{filterTag.Tag.Replace(" ", "")}Checkbox")>
                             @filterTag.Tag
                         </label>

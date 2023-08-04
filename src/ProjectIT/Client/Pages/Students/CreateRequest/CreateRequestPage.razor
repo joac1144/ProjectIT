@@ -1,0 +1,152 @@
+@attribute [Route(PageUrls.CreateRequest)]
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using ProjectIT.Client.Components.Panel
+@using ProjectIT.Client.Components.Search
+@using ProjectIT.Client.Components.Tag
+@using ProjectIT.Client.Components.Filter
+@using ProjectIT.Client.Constants;
+@using ProjectIT.Shared.Enums
+@using ProjectIT.Shared.Models
+@using ProjectIT.Client.Http
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AnonymousClient httpClient
+@inject NavigationManager navManager
+@inject IJSRuntime JSRuntime
+@attribute [Authorize(Roles = AppRoles.Student)]
+
+<div class="d-flex flex-row justify-content-center gap-5">
+    <div class="d-flex flex-column my-4 py-3 gap-4">
+        <Panel Title="Programmes" InputRequired="true">
+            <RadzenCheckBoxList TValue="Programme" Data="@programmeWrappers" @bind-Value=@requestProgrammes
+                TextProperty="StringValue" ValueProperty="Programme" Orientation="Orientation.Vertical" />
+        </Panel>
+        <Panel Title="ECTS Points" InputRequired="true">
+            <RadzenRadioButtonList TValue="Ects?" Data="ectsWrappers" @bind-Value=@requestEcts
+                TextProperty="StringValue" ValueProperty="Ects" Orientation="Orientation.Vertical" />
+        </Panel>
+    </div>
+    <div class="d-flex flex-column">
+        <EditForm Model="@request" OnSubmit="SubmitRequestAsync">
+            <p class="fs-7 fw-bold">Title <span style="color: red; font-weight: 400;"> *</span></p>
+            <InputText class="border border-0 shadow rounded-1 fs-7 px-3 mb-4 request-title"
+                style="width: 45rem; height: 2.5rem" @bind-Value="request!.Title" placeholder="Title here..." />
+            <p class="fs-7 fw-bold">Description <span style="color: red; font-weight: 400;"> *</span></p>
+            <RadzenHtmlEditor @bind-Value="@descriptionHtml" class="border border-0 shadow mb-4 request-description" style="height:40rem; width: 45rem" />
+            <div class="d-flex justify-content-end">
+                <button type="button" @onclick="CancelRequest" class="btn-style btn btn-danger fw-bold py-1">
+                    Cancel
+                </button>
+                <button type="submit" class="btn-style btn btn-success fw-bold py-1 ms-3">
+                    Send
+                </button>
+            </div>
+        </EditForm>
+    </div>
+    <div class="d-flex flex-column my-4 py-3 gap-4">
+        @{
+            DateTime date = DateTime.Now;
+        }
+        <Panel Title="Semester" InputRequired="true">
+            <RadzenRadioButtonList @bind-Value=request.Semester TValue="Semester">
+                <Items>
+                    <RadzenRadioButtonListItem Text=@($"Spring {date.Year}")
+                        Value="new Semester { Season = Season.Spring, Year = date.Year }" />
+                    <RadzenRadioButtonListItem Text=@($"Autumn {date.Year}")
+                        Value="new Semester { Season = Season.Autumn, Year = date.Year }" />
+                    <RadzenRadioButtonListItem Text=@($"Spring {date.Year + 1}")
+                        Value="new Semester { Season = Season.Spring, Year = date.Year + 1 }" />
+                    <RadzenRadioButtonListItem Text=@($"Autumn {date.Year + 1}")
+                        Value="new Semester { Season = Season.Autumn, Year = date.Year + 1 }" />
+                </Items>
+            </RadzenRadioButtonList>
+        </Panel>
+        <Panel Title="Languages" InputRequired="true">
+            <RadzenCheckBoxList TValue="Language" Data="@languageWrappers" @bind-Value=@requestLanguages
+                TextProperty="StringValue" ValueProperty="Language" Orientation="Orientation.Vertical" />
+        </Panel>
+        <Panel Title="Supervisors" InputRequired="true">
+            @if (supervisors is not null)
+            {
+                <RadzenDropDown @ref="supervisorSelector"
+                                TValue="Supervisor"
+                                Placeholder="Select supervisors"
+                                AllowFiltering="true"
+                                ClearSearchAfterSelection="true"
+                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                Data=@supervisors
+                                Change="OnSupervisorSelectedInList"
+                                ValueProperty="Id"
+                                TextProperty="FullName"
+                                class="w-100">
+                    <Template>
+                        @context.FullName
+                    </Template>
+                </RadzenDropDown>
+            }
+            <div class="d-flex flex-column gap-2">
+                <div class="d-flex flex-start flex-wrap">
+                    @foreach (var supervisor in requestSupervisors)
+                    {
+                        <TagBox Tag="@(new FilterTag { Tag = supervisor.FullName })" IsDisabled="false" OnClicked="() => OnSelectedSupervisorClicked(supervisor)" />
+                    }
+                </div>
+            </div>
+        </Panel>
+        <Panel Title="Topics">
+            <div class="d-flex flex-column gap-2">
+                @if (topics is not null)
+                {
+                    <RadzenDropDown @ref="topicSelector"
+                                    TValue="Topic"
+                                    Placeholder="Select topics"
+                                    AllowFiltering="true"
+                                    ClearSearchAfterSelection="true"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                    Data=@topics
+                                    Change="OnTopicSelectedInList"
+                                    ValueProperty="Name"
+                                    TextProperty="Name"
+                                    class="flex-grow-1">
+                        <Template>
+                            @context.Name
+                        </Template>
+                    </RadzenDropDown>
+                }
+                <div class="d-flex flex-start flex-wrap">
+                    @foreach (var topic in requestTopics)
+                    {
+                        <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false" OnClicked="() => OnSelectedTopicClicked(topic)" />
+                    }
+                </div>
+            </div>
+        </Panel>
+        <Panel Title="Extra group members">
+            <div class="d-flex flex-column gap-2">
+                @for (int i = 0; i < groupMembers && i < 5; i++)
+                {
+                    <div class="d-flex flex-row">
+                        <form class="d-flex gap-2" onsubmit="event.preventDefault()">
+                            <SearchField PlaceholderText="Add member mail..." ShowSearchIcon="false" Width="14.5rem" OnInputValueChanged="(newVal) => memberMail = newVal" />
+                            <button type="reset" value="reset" class="bg-transparent border-0 add-image-size" @onclick=OnAddNewMemberFromSearchClicked>
+                                <img class="rotate-45 w-100 h-70" src="images/baseline_clear_24.png" alt="Add new member">
+                            </button>
+                        </form>
+                    </div>
+                    <div class="d-flex flex-start flex-wrap flex-column">
+                        @foreach (var member in ExtraMembers)
+                        {
+                            <div class="d-flex mt-2 justify-content-between">
+                                <span>@member?.FullName</span>
+                                <button class="bg-transparent border-0 add-image-size" @onclick="() => OnSelectedMemberClicked(member!)">
+                                    <img class="w-100 h-70" src="images/baseline_clear_24.png" alt="Clear">
+                                </button>
+                            </div>
+                            <hr />
+                        }
+                    </div>
+                }
+            </div>
+        </Panel>
+    </div>
+</div>

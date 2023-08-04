@@ -3,9 +3,9 @@ using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using System.Text.RegularExpressions;
 
-namespace ProjectIT.Client.Components.ProjectCard;
+namespace ProjectIT.Client.Components.RequestCard;
 
-public partial class ProjectCard
+public partial class RequestCard
 {
     [Parameter]
     public int Id { get; set; }
@@ -17,10 +17,7 @@ public partial class ProjectCard
     public string DescriptionHtml { get; set; } = string.Empty;
 
     [Parameter]
-    public Supervisor Supervisor { get; set; } = null!;
-
-    [Parameter]
-    public Supervisor? CoSupervisor { get; set; }
+    public IEnumerable<Student>? ExtraMembers { get; set; }
 
     [Parameter]
     public IEnumerable<Programme> Programmes { get; set; } = null!;
@@ -30,6 +27,9 @@ public partial class ProjectCard
 
     [Parameter]
     public Ects Ects { get; set; }
+
+    [Parameter]
+    public RequestStatus? Status { get; set; }
 
     [Parameter]
     public string? CssClasses { get; set; }
@@ -44,6 +44,20 @@ public partial class ProjectCard
                 strippedString = strippedString.Replace(key, val);
             }
             return strippedString;
+        }
+    }
+
+    private string StatusBackgroundColor
+    {
+        get
+        {
+            return Status switch
+            {
+                RequestStatus.Accepted => "bg-success",
+                RequestStatus.Pending => "bg-warning",
+                RequestStatus.Declined => "bg-danger",
+                _ => "bg-secondary"
+            };
         }
     }
     
