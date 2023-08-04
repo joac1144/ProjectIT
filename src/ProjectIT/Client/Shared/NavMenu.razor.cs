@@ -4,7 +4,7 @@ namespace ProjectIT.Client.Shared;
 
 public partial class NavMenu
 {
-    private string activeTab;
+    private string? activeTab;
 
     protected override void OnInitialized()
     {
