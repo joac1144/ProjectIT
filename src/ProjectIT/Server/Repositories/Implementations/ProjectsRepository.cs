@@ -75,9 +75,18 @@ public class ProjectsRepository : IProjectsRepository
         Supervisor supervisor = _context.Supervisors.Single(s => s.Email == project.SupervisorEmail);
         Supervisor? coSupervisor = _context.Supervisors.SingleOrDefault(s => s.Email == project.CoSupervisorEmail);
         var topics = new List<Topic>();
+        if (project.Topics != null)
         foreach (var topic in project.Topics)
         {
-            topics.Add(topic);
+            var dbTopic = _context.Topics.SingleOrDefault(t => t.Name == topic.Name);
+            if (dbTopic == null)
+            {
+                topics.Add(new Topic { Name = topic.Name, Category = topic.Category });
+            }
+            else
+            {
+                topics.Add(dbTopic);
+            }
         }
 
         var entity = new Project

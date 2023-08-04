@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Users;
 using ProjectIT.Shared.Enums;
@@ -19,8 +20,7 @@ public partial class SupervisorDetails
 
     private void RequestSupervision(NavigationManager navigationManager)
     {
-        /// Should also pre-select the given supervisor in the create request page.
-        // navigationManager.NavigateTo("create-request");
+        navigationManager.NavigateTo(PageUrls.CreateRequest);
     }
 
     protected override async Task OnInitializedAsync()

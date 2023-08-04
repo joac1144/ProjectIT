@@ -14,7 +14,7 @@ public partial class MyProjectsSupervisor
     private IEnumerable<ProjectDetailsDto>? projects;
 
     private string? sortValue;
-    private readonly IEnumerable<Sort> _sortValues = Enum.GetValues<Sort>();
+    private readonly IEnumerable<RegularSort> _sortValues = Enum.GetValues<RegularSort>();
 
     private Modal<ProjectDetailsDto>? modal;
     private ProjectDetailsDto modalData = new();
@@ -28,7 +28,7 @@ public partial class MyProjectsSupervisor
 
         // Fetch supervisor's projects.
         // This might be a security flaw ???
-        projects = (await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!.Where(project => project.Supervisor.Email == userEmail);
+        projects = (await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!.Where(project => project.Supervisor.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase));
     }
 
     private void OnSort(object value)
@@ -38,10 +38,10 @@ public partial class MyProjectsSupervisor
             sortValue = value.ToString();
             switch (value)
             {
-                case nameof(Sort.Semester):
+                case nameof(RegularSort.Semester):
                     projects = projects.OrderBy(p => p.Semester).ToList();
                     break;
-                case nameof(Sort.ECTS):
+                case nameof(RegularSort.ECTS):
                     projects = projects.OrderBy(p => p.Ects).ToList();
                     break;
             }
@@ -56,7 +56,7 @@ public partial class MyProjectsSupervisor
 
     private void EditProject(int projectId)
     {
-        navigationManager.NavigateTo($"/my-projects/{projectId}/edit");
+        navigationManager.NavigateTo($"/projects/{projectId}/edit");
     }
 
     private async void DeleteProject(int id)
