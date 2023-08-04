@@ -108,6 +108,19 @@ public class RequestsRepositoryTests : IDisposable
             LastName = "Kenneth"
         });
 
+        context.Topics.AddRange(
+            new Topic
+            {
+                Name = "Request Test Topic",
+                Category = TopicCategory.ArtificialIntelligence
+            },
+            new Topic
+            {
+                Name = "Request Test Topic 2",
+                Category = TopicCategory.SoftwareEngineering
+            }
+        );
+
         context.SaveChanges();
 
         _context = context;
