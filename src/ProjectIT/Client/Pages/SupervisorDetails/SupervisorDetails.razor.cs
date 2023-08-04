@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using ProjectIT.Shared;
+using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Dtos.Users;
 using ProjectIT.Shared.Enums;
 using System.Net.Http.Json;
@@ -12,6 +13,7 @@ public partial class SupervisorDetails
     public int Id { get; set; }
 
     private SupervisorDetailsDto? supervisor;
+    private IEnumerable<ProjectDetailsDto>? supervisorProjects;
 
     private string panelWidth = "250px";
     private string statusSupervisor = null!;
@@ -26,6 +28,8 @@ public partial class SupervisorDetails
     protected override async Task OnInitializedAsync()
     {
         supervisor = await httpClient.GetFromJsonAsync<SupervisorDetailsDto>($"{ApiEndpoints.Supervisors}/{Id}");
+        supervisorProjects = (await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!.Where(project => project.Supervisor.Email == supervisor!.Email);
+
         SetSupervisorStatus(supervisor!.Status);
     }
 

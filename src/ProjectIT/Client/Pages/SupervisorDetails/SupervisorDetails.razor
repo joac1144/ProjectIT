@@ -4,6 +4,7 @@
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.ProjectCard
 @using Microsoft.AspNetCore.Authorization
+@using ProjectIT.Shared.Dtos.Projects;
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using ProjectIT.Client.Constants;
 @attribute [Authorize]
@@ -34,27 +35,26 @@ else
             <div class="mb-4">
                 <h1 class="fw-bold">@supervisor.FullName</h1>
             </div>
-            @* @if (supervisor.Projects.Count > 0)
+            @if (supervisorProjects is not null && supervisorProjects.Any())
             {
-                var supervisorProjects = supervisor.Projects;
-
-                if (supervisorProjects.Any())
+                @foreach (var project in supervisorProjects)
                 {
-                    @foreach (var project in supervisorProjects)
-                    {
-                        <ProjectCard Id="@project.Id"
-                                     Title="@project.Title"
-                                     DescriptionHtml="@project.DescriptionHtml"
-                                     Programmes="@project.Programmes"
-                                     Ects="@project.Ects"
-                                     Semester="@project.Semester" />
-                    }
+                    <Virtualize TItem="ProjectDetailsDto" Items="@supervisorProjects.ToList()" Context="project">
+                        <div class="d-flex flex-row align-items-center">
+                            <ProjectCard Id="@project.Id"
+                                            Title="@project.Title"
+                                            DescriptionHtml="@project.DescriptionHtml"
+                                            Programmes="@project.Programmes"
+                                            Ects="@project.Ects"
+                                            Semester="@project.Semester" />    
+                        </div>
+                    </Virtualize>
                 }
             }
             else
-            { *@
+            {
                 <h6 class="text-secondary">@supervisor.FullName has not posted any projects yet.</h6>
-            @* } *@
+            }
         </div>
         <div class="d-flex flex-column">
             <div>
