@@ -28,7 +28,7 @@ public partial class MyProjectsSupervisor
 
         // Fetch supervisor's projects.
         // This might be a security flaw ???
-        projects = (await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!.Where(project => project.Supervisor.Email == userEmail);
+        projects = (await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!.Where(project => project.Supervisor.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase));
     }
 
     private void OnSort(object value)

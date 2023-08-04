@@ -15,7 +15,7 @@ public partial class MyRequests
     private IEnumerable<RequestDetailsDto>? studentRequests;
     private IEnumerable<RequestDetailsDto>? supervisorRequests;
 
-    private string? sortValue;  
+    private string? sortValue;
     private readonly IEnumerable<SortForStudents> _sortValuesForStudents = Enum.GetValues<SortForStudents>();
     private readonly IEnumerable<RegularSort> _sortValues = Enum.GetValues<RegularSort>();
 
@@ -26,9 +26,9 @@ public partial class MyRequests
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         string userEmail = authUser?.FindFirst("preferred_username")?.Value!;
 
-        studentRequests = (await httpClient.GetFromJsonAsync<IEnumerable<RequestDetailsDto>>(ApiEndpoints.Requests))!.Where(request => request.Student.Email == userEmail);
-        supervisorRequests = (await httpClient.GetFromJsonAsync<IEnumerable<RequestDetailsDto>>(ApiEndpoints.Requests))!;
-        supervisorRequests = supervisorRequests.Where(request => request.Supervisors.Any(supervisor => supervisor.Email == userEmail));
+        studentRequests = (await httpClient.GetFromJsonAsync<IEnumerable<RequestDetailsDto>>(ApiEndpoints.Requests))!.Where(request => request.Student.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase));
+        supervisorRequests = (await httpClient.GetFromJsonAsync<IEnumerable<RequestDetailsDto>>(ApiEndpoints.Requests))!
+            .Where(request => request.Supervisors.Any(supervisor => supervisor.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase)));
     }
 
     private void OnSortForStudents(object value)
