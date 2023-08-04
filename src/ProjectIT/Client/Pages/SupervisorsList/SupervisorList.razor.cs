@@ -18,6 +18,7 @@ public partial class SupervisorList
     private readonly List<FilterTagSimple> _activeSupervisorStatuses = new();
 
     private SearchField? searchField;
+    private FilterPanelTopics? filterPanelTopicsRef;
 
     private int pageSize = 10;
     private int totalPages;
@@ -180,6 +181,13 @@ public partial class SupervisorList
     private void ClearFilters()
     {
         tags.ForEach(ft => ft.Selected = false);
+        if (filterPanelTopicsRef is not null)
+        {
+            foreach (FilterTagTopic filterTag in filterPanelTopicsRef.Data)
+            {
+                filterTag.Selected = false;
+            }
+        }
         activeTopics.Clear();
         _activeSupervisorStatuses.Clear();
         FilterSupervisors();

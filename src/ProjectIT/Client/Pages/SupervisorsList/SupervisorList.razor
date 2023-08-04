@@ -16,7 +16,7 @@
                 <p class="h6">Supervisors found</p>
             </div>
             <div class="my-4">
-                <FilterPanelTopics OnInitializedData="FilterPanelTopicsInitialized" DataChanged="OnFilterPanelTopicsTagChanged" />
+                <FilterPanelTopics @ref="filterPanelTopicsRef" OnInitializedData="FilterPanelTopicsInitialized" DataChanged="OnFilterPanelTopicsTagChanged" />
             </div>
             <div class="my-4">
                     <FilterPanelSimple Title="Supervisor status"
