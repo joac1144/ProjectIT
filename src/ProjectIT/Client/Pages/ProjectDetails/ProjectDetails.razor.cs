@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Dtos.Users;
 using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace ProjectIT.Client.Pages.ProjectDetails;
 
@@ -14,22 +18,27 @@ public partial class ProjectDetails
     public int Id { get; set; }
 
     private ProjectDetailsDto? project;
-    
+
     private string panelWidth = "250px";
     private string statusSupervisor = null!;
     private string statusCoSupervisor = null!;
 
+    private ClaimsPrincipal? authUser;
+
+
     private async Task ApplyProject(NavigationManager navigationManager)
     {
-        // TODO: Add logic to apply project
+        string userEmail = authUser?.FindFirst("preferred_username")?.Value!;
+
+        // add generic logic to add logged in student(s) to projects (hardcoded values right now)
+
         await JSRuntime.InvokeAsync<string>("alert", "Project applied successfully!");
         navigationManager.NavigateTo(PageUrls.Projects);
     }
 
-    protected override async Task 
-     
-    OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
+        authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         project = await httpClient.GetFromJsonAsync<ProjectDetailsDto>($"{ApiEndpoints.Projects}/{Id}");
         SetSupervisorStatus(project!.Supervisor.Status);
         SetCoSupervisorStatus(project.CoSupervisor?.Status);

@@ -11,6 +11,7 @@ public class PageUrls
 
     // Accessible for students.
     public const string CreateRequest = "/create-request";
+    public const string AppliedProjects = "/applied-projects";
 
     // Accessible for supervisors.
     public const string CreateProject = "/create-project";

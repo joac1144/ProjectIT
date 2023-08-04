@@ -45,6 +45,14 @@
                                 </div>
                             </div>
                         }
+                        @if (context.User.IsInRole(AppRoles.Student))
+                        {
+                             <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
+                                <div>
+                                    <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.AppliedProjects ? "active" : "")}") href="@PageUrls.AppliedProjects" @onclick="() => SetActiveTab(PageUrls.AppliedProjects)"> Applied Projects </a>
+                                </div>
+                            </div>
+                        }
 
                         @if (context.User.IsInRole(AppRoles.Supervisor))
                         {

@@ -10,11 +10,14 @@
 @using ProjectIT.Client.Components.ProjectDetailsView
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using ProjectIT.Client.Http
 @attribute [Authorize]
 @inject NavigationManager navigationManager
 @inject HttpClient httpClient
 @inject IJSRuntime JSRuntime
 @inject IStringLocalizer<EnumsResource> EnumsLocalizer
+@inject AnonymousClient anonymousClient
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle> Project Details </PageTitle>
 <br>
