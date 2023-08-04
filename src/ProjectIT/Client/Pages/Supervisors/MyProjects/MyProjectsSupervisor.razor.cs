@@ -4,7 +4,6 @@ using ProjectIT.Client.Constants;
 using ProjectIT.Client.Shared.Enums;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
-using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
@@ -18,6 +17,7 @@ public partial class MyProjectsSupervisor
     private readonly IEnumerable<RegularSort> _sortValues = Enum.GetValues<RegularSort>();
 
     private Modal<ProjectDetailsDto>? modal;
+    private ProjectDetailsDto modalData = new();
 
     private ClaimsPrincipal? authUser;
 
@@ -46,6 +46,12 @@ public partial class MyProjectsSupervisor
                     break;
             }
         }
+    }
+
+    private void OpenDeleteConfirmationModal(ProjectDetailsDto project)
+    {
+        modalData = project;
+        modal?.OpenModal(modalData);
     }
 
     private void EditProject(int projectId)

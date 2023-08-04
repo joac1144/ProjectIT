@@ -5,5 +5,6 @@ public enum TopicCategory
     ArtificialIntelligence,
     Security,
     SoftwareEngineering,
-    ProgrammingLanguages
+    ProgrammingLanguages,
+    DataManagement,
 }

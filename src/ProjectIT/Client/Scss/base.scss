@@ -23,8 +23,16 @@ $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://w
 
 // Colors.
 $tag-pink: #FFC0CB1A;
-$custom-colors: ( "projectit-black": $projectit-black, "tag-pink": $tag-pink );
-$custom-theme-colors: ( "black": $projectit-black, "pink": $tag-pink );
+$custom-colors: 
+(
+    "projectit-black": $projectit-black, 
+    "tag-pink": $tag-pink 
+);
+$custom-theme-colors:
+( 
+    "black": $projectit-black, 
+    "pink": $tag-pink
+);
 
 $colors: map-merge($colors, $custom-colors);
 $theme-colors: map-merge($theme-colors, $custom-theme-colors);

@@ -14,18 +14,67 @@ public static class SeedData
     private static Topic topic13 = new() { Name = "Kotlin", Category = TopicCategory.ProgrammingLanguages };
     private static Topic topic14 = new() { Name = "C", Category = TopicCategory.ProgrammingLanguages };
 
-    private static Supervisor supervisor1 = new() { FirstName = "John Andersen", LastName = "Doe", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.LimitedSupervision };
-    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "hedef@itr.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisor3 = new() { FirstName = "John", LastName = "Smith", Email = "hevdfd@itr.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Inactive };
-    private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "hebgfd@itr.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisor5 = new() { FirstName = "Alaa Imad", LastName = "Abdul-Al", Email = "alia@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
+    // programing ProgrammingLanguages
+    private static Topic topic18 = new() { Name = "Python", Category = TopicCategory.ProgrammingLanguages };
+    private static Topic topic50 = new() { Name = "Java", Category = TopicCategory.ProgrammingLanguages };
+    private static Topic topic42 = new() { Name = "Go", Category = TopicCategory.ProgrammingLanguages };
+    private static Topic topic43 = new() { Name = "Swift", Category = TopicCategory.ProgrammingLanguages };
+    private static Topic topic44 = new() { Name = "Ruby", Category = TopicCategory.ProgrammingLanguages };
+    private static Topic topic45 = new() { Name = "TypeScript", Category = TopicCategory.ProgrammingLanguages };
+    private static Topic topic46 = new() { Name = "C#", Category = TopicCategory.ProgrammingLanguages };
+    private static Topic topic47 = new() { Name = "PHP", Category = TopicCategory.ProgrammingLanguages };
+
+    // Security
+    private static Topic topic10 = new() { Name = "Network Security", Category = TopicCategory.Security };
+    private static Topic topic15 = new() { Name = "Ethical Hacking", Category = TopicCategory.Security };
+    private static Topic topic16 = new() { Name = "Data Encryption", Category = TopicCategory.Security };
+    private static Topic topic19 = new() { Name = "Identity and Access Management", Category = TopicCategory.Security };
+    private static Topic topic20 = new() { Name = "Cyber Threat Intelligence", Category = TopicCategory.Security };
+    private static Topic topic21 = new() { Name = "Blockchain Security", Category = TopicCategory.Security };
+
+    // SoftwareEngineering
+    private static Topic topic1 = new() { Name  = "Software Development Methodologies", Category = TopicCategory.SoftwareEngineering };
+    private static Topic topic11 = new() { Name = "DevOps", Category = TopicCategory.SoftwareEngineering };
+    private static Topic topic12 = new() { Name = "Continuous Integration", Category = TopicCategory.SoftwareEngineering };
+    private static Topic topic29 = new() { Name = "Continuous Delevery", Category = TopicCategory.SoftwareEngineering };
+    private static Topic topic17 = new() { Name = "Software Testing", Category = TopicCategory.SoftwareEngineering };
+    private static Topic topic22 = new() { Name = "Software Architecture", Category = TopicCategory.SoftwareEngineering };
+    private static Topic topic27 = new() { Name = "Version Control", Category = TopicCategory.SoftwareEngineering };
+
+    //ArtificialIntelligence
+    private static Topic topic3 = new() { Name = "Natural Language Processing", Category = TopicCategory.ArtificialIntelligence };
+    private static Topic topic4 = new() { Name = "Computer Vision", Category = TopicCategory.ArtificialIntelligence };
+    private static Topic topic23 = new() { Name = "Speech Recognition", Category = TopicCategory.ArtificialIntelligence };
+    private static Topic topic24 = new() { Name = "Machine Vision", Category = TopicCategory.ArtificialIntelligence };
+    private static Topic topic25 = new() { Name = "Neural Networks", Category = TopicCategory.ArtificialIntelligence };
+    private static Topic topic26 = new() { Name = "Deep Learning", Category = TopicCategory.ArtificialIntelligence };
+    private static Topic topic28 = new() { Name = "Reinforcement Learning", Category = TopicCategory.ArtificialIntelligence };
+    private static Topic topic31 = new() { Name = "AI in Robotics", Category = TopicCategory.ArtificialIntelligence };
+
+    //DataManagement
+    private static Topic topic30 = new() { Name = "Data Governance", Category = TopicCategory.DataManagement };
+    private static Topic topic32 = new() { Name = "Data Quality Management", Category = TopicCategory.DataManagement };
+    private static Topic topic34 = new() { Name = "Data Integration", Category = TopicCategory.DataManagement };
+    private static Topic topic35 = new() { Name = "Data Warehousing", Category = TopicCategory.DataManagement };
+    private static Topic topic36 = new() { Name = "Data Modeling", Category = TopicCategory.DataManagement };
+    private static Topic topic38 = new() { Name = "Data Analytics", Category = TopicCategory.DataManagement };
+    private static Topic topic40 = new() { Name = "Big Data", Category = TopicCategory.DataManagement };
+    private static Topic topic41 = new() { Name = "Data design", Category = TopicCategory.DataManagement };
+
+
+
+    private static Supervisor supervisor1 = new() { FirstName = "John", LastName = "Andersen", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic30, topic32, topic34, topic35, topic36, topic38, topic40, topic41 }, Status = SupervisorStatus.LimitedSupervision };
+    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "alice@itu.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic1, topic11, topic12, topic29, topic17, topic22, topic27, topic5 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor3 = new() { FirstName = "Emil", LastName = "Smith", Email = "EmilS@itu.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic10, topic15, topic16, topic19, topic20, topic21, topic8, topic50 }, Status = SupervisorStatus.Inactive };
+    private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "saralee@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic42 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor5 = new() { FirstName = "Alaa Imad", LastName = "Abdul-Al", Email = "alia@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic25, topic26, topic28, topic31, topic3, topic4, topic8, topic46 }, Status = SupervisorStatus.Available };
     private static Supervisor supervisor6 = new() { FirstName = "Emdah", LastName = "Habib", Email = "emdah1@hotmail.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
     
     private static Supervisor supervisorTEST = new() { FirstName = "Supervisor Test", LastName = "#1", Email = "testsupervisor@projectititu.onmicrosoft.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13 }, Status = SupervisorStatus.Available };
-    private static Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "hehngd@itr.dk" };
-    private static Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "hmgjhed@itr.dk" };
-    private static Student student3 = new() { FirstName = "Michael", LastName = "Davis", Email = "hessdd@itr.dk" };
-    private static Student student4 = new() { FirstName = "Olivia", LastName = "Brown", Email = "hentd@itr.dk" };
+    private static Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "Josefine@itu.dk" };
+    private static Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "Kristian@itu.dk" };
+    private static Student student3 = new() { FirstName = "Michael", LastName = "Davis", Email = "MichaelD@itu.dk" };
+    private static Student student4 = new() { FirstName = "Olivia", LastName = "Brown", Email = "OliviaB@itu.dk" };
     private static Student student5 = new() { FirstName = "Alaa", LastName = "Abdul-Al", Email = "alaamohamed@hotmail.dk" };
 
     private static Project project2 = new() 
@@ -63,7 +112,7 @@ public static class SeedData
     {
         if (!context.Topics.Any())
         {
-            context.Topics.AddRange(topic2, topic5, topic6, topic7, topic8, topic9, topic13, topic14);
+            context.Topics.AddRange(topic2, topic5, topic6, topic7, topic8, topic9, topic13, topic14, topic23, topic24, topic18, topic50, topic42, topic43, topic44, topic45, topic46, topic47);
         }
         context.SaveChanges();
     }

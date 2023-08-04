@@ -70,7 +70,7 @@
                         <DropdownItems>
                             <DropdownItem Text="Edit" OnClick="@(() => EditProject(project.Id))" />
                             <hr class="dropdown-divider" />
-                            <DropdownItem Text="Delete" OpensModal="true" ModalIdentifier="deleteProjectConfirmation" OnClick="() => modal?.OpenModal(project)" />
+                            <DropdownItem Text="Delete" OpensModal="true" ModalIdentifier="deleteProjectConfirmation" OnClick="() => OpenDeleteConfirmationModal(project)" />
                         </DropdownItems>
                     </Dropdown>
                 </div>
@@ -86,9 +86,9 @@
 </div>
 <Modal @ref="modal" T="ProjectDetailsDto" Identifier="deleteProjectConfirmation" Title="Delete project?" CloseButtonText="Cancel">
     <Body>
-        @($"Are you sure you want to delete the project \"{modal?.Data.Title}\"?")
+        @($"Are you sure you want to delete the project \"{modalData.Title}\"?")
     </Body>
     <Buttons>
-        <button type="button" class="btn btn-black" @onclick="() => DeleteProject(modal!.Data.Id)">Delete</button>
+        <button type="button" class="btn btn-dark" @onclick="() => DeleteProject(modalData.Id)">Delete</button>
     </Buttons>
 </Modal>
