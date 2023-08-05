@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Client.Components.SupervisorCard;
@@ -13,4 +14,21 @@ public partial class SupervisorCard
 
     [Parameter]
     public IEnumerable<Topic> Topics { get; set; } = null!;
+
+    [Parameter]
+    public SupervisorStatus Status { get; set; }
+
+    private string StatusBackgroundColor
+    {
+        get
+        {
+            return Status switch
+            {
+                SupervisorStatus.Available => "bg-success",
+                SupervisorStatus.Inactive => "bg-warning",
+                SupervisorStatus.LimitedSupervision => "bg-danger",
+                _ => "bg-secondary"
+            };
+        }
+    }
 }
