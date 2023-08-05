@@ -9,6 +9,7 @@
 @using ProjectIT.Shared.Models;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject AnonymousClient httpClient
+@inject DialogService DialogService
 @inject NavigationManager navManager
 @inject IJSRuntime JSRuntime
 
@@ -131,3 +132,36 @@
         </Panel>
     </div>
 </div>
+
+@code {
+    async Task<dynamic> SelectTopicCategoryDialog(IEnumerable<Topic> newTopics)
+    {
+        IEnumerable<TopicCategory?> topicCategories = Enum.GetValues(typeof(TopicCategory)).Cast<TopicCategory?>();
+
+        var result = await DialogService.OpenAsync("Select Categories for Topics", ds =>
+            @<RadzenStack Gap="1.5rem">
+                <div class="d-flex flex-column">
+                    @foreach (var topic in newTopics)
+                    {
+                        <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+                            <span class="me-2">@topic.Name</span>
+                            <RadzenDropDown TValue="TopicCategory?" Data="@topicCategories" @bind-Value="@topic.Category" Placeholder="Choose a category">
+                                <Template Context="category">
+                                    @(((Enum)Enum.Parse(typeof(TopicCategory), category.ToString())).GetTranslatedString(EnumsLocalizer))
+                                </Template>
+                            </RadzenDropDown>
+                        </div>
+                    }
+                </div>
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                    <RadzenStack Orientation="Orientation.Horizontal">
+                        <RadzenButton Text="Save" Click="() => ds.Close(true)" Style="width: 80px; background-color:black" />
+                        <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+                    </RadzenStack>
+                </RadzenStack>
+            </RadzenStack>
+        );
+
+        return result;
+    }
+}

@@ -101,7 +101,10 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
                     .ToList(),
                 enumListValueComparer<Programme>());
         modelBuilder.Entity<Request>()
-            .HasMany(r => r.Members)
+            .HasOne(r => r.Student)
+            .WithMany(s => s.Requests);
+        modelBuilder.Entity<Request>()
+            .HasMany(r => r.ExtraMembers)
             .WithMany();
         modelBuilder.Entity<Request>()
             .Property(p => p.Ects)

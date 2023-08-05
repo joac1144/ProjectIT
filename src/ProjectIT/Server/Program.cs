@@ -28,6 +28,7 @@ builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 builder.Services.AddScoped<ITopicsRepository, TopicsRepository>();
 builder.Services.AddScoped<IRequestsRepository, RequestRepository>();
 builder.Services.AddScoped<ISupervisorsRepository, SupervisorsRepository>();
+builder.Services.AddScoped<IStudentsRepository, StudentsRepository>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

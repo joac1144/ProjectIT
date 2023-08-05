@@ -36,4 +36,7 @@ public class Request
     
     [Required]
     public IEnumerable<Supervisor> Supervisors { get; set; } = null!;
+
+    [Required]
+    public RequestStatus? Status { get; set; }
 }

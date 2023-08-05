@@ -12,8 +12,9 @@ using Radzen.Blazor;
 using System.Net.Http.Json;
 using Microsoft.JSInterop;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
-namespace ProjectIT.Client.Pages.CreateRequest;
+namespace ProjectIT.Client.Pages.Students.CreateRequest;
 
 public partial class CreateRequestPage
 {
@@ -53,13 +54,20 @@ public partial class CreateRequestPage
     private IEnumerable<Language>? requestLanguages;
     private readonly List<Topic> requestTopics = new();
     private readonly List<Supervisor> requestSupervisors = new();
-    private int groupMembers = 1;
+    private readonly List<Student> ExtraMembers = new();
+    private readonly int groupMembers = 1;
     private string? email;
     private IEnumerable<Topic> topics = null!;
     private IEnumerable<Supervisor> supervisors = null!;
+    private IEnumerable<Student> students = null!;
     private string? topicName;
+    private string? memberMail;
+    private string? descriptionHtml;
+    private Ects? requestEcts;
     private readonly Request request = new();
+
     private ClaimsPrincipal? authUser;
+    private string? userEmail;
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,13 +76,14 @@ public partial class CreateRequestPage
         languageWrappers = Enum.GetValues<Language>().Select(lang => new LanguageWrapper { Language = lang, StringValue = lang.GetTranslatedString(EnumsLocalizer) });
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
-        
-        await GetSupervisorsAndTopicsData();
+        userEmail = authUser?.FindFirst("preferred_username")?.Value!;
+
+        await GetData();
         SortTopics();
         SortSupervisors();
     }
 
-    private async Task GetSupervisorsAndTopicsData()
+    private async Task GetData()
     {
         topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
@@ -82,6 +91,9 @@ public partial class CreateRequestPage
         supervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!;
         if (supervisors == null)
             throw new Exception("Could not load supervisors");
+        students = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Student>>(ApiEndpoints.Students))!;
+        if (students == null)
+            throw new Exception("Could not load students");
     }
 
     private void OnTopicSelectedInList(object value)
@@ -97,7 +109,7 @@ public partial class CreateRequestPage
 
     private void OnSupervisorSelectedInList(object value)
     {
-        if (value != null)
+        if (value is not null)
         {
             int val = (int)value;
             requestSupervisors.Add(supervisors.Single(s => s.Id == val));
@@ -120,6 +132,10 @@ public partial class CreateRequestPage
         SortSupervisors();
     }
 
+    private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
+
+    private void SortSupervisors() => supervisors = supervisors.OrderBy(s => s.FullName);
+
     private void OnAddNewTopicFromSearchClicked()
     {
         if (!string.IsNullOrWhiteSpace(topicName)) {
@@ -136,37 +152,71 @@ public partial class CreateRequestPage
         topicName = string.Empty;
     }
 
-    private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
-
-    private void SortSupervisors() => supervisors = supervisors.OrderBy(s => s.FullName);
-    
-    private async void SubmitRequestAsync()
+    private async Task OnAddNewMemberFromSearchClicked()
     {
-        var requestDto = new RequestCreateDto
-        {
-            Title = request.Title,
-            Description = request.Description,
-            Topics = topics,
-            Languages = requestLanguages!,
-            Programmes = requestProgrammes!,
-            Members = new Student[] { },
-            Supervisors = supervisors,
-            Ects = request.Ects,
-            Semester = request.Semester
-        };
-
-        var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, requestDto);
-
-        if (response.IsSuccessStatusCode)
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
-            navManager.NavigateTo(PageUrls.Projects);
+        if (!string.IsNullOrWhiteSpace(memberMail) && Regex.IsMatch(memberMail, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$") ) {
+            if (!ExtraMembers!.Select(member => member.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase) && students.Select(student => student.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase))
+            {
+                var newMember = students.Single(student => student.Email.Equals(memberMail, StringComparison.OrdinalIgnoreCase));
+                ExtraMembers.Add(newMember);
+                students = students.Where(student => student.Email != newMember.Email);
+            }
+            else
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "The student is already added to the project request or does not exist.");
+            }
         }
         else
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
+            await JSRuntime.InvokeAsync<string>("alert", "Please enter a valid email address.");
+        }
+        memberMail = string.Empty;
+    }
+
+    private void OnSelectedMemberClicked(Student student)
+    {
+        ExtraMembers.Remove(student);
+        students = students.Append(student);
+    }
+
+    private async void SubmitRequestAsync()
+    {
+        try 
+        {
+            var studentNameSplit = authUser?.Identity?.Name?.Split(" ");
+
+            var newRequest = new RequestCreateDto
+            {
+                Title = request.Title,
+                DescriptionHtml = descriptionHtml!,
+                Topics = requestTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+                Languages = requestLanguages!,
+                Programmes = requestProgrammes!,
+                StudentEmail = userEmail!,
+                ExtraMembersEmails = ExtraMembers?.Select(m => m.Email),
+                SupervisorEmails = requestSupervisors.Select(s => s.Email),
+                Ects = (Ects)requestEcts!,
+                Semester = request.Semester,
+                Status = RequestStatus.Pending
+            };
+
+            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, newRequest);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
+                navManager.NavigateTo(PageUrls.MyRequests);
+            }
+            else
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+            }
+        }
+        catch
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 
-    private void CancelRequest() => navManager.NavigateTo(PageUrls.Projects);
+    private void CancelRequest() => navManager.NavigateTo(PageUrls.MyRequests);
 }

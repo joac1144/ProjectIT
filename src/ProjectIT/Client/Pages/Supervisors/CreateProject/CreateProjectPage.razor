@@ -32,11 +32,10 @@
     <div class="d-flex flex-column mb-4 main-view-size">
         <EditForm Model="@project" OnSubmit="SubmitProjectAsync">
             <p class="fs-7 fw-bold">Title <span style="color: red; font-weight: 400;"> *</span></p>
-            <InputText class="border border-0 shadow rounded-1 fs-7 px-3 mb-4" style="width: 45rem; height: 2.5rem"
-                @bind-Value="project!.Title" placeholder="Title here..." />
+            <InputText class="border border-0 shadow rounded-1 fs-7 px-3 mb-4"
+                style="width: 45rem; height: 2.5rem" @bind-Value="project!.Title" placeholder="Title here..." />
             <p class="fs-7 fw-bold">Description <span style="color: red; font-weight: 400;"> *</span></p>
-            <RadzenHtmlEditor @bind-Value="@descriptionHtml" class="border border-0 shadow mb-4"
-                style="height:40rem; width: 45rem" />
+            <RadzenHtmlEditor @bind-Value="@descriptionHtml" class="border border-0 shadow mb-4" style="height:40rem; width: 45rem" />
             <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-danger fw-bold py-1 btn-style" @onclick="CancelProjectAsync">
                     Cancel

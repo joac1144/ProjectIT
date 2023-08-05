@@ -41,7 +41,7 @@
                         {
                             <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
                                 <div>
-                                    <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.CreateRequest ? "active" : "")}") href="@PageUrls.CreateRequest" @onclick="() => SetActiveTab(PageUrls.CreateRequest)">Create Request</a>
+                                    <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.MyRequests ? "active" : "")}") href="@PageUrls.MyRequests" @onclick="() => SetActiveTab(PageUrls.MyRequests)">My Request</a>
                                 </div>
                             </div>
                         }
@@ -51,6 +51,14 @@
                             <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
                                 <div>
                                     <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.MyProjects ? "active" : "")}") href="@PageUrls.MyProjects" @onclick="() => SetActiveTab(PageUrls.MyProjects)">My Projects</a>
+                                </div>
+                            </div>
+                        }
+                        @if (context.User.IsInRole(AppRoles.Supervisor))
+                        {
+                            <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
+                                <div>
+                                    <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.MyRequests ? "active" : "")}") href="@PageUrls.MyRequests" @onclick="() => SetActiveTab(PageUrls.MyRequests)">My Requests</a>
                                 </div>
                             </div>
                         }

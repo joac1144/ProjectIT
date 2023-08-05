@@ -146,40 +146,57 @@ public partial class UpdateProjectPage
 
     private async Task SubmitProjectAsync()
     {
-        await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
-        navManager.NavigateTo("my-projects");
-        return;
+        var updatedProject = new ProjectUpdateDto()
+        {
+            Id = projectToBeUpdated!.Id,
+            Title = projectToBeUpdated!.Title,
+            DescriptionHtml = projectToBeUpdated.DescriptionHtml,
+            Topics = projectToBeUpdated.Topics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+            Languages = projectToBeUpdated.Languages,
+            Programmes = projectToBeUpdated.Programmes,
+            Ects = projectToBeUpdated.Ects,
+            Semester = projectToBeUpdated.Semester,
+            Supervisor = projectToBeUpdated.Supervisor,
+            CoSupervisor = projectToBeUpdated.CoSupervisor
+        };
 
-        // var updatedProject = new ProjectUpdateDto()
-        // {
-        //     Id = projectToBeUpdated!.Id,
-        //     Title = projectToBeUpdated!.Title,
-        //     DescriptionHtml = projectToBeUpdated.DescriptionHtml,
-        //     Topics = projectToBeUpdated.Topics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-        //     Languages = projectToBeUpdated.Languages,
-        //     Programmes = projectToBeUpdated.Programmes,
-        //     Ects = projectToBeUpdated.Ects,
-        //     Semester = projectToBeUpdated.Semester,
-        //     Supervisor = projectToBeUpdated.Supervisor,
-        //     CoSupervisor = projectToBeUpdated.CoSupervisor
-        // };
+        IEnumerable<Topic> newTopics = projectTopics.Where(topic => topic.Category is null);
 
-        // if (updatedProject.Topics.Select(t => t.Name).Except(topics.Select(t => t.Name)).Any())
-        // {
-        //     // A new topic was added, open dialog to confirm and to add category.
-        // }
+            if (newTopics.Any())
+            {
+                // A new topic was added, open dialog to confirm and to add category.
+                 var result = await SelectTopicCategoryDialog(newTopics);
 
-        // var response = await httpClient.Client.PutAsJsonAsync(ApiEndpoints.Projects, updatedProject);
+                // Check if the dialog was confirmed (Save button clicked)
+                // and update the project's topics with the modified newProject topics.
+                if (result == true)
+                {
+                    projectToBeUpdated.Topics = updatedProject.Topics.ToList();
+                }
+                if (result == null)
+                {
+                    return;
+                }
 
-        // if (response.IsSuccessStatusCode)
-        // {
-        //     await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
-        //     navManager.NavigateTo("my-projects");
-        // }
-        // else
-        // {
-        //     await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
-        // }
+                else
+                {
+                    // If the dialog was canceled (Cancel button clicked), do not post the project.
+                    return;
+                }
+            }
+
+        var response = await httpClient.Client.PutAsJsonAsync(ApiEndpoints.Projects, updatedProject);
+
+        if (response.IsSuccessStatusCode)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
+            navManager.NavigateTo("my-projects");
+        }
+        else
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
+        }
+
     }
 
     private void CancelProjectAsync()

@@ -40,4 +40,7 @@ public record RequestDetailsDto
 
     [Required]
     public Semester? Semester { get; set; }
+
+    [Required]
+    public RequestStatus? Status { get; set; }
 }

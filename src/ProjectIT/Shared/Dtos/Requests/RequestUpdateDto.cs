@@ -14,10 +14,9 @@ public record RequestUpdateDto
 
     [Required]
     [StringLength(4400)]
-    public string Description { get; set; } = null!;
+    public string DescriptionHtml { get; set; } = null!;
 
-    [Required]
-    public IEnumerable<Topic> Topics { get; set; } = null!;
+    public IEnumerable<Topic>? Topics { get; set; }
 
     [Required]
     public IEnumerable<Language> Languages { get; set; } = null!;
@@ -25,14 +24,20 @@ public record RequestUpdateDto
     [Required]
     public IEnumerable<Programme> Programmes { get; set; } = null!;
 
-    public IEnumerable<Student> Members { get; set; } = null!;
+    [Required]
+    public Student Student { get; set;} = null!;
+
+    public IEnumerable<Student>? ExtraMembers { get; set; }
 
     [Required]
     public IEnumerable<Supervisor> Supervisors { get; set; } = null!;
 
     [Required]
-    public Ects? Ects { get; set; }
+    public Ects Ects { get; set; }
 
     [Required]
     public Semester? Semester { get; set; }
+
+    [Required]
+    public RequestStatus? Status { get; set; }
 }
