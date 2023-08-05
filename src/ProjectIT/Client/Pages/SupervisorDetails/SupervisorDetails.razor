@@ -30,8 +30,11 @@ else
             <div>
                 <img src=@("https://img.freepik.com/free-icon/user_318-159711.jpg") width="160rem" class="rounded-circle img-fluid" />
             </div>
+            <div class="d-flex justify-content-center mt-5">
+                <button @onclick="(() => RequestSupervision(navigationManager))" type="button" class="btn bg-black text-white fw-bold px-3 py-1" style="width: fit-content;"> Request Supervision </button>
+            </div>
         </div>
-        <div>
+        <div class="project-display-width">
             <div class="mb-4">
                 <h1 class="fw-bold">@supervisor.FullName</h1>
             </div>
@@ -79,9 +82,6 @@ else
                         </div>
                     }
                 </Panel>
-            </div>
-            <div class="d-flex justify-content-center">
-                <button @onclick="(() => RequestSupervision(navigationManager))" type="button" class="btn bg-black text-white fw-bold px-3 py-1" style="width: fit-content;"> Request Supervision </button>
             </div>
         </div>
     </div>
