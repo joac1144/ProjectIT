@@ -12,7 +12,7 @@ public partial class AppliedProjects
     private ClaimsPrincipal? authUser;
 
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync() 
     {
         projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))?.ToList()!;
 

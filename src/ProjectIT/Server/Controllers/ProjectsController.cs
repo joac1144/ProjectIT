@@ -53,6 +53,17 @@ public class ProjectsController : ControllerBase
             return await _repository.UpdateAsync(data);
     }
 
+    [HttpPut]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<int?> PostByApplicant(ProjectUpdateByApplicantsDto project) 
+    {
+        return await _repository.UpdateByApplicantAsync(project);
+    }
+
+
+
+
     [HttpDelete("{id}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]

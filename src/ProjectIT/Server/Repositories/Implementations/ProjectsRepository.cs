@@ -133,6 +133,22 @@ public class ProjectsRepository : IProjectsRepository
         return project.Id;
     }
 
+    public async Task<int?> UpdateByApplicantAsync(ProjectUpdateByApplicantsDto project)
+    {
+        var foundProject = await _context.Projects.FindAsync(project.Id);
+
+        if (foundProject == null) return null;
+
+        var student = _context.Students.Where(s => s.Email == project.Email).FirstOrDefault();
+
+        foundProject.Students = foundProject.Students?.Append(student).ToList()!;
+
+        await _context.SaveChangesAsync();
+
+        return project.Id;
+
+    }
+
     public async Task<int?> DeleteAsync(int id)
     {
         var project = await _context.Projects

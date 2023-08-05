@@ -12,5 +12,7 @@ public interface IProjectsRepository
 
     Task<int?> UpdateAsync(ProjectUpdateDto project);
 
+    Task<int?> UpdateByApplicantAsync(ProjectUpdateByApplicantsDto project);
+    
     Task<int?> DeleteAsync(int id);
 }

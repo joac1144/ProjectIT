@@ -18,6 +18,7 @@ public partial class ProjectDetails
     public int Id { get; set; }
 
     private ProjectDetailsDto? project;
+    private StudentDetailsDto? student;
 
     private string panelWidth = "250px";
     private string statusSupervisor = null!;
@@ -30,10 +31,26 @@ public partial class ProjectDetails
     {
         string userEmail = authUser?.FindFirst("preferred_username")?.Value!;
 
-        // add generic logic to add logged in student(s) to projects (hardcoded values right now)
+        var projectUpdateByApplicantDto = new ProjectUpdateByApplicantsDto
+        {
+            Id = project.Id,
+            Email = userEmail
+        };
+        
 
-        await JSRuntime.InvokeAsync<string>("alert", "Project applied successfully!");
-        navigationManager.NavigateTo(PageUrls.Projects);
+        var response = await anonymousClient.Client.PutAsJsonAsync(ApiEndpoints.Projects, projectUpdateByApplicantDto);
+
+        if (response.IsSuccessStatusCode) 
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Project applied successfully!");
+            navigationManager.NavigateTo(PageUrls.Projects);
+        }
+
+        else 
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
+
+        }
     }
 
     protected override async Task OnInitializedAsync()

@@ -76,6 +76,7 @@ public static class SeedData
     private static Student student3 = new() { FirstName = "Michael", LastName = "Davis", Email = "MichaelD@itu.dk" };
     private static Student student4 = new() { FirstName = "Olivia", LastName = "Brown", Email = "OliviaB@itu.dk" };
     private static Student student5 = new() { FirstName = "Alaa", LastName = "Abdul-Al", Email = "alaamohamed@hotmail.dk" };
+    private static Student student6 = new() { FirstName = "Mohammad", LastName = "Hasham", Email = "mhas@itu.dk" };
     private static Student studentTEST = new() { FirstName = "Student Test", LastName = "#1", Email = "teststudent@projectititu.onmicrosoft.com" };
 
     private static Project project2 = new() 
@@ -122,7 +123,7 @@ public static class SeedData
     {
         if (!context.Students.Any())
         {
-            context.Students.AddRange(student1, student2, student3, student4, student5, studentTEST);
+            context.Students.AddRange(student1, student2, student3, student4, student5, student6, studentTEST);
         }
         context.SaveChanges();
     }
@@ -163,7 +164,7 @@ public static class SeedData
                     },
                     Supervisor = context.Supervisors.First(),
                     CoSupervisor = context.Supervisors.Skip(1).First(),
-                    Students = context.Students.Skip(4).Take(1).ToList()
+                    Students = new Student[] { student6 }
                 },
                 project2,
                 new Project
