@@ -146,7 +146,7 @@ public partial class CreateProjectPage
             }
             if (topicName.Length > 25)
             {
-                JSRuntime.InvokeAsync<string>("alert", "Topic should not be more than 20 characters");
+                JSRuntime.InvokeAsync<string>("alert", "Topic should not be more than 25 characters");
                 topicName = string.Empty;
             }
             else
