@@ -43,7 +43,8 @@
                 <Virtualize TItem="SupervisorDetailsDto" Items="@shownSupervisors" Context="supervisor">
                         <SupervisorCard Id="@supervisor.Id"
                                         Name="@supervisor.FullName"
-                                        Topics="@supervisor.Topics" />
+                                        Topics="@supervisor.Topics"
+                                        Status="@supervisor.Status" />
                 </Virtualize>
             }
             @if (filteredSupervisors!.Count > pageSize)

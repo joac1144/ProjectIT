@@ -202,6 +202,17 @@ public partial class CreateRequestPage
 
             var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, newRequest);
 
+            if (newRequest.Title.Length > 50)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters");
+                
+            }
+            if (newRequest.DescriptionHtml.Length > 4800)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 4800 characters");
+
+            }
+
             if (response.IsSuccessStatusCode)
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");

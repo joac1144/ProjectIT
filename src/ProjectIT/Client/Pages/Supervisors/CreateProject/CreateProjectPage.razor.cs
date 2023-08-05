@@ -144,6 +144,11 @@ public partial class CreateProjectPage
                 topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
                 topicSelector?.Reset();
             }
+            if (topicName.Length > 25)
+            {
+                JSRuntime.InvokeAsync<string>("alert", "Topic should not be more than 25 characters");
+                topicName = string.Empty;
+            }
             else
                 projectTopics.Add(new Topic { Name = topicName });
         }
@@ -202,6 +207,17 @@ public partial class CreateProjectPage
                     // If the dialog was canceled (Cancel button clicked), do not post the project.
                     return;
                 }
+            }
+
+            if (project.Title.Length > 50)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters");
+                project.Title = string.Empty;
+            }
+            if (newProject.DescriptionHtml.Length > 4800)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 2400 characters");
+                
             }
 
             var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
