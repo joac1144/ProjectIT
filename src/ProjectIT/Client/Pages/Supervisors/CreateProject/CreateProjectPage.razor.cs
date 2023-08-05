@@ -144,7 +144,7 @@ public partial class CreateProjectPage
                 topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
                 topicSelector?.Reset();
             }
-            if (topicName.Length > 20)
+            if (topicName.Length > 25)
             {
                 JSRuntime.InvokeAsync<string>("alert", "Topic should not be more than 20 characters");
                 topicName = string.Empty;
@@ -214,7 +214,7 @@ public partial class CreateProjectPage
                 await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters");
                 project.Title = string.Empty;
             }
-            if (newProject.DescriptionHtml.Length > 2400)
+            if (newProject.DescriptionHtml.Length > 4800)
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 2400 characters");
                 
