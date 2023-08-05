@@ -19,16 +19,10 @@ public partial class SupervisorDetails
     private string panelWidth = "250px";
     private string statusSupervisor = null!;
 
-
-    private void RequestSupervision(NavigationManager navigationManager)
-    {
-        navigationManager.NavigateTo(PageUrls.CreateRequest);
-    }
-
     protected override async Task OnInitializedAsync()
     {
-        supervisor = await httpClient.GetFromJsonAsync<SupervisorDetailsDto>($"{ApiEndpoints.Supervisors}/{Id}");
-        supervisorProjects = (await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!.Where(project => project.Supervisor.Email == supervisor!.Email);
+        supervisor = await anonymousClient.Client.GetFromJsonAsync<SupervisorDetailsDto>($"{ApiEndpoints.Supervisors}/{Id}");
+        supervisorProjects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!.Where(project => project.Supervisor.Email.Equals(supervisor!.Email, StringComparison.OrdinalIgnoreCase));
 
         SetSupervisorStatus(supervisor!.Status);
     }
@@ -48,4 +42,6 @@ public partial class SupervisorDetails
                 break;
         }
     }
+
+    private void RequestSupervision(NavigationManager navigationManager) => navigationManager.NavigateTo(PageUrls.CreateRequest);
 }

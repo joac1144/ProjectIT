@@ -4,12 +4,12 @@
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.ProjectCard
 @using Microsoft.AspNetCore.Authorization
+@using ProjectIT.Client.Http;
 @using ProjectIT.Shared.Dtos.Projects;
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using ProjectIT.Client.Constants;
-@attribute [Authorize]
 @inject NavigationManager navigationManager
-@inject HttpClient httpClient
+@inject AnonymousClient anonymousClient
 @inject IStringLocalizer<EnumsResource> EnumsLocalizer
 
 <PageTitle> Supervisor details </PageTitle>
