@@ -169,6 +169,12 @@ public partial class CreateProjectPage
 
     private async Task SubmitProjectAsync()
     {
+        if (projectEcts is null || projectProgrammes is null || projectLanguages is null || projectTopics.Count == 0 || projectCoSupervisor is null || project.Title is null || project.Semester is null)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+            return;
+        }
+
         var newProject = new ProjectCreateDto()
         {
             Title = project.Title,

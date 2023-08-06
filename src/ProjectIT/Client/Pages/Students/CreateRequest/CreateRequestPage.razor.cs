@@ -183,6 +183,11 @@ public partial class CreateRequestPage
     {
         var studentNameSplit = authUser?.Identity?.Name?.Split(" ");
 
+        if (requestEcts is null || requestProgrammes is null || requestLanguages is null || requestTopics is null || requestSupervisors is null || request.Title is null || request.Semester is null || request.DescriptionHtml is null || studentNameSplit is null || ExtraMembers is null)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+            return;
+        }
         var newRequest = new RequestCreateDto
         {
             Title = request.Title,
