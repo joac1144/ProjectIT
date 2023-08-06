@@ -31,13 +31,11 @@ public class ProjectsRepositoryTests : IDisposable
             {
                 Title = "Title", 
                 DescriptionHtml = "Description",
-                Topics = new Topic[] { },
                 Languages = new[] { Language.English },
                 Programmes = new[] { Programme.BDS },
                 Ects = Ects.Bachelor,
                 Semester = new() { Season = Season.Spring, Year = 2024 },
-                Supervisor = new() { FirstName = "test", LastName = "", Email = "test", Topics = new Topic[] { }, Profession = SupervisorProfession.FullProfessor, Status = SupervisorStatus.Available },
-                Students = new Student[] { }
+                Supervisor = new() { FirstName = "test", LastName = "", Email = "test", Topics = new Topic[] { }, Profession = SupervisorProfession.FullProfessor, Status = SupervisorStatus.Available }
             },
             new Project
             {
@@ -219,25 +217,21 @@ public class ProjectsRepositoryTests : IDisposable
             Languages = new[] { Language.Danish },
             Programmes = new[] { Programme.MCS },
             Ects = Ects.Master,
-            Semester = new() { Season = Season.Autumn, Year = 2025 },
-            Supervisor = new() { FirstName = "testUpdated", LastName = "", Email = "testUpdated", Topics = new Topic[] { }, Profession = SupervisorProfession.FullProfessor, Status = SupervisorStatus.Available },
+            Semester = new() { Season = Season.Autumn, Year = 2025 }
         };
 
         var resultId = await _projectsRepository.UpdateAsync(projectUpdateDto);
 
         var updatedProject = await _projectsRepository.ReadByIdAsync(resultId);
 
-        updatedProject.Should().Match<ProjectDetailsDto>(p => p.Title == projectUpdateDto.Title &&
-                                                         p.DescriptionHtml == projectUpdateDto.DescriptionHtml &&
-                                                         p.Topics == projectUpdateDto.Topics &&
-                                                         p.Languages == projectUpdateDto.Languages &&
-                                                         p.Programmes == projectUpdateDto.Programmes &&
-                                                         p.Ects == projectUpdateDto.Ects &&
-                                                         p.Semester == projectUpdateDto.Semester &&
-                                                         p.Supervisor == projectUpdateDto.Supervisor 
-                                                        );
-
         updatedProject?.Id.Should().Be(resultId);
+        updatedProject?.Title.Should().Be(projectUpdateDto.Title);
+        updatedProject?.DescriptionHtml.Should().Be(projectUpdateDto.DescriptionHtml);
+        updatedProject?.Topics.Should().BeNull();
+        updatedProject?.Languages.Should().BeSameAs(projectUpdateDto.Languages);
+        updatedProject?.Programmes.Should().BeSameAs(projectUpdateDto.Programmes);
+        updatedProject?.Ects.Should().Be(projectUpdateDto.Ects);
+        updatedProject?.Semester.Should().Be(projectUpdateDto.Semester);
     }
 
     [Fact]

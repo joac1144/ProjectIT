@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
@@ -40,14 +41,19 @@ public partial class UpdateProjectPage
     [Inject]
     private IStringLocalizer<EnumsResource> EnumsLocalizer { get; set; } = default!;
 
+    // All topics in database.
     private IEnumerable<Topic> topics = null!;
+
+    // All topics available in the dropdown.
+    private IEnumerable<Topic> topicsInDropdownList = null!;
+
     private IEnumerable<Supervisor> coSupervisors = null!;
     private IEnumerable<EctsWrapper>? ectsWrappers;
     private IEnumerable<ProgrammeWrapper>? programmeWrappers;
     private IEnumerable<LanguageWrapper>? languageWrappers;
 
     private ProjectUpdateDto? projectToBeUpdated = new();
-    private List<Topic> projectTopics = new();
+    private List<Topic>? projectTopics = new();
     private Supervisor? projectCoSupervisor = null!;
 
     private RadzenDropDown<Topic>? topicSelector;
@@ -56,6 +62,7 @@ public partial class UpdateProjectPage
     private string? topicName;
 
     private ClaimsPrincipal? authUser;
+    private string? userEmail;
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,24 +71,28 @@ public partial class UpdateProjectPage
         languageWrappers = Enum.GetValues<Language>().Select(lang => new LanguageWrapper { Language = lang, StringValue = lang.GetTranslatedString(EnumsLocalizer) });
 
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+        userEmail = authUser?.FindFirst("preferred_username")?.Value!;
 
         projectToBeUpdated = await httpClient.Client.GetFromJsonAsync<ProjectUpdateDto>($"{ApiEndpoints.Projects}/{Id}");
 
-        projectTopics = projectToBeUpdated!.Topics.ToList();
-        projectCoSupervisor = projectToBeUpdated.CoSupervisor;
+        projectTopics = projectToBeUpdated?.Topics?.ToList();
+        projectCoSupervisor = projectToBeUpdated?.CoSupervisor;
         
-        await getSupervisorsAndTopicsData();
+        await GetSupervisorsAndTopicsData();
         UnionTopicsListWithUpdatedProjectTopics();
         SortTopics();
         SortSupervisors();
     }
 
-    private async Task getSupervisorsAndTopicsData()
+    private async Task GetSupervisorsAndTopicsData()
     {
         topics = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
         if (topics == null)
             throw new Exception("Could not load topics");
-        coSupervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!;
+
+        topicsInDropdownList = topics;
+
+        coSupervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!.Where(supervisor => supervisor.Email != userEmail);
         if (coSupervisors == null)
             throw new Exception("Could not load supervisors");
     }
@@ -91,8 +102,8 @@ public partial class UpdateProjectPage
         if (value != null)
         {
             string val = (string)value;
-            projectTopics.Add(topics.Single(t => t.Name == val));
-            topics = topics.Where(t => t.Name != val);
+            projectTopics?.Add(topicsInDropdownList.Single(t => t.Name == val));
+            topicsInDropdownList = topicsInDropdownList.Where(t => t.Name != val);
             topicSelector?.Reset();
         }
     }
@@ -114,15 +125,15 @@ public partial class UpdateProjectPage
     }
 
     private void UnionTopicsListWithUpdatedProjectTopics() {
-        topics = topics.Union(projectTopics.Select(t => new Topic { Name = t.Name }));
+        topicsInDropdownList = topicsInDropdownList.Union(projectTopics?.Select(t => new Topic { Name = t.Name })!);
 
         SortTopics();
     }
 
     private void OnSelectedTopicClicked(Topic topic)
     {
-        projectTopics.Remove(topic);
-        topics = topics.Append(topic);
+        projectTopics?.Remove(topic);
+        topicsInDropdownList = topicsInDropdownList.Append(topic);
         SortTopics();
     }
 
@@ -133,51 +144,65 @@ public partial class UpdateProjectPage
         SortSupervisors();
     }
 
-    private void SortTopics() => topics = topics.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
+    private void SortTopics() => topicsInDropdownList = topicsInDropdownList.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
 
     private void SortSupervisors() => coSupervisors = coSupervisors.OrderBy(s => s.FullName);
 
-    private void OnAddNewTopicFromSearchClicked() 
+    private async Task OnAddNewTopicFromSearchClicked()
     {
-        if (!string.IsNullOrWhiteSpace(topicName) || topics.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
-            projectTopics.Add(new Topic { Name = topicName! });
+        if (!string.IsNullOrWhiteSpace(topicName))
+        {
+            if (topicsInDropdownList.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
+            {
+                var newTopic = topicsInDropdownList.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
+                projectTopics?.Add(newTopic);
+                topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
+                topicSelector?.Reset();
+            }
+
+            if (topicName.Length > 25)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Topic name cannot be more than 25 characters");
+                topicName = string.Empty;
+            }
+            else
+            {
+                projectTopics?.Add(new Topic { Name = topicName });
+            }
+        }
         topicName = string.Empty;
     }
 
     private async Task SubmitProjectAsync()
     {
-        var updatedProject = new ProjectUpdateDto()
+        try
         {
-            Id = projectToBeUpdated!.Id,
-            Title = projectToBeUpdated!.Title,
-            DescriptionHtml = projectToBeUpdated.DescriptionHtml,
-            Topics = projectToBeUpdated.Topics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-            Languages = projectToBeUpdated.Languages,
-            Programmes = projectToBeUpdated.Programmes,
-            Ects = projectToBeUpdated.Ects,
-            Semester = projectToBeUpdated.Semester,
-            Supervisor = projectToBeUpdated.Supervisor,
-            CoSupervisor = projectToBeUpdated.CoSupervisor
-        };
+            var updatedProject = new ProjectUpdateDto()
+            {
+                Id = projectToBeUpdated!.Id,
+                Title = projectToBeUpdated!.Title,
+                DescriptionHtml = projectToBeUpdated.DescriptionHtml,
+                Topics = projectTopics?.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+                Languages = projectToBeUpdated.Languages,
+                Programmes = projectToBeUpdated.Programmes,
+                Ects = projectToBeUpdated.Ects,
+                Semester = projectToBeUpdated.Semester,
+                CoSupervisor = projectCoSupervisor
+            };
 
-        IEnumerable<Topic> newTopics = projectTopics.Where(topic => topic.Category is null);
+            IEnumerable<Topic>? newTopics = projectTopics?.Where(topic => topic.Category is null);
 
-            if (newTopics.Any())
+            if (newTopics is not null && newTopics.Any())
             {
                 // A new topic was added, open dialog to confirm and to add category.
-                 var result = await SelectTopicCategoryDialog(newTopics);
+                var result = await SelectTopicCategoryDialog(newTopics);
 
                 // Check if the dialog was confirmed (Save button clicked)
                 // and update the project's topics with the modified newProject topics.
                 if (result == true)
                 {
-                    projectToBeUpdated.Topics = updatedProject.Topics.ToList();
+                    projectToBeUpdated.Topics = updatedProject.Topics?.ToList();
                 }
-                if (result == null)
-                {
-                    return;
-                }
-
                 else
                 {
                     // If the dialog was canceled (Cancel button clicked), do not post the project.
@@ -185,22 +210,35 @@ public partial class UpdateProjectPage
                 }
             }
 
-        var response = await httpClient.Client.PutAsJsonAsync(ApiEndpoints.Projects, updatedProject);
+            if (updatedProject.Title.Length > 50)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project title cannot be more than 50 characters");
+            }
+            if (updatedProject.DescriptionHtml.Length > 4800)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project description cannot be more than 4800 characters");
+            }
 
-        if (response.IsSuccessStatusCode)
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
-            navManager.NavigateTo("my-projects");
-        }
-        else
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong, check your input and try again!");
-        }
+            var response = await httpClient.Client.PutAsJsonAsync($"{ApiEndpoints.Projects}/{Id}", updatedProject);
 
+            if (response.IsSuccessStatusCode)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
+                navManager.NavigateTo(PageUrls.MyProjects);
+            }
+            else
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+            }
+        }
+        catch
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+        }
     }
 
     private void CancelProjectAsync()
     {
-        navManager.NavigateTo("my-projects");
+        navManager.NavigateTo(PageUrls.MyProjects);
     }
 }
