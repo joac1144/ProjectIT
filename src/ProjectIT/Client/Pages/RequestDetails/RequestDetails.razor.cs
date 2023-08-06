@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Requests;
 using System.Net.Http.Json;
@@ -21,5 +22,19 @@ public partial class RequestDetails
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         userEmail = authUser?.FindFirst("preferred_username")?.Value!;
         request = await httpClient.GetFromJsonAsync<RequestDetailsDto>($"{ApiEndpoints.Requests}/{Id}");
+    }
+
+    private async Task AcceptRequest(int requestId)
+    {
+        // await httpClient.PutAsJsonAsync($"{ApiEndpoints.Requests}/{Id}/accept", userEmail);
+        // await JSRuntime.InvokeAsync<string>("alert", "Request accepted successfully!");
+        navigationManager.NavigateTo(PageUrls.MyRequests);
+    }
+
+    private async Task DeclineRequest(int requestId)
+    {
+        // await httpClient.PutAsJsonAsync($"{ApiEndpoints.Requests}/{Id}/decline", userEmail);
+        // await JSRuntime.InvokeAsync<string>("alert", "Request declined successfully!");
+        navigationManager.NavigateTo(PageUrls.MyRequests);
     }
 }

@@ -1,4 +1,4 @@
-@attribute [Route(PageUrls.ProjectDetails)]
+@attribute [Route(PageUrls.RequestDetails)]
 @using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.Search
@@ -52,7 +52,7 @@ else
                         </div>
                         <br>
                         ECTS Points: <br>
-                        <p1 class="fw-normal"> @request.Ects </p1> <br>
+                        <p1 class="fw-normal"> @request.Ects.GetTranslatedString(EnumsLocalizer) </p1> <br>
 
                         Semester: <br>
                         <p1 class="fw-normal"> @request.Semester?.Season @request.Semester?.Year </p1> <br>
@@ -75,23 +75,63 @@ else
         <DetailsView Title="@request.Title" Description="@request.DescriptionHtml" />
         <div class="d-flex flex-column panel-gap">
             <div>
-                <Panel Title="Supervisor" Width="@panelWidth">
-                    <p class="fw-normal pt-2">
-                    <h6 class="fw-bold"> Info: </h6>
-                    <div class="lh-lg">
-                        @project.Supervisor.FullName <br>
-                        @project.Supervisor.Email <br>
-                        @project.Supervisor.Profession.GetTranslatedString(EnumsLocalizer) <br>
-                        <span class=@($"border rounded rounded-3 px-2 fs-8 text-white d-inline-block {statusSupervisor} ")>@project.Supervisor.Status.GetTranslatedString(EnumsLocalizer)</span>
-                    </div>
+                <Panel Title="Group member(s)" Width="@panelWidth">
+                    <p class="fw-normal pt-2 text-break">
+                        <h6 class="fw-bold"> Info: </h6>
+                        <div class="lh-lg">
+                            @request.Student.FullName <br>
+                            @request.Student.Email <br>
+                        </div>
+                        <div class="lh-lg">
+                            @if (request.ExtraMembers is not null && request.ExtraMembers.Any())
+                            {
+                                <hr>
+                                foreach (Student student in request.ExtraMembers.OrderBy(s => s.FullName))
+                                {
+                                    <div>
+                                        @student.FullName <br>
+                                        @student.Email <br>
+                                    </div>
+                                    if (student != request.ExtraMembers.Last())
+                                    {
+                                        <hr>
+                                    }
+                                }
+                            }
+                        </div>
                     </p>
                 </Panel>
             </div>
             <AuthorizeView>
                 <Authorized>
+                    @if (context.User.IsInRole(AppRoles.Student))
+                    {
+                        <div>
+                            <Panel Title="Supervisors requested" Width="@panelWidth">
+                                <p class="fw-normal pt-2 text-break">
+                                    <div class="lh-lg">
+                                        @if (request.Supervisors is not null && request.Supervisors.Any())
+                                        {
+                                            foreach (Supervisor supervisor in request.Supervisors.OrderBy(s => s.FullName))
+                                            {
+                                                <div>
+                                                    @supervisor.FullName <br>
+                                                    @supervisor.Email <br>
+                                                </div>
+                                                if (supervisor != request.Supervisors.Last())
+                                                {
+                                                    <hr>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </p>
+                            </Panel>
+                        </div>
+                    }
                     @if (context.User.IsInRole(AppRoles.Supervisor))
                         {
-                            if (request.Supervisors.Any(s => s.Email == userEmail))
+                            if (request.Supervisors is not null && request.Supervisors.Any(s => s.Email == userEmail))
                             {
                                 <div class="d-flex flex-row justify-content-between">
                                     <button @onclick="(() => AcceptRequest(request.Id))" type="button" class="btn fw-bold edit-btn-green"> 
@@ -105,7 +145,6 @@ else
                         }
                 </Authorized>
             </AuthorizeView>
-            
         </div>
     </div>
 }

@@ -19,13 +19,6 @@ public partial class ProjectDetails
     private string statusSupervisor = null!;
     private string statusCoSupervisor = null!;
 
-    private async Task ApplyProject(NavigationManager navigationManager)
-    {
-        // TODO: Add logic to apply project
-        await JSRuntime.InvokeAsync<string>("alert", "Project applied successfully!");
-        navigationManager.NavigateTo(PageUrls.Projects);
-    }
-
     protected override async Task OnInitializedAsync()
     {
         project = await httpClient.GetFromJsonAsync<ProjectDetailsDto>($"{ApiEndpoints.Projects}/{Id}");
@@ -33,6 +26,13 @@ public partial class ProjectDetails
         SetCoSupervisorStatus(project.CoSupervisor?.Status);
     }
 
+    private async Task ApplyProject(NavigationManager navigationManager)
+    {
+        // TODO: Add logic to apply project
+        await JSRuntime.InvokeAsync<string>("alert", "Project applied successfully!");
+        navigationManager.NavigateTo(PageUrls.Projects);
+    }
+    
     private void EditProject(int projectId)
     {
         navigationManager.NavigateTo($"/projects/{projectId}/edit");

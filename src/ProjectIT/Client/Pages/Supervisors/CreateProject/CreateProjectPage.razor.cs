@@ -169,72 +169,74 @@ public partial class CreateProjectPage
 
     private async Task SubmitProjectAsync()
     {
-        try
+        var newProject = new ProjectCreateDto()
         {
-            var newProject = new ProjectCreateDto()
+            Title = project.Title,
+            DescriptionHtml = descriptionHtml!,
+            Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+            Languages = projectLanguages!,
+            Programmes = projectProgrammes!,
+            Ects = (Ects)projectEcts!,
+            Semester = project.Semester,
+            SupervisorEmail = userEmail!,
+            CoSupervisorEmail = projectCoSupervisor?.Email
+        };
+
+        IEnumerable<Topic> newTopics = projectTopics.Where(topic => topic.Category is null);
+
+        if (newTopics.Any())
+        {
+            // A new topic was added, open dialog to confirm and to add category.
+                var result = await SelectTopicCategoryDialog(newTopics);
+
+            // Check if the dialog was confirmed (Save button clicked)
+            // and update the project's topics with the modified newProject topics.
+            if (result == true)
             {
-                Title = project.Title,
-                DescriptionHtml = descriptionHtml!,
-                Topics = projectTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-                Languages = projectLanguages!,
-                Programmes = projectProgrammes!,
-                Ects = (Ects)projectEcts!,
-                Semester = project.Semester,
-                SupervisorEmail = userEmail!,
-                CoSupervisorEmail = projectCoSupervisor?.Email
-            };
-
-            IEnumerable<Topic> newTopics = projectTopics.Where(topic => topic.Category is null);
-
-            if (newTopics.Any())
+                project.Topics = newProject.Topics.ToList();
+            }
+            if (result == null)
             {
-                // A new topic was added, open dialog to confirm and to add category.
-                 var result = await SelectTopicCategoryDialog(newTopics);
+                return;
+            }
 
-                // Check if the dialog was confirmed (Save button clicked)
-                // and update the project's topics with the modified newProject topics.
-                if (result == true)
-                {
-                    project.Topics = newProject.Topics.ToList();
-                }
-                if (result == null)
-                {
-                    return;
-                }
+            else
+            {
+                // If the dialog was canceled (Cancel button clicked), do not post the project.
+                return;
+            }
+        }
 
+        if (project.Title.Length > 50)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters.");
+            project.Title = string.Empty;
+        }
+        if (newProject.DescriptionHtml.Length > 4800)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 2400 characters.");
+            
+        }
+        else
+        {
+            try
+            {
+                var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
+                    navManager.NavigateTo(PageUrls.MyProjects);
+                }
                 else
                 {
-                    // If the dialog was canceled (Cancel button clicked), do not post the project.
-                    return;
+                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
                 }
             }
-
-            if (project.Title.Length > 50)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters");
-                project.Title = string.Empty;
-            }
-            if (newProject.DescriptionHtml.Length > 4800)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 2400 characters");
-                
-            }
-
-            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
-
-            if (response.IsSuccessStatusCode)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
-                navManager.NavigateTo(PageUrls.MyProjects);
-            }
-            else
+            catch
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             }
-        }
-        catch
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 
