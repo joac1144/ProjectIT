@@ -35,16 +35,12 @@ else
                 <Panel Title="Project Info" Width="@panelWidth">
                     <div class="d-flex flex-column py-2">
                         Programmes: <br>
-                        <div class="d-flex programmes">
+                        <div class="d-flex flex-wrap programmes">
                             @for (int i = 0; i < project.Programmes.Count(); i++)
                             {
-                                if (i == project.Programmes.Count() - 1)
+                                <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
+                                if (i != project.Programmes.Count() - 1)
                                 {
-                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
-                                }
-                                else
-                                {
-                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
                                     <span class="border-start border-2 border-dark border-opacity-10"></span>
                                 }
                             }

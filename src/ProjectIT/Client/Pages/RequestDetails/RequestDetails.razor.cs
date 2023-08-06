@@ -27,14 +27,14 @@ public partial class RequestDetails
     private async Task AcceptRequest(int requestId)
     {
         // await httpClient.PutAsJsonAsync($"{ApiEndpoints.Requests}/{Id}/accept", userEmail);
-        // await JSRuntime.InvokeAsync<string>("alert", "Request accepted successfully!");
+        // await JSRuntime.InvokeAsync<string>("alert", "Request accepted.");
         navigationManager.NavigateTo(PageUrls.MyRequests);
     }
 
     private async Task DeclineRequest(int requestId)
     {
         // await httpClient.PutAsJsonAsync($"{ApiEndpoints.Requests}/{Id}/decline", userEmail);
-        // await JSRuntime.InvokeAsync<string>("alert", "Request declined successfully!");
+        // await JSRuntime.InvokeAsync<string>("alert", "Request declined.");
         navigationManager.NavigateTo(PageUrls.MyRequests);
     }
 }

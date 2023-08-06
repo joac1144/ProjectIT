@@ -36,16 +36,12 @@ else
                 <Panel Title="Request Info" Width="@panelWidth">
                     <div class="d-flex flex-column py-2">
                         Programmes: <br>
-                        <div class="d-flex programmes">
+                        <div class="d-flex flex-wrap programmes">
                             @for (int i = 0; i < request.Programmes.Count(); i++)
                             {
-                                if (i == request.Programmes.Count() - 1)
+                                <p1 class="fw-normal"> @request.Programmes.ElementAt(i).ToString() </p1>
+                                if (i != request.Programmes.Count() - 1)
                                 {
-                                    <p1 class="fw-normal"> @request.Programmes.ElementAt(i).ToString() </p1>
-                                }
-                                else
-                                {
-                                    <p1 class="fw-normal"> @request.Programmes.ElementAt(i).ToString() </p1>
                                     <span class="border-start border-2 border-dark border-opacity-10"></span>
                                 }
                             }
@@ -133,11 +129,11 @@ else
                         {
                             if (request.Supervisors is not null && request.Supervisors.Any(s => s.Email == userEmail))
                             {
-                                <div class="d-flex flex-row justify-content-between">
-                                    <button @onclick="(() => AcceptRequest(request.Id))" type="button" class="btn fw-bold edit-btn-green"> 
+                                <div class="d-flex flex-column">
+                                    <button @onclick="(() => AcceptRequest(request.Id))" type="button" class="btn btn-success fw-bold mb-4"> 
                                         Accept
                                     </button>
-                                    <button @onclick="(() => DeclineRequest(request.Id))" type="button" class="btn fw-bold edit-btn-red"> 
+                                    <button @onclick="(() => DeclineRequest(request.Id))" type="button" class="btn btn-danger fw-bold"> 
                                         Decline
                                     </button>
                                 </div>
