@@ -28,12 +28,12 @@ public static class SeedData
     private static Topic topic10 = new() { Name = "Network Security", Category = TopicCategory.Security };
     private static Topic topic15 = new() { Name = "Ethical Hacking", Category = TopicCategory.Security };
     private static Topic topic16 = new() { Name = "Data Encryption", Category = TopicCategory.Security };
-    private static Topic topic19 = new() { Name = "Identity and Access Management", Category = TopicCategory.Security };
-    private static Topic topic20 = new() { Name = "Cyber Threat Intelligence", Category = TopicCategory.Security };
+    private static Topic topic19 = new() { Name = "Id & Access Management", Category = TopicCategory.Security };
+    private static Topic topic20 = new() { Name = "Cyber Threat", Category = TopicCategory.Security };
     private static Topic topic21 = new() { Name = "Blockchain Security", Category = TopicCategory.Security };
 
     // SoftwareEngineering
-    private static Topic topic1 = new() { Name  = "Software Development Methodologies", Category = TopicCategory.SoftwareEngineering };
+    private static Topic topic1 = new() { Name  = "SD Methodologies", Category = TopicCategory.SoftwareEngineering };
     private static Topic topic11 = new() { Name = "DevOps", Category = TopicCategory.SoftwareEngineering };
     private static Topic topic12 = new() { Name = "Continuous Integration", Category = TopicCategory.SoftwareEngineering };
     private static Topic topic29 = new() { Name = "Continuous Delevery", Category = TopicCategory.SoftwareEngineering };
@@ -42,7 +42,7 @@ public static class SeedData
     private static Topic topic27 = new() { Name = "Version Control", Category = TopicCategory.SoftwareEngineering };
 
     //ArtificialIntelligence
-    private static Topic topic3 = new() { Name = "Natural Language Processing", Category = TopicCategory.ArtificialIntelligence };
+    private static Topic topic3 = new() { Name = "NLP", Category = TopicCategory.ArtificialIntelligence };
     private static Topic topic4 = new() { Name = "Computer Vision", Category = TopicCategory.ArtificialIntelligence };
     private static Topic topic23 = new() { Name = "Speech Recognition", Category = TopicCategory.ArtificialIntelligence };
     private static Topic topic24 = new() { Name = "Machine Vision", Category = TopicCategory.ArtificialIntelligence };
@@ -63,10 +63,10 @@ public static class SeedData
 
 
 
-    private static Supervisor supervisor1 = new() { FirstName = "John", LastName = "Andersen", Email = "hed@itr.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic30, topic32, topic34, topic35, topic36, topic38, topic40, topic41 }, Status = SupervisorStatus.LimitedSupervision };
-    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "alice@itu.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic1, topic11, topic12, topic29, topic17, topic22, topic27, topic5 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisor3 = new() { FirstName = "Emil", LastName = "Smith", Email = "EmilS@itu.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic10, topic15, topic16, topic19, topic20, topic21, topic8, topic50 }, Status = SupervisorStatus.Inactive };
-    private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "saralee@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic42 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor1 = new() { FirstName = "John", LastName = "Andersen", Email = "joan@itu.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic30, topic32, topic34, topic35, topic36, topic38, topic40, topic41 }, Status = SupervisorStatus.LimitedSupervision };
+    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "aljo@itu.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic1, topic11, topic12, topic29, topic17, topic22, topic27, topic5 }, Status = SupervisorStatus.Available };
+    private static Supervisor supervisor3 = new() { FirstName = "Emil", LastName = "Smith", Email = "Emsm@itu.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic10, topic15, topic16, topic19, topic20, topic21, topic8, topic50 }, Status = SupervisorStatus.Inactive };
+    private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "sale@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic42 }, Status = SupervisorStatus.Available };
     private static Supervisor supervisor5 = new() { FirstName = "Alaa Imad", LastName = "Abdul-Al", Email = "alia@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic25, topic26, topic28, topic31, topic3, topic4, topic8, topic46 }, Status = SupervisorStatus.Available };
     private static Supervisor supervisor6 = new() { FirstName = "Emdah", LastName = "Habib", Email = "emdah1@hotmail.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
     private static Supervisor supervisorTEST = new() { FirstName = "Supervisor Test", LastName = "#1", Email = "testsupervisor@projectititu.onmicrosoft.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13 }, Status = SupervisorStatus.Available };
@@ -232,7 +232,7 @@ public static class SeedData
                         {
                             FirstName = "Laura",
                             LastName = "Müller",
-                            Email = "laura@itu.dk",
+                            Email = "lamu@itu.dk",
                             Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
                             Profession = SupervisorProfession.FullProfessor,
                             Status = SupervisorStatus.Available
@@ -248,15 +248,7 @@ public static class SeedData
                         Programmes = new[] { Programme.MDS },
                         Ects = Ects.Master,
                         Semester = new Semester { Season = Season.Autumn, Year = 2023 },
-                        Supervisor = new Supervisor
-                        {
-                            FirstName = "Mark",
-                            LastName = "Andersen",
-                            Email = "mark@itu.dk",
-                            Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
-                            Profession = SupervisorProfession.AssociateProfessor,
-                            Status = SupervisorStatus.LimitedSupervision
-                        },
+                        Supervisor = supervisor5,
                         Students = new Student[] { }
                     },
                 new Project
@@ -268,15 +260,7 @@ public static class SeedData
                     Programmes = new[] { Programme.BGBI },
                     Ects = Ects.Bachelor,
                     Semester = new Semester { Season = Season.Spring, Year = 2024 },
-                    Supervisor = new Supervisor
-                    {
-                        FirstName = "Emma",
-                        LastName = "Larsen",
-                        Email = "emma@itu.dk",
-                        Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
-                        Profession = SupervisorProfession.ExternalProfessor,
-                        Status = SupervisorStatus.Available
-                    },
+                    Supervisor = supervisor3,
                     CoSupervisor = supervisor2,
                     Students = new Student[] { }
                 },
@@ -289,15 +273,7 @@ public static class SeedData
                     Programmes = new[] { Programme.MGAMES },
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
-                    Supervisor = new Supervisor
-                    {
-                        FirstName = "Sophie",
-                        LastName = "Hansen",
-                        Email = "sophie@itu.dk",
-                        Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
-                        Profession = SupervisorProfession.PhdStudent,
-                        Status = SupervisorStatus.Inactive
-                    },
+                    Supervisor = supervisor2,
                     CoSupervisor = supervisor1,
                     Students = new Student[] { }
                 },
@@ -310,15 +286,7 @@ public static class SeedData
                     Programmes = new[] { Programme.BDDIT },
                     Ects = Ects.Bachelor,
                     Semester = new Semester { Season = Season.Spring, Year = 2024 },
-                    Supervisor = new Supervisor
-                    {
-                        FirstName = "Robert",
-                        LastName = "Sørensen",
-                        Email = "robert@itu.dk",
-                        Topics = new[] { topic13, topic6 },
-                        Profession = SupervisorProfession.Lecturer,
-                        Status = SupervisorStatus.Available
-                    },
+                    Supervisor = supervisor4,
                     CoSupervisor = supervisor3,
                     Students = new Student[] { }
                 },
@@ -331,15 +299,7 @@ public static class SeedData
                     Programmes = new[] { Programme.BSWU },
                     Ects = Ects.Bachelor,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
-                    Supervisor = new Supervisor
-                    {
-                        FirstName = "David",
-                        LastName = "Petersen",
-                        Email = "david@itu.dk",
-                        Topics = new[] { topic6, topic9 },
-                        Profession = SupervisorProfession.FullProfessor,
-                        Status = SupervisorStatus.Available
-                    },
+                    Supervisor = supervisor1,
                     Students = new Student[] { }
                 },
                 new Project
@@ -351,15 +311,7 @@ public static class SeedData
                     Programmes = new[] { Programme.MCS },
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Spring, Year = 2024 },
-                    Supervisor = new Supervisor
-                    {
-                        FirstName = "Julia",
-                        LastName = "Andersson",
-                        Email = "julia@itu.dk",
-                        Topics = new[] { topic6, topic8 },
-                        Profession = SupervisorProfession.AssociateProfessor,
-                        Status = SupervisorStatus.LimitedSupervision
-                    },
+                    Supervisor = supervisor2,
                     Students = new Student[] { }
                 },
                 new Project
@@ -371,15 +323,7 @@ public static class SeedData
                     Programmes = new[] { Programme.MDS },
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
-                    Supervisor = new Supervisor
-                    {
-                        FirstName = "Daniel",
-                        LastName = "Hansen",
-                        Email = "daniel@itu.dk",
-                        Topics = new[] { topic7, topic9 },
-                        Profession = SupervisorProfession.AssistantProfessor,
-                        Status = SupervisorStatus.LimitedSupervision
-                    },
+                    Supervisor = supervisor2,
                     CoSupervisor = supervisor4,
                     Students = new Student[] { }
                 },
@@ -392,15 +336,7 @@ public static class SeedData
                 Programmes = new[] { Programme.MDDIT },
                 Ects = Ects.Master,
                 Semester = new Semester { Season = Season.Spring, Year = 2024 },
-                Supervisor = new Supervisor
-                {
-                    FirstName = "Sophia",
-                    LastName = "Jensen",
-                    Email = "sophia@itu.dk",
-                    Topics = new[] { topic6, topic14 },
-                    Profession = SupervisorProfession.ExternalProfessor,
-                    Status = SupervisorStatus.Available
-                },
+                Supervisor = supervisor3,
                 Students = new Student[] { }
                 },
                 new Project
@@ -412,15 +348,7 @@ public static class SeedData
                     Programmes = new[] { Programme.MGAMES },
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
-                    Supervisor = new Supervisor
-                    {
-                        FirstName = "Oliver",
-                        LastName = "Andersen",
-                        Email = "oliver@itu.dk",
-                        Topics = new[] { topic6, topic8 },
-                        Profession = SupervisorProfession.ResearchProfessor,
-                        Status = SupervisorStatus.Available
-                    },
+                    Supervisor = supervisor4,
                     CoSupervisor = supervisor1,
                     Students = new Student[] { }
                 },
@@ -437,7 +365,7 @@ public static class SeedData
                     {
                         FirstName = "Emily",
                         LastName = "Møller",
-                        Email = "emily@itu.dk",
+                        Email = "emmo@itu.dk",
                         Topics = new[] { topic6, topic2 },
                         Profession = SupervisorProfession.FullProfessor,
                         Status = SupervisorStatus.Available
@@ -457,7 +385,7 @@ public static class SeedData
                     {
                         FirstName = "William",
                         LastName = "Lund",
-                        Email = "william@itu.dk",
+                        Email = "wilu@itu.dk",
                         Topics = new[] { topic6, topic13 },
                         Profession = SupervisorProfession.Lecturer,
                         Status = SupervisorStatus.Available
@@ -477,7 +405,7 @@ public static class SeedData
                     {
                         FirstName = "Jonathan",
                         LastName = "Mortensen",
-                        Email = "jonathan@itu.dk",
+                        Email = "joma@itu.dk",
                         Topics = new[] { topic6, topic7 },
                         Profession = SupervisorProfession.AssociateProfessor,
                         Status = SupervisorStatus.Available
@@ -494,15 +422,7 @@ public static class SeedData
                     Programmes = new[] { Programme.BGBI },
                     Ects = Ects.Bachelor,
                     Semester = new Semester { Season = Season.Spring, Year = 2024 },
-                    Supervisor = new Supervisor
-                    {
-                        FirstName = "Hannah",
-                        LastName = "Lund",
-                        Email = "hannah@itu.dk",
-                        Topics = new[] { topic8, topic6 },
-                        Profession = SupervisorProfession.AssistantProfessor,
-                        Status = SupervisorStatus.Available
-                    },
+                    Supervisor = supervisor2,
                     Students = new Student[] { }
                 },
                 new Project
@@ -519,51 +439,6 @@ public static class SeedData
                     Students = new Student[] { }
                 }
             );
-            // for (int i = 0; i < 15; i++)
-            // {
-            //     var random = new Random();
-
-            //     var project = new Project
-            //     {
-            //         Title = "Project " + random.Next(1, 1000),
-            //         DescriptionHtml = "Description " + random.Next(1, 1000),
-            //         Topics = context.Topics.Skip(2).Take(2).ToList(),
-            //         Languages = new List<Language>()
-            //         {
-            //             (Language)random.Next(0, 2)
-            //         },
-            //         Programmes = new List<Programme>()
-            //         {
-            //             (Programme)random.Next(0, 10)
-            //         },
-            //         Ects = (Ects)random.Next(0, 4),
-            //         Semester = new()
-            //         {
-            //             Season = (Season)random.Next(0, 2),
-            //             Year = random.Next(2023, 2026)
-            //         },
-            //         Supervisor = new Supervisor
-            //         {
-            //             FirstName = "Supervisor",
-            //             LastName = random.Next(1, 1000).ToString(),
-            //             Email = "supervisor" + random.Next(1, 1000) + "@itu.dk",
-            //             Topics = new List<Topic>() { topic5, topic13, topic6, topic7 },
-            //             Profession = SupervisorProfession.FullProfessor,
-            //             Status = (SupervisorStatus)random.Next(0,2)
-            //         },
-            //         Students = new List<Student>()
-            //         {
-            //              new Student
-            //              {
-            //                  FirstName = "Anna",
-            //                  LastName = "Sivertsen",
-            //                  Email = "asiv@itu.dk"
-            //              }
-            //         }
-            //     };
-
-            //     context.Projects.Add(project);
-            // }
         }
         context.SaveChanges();
     }
