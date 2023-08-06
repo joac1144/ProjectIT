@@ -20,6 +20,11 @@
                                 <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
                             }
                         }
+                        @if (Programmes.Count() > 3)
+                        {
+                            <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
+                            <span class="fs-7">+@(Programmes.Count() - 3)</span>
+                        }
                     </div>
                 </div>
 

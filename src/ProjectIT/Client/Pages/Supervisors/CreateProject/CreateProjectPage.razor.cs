@@ -215,7 +215,6 @@ public partial class CreateProjectPage
         if (newProject.DescriptionHtml.Length > 4800)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 2400 characters.");
-            
         }
         else
         {
