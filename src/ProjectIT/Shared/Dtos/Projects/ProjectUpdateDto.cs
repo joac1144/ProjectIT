@@ -32,9 +32,6 @@ public record ProjectUpdateDto
 
     [Required]
     public Semester Semester { get; set; } = null!;
-
-    [Required]
-    public Supervisor Supervisor { get; set; } = null!;
     
     public Supervisor? CoSupervisor { get; set; }
 }

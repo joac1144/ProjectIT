@@ -12,7 +12,7 @@ public class Project
     public string Title { get; set; } = null!;
 
     [Required]
-    [StringLength(4400)]
+    [StringLength(4800)]
     public string DescriptionHtml { get; set; } = null!;
 
     public IEnumerable<Topic>? Topics { get; set; }
