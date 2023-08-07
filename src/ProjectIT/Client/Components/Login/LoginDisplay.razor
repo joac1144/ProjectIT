@@ -1,6 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using ProjectIT.Client.Constants
+@using ProjectIT.Client.Http
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject AnonymousClient anonymousClient
+@inject NavigationManager navManager
 
 <AuthorizeView>
     <Authorized>
@@ -8,13 +13,14 @@
             <div class="dimensions decoration-on-hover d-flex align-items-center">
                 <a class="text-decoration-none fw-bold text-white px-3 py-4" @onclick="BeginLogOut"> Sign out </a>
             </div>
-            <img style="height: 40px; padding-right: 7px;" src="images/profile_icon.png" />
+            <a @onclick="DisplaySupervisorProfile"> <img style="height: 40px; padding-right: 7px;"
+                    src="images/profile_icon.png" /> </a>
         </div>
     </Authorized>
     <NotAuthorized>
         <div class="me-3 d-flex align-items-center">
             <div class="dimensions decoration-on-hover d-flex align-items-center">
-                <a class="text-decoration-none fw-bold text-white px-3 py-4" @onclick="BeginLogIn"> Sign in/up </a> 
+                <a class="text-decoration-none fw-bold text-white px-3 py-4" @onclick="BeginLogIn"> Sign in/up </a>
             </div>
         </div>
     </NotAuthorized>

@@ -1,0 +1,120 @@
+@attribute [Route(PageUrls.MyProfileDetails)]
+@using ProjectIT.Client.Constants;
+@using ProjectIT.Client.Components.Panel;
+@using ProjectIT.Shared.Enums;
+@using ProjectIT.Client.Http;
+@using ProjectIT.Shared.Models;
+@using ProjectIT.Client.Components.Filter;
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
+@inject AnonymousClient anonymousClient
+@inject DialogService DialogService
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider authenticationStateProvider
+
+<div style="gap: 30px;" class="d-flex flex-row justify-content-center">
+    <img style="height: 120px; width: 120px; border-radius: 50%;" src="images/profile_icon.png"
+        alt="Avatar">
+    <div style="width: 600px;" class="d-flex flex-column my-5">
+        <h4 class="fw-bold"> @supervisor.FullName </h4>
+        <br>
+        <Panel Title="Info" Width="600px">
+            <div style="gap: 120px;" class="d-flex flex-row mx-3">
+                <div class="d-flex flex-column">
+                    <h6 class="fw-bold"> First Name </h6>
+                    <input style="" @bind-value="supervisor.FirstName" class="my-2 mb-3 rounded px-2" type="text"
+                        placeholder="Supervisor name....">
+                    <h6 class="fw-bold"> Email </h6>
+                    <input @bind-value="supervisor.Email" class="my-2 rounded px-2 mb-3" type="text"
+                        placeholder="Supervisor email....">
+                    <h6 class="fw-bold"> Profession </h6>
+
+                    <RadzenDropDown TValue="string" Data=@professions Placeholder="Select profession"
+                        Change="@(args => OnProfessionsSelectedInList(args))"
+                        Style="height: 29px; font-size: 11px; border: 1px solid black;" />
+                </div>
+                <div class="d-flex flex-column">
+                    <h6 class="fw-bold"> Last Name </h6>
+                    <input @bind-value="supervisor.LastName" class="my-2 mb-3 rounded px-2" type="text"
+                        placeholder="Supervisor surname....">
+                    <h6 class="fw-bold mb-3"> Status </h6>
+                    <RadzenDropDown TValue="string" Data=@statuses Placeholder="Select status"
+                        Change="@(args => OnStatusesSelectedInList(args))"
+                        Style="height: 29px; font-size: 11px; border: 1px solid black;" />
+                </div>
+            </div>
+        </Panel>
+        <br>
+        <Panel Title="Topics" Width="600px;">
+            <div style="gap: 100px;" class="d-flex flex-row">
+                @if (topicsInDropdownList is not null)
+                {
+                    <RadzenDropDown @ref="topicSelector" TValue="Topic" Placeholder="Select topics" AllowFiltering="true"
+                        ClearSearchAfterSelection="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                        Data="topicsInDropdownList" Change="OnTopicSelectedInList" ValueProperty="Name" TextProperty="Name"
+                        class="flex-grow-1">
+                        <Template>
+                            @context.Name
+                        </Template>
+                    </RadzenDropDown>
+                }
+                <div style="gap: 5px;" class="d-flex flex-row">
+                    <input @bind-value=topicName class="my-2 rounded px-2" type="text"
+                        placeholder="Create new topics....">
+                    <button @onclick=@(e => AddTopic(topicName)) style="background: none; border:none;"> <img
+                            style="width: 20px; height: 20px;" src="images/addition-thick-symbol.png" alt=""> </button>
+                </div>
+            </div>
+            @foreach (var topic in supervisorTopics)
+            {
+                <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false"
+                    OnClicked="() => OnSelectedTopicClicked(topic)" />
+            }
+        </Panel>
+        <br>
+        <div style="gap: 25px;" class="d-flex flex-row justify-content-center">
+            <button @onclick="SubmitAsync" style="width: 200px; background-color:green;" type="button"
+                class="btn btn-primary"> Save changes </button>
+            <button @onclick="DiscardChanges" style="width: 200px; background-color:red;" type="button"
+                class="btn btn-primary">
+                Discard changes
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    async Task<dynamic> SelectTopicCategoryDialog(IEnumerable<Topic> newTopics)
+    {
+        IEnumerable<TopicCategory?> topicCategories = Enum.GetValues(typeof(TopicCategory)).Cast<TopicCategory?>();
+
+        var result = await DialogService.OpenAsync("Select Categories for Topics", ds =>
+    @<RadzenStack Gap="1.5rem">
+        <div class="d-flex flex-column">
+            @foreach (var topic in newTopics)
+                {
+            <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+                <span class="me-2">@topic.Name</span>
+                <RadzenDropDown TValue="TopicCategory?" Data="@topicCategories" @bind-Value="@topic.Category"
+                    Placeholder="Choose a category">
+                    <Template Context="category">
+                        @(((Enum)Enum.Parse(typeof(TopicCategory),
+                                category.ToString())).GetTranslatedString(EnumsLocalizer))
+                    </Template>
+                </RadzenDropDown>
+            </div>
+                }
+        </div>
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center"
+            JustifyContent="JustifyContent.SpaceBetween">
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenButton Text="Save" Click="() => ds.Close(true)" Style="width: 80px; background-color:black" />
+                <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenStack>
+);
+
+        return result;
+    }
+}
