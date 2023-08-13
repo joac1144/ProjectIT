@@ -180,51 +180,58 @@ public partial class CreateRequestPage
 
     private async void SubmitRequestAsync()
     {
-        try 
+        var studentNameSplit = authUser?.Identity?.Name?.Split(" ");
+
+        if (requestEcts is null || requestProgrammes is null || requestLanguages is null || requestTopics is null || requestSupervisors is null || request.Title is null || request.Semester is null || request.DescriptionHtml is null || studentNameSplit is null || ExtraMembers is null)
         {
-            var studentNameSplit = authUser?.Identity?.Name?.Split(" ");
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+            return;
+        }
+        var newRequest = new RequestCreateDto
+        {
+            Title = request.Title,
+            DescriptionHtml = descriptionHtml!,
+            Topics = requestTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+            Languages = requestLanguages!,
+            Programmes = requestProgrammes!,
+            StudentEmail = userEmail!,
+            ExtraMembersEmails = ExtraMembers?.Select(m => m.Email),
+            SupervisorEmails = requestSupervisors.Select(s => s.Email),
+            Ects = (Ects)requestEcts!,
+            Semester = request.Semester,
+            Status = RequestStatus.Pending
+        };
 
-            var newRequest = new RequestCreateDto
+        if (newRequest.Title.Length > 50)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Request title should not be more than 50 characters.");
+            
+        }
+        if (newRequest.DescriptionHtml.Length > 4800)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Request description should not be more than 4800 characters.");
+
+        }
+        else 
+        {
+            try
             {
-                Title = request.Title,
-                DescriptionHtml = descriptionHtml!,
-                Topics = requestTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-                Languages = requestLanguages!,
-                Programmes = requestProgrammes!,
-                StudentEmail = userEmail!,
-                ExtraMembersEmails = ExtraMembers?.Select(m => m.Email),
-                SupervisorEmails = requestSupervisors.Select(s => s.Email),
-                Ects = (Ects)requestEcts!,
-                Semester = request.Semester,
-                Status = RequestStatus.Pending
-            };
+                var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, newRequest);
 
-            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, newRequest);
-
-            if (newRequest.Title.Length > 50)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters");
-                
+                if (response.IsSuccessStatusCode)
+                {
+                    await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
+                    navManager.NavigateTo(PageUrls.MyRequests);
+                }
+                else
+                {
+                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+                }
             }
-            if (newRequest.DescriptionHtml.Length > 4800)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 4800 characters");
-
-            }
-
-            if (response.IsSuccessStatusCode)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
-                navManager.NavigateTo(PageUrls.MyRequests);
-            }
-            else
+            catch
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             }
-        }
-        catch
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 

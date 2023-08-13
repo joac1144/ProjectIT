@@ -29,7 +29,14 @@
                                     Placeholder="Sort by"
                                     Style="width: 20%; max-width: 20rem; margin-right: 3.5rem;" />
                 </div>
-
+                @if (isLoading)
+                {
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                }
                 @if (studentRequests is not null && studentRequests.Any())
                 {
                     var acceptedRequests = studentRequests.Where(r => r.Status == RequestStatus.Accepted).ToList();
@@ -95,9 +102,12 @@
                 }
                 else
                 {
-                    <div class="d-flex flex-column align-items-center position-absolute top-50 start-50 translate-middle">
-                        <span class="my-3 fs-4 fw-bold text-black-50">You have no requests</span>
-                    </div>
+                    if (isLoading is false)
+                    {
+                        <div class="d-flex flex-column align-items-center position-absolute top-50 start-50 translate-middle">
+                            <span class="my-3 fs-4 fw-bold text-black-50">You have no requests</span>
+                        </div>
+                    }
                 }
             }
             else if (context.User.IsInRole(AppRoles.Supervisor))
@@ -111,6 +121,14 @@
                                     Style="width: 20%; max-width: 20rem; margin-right: 3.5rem;" />
                 </div>
                 
+                @if (isLoading)
+                {
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                }
                 @if (supervisorRequests is not null && supervisorRequests.Any())
                 {
                     var acceptedRequests = supervisorRequests?.Where(r => r.Status == RequestStatus.Accepted).ToList();
@@ -154,9 +172,12 @@
                 }
                 else
                 {
-                    <div class="d-flex flex-column align-items-center position-absolute top-50 start-50 translate-middle">
-                        <span class="my-3 fs-4 fw-bold text-black-50">You have no requests</span>
-                    </div>
+                    if (isLoading is false)
+                    {
+                        <div class="d-flex flex-column align-items-center position-absolute top-50 start-50 translate-middle">
+                            <span class="my-3 fs-4 fw-bold text-black-50">You have no requests</span>
+                        </div>
+                    }
                 }
             }
             </Authorized>

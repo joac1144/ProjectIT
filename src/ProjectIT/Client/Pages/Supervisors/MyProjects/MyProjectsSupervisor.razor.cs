@@ -13,6 +13,7 @@ public partial class MyProjectsSupervisor
 {
     private IEnumerable<ProjectDetailsDto>? projects;
 
+    private bool isLoading = false;
     private string? sortValue;
     private readonly IEnumerable<RegularSort> _sortValues = Enum.GetValues<RegularSort>();
 
@@ -26,9 +27,11 @@ public partial class MyProjectsSupervisor
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         string userEmail = authUser?.FindFirst("preferred_username")?.Value!;
 
+        isLoading = true;
         // Fetch supervisor's projects.
         // This might be a security flaw ???
         projects = (await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!.Where(project => project.Supervisor.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase));
+        isLoading = false;
     }
 
     private void OnSort(object value)

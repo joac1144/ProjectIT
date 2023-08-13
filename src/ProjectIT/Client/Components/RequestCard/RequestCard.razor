@@ -3,7 +3,7 @@
 @inject IStringLocalizer<EnumsResource> EnumsLocalizer
 
 <div class=@($"card-zoom card-size mb-3 {CssClasses}")>
-    <a href=@($"{PageUrls.MyRequests}/{Id}") class="link-dark text-decoration-none card-size d-block">
+    <a href=@($"{PageUrls.Requests}/{Id}") class="link-dark text-decoration-none card-size d-block">
         <div class="shadow rounded bg-white rounded-1 px-4 py-4 mb-3 card-size overflow-hidden card-wrapper">
             <div class="fs-4 fw-bold truncate-text">@Title</div>
             <div class="d-flex justify-content-around padding-icons">
@@ -11,17 +11,19 @@
                     <img src="images\educations.png" width="23rem" height="23rem">
                     <span class="mx-1"></span>
                     <div class="fs-7">
-                        @for (int i = 0; i < Programmes.Count(); i++)
+                        @for (int i = 0; i < 3 && i < Programmes.Count(); i++)
                         {
-                            if (i == Programmes.Count() - 1)
+                            @Programmes.ElementAt(i).ToString()       
+                            
+                            if (i != 2 && i != Programmes.Count() - 1)
                             {
-                                @Programmes.ElementAt(i).ToString()
-                            }
-                            else
-                            {
-                                @Programmes.ElementAt(i).ToString()
                                 <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
                             }
+                        }
+                        @if (Programmes.Count() > 3)
+                        {
+                            <span class="border-start border-2 border-dark border-opacity-10 mx-2"></span>
+                            <span class="fs-7">+@(Programmes.Count() - 3)</span>
                         }
                     </div>
                 </div>

@@ -142,7 +142,10 @@
                                     <img class="w-100 h-70" src="images/baseline_clear_24.png" alt="Clear">
                                 </button>
                             </div>
-                            <hr />
+                            @if (member != ExtraMembers.Last())
+                            {
+                                <hr>
+                            }
                         }
                     </div>
                 }

@@ -9,7 +9,7 @@
 @using ProjectIT.Client.Pages
 @using ProjectIT.Shared.Enums
 @using ProjectIT.Shared.Models
-@using ProjectIT.Client.Components.ProjectDetailsView
+@using ProjectIT.Client.Components.DetailsView
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -38,23 +38,19 @@ else
                 <Panel Title="Project Info" Width="@panelWidth">
                     <div class="d-flex flex-column py-2">
                         Programmes: <br>
-                        <div class="d-flex programmes">
+                        <div class="d-flex flex-wrap programmes">
                             @for (int i = 0; i < project.Programmes.Count(); i++)
                             {
-                                if (i == project.Programmes.Count() - 1)
+                                <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
+                                if (i != project.Programmes.Count() - 1)
                                 {
-                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
-                                }
-                                else
-                                {
-                                    <p1 class="fw-normal"> @project.Programmes.ElementAt(i).ToString() </p1>
                                     <span class="border-start border-2 border-dark border-opacity-10"></span>
                                 }
                             }
                         </div>
                         <br>
                         ECTS Points: <br>
-                        <p1 class="fw-normal"> @project.Ects </p1> <br>
+                        <p1 class="fw-normal"> @project.Ects.GetTranslatedString(EnumsLocalizer) </p1> <br>
 
                         Semester: <br>
                         <p1 class="fw-normal"> @project.Semester?.Season @project.Semester?.Year </p1> <br>
@@ -74,7 +70,7 @@ else
                 </Panel>
             </div>
         </div>
-        <ProjectDetailsView Title="@project.Title" Description="@project.DescriptionHtml" />
+        <DetailsView Title="@project.Title" Description="@project.DescriptionHtml" />
         <div class="d-flex flex-column panel-gap">
             <div>
                 <Panel Title="Supervisor" Width="@panelWidth">
