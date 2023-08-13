@@ -1,0 +1,146 @@
+@attribute [Route(PageUrls.RequestDetails)]
+@using ProjectIT.Client.Components.Panel
+@using ProjectIT.Client.Components.Filter
+@using ProjectIT.Client.Components.Search
+@using ProjectIT.Client.Components.Tag
+@using ProjectIT.Client.Constants;
+@using ProjectIT.Client.Pages
+@using ProjectIT.Shared.Enums
+@using ProjectIT.Shared.Models
+@using ProjectIT.Client.Components.DetailsView
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject NavigationManager navigationManager
+@inject HttpClient httpClient
+@inject IJSRuntime JSRuntime
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle> Request Details </PageTitle>
+<br>
+
+@if (request == null)
+{
+    <div class="d-flex align-items-center justify-content-center h-100">
+        <div class="spinner-border spinner" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-flex flex-row justify-content-center request-details-view">
+        <div class="d-flex flex-column panel-gap">
+            <div>
+                <Panel Title="Request Info" Width="@panelWidth">
+                    <div class="d-flex flex-column py-2">
+                        Programmes: <br>
+                        <div class="d-flex flex-wrap programmes">
+                            @for (int i = 0; i < request.Programmes.Count(); i++)
+                            {
+                                <p1 class="fw-normal"> @request.Programmes.ElementAt(i).ToString() </p1>
+                                if (i != request.Programmes.Count() - 1)
+                                {
+                                    <span class="border-start border-2 border-dark border-opacity-10"></span>
+                                }
+                            }
+                        </div>
+                        <br>
+                        ECTS Points: <br>
+                        <p1 class="fw-normal"> @request.Ects.GetTranslatedString(EnumsLocalizer) </p1> <br>
+
+                        Semester: <br>
+                        <p1 class="fw-normal"> @request.Semester?.Season @request.Semester?.Year </p1> <br>
+
+                        Languages: <br>
+
+                        @foreach (Language language in request.Languages)
+                        {
+                            <p1 class="fw-normal"> @language </p1>
+                        }
+                    </div>
+                </Panel>
+            </div>
+            <div class="py-2">
+                <Panel Title="Topics" Width="@panelWidth">
+                    <TagsDisplay Tags="request.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                </Panel>
+            </div>
+        </div>
+        <DetailsView Title="@request.Title" Description="@request.DescriptionHtml" />
+        <div class="d-flex flex-column panel-gap">
+            <div>
+                <Panel Title="Group member(s)" Width="@panelWidth">
+                    <p class="fw-normal pt-2 text-break">
+                        <h6 class="fw-bold"> Info: </h6>
+                        <div class="lh-lg">
+                            @request.Student.FullName <br>
+                            @request.Student.Email <br>
+                        </div>
+                        <div class="lh-lg">
+                            @if (request.ExtraMembers is not null && request.ExtraMembers.Any())
+                            {
+                                <hr>
+                                foreach (Student student in request.ExtraMembers.OrderBy(s => s.FullName))
+                                {
+                                    <div>
+                                        @student.FullName <br>
+                                        @student.Email <br>
+                                    </div>
+                                    if (student != request.ExtraMembers.Last())
+                                    {
+                                        <hr>
+                                    }
+                                }
+                            }
+                        </div>
+                    </p>
+                </Panel>
+            </div>
+            <AuthorizeView>
+                <Authorized>
+                    @if (context.User.IsInRole(AppRoles.Student))
+                    {
+                        <div>
+                            <Panel Title="Supervisors requested" Width="@panelWidth">
+                                <p class="fw-normal pt-2 text-break">
+                                    <div class="lh-lg">
+                                        @if (request.Supervisors is not null && request.Supervisors.Any())
+                                        {
+                                            foreach (Supervisor supervisor in request.Supervisors.OrderBy(s => s.FullName))
+                                            {
+                                                <div>
+                                                    @supervisor.FullName <br>
+                                                    @supervisor.Email <br>
+                                                </div>
+                                                if (supervisor != request.Supervisors.Last())
+                                                {
+                                                    <hr>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </p>
+                            </Panel>
+                        </div>
+                    }
+                    @if (context.User.IsInRole(AppRoles.Supervisor))
+                        {
+                            if (request.Supervisors is not null && request.Supervisors.Any(s => s.Email == userEmail))
+                            {
+                                <div class="d-flex flex-column">
+                                    <button @onclick="(() => AcceptRequest(request.Id))" type="button" class="btn btn-success fw-bold mb-4"> 
+                                        Accept
+                                    </button>
+                                    <button @onclick="(() => DeclineRequest(request.Id))" type="button" class="btn btn-danger fw-bold"> 
+                                        Decline
+                                    </button>
+                                </div>
+                            }
+                        }
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </div>
+}

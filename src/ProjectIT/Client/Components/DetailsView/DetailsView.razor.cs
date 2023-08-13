@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Components;
 
-namespace ProjectIT.Client.Components.ProjectDetailsView;
+namespace ProjectIT.Client.Components.DetailsView;
 
-public partial class ProjectDetailsView
+public partial class DetailsView
 {
     [Parameter]
     public string? Title { get; set;}

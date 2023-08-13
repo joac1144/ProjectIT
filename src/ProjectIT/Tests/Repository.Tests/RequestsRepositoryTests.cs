@@ -107,6 +107,13 @@ public class RequestsRepositoryTests : IDisposable
             FirstName = "Ulrich",
             LastName = "Kenneth"
         });
+        
+        context.Supervisors.Add(new Supervisor
+        {
+            Email = "henk@itu.dk",
+            FirstName = "Banana",
+            LastName = "Jakob"
+        });
 
         context.Topics.AddRange(
             new Topic
@@ -156,7 +163,7 @@ public class RequestsRepositoryTests : IDisposable
                 Programme.BSWU
             },
             ExtraMembersEmails = new string[] {"jlds@itu.dk"},
-            SupervisorEmails = new string[] {"henk@itu.dk"},
+            SupervisorEmails = new string[] {"henk@itu.dk"}, 
             Ects = Ects.Bachelor,
             Semester = new()
             {

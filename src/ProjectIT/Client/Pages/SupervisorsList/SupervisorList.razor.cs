@@ -23,12 +23,17 @@ public partial class SupervisorList
     private int pageSize = 10;
     private int totalPages;
     private int currentPage;
+    private bool isLoading = false;
 
     protected async override Task OnInitializedAsync()
     {
+        isLoading = true;
+
         supervisors = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<SupervisorDetailsDto>>(ApiEndpoints.Supervisors))?.ToList()!;
         filteredSupervisors = supervisors;
         UpdateSupervisors(0);
+
+        isLoading = false;
     }
 
     private void UpdateSupervisors(int pageNumber)
