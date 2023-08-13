@@ -15,21 +15,21 @@
 
 <div class="d-flex flex-row justify-content-center gap-5">
     <div class="d-flex flex-column my-4 py-3 gap-4 filter-size">
-        <Panel Title="Programmes">
+        <Panel Title="Programmes" InputRequired="true">
             <RadzenCheckBoxList TValue="Programme" Data="@programmeWrappers" @bind-Value=projectToBeUpdated!.Programmes
                 TextProperty="StringValue" ValueProperty="Programme" Orientation="Orientation.Vertical" />
         </Panel>
-        <Panel Title="ECTS Points">
+        <Panel Title="ECTS Points" InputRequired="true">
             <RadzenRadioButtonList TValue="Ects" Data="ectsWrappers" @bind-Value=projectToBeUpdated!.Ects TextProperty="StringValue"
                 ValueProperty="Ects" Orientation="Orientation.Vertical" />
         </Panel>
     </div>
     <div class="d-flex flex-column mb-4 main-view-size">
         <EditForm Model="@projectToBeUpdated" OnSubmit="SubmitProjectAsync">
-            <p class="fs-7 fw-bold">Title</p>
+            <p class="fs-7 fw-bold">Title <span style="color: red; font-weight: 400;"> *</span></p>
             <InputText class="border border-0 shadow rounded-1 fs-7 px-3 mb-4" style="width: 45rem; height: 2.5rem"
-                @bind-Value="projectToBeUpdated!.Title" placeholder="Title here..." />
-            <p class="fs-7 fw-bold">Description</p>
+                @bind-Value="projectToBeUpdated!.Title" />
+            <p class="fs-7 fw-bold">Description <span style="color: red; font-weight: 400;"> *</span></p>
             <RadzenHtmlEditor @bind-Value="@projectToBeUpdated!.DescriptionHtml" class="border border-0 shadow mb-4"
                 style="height:40rem; width: 45rem" />
             <div class="d-flex justify-content-end">
@@ -46,7 +46,7 @@
         @{
             DateTime date = DateTime.Now;
         }
-        <Panel Title="Semester">
+        <Panel Title="Semester" InputRequired="true">
             <RadzenRadioButtonList @bind-Value=projectToBeUpdated!.Semester TValue="Semester">
                 <Items>
                     <RadzenRadioButtonListItem Text=@($"Spring {date.Year}")
@@ -60,13 +60,13 @@
                 </Items>
             </RadzenRadioButtonList>
         </Panel>
-        <Panel Title="Language">
+        <Panel Title="Language" InputRequired="true">
             <RadzenCheckBoxList TValue="Language" Data="@languageWrappers" @bind-Value=@projectToBeUpdated!.Languages
                 TextProperty="StringValue" ValueProperty="Language" Orientation="Orientation.Vertical" />
         </Panel>
         <Panel Title="Topics">
             <div class="d-flex flex-column gap-2">
-                @if (topics is not null)
+                @if (topicsInDropdownList is not null)
                 {
                     <RadzenDropDown @ref="topicSelector" 
                                     TValue="Topic" 
@@ -74,7 +74,7 @@
                                     AllowFiltering="true"
                                     ClearSearchAfterSelection="true" 
                                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                    Data=@topics
+                                    Data=@topicsInDropdownList
                                     Change="OnTopicSelectedInList"
                                     ValueProperty="Name"
                                     TextProperty="Name"
@@ -87,7 +87,7 @@
                 <div class="d-flex flex-row gap-2">
                     <form class="d-flex gap-2">
                         <SearchField PlaceholderText="Create new topics..." ShowSearchIcon="false" Width="14.5rem" OnInputValueChanged="(newVal) => topicName = newVal" />
-                        <button type="reset" value="reset" class="bg-transparent border-0 add-image-size" @onclick=OnAddNewTopicFromSearchClicked>
+                        <button type="reset" value="reset" class="bg-transparent border-0 add-image-size" @onclick="async () => await OnAddNewTopicFromSearchClicked()">
                             <img class="rotate-45 w-100 h-70" src="images/baseline_clear_24.png" alt="Add new topic">
                         </button>
                     </form>

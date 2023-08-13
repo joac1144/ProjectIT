@@ -59,7 +59,7 @@ public class ProjectsRepository : IProjectsRepository
             Id = project.Id,
             Title = project.Title,
             DescriptionHtml = project.DescriptionHtml,
-            Topics = project.Topics,
+            Topics = (project.Topics is not null && project.Topics.Any()) ? project.Topics : null,
             Languages = project.Languages,
             Programmes = project.Programmes,
             Ects = project.Ects,
@@ -76,16 +76,18 @@ public class ProjectsRepository : IProjectsRepository
         Supervisor? coSupervisor = _context.Supervisors.SingleOrDefault(s => s.Email == project.CoSupervisorEmail);
         var topics = new List<Topic>();
         if (project.Topics != null)
-        foreach (var topic in project.Topics)
         {
-            var dbTopic = _context.Topics.SingleOrDefault(t => t.Name == topic.Name);
-            if (dbTopic == null)
+            foreach (var topic in project.Topics)
             {
-                topics.Add(new Topic { Name = topic.Name, Category = topic.Category });
-            }
-            else
-            {
-                topics.Add(dbTopic);
+                var dbTopic = _context.Topics.SingleOrDefault(t => t.Name == topic.Name);
+                if (dbTopic == null)
+                {
+                    topics.Add(new Topic { Name = topic.Name, Category = topic.Category });
+                }
+                else
+                {
+                    topics.Add(dbTopic);
+                }
             }
         }
 
@@ -93,7 +95,7 @@ public class ProjectsRepository : IProjectsRepository
         {
             Title = project.Title,
             DescriptionHtml = project.DescriptionHtml,
-            Topics = topics,
+            Topics = topics.Any() ? topics : null,
             Languages = project.Languages,
             Programmes = project.Programmes,
             Ects = project.Ects,
@@ -102,9 +104,13 @@ public class ProjectsRepository : IProjectsRepository
             CoSupervisor = coSupervisor
         };
 
-        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) ||
-            entity.Languages.IsNullOrEmpty() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null || entity.Supervisor is null)
-                throw new ArgumentNullException();
+        if (string.IsNullOrWhiteSpace(entity.Title) || 
+            string.IsNullOrWhiteSpace(entity.DescriptionHtml) ||
+            entity.Languages.IsNullOrEmpty() || 
+            entity.Programmes.IsNullOrEmpty() || 
+            entity.Semester is null || 
+            entity.Supervisor is null)
+            throw new ArgumentNullException();
         
         _context.Projects.Add(entity);
         await _context.SaveChangesAsync();
@@ -114,19 +120,50 @@ public class ProjectsRepository : IProjectsRepository
 
     public async Task<int?> UpdateAsync(ProjectUpdateDto project)
     {
-        var foundProject = await _context.Projects.FindAsync(project.Id);
+        var foundProject = await _context.Projects
+            .Where(p => p.Id == project.Id)
+            .Include(p => p.Topics)
+            .Include(p => p.Supervisor)
+            .Include(p => p.CoSupervisor)
+            .Include(p => p.Students)
+            .SingleOrDefaultAsync();
 
         if (foundProject == null) return null;
 
+        if (foundProject.CoSupervisor?.Email != project.CoSupervisor?.Email)
+            foundProject.CoSupervisor = _context.Supervisors.SingleOrDefault(s => s.Email == project.CoSupervisor!.Email);
+
+        if (project.Topics != null)
+        { 
+            var topics = new List<Topic>();
+            foreach (var topic in project.Topics)
+            {
+                var dbTopic = _context.Topics.SingleOrDefault(t => t.Name == topic.Name);
+                if (dbTopic == null)
+                {
+                    topics.Add(new Topic { Name = topic.Name, Category = topic.Category });
+                }
+                else
+                {
+                    topics.Add(dbTopic);
+                }
+            }
+            foundProject.Topics = topics.Any() ? topics : null;
+        }
+
+        if (string.IsNullOrWhiteSpace(project.Title) || 
+            string.IsNullOrWhiteSpace(project.DescriptionHtml) ||
+            project.Languages.IsNullOrEmpty() || 
+            project.Programmes.IsNullOrEmpty() || 
+            project.Semester is null)
+            throw new ArgumentNullException();
+
         foundProject.Title = project.Title;
         foundProject.DescriptionHtml = project.DescriptionHtml;
-        foundProject.Topics = project.Topics;
         foundProject.Languages = project.Languages;
         foundProject.Programmes = project.Programmes;
         foundProject.Ects = project.Ects;
         foundProject.Semester = project.Semester;
-        foundProject.Supervisor = project.Supervisor;
-        foundProject.CoSupervisor = project.CoSupervisor;
 
         await _context.SaveChangesAsync();
 

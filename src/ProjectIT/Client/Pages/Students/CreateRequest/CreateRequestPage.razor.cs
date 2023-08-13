@@ -56,7 +56,6 @@ public partial class CreateRequestPage
     private readonly List<Supervisor> requestSupervisors = new();
     private readonly List<Student> ExtraMembers = new();
     private readonly int groupMembers = 1;
-    private string? email;
     private IEnumerable<Topic> topics = null!;
     private IEnumerable<Supervisor> supervisors = null!;
     private IEnumerable<Student> students = null!;
