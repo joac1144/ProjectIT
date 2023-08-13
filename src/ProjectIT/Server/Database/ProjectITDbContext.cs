@@ -72,8 +72,8 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
             .HasOne(p => p.Supervisor)
             .WithMany(s => s.Projects);
         modelBuilder.Entity<Project>()
-            .HasMany(p => p.Students)
-            .WithMany(s => s.AppliedProjects);
+            .HasMany(p => p.AppliedStudentGroups)
+            .WithOne();
 
         // Requests.
         modelBuilder.Entity<Request>()
@@ -144,6 +144,9 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
             .Property(s => s.Programme)
             .HasColumnOrder(5)
             .HasConversion<string>();
+        modelBuilder.Entity<Student>()
+            .HasMany(s => s.AppliedProjects)
+            .WithMany();
 
         // Supervisors.
         modelBuilder.Entity<Supervisor>()
@@ -171,6 +174,14 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
             .HasConversion<string>();
         modelBuilder.Entity<Supervisor>()
             .HasMany(s => s.Topics)
+            .WithMany();
+
+        // StudentGroups.
+        modelBuilder.Entity<StudentGroup>()
+            .ToTable("StudentGroup")
+            .HasKey(sg => sg.Id);
+        modelBuilder.Entity<StudentGroup>()
+            .HasMany(sg => sg.Students)
             .WithMany();
     }
 }

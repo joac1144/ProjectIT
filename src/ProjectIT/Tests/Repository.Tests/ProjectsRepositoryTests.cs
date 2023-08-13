@@ -76,8 +76,7 @@ public class ProjectsRepositoryTests : IDisposable
                     Topics = new Topic[] { },
                     Profession = SupervisorProfession.FullProfessor,
                     Status = SupervisorStatus.Inactive
-                },
-                Students = new Student[] { }
+                }
             }
         );
 

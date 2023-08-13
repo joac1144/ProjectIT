@@ -23,17 +23,17 @@ public partial class Modal<T>
 
     private string displayClass = "none";
 
-    public void OpenModal(T data)
+    public void OpenModal(T data = default!)
     {
         Data = data;
-        displayClass = "block;";
+        displayClass = "block";
         StateHasChanged();
     }
 
     public void Hide()
     {
         Data = default!;
-        displayClass = "none;";
+        displayClass = "none";
         StateHasChanged();
     }
 }

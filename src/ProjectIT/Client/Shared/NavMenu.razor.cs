@@ -24,6 +24,8 @@ public partial class NavMenu
             return PageUrls.MyRequests;
         else if (url.Contains(PageUrls.MyProjects))
             return PageUrls.MyProjects;
+        else if (url.Contains(PageUrls.AppliedProjects))
+            return PageUrls.AppliedProjects;
         
         return PageUrls.Projects;
     }

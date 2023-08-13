@@ -22,4 +22,6 @@ public record StudentDetailsDto
     public string Email { get; set; } = null!;
 
     public Programme? Programme { get; set; } = null!;
+
+    public IEnumerable<Project>? AppliedProjects { get; set; }
 }

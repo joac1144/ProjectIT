@@ -1,0 +1,26 @@
+﻿@attribute [Route(PageUrls.AppliedProjects)]
+@using ProjectIT.Client.Constants;
+@using ProjectIT.Client.Components.ProjectCard;
+@using ProjectIT.Client.Http;
+@using ProjectIT.Shared.Dtos.Projects;
+@inject HttpClient httpClient
+@inject AnonymousClient anonymousClient
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div class="d-flex justify-content-center my-4">
+    <div style="width: 700px;" class="d-flex flex-column align-items-start px-2">
+        <h3 class="fw-bold">Applied Projects</h3>
+        @if (appliedProjects != null)
+        {
+            <Virtualize TItem="ProjectDetailsDto" Items="@appliedProjects" Context="project">
+                <ProjectCard Id="project.Id"
+                             Title="@project.Title"
+                             DescriptionHtml="@project.DescriptionHtml"
+                             Semester="@project.Semester"
+                             Ects="@project.Ects"
+                             Supervisor="@project.Supervisor"
+                             Programmes="@project.Programmes" />
+            </Virtualize>
+        }
+    </div>
+</div>

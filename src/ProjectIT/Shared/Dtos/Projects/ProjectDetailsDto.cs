@@ -1,3 +1,4 @@
+using ProjectIT.Shared.Dtos.Users;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using System.ComponentModel.DataAnnotations;
@@ -38,5 +39,5 @@ public record ProjectDetailsDto
 
     public Supervisor? CoSupervisor { get; set; }
 
-    public IEnumerable<Student>? Students { get; set; }
+    public IEnumerable<StudentGroup>? AppliedStudentGroups { get; set; }
 }

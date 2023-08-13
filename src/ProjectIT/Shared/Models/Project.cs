@@ -34,5 +34,5 @@ public class Project
 
     public Supervisor? CoSupervisor { get; set; }
 
-    public IEnumerable<Student>? Students { get; set; }
+    public IEnumerable<StudentGroup>? AppliedStudentGroups { get; set; }
 }

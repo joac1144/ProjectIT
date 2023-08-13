@@ -151,6 +151,24 @@ namespace ProjectIT.Server.Migrations
                     b.ToTable("Student", (string)null);
                 });
 
+            modelBuilder.Entity("ProjectIT.Shared.Models.StudentGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("StudentGroup", (string)null);
+                });
+
             modelBuilder.Entity("ProjectIT.Shared.Models.Supervisor", b =>
                 {
                     b.Property<int>("Id")
@@ -217,12 +235,12 @@ namespace ProjectIT.Server.Migrations
                     b.Property<int>("AppliedProjectsId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("StudentsId")
+                    b.Property<int>("StudentId")
                         .HasColumnType("integer");
 
-                    b.HasKey("AppliedProjectsId", "StudentsId");
+                    b.HasKey("AppliedProjectsId", "StudentId");
 
-                    b.HasIndex("StudentsId");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("ProjectStudent");
                 });
@@ -287,6 +305,21 @@ namespace ProjectIT.Server.Migrations
                     b.ToTable("RequestTopic");
                 });
 
+            modelBuilder.Entity("StudentStudentGroup", b =>
+                {
+                    b.Property<int>("StudentGroupId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("StudentGroupId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("StudentStudentGroup");
+                });
+
             modelBuilder.Entity("SupervisorTopic", b =>
                 {
                     b.Property<int>("SupervisorId")
@@ -330,6 +363,13 @@ namespace ProjectIT.Server.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("ProjectIT.Shared.Models.StudentGroup", b =>
+                {
+                    b.HasOne("ProjectIT.Shared.Models.Project", null)
+                        .WithMany("AppliedStudentGroups")
+                        .HasForeignKey("ProjectId");
+                });
+
             modelBuilder.Entity("ProjectStudent", b =>
                 {
                     b.HasOne("ProjectIT.Shared.Models.Project", null)
@@ -340,7 +380,7 @@ namespace ProjectIT.Server.Migrations
 
                     b.HasOne("ProjectIT.Shared.Models.Student", null)
                         .WithMany()
-                        .HasForeignKey("StudentsId")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -405,6 +445,21 @@ namespace ProjectIT.Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("StudentStudentGroup", b =>
+                {
+                    b.HasOne("ProjectIT.Shared.Models.StudentGroup", null)
+                        .WithMany()
+                        .HasForeignKey("StudentGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjectIT.Shared.Models.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SupervisorTopic", b =>
                 {
                     b.HasOne("ProjectIT.Shared.Models.Supervisor", null)
@@ -418,6 +473,11 @@ namespace ProjectIT.Server.Migrations
                         .HasForeignKey("TopicsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ProjectIT.Shared.Models.Project", b =>
+                {
+                    b.Navigation("AppliedStudentGroups");
                 });
 
             modelBuilder.Entity("ProjectIT.Shared.Models.Student", b =>
