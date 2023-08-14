@@ -12,7 +12,7 @@ using ProjectIT.Server.Database;
 namespace ProjectIT.Server.Migrations
 {
     [DbContext(typeof(ProjectITDbContext))]
-    [Migration("20230814002821_AddStudentGroups")]
+    [Migration("20230814005658_AddStudentGroups")]
     partial class AddStudentGroups
     {
         /// <inheritdoc />

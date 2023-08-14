@@ -20,8 +20,8 @@ public class RequestRepository : IRequestsRepository
     {
         var requests = await _context.Requests
             .Include(p => p.Topics)
-            .Include(r => r.StudentGroup)
             .Include(p => p.Supervisors)
+            .Include(r => r.StudentGroup).ThenInclude(sg => sg.Students)
             .ToListAsync();
 
         return requests.Select(r =>
@@ -46,8 +46,8 @@ public class RequestRepository : IRequestsRepository
         var request = await _context.Requests
             .Where(r => r.Id == id)
             .Include(r => r.Topics)
-            .Include(r => r.StudentGroup)
             .Include(r => r.Supervisors)
+            .Include(r => r.StudentGroup).ThenInclude(sg => sg.Students)
             .SingleOrDefaultAsync();
 
         if (request == null) return null;

@@ -162,6 +162,24 @@ namespace ProjectIT.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StudentGroup",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProjectId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentGroup", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StudentGroup_Project_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Project",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Request",
                 columns: table => new
                 {
@@ -171,6 +189,7 @@ namespace ProjectIT.Server.Migrations
                     DescriptionHtml = table.Column<string>(type: "character varying(4400)", maxLength: 4400, nullable: false),
                     Languages = table.Column<string>(type: "text", nullable: false),
                     Programmes = table.Column<string>(type: "text", nullable: false),
+                    StudentGroupId = table.Column<int>(type: "integer", nullable: false),
                     Ects = table.Column<string>(type: "text", nullable: false),
                     Semester = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false)
@@ -178,30 +197,10 @@ namespace ProjectIT.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Request", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StudentGroup",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProjectId = table.Column<int>(type: "integer", nullable: true),
-                    RequestId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StudentGroup", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StudentGroup_Project_ProjectId",
-                        column: x => x.ProjectId,
-                        principalTable: "Project",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StudentGroup_Request_RequestId",
-                        column: x => x.RequestId,
-                        principalTable: "Request",
+                        name: "FK_Request_StudentGroup_StudentGroupId",
+                        column: x => x.StudentGroupId,
+                        principalTable: "StudentGroup",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -323,6 +322,11 @@ namespace ProjectIT.Server.Migrations
                 column: "TopicsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Request_StudentGroupId",
+                table: "Request",
+                column: "StudentGroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RequestStudent_StudentId",
                 table: "RequestStudent",
                 column: "StudentId");
@@ -341,11 +345,6 @@ namespace ProjectIT.Server.Migrations
                 name: "IX_StudentGroup_ProjectId",
                 table: "StudentGroup",
                 column: "ProjectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StudentGroup_RequestId",
-                table: "StudentGroup",
-                column: "RequestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentStudentGroup_StudentsId",
