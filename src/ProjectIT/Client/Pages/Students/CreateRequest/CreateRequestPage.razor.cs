@@ -42,6 +42,14 @@ public partial class CreateRequestPage
     [Inject]
     private IStringLocalizer<EnumsResource> EnumsLocalizer { get; set; } = default!;
 
+    /*
+     * Query string that allows supervisor to be pre-selected when clicking "Request supervision" from supervisor's profile.
+     * This is the id of the supervisor.
+     */
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "supervisor")]
+    public int? SupervisorId { get; set; }
+
     private IEnumerable<EctsWrapper>? ectsWrappers;
 
     private IEnumerable<ProgrammeWrapper>? programmeWrappers;
@@ -80,6 +88,18 @@ public partial class CreateRequestPage
         await GetData();
         SortTopics();
         SortSupervisors();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (SupervisorId is not null)
+        {
+            requestSupervisors.Add(supervisors.Single(s => s.Id == SupervisorId));
+            supervisors = supervisors.Where(s => s.Id != SupervisorId);
+            supervisorSelector?.Reset();
+        }
     }
 
     private async Task GetData()
