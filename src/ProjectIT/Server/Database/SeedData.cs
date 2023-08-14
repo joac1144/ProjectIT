@@ -76,7 +76,7 @@ public static class SeedData
     private static readonly Student studentAlaa = new() { FirstName = "Alaa", LastName = "Abdul-Al", Email = "alaamohamed@hotmail.dk" };
     private static readonly Student studentJoachim = new() { FirstName = "Joachim", LastName = "Kofoed", Email = "jkof@itu.dk" };
     private static readonly Student studentMohammad = new() { FirstName = "Mohammad", LastName = "Hasham", Email = "mhas@itu.dk" };
-    private static readonly Student studentTEST = new() { FirstName = "Student Test", LastName = "#1", Email = "TestStudent@projectititu.onmicrosoft.com" };
+    private static readonly Student studentTEST = new() { FirstName = "Student Test", LastName = "#1", Email = "teststudent@projectititu.onmicrosoft.com" };
 
     private static Project project2 = new() 
     {
