@@ -99,12 +99,20 @@ public class RequestsRepositoryTests : IDisposable
             }
         );
 
-        context.Students.Add(new Student
-        {
-            Email = "hello@itu.dk",
-            FirstName = "Ulrich",
-            LastName = "Kenneth"
-        });
+        context.Students.AddRange(
+            new Student
+            {
+                Email = "hello@itu.dk",
+                FirstName = "Ulrich",
+                LastName = "Kenneth"
+            },
+            new Student
+            {
+                Email = "jlds@itu.dk",
+                FirstName = "Jens",
+                LastName = "Larsen"
+            }
+        );
         
         context.Supervisors.Add(new Supervisor
         {

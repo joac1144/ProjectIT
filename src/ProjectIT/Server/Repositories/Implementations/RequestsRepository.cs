@@ -83,9 +83,9 @@ public class RequestRepository : IRequestsRepository
 
         foreach (var email in request.StudentEmails)
         {
-            var st = _context.Students.Single(s => s.Email == email);
+            var student = _context.Students.Single(s => s.Email == email);
 
-            dbStudents.Add(st);
+            dbStudents.Add(student);
         }
 
         var studentGroup = new StudentGroup
