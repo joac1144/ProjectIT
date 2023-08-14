@@ -35,8 +35,8 @@ namespace ProjectIT.Server.Migrations
 
                     b.Property<string>("DescriptionHtml")
                         .IsRequired()
-                        .HasMaxLength(4400)
-                        .HasColumnType("character varying(4400)");
+                        .HasMaxLength(4800)
+                        .HasColumnType("character varying(4800)");
 
                     b.Property<string>("Ects")
                         .IsRequired()
@@ -103,7 +103,7 @@ namespace ProjectIT.Server.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int>("StudentGroupId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -113,7 +113,7 @@ namespace ProjectIT.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentGroupId");
 
                     b.ToTable("Request", (string)null);
                 });
@@ -262,15 +262,15 @@ namespace ProjectIT.Server.Migrations
 
             modelBuilder.Entity("RequestStudent", b =>
                 {
-                    b.Property<int>("ExtraMembersId")
+                    b.Property<int>("RequestsId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("RequestId")
+                    b.Property<int>("StudentId")
                         .HasColumnType("integer");
 
-                    b.HasKey("ExtraMembersId", "RequestId");
+                    b.HasKey("RequestsId", "StudentId");
 
-                    b.HasIndex("RequestId");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("RequestStudent");
                 });
@@ -354,13 +354,13 @@ namespace ProjectIT.Server.Migrations
 
             modelBuilder.Entity("ProjectIT.Shared.Models.Request", b =>
                 {
-                    b.HasOne("ProjectIT.Shared.Models.Student", "Student")
-                        .WithMany("Requests")
-                        .HasForeignKey("StudentId")
+                    b.HasOne("ProjectIT.Shared.Models.StudentGroup", "StudentGroup")
+                        .WithMany()
+                        .HasForeignKey("StudentGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Student");
+                    b.Navigation("StudentGroup");
                 });
 
             modelBuilder.Entity("ProjectIT.Shared.Models.StudentGroup", b =>
@@ -402,15 +402,15 @@ namespace ProjectIT.Server.Migrations
 
             modelBuilder.Entity("RequestStudent", b =>
                 {
-                    b.HasOne("ProjectIT.Shared.Models.Student", null)
+                    b.HasOne("ProjectIT.Shared.Models.Request", null)
                         .WithMany()
-                        .HasForeignKey("ExtraMembersId")
+                        .HasForeignKey("RequestsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProjectIT.Shared.Models.Request", null)
+                    b.HasOne("ProjectIT.Shared.Models.Student", null)
                         .WithMany()
-                        .HasForeignKey("RequestId")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -478,11 +478,6 @@ namespace ProjectIT.Server.Migrations
             modelBuilder.Entity("ProjectIT.Shared.Models.Project", b =>
                 {
                     b.Navigation("AppliedStudentGroups");
-                });
-
-            modelBuilder.Entity("ProjectIT.Shared.Models.Student", b =>
-                {
-                    b.Navigation("Requests");
                 });
 
             modelBuilder.Entity("ProjectIT.Shared.Models.Supervisor", b =>

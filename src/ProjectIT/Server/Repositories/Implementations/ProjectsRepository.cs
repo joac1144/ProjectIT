@@ -207,10 +207,7 @@ public class ProjectsRepository : IProjectsRepository
         {
             var st = _context.Students.Single(s => s.Id == student.Id);
 
-            if (st is not null)
-            {
-                dbStudents.Add(st);
-            }
+            dbStudents.Add(st);
         }
 
         var existingStudentGroups = project.AppliedStudentGroups is null ? new List<StudentGroup>() : project.AppliedStudentGroups.ToList();

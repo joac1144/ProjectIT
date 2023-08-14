@@ -101,12 +101,6 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
                     .ToList(),
                 enumListValueComparer<Programme>());
         modelBuilder.Entity<Request>()
-            .HasOne(r => r.Student)
-            .WithMany(s => s.Requests);
-        modelBuilder.Entity<Request>()
-            .HasMany(r => r.ExtraMembers)
-            .WithMany();
-        modelBuilder.Entity<Request>()
             .Property(p => p.Ects)
             .HasConversion<string>();
         modelBuilder.Entity<Request>()
@@ -115,6 +109,8 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
         modelBuilder.Entity<Request>()
             .HasMany(r => r.Supervisors)
             .WithMany(s => s.ReceivedRequests);
+        modelBuilder.Entity<Request>()
+            .HasOne(r => r.StudentGroup);
 
         // Topics.
         modelBuilder.Entity<Topic>()
@@ -146,6 +142,9 @@ public class ProjectITDbContext : DbContext, IProjectITDbContext
             .HasConversion<string>();
         modelBuilder.Entity<Student>()
             .HasMany(s => s.AppliedProjects)
+            .WithMany();
+        modelBuilder.Entity<Student>()
+            .HasMany(s => s.Requests)
             .WithMany();
 
         // Supervisors.

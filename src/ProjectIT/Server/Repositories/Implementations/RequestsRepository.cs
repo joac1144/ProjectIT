@@ -20,9 +20,8 @@ public class RequestRepository : IRequestsRepository
     {
         var requests = await _context.Requests
             .Include(p => p.Topics)
-            .Include(r => r.Student)
+            .Include(r => r.StudentGroup)
             .Include(p => p.Supervisors)
-            .Include(p => p.ExtraMembers)
             .ToListAsync();
 
         return requests.Select(r =>
@@ -34,8 +33,7 @@ public class RequestRepository : IRequestsRepository
                 Topics = r.Topics,
                 Languages = r.Languages,
                 Programmes = r.Programmes,
-                ExtraMembers = r.ExtraMembers,
-                Student = r.Student,
+                StudentGroup = r.StudentGroup,
                 Supervisors = r.Supervisors,
                 Ects = r.Ects,
                 Semester = r.Semester,
@@ -48,9 +46,8 @@ public class RequestRepository : IRequestsRepository
         var request = await _context.Requests
             .Where(r => r.Id == id)
             .Include(r => r.Topics)
-            .Include(r => r.Student)
+            .Include(r => r.StudentGroup)
             .Include(r => r.Supervisors)
-            .Include(r => r.ExtraMembers)
             .SingleOrDefaultAsync();
 
         if (request == null) return null;
@@ -62,9 +59,8 @@ public class RequestRepository : IRequestsRepository
             DescriptionHtml = request.DescriptionHtml,
             Topics = request.Topics,
             Languages = request.Languages,
-            Student = request.Student,
+            StudentGroup = request.StudentGroup,
             Programmes = request.Programmes,
-            ExtraMembers = request.ExtraMembers,
             Supervisors = request.Supervisors,
             Ects = request.Ects,
             Semester = request.Semester,
@@ -74,17 +70,28 @@ public class RequestRepository : IRequestsRepository
 
     public async Task<int?> CreateAsync(RequestCreateDto request)
     {
-        Student student = _context.Students.Single(s => s.Email == request.StudentEmail);
         var supervisorEmails = request.SupervisorEmails.ToList();
         var supervisors = _context.Supervisors.Where(s => supervisorEmails.Contains(s.Email)).ToList();
-        var ExtraMembersEmails = request.ExtraMembersEmails?.ToList();
-        var ExtraMembers = _context.Students.Where(s => ExtraMembersEmails != null && ExtraMembersEmails.Contains(s.Email)).ToList();
         var topics = new List<Topic>();
         if (request.Topics is not null)
         foreach (var topic in request.Topics)
         {
             topics.Add(_context.Topics.Single(t => t.Name == topic.Name));
         }
+
+        var dbStudents = new List<Student>();
+
+        foreach (var email in request.StudentEmails)
+        {
+            var st = _context.Students.Single(s => s.Email == email);
+
+            dbStudents.Add(st);
+        }
+
+        var studentGroup = new StudentGroup
+        {
+            Students = dbStudents
+        };
 
         var entity = new Request
         {
@@ -93,8 +100,7 @@ public class RequestRepository : IRequestsRepository
             Topics = topics,
             Languages = request.Languages,
             Programmes = request.Programmes,
-            Student = student,
-            ExtraMembers = ExtraMembers,
+            StudentGroup = studentGroup,
             Supervisors = supervisors,
             Ects = request.Ects,
             Semester = request.Semester,
@@ -102,7 +108,7 @@ public class RequestRepository : IRequestsRepository
         };
 
         if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) || entity.Supervisors.IsNullOrEmpty() ||
-            entity.Languages.IsNullOrEmpty() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null || entity.Student is null)
+            entity.Languages.IsNullOrEmpty() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null)
                 throw new ArgumentNullException();
 
         _context.Requests.Add(entity);

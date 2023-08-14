@@ -59,39 +59,13 @@ namespace ProjectIT.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Request",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    DescriptionHtml = table.Column<string>(type: "character varying(4400)", maxLength: 4400, nullable: false),
-                    Languages = table.Column<string>(type: "text", nullable: false),
-                    Programmes = table.Column<string>(type: "text", nullable: false),
-                    StudentId = table.Column<int>(type: "integer", nullable: false),
-                    Ects = table.Column<string>(type: "text", nullable: false),
-                    Semester = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Request", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Request_Student_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Student",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Project",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    DescriptionHtml = table.Column<string>(type: "character varying(4400)", maxLength: 4400, nullable: false),
+                    DescriptionHtml = table.Column<string>(type: "character varying(4800)", maxLength: 4800, nullable: false),
                     Languages = table.Column<string>(type: "text", nullable: false),
                     Programmes = table.Column<string>(type: "text", nullable: false),
                     Ects = table.Column<string>(type: "text", nullable: false),
@@ -133,78 +107,6 @@ namespace ProjectIT.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SupervisorTopic_Topic_TopicsId",
-                        column: x => x.TopicsId,
-                        principalTable: "Topic",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RequestStudent",
-                columns: table => new
-                {
-                    ExtraMembersId = table.Column<int>(type: "integer", nullable: false),
-                    RequestId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RequestStudent", x => new { x.ExtraMembersId, x.RequestId });
-                    table.ForeignKey(
-                        name: "FK_RequestStudent_Request_RequestId",
-                        column: x => x.RequestId,
-                        principalTable: "Request",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RequestStudent_Student_ExtraMembersId",
-                        column: x => x.ExtraMembersId,
-                        principalTable: "Student",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RequestSupervisor",
-                columns: table => new
-                {
-                    ReceivedRequestsId = table.Column<int>(type: "integer", nullable: false),
-                    SupervisorsId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RequestSupervisor", x => new { x.ReceivedRequestsId, x.SupervisorsId });
-                    table.ForeignKey(
-                        name: "FK_RequestSupervisor_Request_ReceivedRequestsId",
-                        column: x => x.ReceivedRequestsId,
-                        principalTable: "Request",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RequestSupervisor_Supervisor_SupervisorsId",
-                        column: x => x.SupervisorsId,
-                        principalTable: "Supervisor",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RequestTopic",
-                columns: table => new
-                {
-                    RequestId = table.Column<int>(type: "integer", nullable: false),
-                    TopicsId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RequestTopic", x => new { x.RequestId, x.TopicsId });
-                    table.ForeignKey(
-                        name: "FK_RequestTopic_Request_RequestId",
-                        column: x => x.RequestId,
-                        principalTable: "Request",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RequestTopic_Topic_TopicsId",
                         column: x => x.TopicsId,
                         principalTable: "Topic",
                         principalColumn: "Id",
@@ -260,12 +162,32 @@ namespace ProjectIT.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Request",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    DescriptionHtml = table.Column<string>(type: "character varying(4400)", maxLength: 4400, nullable: false),
+                    Languages = table.Column<string>(type: "text", nullable: false),
+                    Programmes = table.Column<string>(type: "text", nullable: false),
+                    Ects = table.Column<string>(type: "text", nullable: false),
+                    Semester = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Request", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StudentGroup",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProjectId = table.Column<int>(type: "integer", nullable: true)
+                    ProjectId = table.Column<int>(type: "integer", nullable: true),
+                    RequestId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -274,7 +196,14 @@ namespace ProjectIT.Server.Migrations
                         name: "FK_StudentGroup_Project_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Project",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentGroup_Request_RequestId",
+                        column: x => x.RequestId,
+                        principalTable: "Request",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -301,6 +230,78 @@ namespace ProjectIT.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RequestStudent",
+                columns: table => new
+                {
+                    RequestsId = table.Column<int>(type: "integer", nullable: false),
+                    StudentId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RequestStudent", x => new { x.RequestsId, x.StudentId });
+                    table.ForeignKey(
+                        name: "FK_RequestStudent_Request_RequestsId",
+                        column: x => x.RequestsId,
+                        principalTable: "Request",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RequestStudent_Student_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Student",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RequestSupervisor",
+                columns: table => new
+                {
+                    ReceivedRequestsId = table.Column<int>(type: "integer", nullable: false),
+                    SupervisorsId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RequestSupervisor", x => new { x.ReceivedRequestsId, x.SupervisorsId });
+                    table.ForeignKey(
+                        name: "FK_RequestSupervisor_Request_ReceivedRequestsId",
+                        column: x => x.ReceivedRequestsId,
+                        principalTable: "Request",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RequestSupervisor_Supervisor_SupervisorsId",
+                        column: x => x.SupervisorsId,
+                        principalTable: "Supervisor",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RequestTopic",
+                columns: table => new
+                {
+                    RequestId = table.Column<int>(type: "integer", nullable: false),
+                    TopicsId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RequestTopic", x => new { x.RequestId, x.TopicsId });
+                    table.ForeignKey(
+                        name: "FK_RequestTopic_Request_RequestId",
+                        column: x => x.RequestId,
+                        principalTable: "Request",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RequestTopic_Topic_TopicsId",
+                        column: x => x.TopicsId,
+                        principalTable: "Topic",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Project_CoSupervisorId",
                 table: "Project",
@@ -322,14 +323,9 @@ namespace ProjectIT.Server.Migrations
                 column: "TopicsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Request_StudentId",
-                table: "Request",
-                column: "StudentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RequestStudent_RequestId",
+                name: "IX_RequestStudent_StudentId",
                 table: "RequestStudent",
-                column: "RequestId");
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RequestSupervisor_SupervisorsId",
@@ -345,6 +341,11 @@ namespace ProjectIT.Server.Migrations
                 name: "IX_StudentGroup_ProjectId",
                 table: "StudentGroup",
                 column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentGroup_RequestId",
+                table: "StudentGroup",
+                column: "RequestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentStudentGroup_StudentsId",
@@ -385,13 +386,13 @@ namespace ProjectIT.Server.Migrations
                 name: "Request");
 
             migrationBuilder.DropTable(
-                name: "StudentGroup");
+                name: "Student");
 
             migrationBuilder.DropTable(
                 name: "Topic");
 
             migrationBuilder.DropTable(
-                name: "Student");
+                name: "StudentGroup");
 
             migrationBuilder.DropTable(
                 name: "Project");
