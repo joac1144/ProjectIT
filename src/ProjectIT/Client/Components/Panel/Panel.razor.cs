@@ -11,6 +11,9 @@ public partial class Panel
     public string Width { get; set; } = "300px";
 
     [Parameter]
+    public string Height { get; set; } = "";
+
+    [Parameter]
     public bool InputRequired { get; set; }
 
     [Parameter]
