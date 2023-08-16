@@ -35,6 +35,9 @@ public partial class ProjectDetails
     private string? userEmail;
     private StudentDetailsDto? studentDetails;
 
+    private bool? hasApplied;
+    private StudentGroup? appliedStudentGroup;
+
     protected override async Task OnInitializedAsync()
     {
         project = await anonymousClient.Client.GetFromJsonAsync<ProjectDetailsDto>($"{ApiEndpoints.Projects}/{Id}");
@@ -50,11 +53,17 @@ public partial class ProjectDetails
 
         if (userEmail is not null)
             studentDetails = students.Where(student => student.Email == userEmail).Single();
+
+        hasApplied = project.AppliedStudentGroups?.Any(sg => sg.Students.Select(student => student.Email).Contains(userEmail));
+        if (hasApplied.GetValueOrDefault())
+        {
+            appliedStudentGroup = project.AppliedStudentGroups!.First(sg => sg.Students.Select(student => student.Email).Contains(userEmail));
+        }
     }
 
     private async Task OnAddNewMemberFromSearchClicked()
     {
-        if (!string.IsNullOrWhiteSpace(memberMail) && Regex.IsMatch(memberMail, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+        if (!string.IsNullOrWhiteSpace(memberMail) && Regex.IsMatch(memberMail, @"^([\w.\-]+)@([\w\-]+)((\.(\w{2,}))+)$"))
         {
             if (!extraMembers!.Select(member => member.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase) && students.Select(student => student.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase))
             {

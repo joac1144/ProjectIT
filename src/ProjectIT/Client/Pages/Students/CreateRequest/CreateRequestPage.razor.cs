@@ -153,7 +153,7 @@ public partial class CreateRequestPage
 
     private async Task OnAddNewMemberFromSearchClicked()
     {
-        if (!string.IsNullOrWhiteSpace(memberMail) && Regex.IsMatch(memberMail, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$") ) {
+        if (!string.IsNullOrWhiteSpace(memberMail) && Regex.IsMatch(memberMail, @"^([\w.\-]+)@([\w\-]+)((\.(\w{2,}))+)$") ) {
             if (!ExtraMembers!.Select(member => member.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase) && students.Select(student => student.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase))
             {
                 var newMember = students.Single(student => student.Email.Equals(memberMail, StringComparison.OrdinalIgnoreCase));
