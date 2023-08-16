@@ -1,4 +1,4 @@
-﻿<div style=@($"width: {Width};")>
+﻿<div style=@($"width: {Width}; margin-bottom: 1.5rem;")>
     <div class="bg-black text-white fw-bold fs-6 rounded-top px-3 py-1">
         @Title
         @if (InputRequired)
@@ -6,7 +6,7 @@
             <span style="color: red; font-weight: 400;"> *</span>
         }
     </div>
-    <div class="bg-white bg-opacity-100 shadow px-3 py-2 fw-bold">
+    <div style=@($"height: {Height};") class="bg-white bg-opacity-100 shadow px-3 py-2 fw-bold">
         @ChildContent
     </div>
 </div>

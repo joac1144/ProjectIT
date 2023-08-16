@@ -9,4 +9,5 @@ public static class EnumTranslator
     {
         return enumsResource[$"{enumValue.GetType().Name}.{enumValue}"];
     }
+    
 }

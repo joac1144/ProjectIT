@@ -48,4 +48,12 @@ public class SupervisorsController : ControllerBase
 
         return supervisor;
     }
+
+    [HttpPut]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<int?> Update([FromBody] SupervisorDetailsDto supervisor)
+    {
+        return await _repository.UpdateAsync(supervisor);
+    }
 }

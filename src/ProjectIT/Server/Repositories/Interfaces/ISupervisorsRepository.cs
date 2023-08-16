@@ -9,4 +9,7 @@ public interface ISupervisorsRepository
     Task<SupervisorDetailsDto?> ReadByIdAsync(int? id);
 
     Task<SupervisorDetailsDto?> ReadByUserEmailAsync(string? userEmail);
+
+    Task<int?> UpdateAsync(SupervisorDetailsDto supervisor);
+
 }

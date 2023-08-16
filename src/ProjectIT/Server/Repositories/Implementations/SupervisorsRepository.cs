@@ -75,4 +75,23 @@ public class SupervisorsRepository : ISupervisorsRepository
             Status = supervisor.Status
         };
     }
+
+    public async Task<int?> UpdateAsync(SupervisorDetailsDto supervisor)
+    {
+        var foundSupervisor = await _context.Supervisors.FindAsync(supervisor.Id);
+
+        if(foundSupervisor == null) return null;
+
+        foundSupervisor.FirstName = supervisor.FirstName;
+        foundSupervisor.LastName = supervisor.LastName;
+        foundSupervisor.Email = supervisor.Email;
+        foundSupervisor.Status = supervisor.Status;
+        foundSupervisor.Profession = supervisor.Profession;
+        foundSupervisor.Topics = supervisor.Topics;
+
+        await _context.SaveChangesAsync();
+
+        return supervisor.Id;
+    }
+
 }
