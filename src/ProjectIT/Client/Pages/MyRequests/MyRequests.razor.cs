@@ -31,7 +31,9 @@ public partial class MyRequests
         if (authUser!.IsInRole(AppRoles.Student))
         {
             studentRequests = (await httpClient.GetFromJsonAsync<IEnumerable<RequestDetailsDto>>(ApiEndpoints.Requests))!
-                .Where(request => request.Student.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase));
+                .Where(
+                    request => request.StudentGroup is not null && request.StudentGroup.Students is not null && request.StudentGroup.Students.Select(
+                        student => student.Email).Contains(userEmail));
         }
         else if (authUser!.IsInRole(AppRoles.Supervisor))
         {

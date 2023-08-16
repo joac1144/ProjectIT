@@ -17,7 +17,7 @@ public partial class RequestCard
     public string DescriptionHtml { get; set; } = string.Empty;
 
     [Parameter]
-    public IEnumerable<Student>? ExtraMembers { get; set; }
+    public StudentGroup StudentGroup { get; set; } = null!;
 
     [Parameter]
     public IEnumerable<Programme> Programmes { get; set; } = null!;

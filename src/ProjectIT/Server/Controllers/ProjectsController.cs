@@ -2,6 +2,7 @@
 using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Dtos.Users;
 
 namespace ProjectIT.Server.Controllers;
 
@@ -63,5 +64,13 @@ public class ProjectsController : ControllerBase
         if (response == null) return null;
 
         return response;
+    }
+
+    [HttpPut("{id}/apply")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<int?> AddAppliedStudentGroup(int id, [FromBody]IEnumerable<StudentDetailsDto> students)
+    {
+        return await _repository.AddAppliedStudentGroup(id, students);
     }
 }

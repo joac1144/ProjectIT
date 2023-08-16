@@ -34,8 +34,7 @@ public class RequestsRepositoryTests : IDisposable
                 Topics = new Topic[] { },
                 Languages = new[] { Language.Danish },
                 Programmes = new[] { Programme.BSWU },
-                Student = student2,
-                ExtraMembers = new Student[] { student2 },
+                StudentGroup = new StudentGroup { Students = new Student[] { student2 } },
                 Supervisors = new Supervisor[]
                 {
                     new Supervisor
@@ -77,8 +76,7 @@ public class RequestsRepositoryTests : IDisposable
                 {
                     Programme.BSWU
                 },
-                Student = student3,
-                ExtraMembers = new Student[] {student3},
+                StudentGroup = new StudentGroup { Students = new Student[] { student3 } },
                 Supervisors = new Supervisor[]
                 {
                     new Supervisor
@@ -101,12 +99,20 @@ public class RequestsRepositoryTests : IDisposable
             }
         );
 
-        context.Students.Add(new Student
-        {
-            Email = "hello@itu.dk",
-            FirstName = "Ulrich",
-            LastName = "Kenneth"
-        });
+        context.Students.AddRange(
+            new Student
+            {
+                Email = "hello@itu.dk",
+                FirstName = "Ulrich",
+                LastName = "Kenneth"
+            },
+            new Student
+            {
+                Email = "jlds@itu.dk",
+                FirstName = "Jens",
+                LastName = "Larsen"
+            }
+        );
         
         context.Supervisors.Add(new Supervisor
         {
@@ -162,7 +168,7 @@ public class RequestsRepositoryTests : IDisposable
             {
                 Programme.BSWU
             },
-            ExtraMembersEmails = new string[] {"jlds@itu.dk"},
+            StudentEmails = new string[] { "hello@itu.dk", "jlds@itu.dk" },
             SupervisorEmails = new string[] {"henk@itu.dk"}, 
             Ects = Ects.Bachelor,
             Semester = new()
@@ -170,8 +176,7 @@ public class RequestsRepositoryTests : IDisposable
                 Season = Season.Spring,
                 Year = 2023
             },
-            Status = RequestStatus.Pending,
-            StudentEmail = "hello@itu.dk"
+            Status = RequestStatus.Pending
         };
 
         var resultId = await _requestsRepository.CreateAsync(request);
@@ -191,7 +196,7 @@ public class RequestsRepositoryTests : IDisposable
             Topics = Array.Empty<Topic>(),
             Languages = Array.Empty<Language>(),
             Programmes = Array.Empty<Programme>(),
-            ExtraMembersEmails = Array.Empty<string>(),
+            StudentEmails = new string[] { "hello@itu.dk" },
             SupervisorEmails = Array.Empty<string>(),
             Ects = Ects.Bachelor,
             Semester = new()
@@ -199,8 +204,7 @@ public class RequestsRepositoryTests : IDisposable
                 Season = Season.Spring,
                 Year = 2023
             },
-            Status = RequestStatus.Pending,
-            StudentEmail = "hello@itu.dk"
+            Status = RequestStatus.Pending
         };
 
         await Assert.ThrowsAsync<ArgumentNullException>(() => _requestsRepository.CreateAsync(request));

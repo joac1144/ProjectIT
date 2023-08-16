@@ -28,9 +28,7 @@ public record RequestDetailsDto
     public IEnumerable<Programme> Programmes { get; set; } = null!;
 
     [Required]
-    public Student Student { get; set;} = null!;
-
-    public IEnumerable<Student>? ExtraMembers { get; set; }
+    public StudentGroup StudentGroup { get; set; } = null!;
 
     [Required]
     public IEnumerable<Supervisor> Supervisors { get; set; } = null!;

@@ -34,4 +34,6 @@ public record ProjectUpdateDto
     public Semester Semester { get; set; } = null!;
     
     public Supervisor? CoSupervisor { get; set; }
+
+    public IEnumerable<StudentGroup>? AppliedStudentGroups { get; set; }
 }

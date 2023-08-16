@@ -173,7 +173,7 @@ public partial class CreateRequestPage
 
     private async Task OnAddNewMemberFromSearchClicked()
     {
-        if (!string.IsNullOrWhiteSpace(memberMail) && Regex.IsMatch(memberMail, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$") ) {
+        if (!string.IsNullOrWhiteSpace(memberMail) && Regex.IsMatch(memberMail, @"^([\w.\-]+)@([\w\-]+)((\.(\w{2,}))+)$") ) {
             if (!ExtraMembers!.Select(member => member.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase) && students.Select(student => student.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase))
             {
                 var newMember = students.Single(student => student.Email.Equals(memberMail, StringComparison.OrdinalIgnoreCase));
@@ -200,9 +200,7 @@ public partial class CreateRequestPage
 
     private async void SubmitRequestAsync()
     {
-        var studentNameSplit = authUser?.Identity?.Name?.Split(" ");
-
-        if (requestEcts is null || requestProgrammes is null || requestLanguages is null || requestTopics is null || requestSupervisors is null || request.Title is null || request.Semester is null || request.DescriptionHtml is null || studentNameSplit is null || ExtraMembers is null)
+        if (requestEcts is null || requestProgrammes is null || requestLanguages is null || requestTopics is null || requestSupervisors is null || request.Title is null || request.Semester is null || descriptionHtml is null || ExtraMembers is null)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             return;
@@ -214,8 +212,7 @@ public partial class CreateRequestPage
             Topics = requestTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
             Languages = requestLanguages!,
             Programmes = requestProgrammes!,
-            StudentEmail = userEmail!,
-            ExtraMembersEmails = ExtraMembers?.Select(m => m.Email),
+            StudentEmails = new List<string>() { userEmail! }.Concat(ExtraMembers?.Select(m => m.Email)!),
             SupervisorEmails = requestSupervisors.Select(s => s.Email),
             Ects = (Ects)requestEcts!,
             Semester = request.Semester,

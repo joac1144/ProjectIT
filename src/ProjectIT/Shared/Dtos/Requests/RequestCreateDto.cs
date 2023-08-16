@@ -22,7 +22,8 @@ public record RequestCreateDto
     [Required]
     public IEnumerable<Programme> Programmes { get; set; } = null!;
 
-    public IEnumerable<string>? ExtraMembersEmails { get; set; }
+    [Required]
+    public IEnumerable<string> StudentEmails { get; set; } = null!;
 
     [Required]
     public IEnumerable<string> SupervisorEmails { get; set; } = null!;
@@ -35,7 +36,4 @@ public record RequestCreateDto
 
     [Required]
     public RequestStatus? Status { get; set; }
-
-    [Required]
-    public string StudentEmail { get; set; } = null!;
 }

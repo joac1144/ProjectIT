@@ -5,78 +5,78 @@ namespace ProjectIT.Server.Database;
 
 public static class SeedData
 {
-    private static Topic topic2 = new() { Name = "JavaScript", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic5 = new() { Name = "C++", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic6 = new() { Name = "Machine learning", Category = TopicCategory.ArtificialIntelligence };
-    private static Topic topic7 = new() { Name = "Eye-tracking", Category = TopicCategory.ArtificialIntelligence };
-    private static Topic topic8 = new() { Name = "Cryptography", Category = TopicCategory.Security };
-    private static Topic topic9 = new() { Name = "Penetration testing", Category = TopicCategory.Security };
-    private static Topic topic13 = new() { Name = "Kotlin", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic14 = new() { Name = "C", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic2 = new() { Name = "JavaScript", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic5 = new() { Name = "C++", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic6 = new() { Name = "Machine learning", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic7 = new() { Name = "Eye-tracking", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic8 = new() { Name = "Cryptography", Category = TopicCategory.Security };
+    private static readonly Topic topic9 = new() { Name = "Penetration testing", Category = TopicCategory.Security };
+    private static readonly Topic topic13 = new() { Name = "Kotlin", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic14 = new() { Name = "C", Category = TopicCategory.ProgrammingLanguages };
 
-    // programing ProgrammingLanguages
-    private static Topic topic18 = new() { Name = "Python", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic50 = new() { Name = "Java", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic42 = new() { Name = "Go", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic43 = new() { Name = "Swift", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic44 = new() { Name = "Ruby", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic45 = new() { Name = "TypeScript", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic46 = new() { Name = "C#", Category = TopicCategory.ProgrammingLanguages };
-    private static Topic topic47 = new() { Name = "PHP", Category = TopicCategory.ProgrammingLanguages };
+    // ProgrammingLanguages
+    private static readonly Topic topic18 = new() { Name = "Python", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic50 = new() { Name = "Java", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic42 = new() { Name = "Go", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic43 = new() { Name = "Swift", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic44 = new() { Name = "Ruby", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic45 = new() { Name = "TypeScript", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic46 = new() { Name = "C#", Category = TopicCategory.ProgrammingLanguages };
+    private static readonly Topic topic47 = new() { Name = "PHP", Category = TopicCategory.ProgrammingLanguages };
 
     // Security
-    private static Topic topic10 = new() { Name = "Network Security", Category = TopicCategory.Security };
-    private static Topic topic15 = new() { Name = "Ethical Hacking", Category = TopicCategory.Security };
-    private static Topic topic16 = new() { Name = "Data Encryption", Category = TopicCategory.Security };
-    private static Topic topic19 = new() { Name = "Id & Access Management", Category = TopicCategory.Security };
-    private static Topic topic20 = new() { Name = "Cyber Threat", Category = TopicCategory.Security };
-    private static Topic topic21 = new() { Name = "Blockchain Security", Category = TopicCategory.Security };
+    private static readonly Topic topic10 = new() { Name = "Network Security", Category = TopicCategory.Security };
+    private static readonly Topic topic15 = new() { Name = "Ethical Hacking", Category = TopicCategory.Security };
+    private static readonly Topic topic16 = new() { Name = "Data Encryption", Category = TopicCategory.Security };
+    private static readonly Topic topic19 = new() { Name = "Id & Access Management", Category = TopicCategory.Security };
+    private static readonly Topic topic20 = new() { Name = "Cyber Threat", Category = TopicCategory.Security };
+    private static readonly Topic topic21 = new() { Name = "Blockchain Security", Category = TopicCategory.Security };
 
     // SoftwareEngineering
-    private static Topic topic1 = new() { Name  = "SD Methodologies", Category = TopicCategory.SoftwareEngineering };
-    private static Topic topic11 = new() { Name = "DevOps", Category = TopicCategory.SoftwareEngineering };
-    private static Topic topic12 = new() { Name = "Continuous Integration", Category = TopicCategory.SoftwareEngineering };
-    private static Topic topic29 = new() { Name = "Continuous Delevery", Category = TopicCategory.SoftwareEngineering };
-    private static Topic topic17 = new() { Name = "Software Testing", Category = TopicCategory.SoftwareEngineering };
-    private static Topic topic22 = new() { Name = "Software Architecture", Category = TopicCategory.SoftwareEngineering };
-    private static Topic topic27 = new() { Name = "Version Control", Category = TopicCategory.SoftwareEngineering };
+    private static readonly Topic topic1 = new() { Name = "SD Methodologies", Category = TopicCategory.SoftwareEngineering };
+    private static readonly Topic topic11 = new() { Name = "DevOps", Category = TopicCategory.SoftwareEngineering };
+    private static readonly Topic topic12 = new() { Name = "Continuous Integration", Category = TopicCategory.SoftwareEngineering };
+    private static readonly Topic topic29 = new() { Name = "Continuous Delevery", Category = TopicCategory.SoftwareEngineering };
+    private static readonly Topic topic17 = new() { Name = "Software Testing", Category = TopicCategory.SoftwareEngineering };
+    private static readonly Topic topic22 = new() { Name = "Software Architecture", Category = TopicCategory.SoftwareEngineering };
+    private static readonly Topic topic27 = new() { Name = "Version Control", Category = TopicCategory.SoftwareEngineering };
 
     //ArtificialIntelligence
-    private static Topic topic3 = new() { Name = "NLP", Category = TopicCategory.ArtificialIntelligence };
-    private static Topic topic4 = new() { Name = "Computer Vision", Category = TopicCategory.ArtificialIntelligence };
-    private static Topic topic23 = new() { Name = "Speech Recognition", Category = TopicCategory.ArtificialIntelligence };
-    private static Topic topic24 = new() { Name = "Machine Vision", Category = TopicCategory.ArtificialIntelligence };
-    private static Topic topic25 = new() { Name = "Neural Networks", Category = TopicCategory.ArtificialIntelligence };
-    private static Topic topic26 = new() { Name = "Deep Learning", Category = TopicCategory.ArtificialIntelligence };
-    private static Topic topic28 = new() { Name = "Reinforcement Learning", Category = TopicCategory.ArtificialIntelligence };
-    private static Topic topic31 = new() { Name = "AI in Robotics", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic3 = new() { Name = "NLP", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic4 = new() { Name = "Computer Vision", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic23 = new() { Name = "Speech Recognition", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic24 = new() { Name = "Machine Vision", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic25 = new() { Name = "Neural Networks", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic26 = new() { Name = "Deep Learning", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic28 = new() { Name = "Reinforcement Learning", Category = TopicCategory.ArtificialIntelligence };
+    private static readonly Topic topic31 = new() { Name = "AI in Robotics", Category = TopicCategory.ArtificialIntelligence };
 
-    //DataManagement
-    private static Topic topic30 = new() { Name = "Data Governance", Category = TopicCategory.DataManagement };
-    private static Topic topic32 = new() { Name = "Data Quality Management", Category = TopicCategory.DataManagement };
-    private static Topic topic34 = new() { Name = "Data Integration", Category = TopicCategory.DataManagement };
-    private static Topic topic35 = new() { Name = "Data Warehousing", Category = TopicCategory.DataManagement };
-    private static Topic topic36 = new() { Name = "Data Modeling", Category = TopicCategory.DataManagement };
-    private static Topic topic38 = new() { Name = "Data Analytics", Category = TopicCategory.DataManagement };
-    private static Topic topic40 = new() { Name = "Big Data", Category = TopicCategory.DataManagement };
-    private static Topic topic41 = new() { Name = "Data design", Category = TopicCategory.DataManagement };
+    // DataManagement
+    private static readonly Topic topic30 = new() { Name = "Data Governance", Category = TopicCategory.DataManagement };
+    private static readonly Topic topic32 = new() { Name = "Data Quality Management", Category = TopicCategory.DataManagement };
+    private static readonly Topic topic34 = new() { Name = "Data Integration", Category = TopicCategory.DataManagement };
+    private static readonly Topic topic35 = new() { Name = "Data Warehousing", Category = TopicCategory.DataManagement };
+    private static readonly Topic topic36 = new() { Name = "Data Modeling", Category = TopicCategory.DataManagement };
+    private static readonly Topic topic38 = new() { Name = "Data Analytics", Category = TopicCategory.DataManagement };
+    private static readonly Topic topic40 = new() { Name = "Big Data", Category = TopicCategory.DataManagement };
+    private static readonly Topic topic41 = new() { Name = "Data design", Category = TopicCategory.DataManagement };
 
+    private static readonly Supervisor supervisor1 = new() { FirstName = "John", LastName = "Andersen", Email = "joan@itu.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic30, topic32, topic34, topic35, topic36, topic38, topic40, topic41 }, Status = SupervisorStatus.LimitedSupervision };
+    private static readonly Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "aljo@itu.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic1, topic11, topic12, topic29, topic17, topic22, topic27, topic5 }, Status = SupervisorStatus.Available };
+    private static readonly Supervisor supervisor3 = new() { FirstName = "Emil", LastName = "Smith", Email = "Emsm@itu.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic10, topic15, topic16, topic19, topic20, topic21, topic8, topic50 }, Status = SupervisorStatus.Inactive };
+    private static readonly Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "sale@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic42 }, Status = SupervisorStatus.Available };
+    private static readonly Supervisor supervisor5 = new() { FirstName = "Alaa Imad", LastName = "Abdul-Al", Email = "alia@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic25, topic26, topic28, topic31, topic3, topic4, topic8, topic46 }, Status = SupervisorStatus.Available };
+    private static readonly Supervisor supervisor6 = new() { FirstName = "Emdah", LastName = "Habib", Email = "emdah1@hotmail.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
+    private static readonly Supervisor supervisorTEST = new() { FirstName = "Supervisor Test", LastName = "#1", Email = "testsupervisor@projectititu.onmicrosoft.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13 }, Status = SupervisorStatus.Available };
 
-
-    private static Supervisor supervisor1 = new() { FirstName = "John", LastName = "Andersen", Email = "joan@itu.dk", Profession = SupervisorProfession.AssociateProfessor, Topics = new List<Topic>() { topic30, topic32, topic34, topic35, topic36, topic38, topic40, topic41 }, Status = SupervisorStatus.LimitedSupervision };
-    private static Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "aljo@itu.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic1, topic11, topic12, topic29, topic17, topic22, topic27, topic5 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisor3 = new() { FirstName = "Emil", LastName = "Smith", Email = "Emsm@itu.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic10, topic15, topic16, topic19, topic20, topic21, topic8, topic50 }, Status = SupervisorStatus.Inactive };
-    private static Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "sale@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic42 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisor5 = new() { FirstName = "Alaa Imad", LastName = "Abdul-Al", Email = "alia@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic25, topic26, topic28, topic31, topic3, topic4, topic8, topic46 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisor6 = new() { FirstName = "Emdah", LastName = "Habib", Email = "emdah1@hotmail.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
-    private static Supervisor supervisorTEST = new() { FirstName = "Supervisor Test", LastName = "#1", Email = "testsupervisor@projectititu.onmicrosoft.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13 }, Status = SupervisorStatus.Available };
-
-    private static Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "Josefine@itu.dk" };
-    private static Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "Kristian@itu.dk" };
-    private static Student student3 = new() { FirstName = "Michael", LastName = "Davis", Email = "MichaelD@itu.dk" };
-    private static Student student4 = new() { FirstName = "Olivia", LastName = "Brown", Email = "OliviaB@itu.dk" };
-    private static Student student5 = new() { FirstName = "Alaa", LastName = "Abdul-Al", Email = "alaamohamed@hotmail.dk" };
-    private static Student studentTEST = new() { FirstName = "Student Test", LastName = "#1", Email = "teststudent@projectititu.onmicrosoft.com" };
+    private static readonly Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "Josefine@itu.dk" };
+    private static readonly Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "Kristian@itu.dk" };
+    private static readonly Student student3 = new() { FirstName = "Michael", LastName = "Davis", Email = "MichaelD@itu.dk" };
+    private static readonly Student student4 = new() { FirstName = "Olivia", LastName = "Brown", Email = "OliviaB@itu.dk" };
+    private static readonly Student studentAlaa = new() { FirstName = "Alaa", LastName = "Abdul-Al", Email = "alaamohamed@hotmail.dk" };
+    private static readonly Student studentJoachim = new() { FirstName = "Joachim", LastName = "Kofoed", Email = "jkof@itu.dk" };
+    private static readonly Student studentMohammad = new() { FirstName = "Mohammad", LastName = "Hasham", Email = "mhas@itu.dk" };
+    private static readonly Student studentTEST = new() { FirstName = "Student Test", LastName = "#1", Email = "teststudent@projectititu.onmicrosoft.com" };
 
     private static Project project2 = new() 
     {
@@ -97,8 +97,7 @@ public static class SeedData
             Season = Season.Spring,
             Year = 2024
         },
-        Supervisor = supervisor1,
-        Students = new Student[] { }
+        Supervisor = supervisor1
     };
 
     public static void Seed(ProjectITDbContext context)
@@ -122,7 +121,7 @@ public static class SeedData
     {
         if (!context.Students.Any())
         {
-            context.Students.AddRange(student1, student2, student3, student4, student5, studentTEST);
+            context.Students.AddRange(student1, student2, student3, student4, studentAlaa, studentMohammad, studentTEST);
         }
         context.SaveChanges();
     }
@@ -163,7 +162,13 @@ public static class SeedData
                     },
                     Supervisor = context.Supervisors.First(),
                     CoSupervisor = context.Supervisors.Skip(1).First(),
-                    Students = context.Students.Take(2).ToArray()
+                    AppliedStudentGroups = new StudentGroup[]
+                    {
+                        new StudentGroup
+                        {
+                            Students = new Student[] { studentAlaa, studentJoachim, studentMohammad, studentTEST }
+                        }
+                    }
                 },
                 project2,
                 new Project
@@ -193,8 +198,7 @@ public static class SeedData
                         Topics = new Topic[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
                         Profession = SupervisorProfession.FullProfessor,
                         Status = SupervisorStatus.Available
-                    },
-                    Students = new Student[] { }
+                    }
                 },
                 new Project
                 {
@@ -215,8 +219,7 @@ public static class SeedData
                         Season = Season.Spring,
                         Year = 2023
                     },
-                    Supervisor = supervisor4,
-                    Students = new Student[] { }
+                    Supervisor = supervisor4
                 },
                 new Project
                     {
@@ -235,8 +238,7 @@ public static class SeedData
                             Topics = new[] { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 },
                             Profession = SupervisorProfession.FullProfessor,
                             Status = SupervisorStatus.Available
-                        },
-                        Students = new Student[] { }
+                        }
                     },
                 new Project
                     {
@@ -247,8 +249,7 @@ public static class SeedData
                         Programmes = new[] { Programme.MDS },
                         Ects = Ects.Master,
                         Semester = new Semester { Season = Season.Autumn, Year = 2023 },
-                        Supervisor = supervisor5,
-                        Students = new Student[] { }
+                        Supervisor = supervisor5
                     },
                 new Project
                 {
@@ -260,8 +261,7 @@ public static class SeedData
                     Ects = Ects.Bachelor,
                     Semester = new Semester { Season = Season.Spring, Year = 2024 },
                     Supervisor = supervisor3,
-                    CoSupervisor = supervisor2,
-                    Students = new Student[] { }
+                    CoSupervisor = supervisor2
                 },
                 new Project
                 {
@@ -273,8 +273,7 @@ public static class SeedData
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
                     Supervisor = supervisor2,
-                    CoSupervisor = supervisor1,
-                    Students = new Student[] { }
+                    CoSupervisor = supervisor1
                 },
                 new Project
                 {
@@ -286,8 +285,7 @@ public static class SeedData
                     Ects = Ects.Bachelor,
                     Semester = new Semester { Season = Season.Spring, Year = 2024 },
                     Supervisor = supervisor4,
-                    CoSupervisor = supervisor3,
-                    Students = new Student[] { }
+                    CoSupervisor = supervisor3
                 },
                 new Project
                 {
@@ -298,8 +296,7 @@ public static class SeedData
                     Programmes = new[] { Programme.BSWU },
                     Ects = Ects.Bachelor,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
-                    Supervisor = supervisor1,
-                    Students = new Student[] { }
+                    Supervisor = supervisor1
                 },
                 new Project
                 {
@@ -310,8 +307,7 @@ public static class SeedData
                     Programmes = new[] { Programme.MCS },
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Spring, Year = 2024 },
-                    Supervisor = supervisor2,
-                    Students = new Student[] { }
+                    Supervisor = supervisor2
                 },
                 new Project
                 {
@@ -323,8 +319,7 @@ public static class SeedData
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
                     Supervisor = supervisor2,
-                    CoSupervisor = supervisor4,
-                    Students = new Student[] { }
+                    CoSupervisor = supervisor4
                 },
                 new Project
                 {
@@ -335,8 +330,7 @@ public static class SeedData
                 Programmes = new[] { Programme.MDDIT },
                 Ects = Ects.Master,
                 Semester = new Semester { Season = Season.Spring, Year = 2024 },
-                Supervisor = supervisor3,
-                Students = new Student[] { }
+                Supervisor = supervisor3
                 },
                 new Project
                 {
@@ -348,8 +342,7 @@ public static class SeedData
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
                     Supervisor = supervisor4,
-                    CoSupervisor = supervisor1,
-                    Students = new Student[] { }
+                    CoSupervisor = supervisor1
                 },
                 new Project
                 {
@@ -368,8 +361,7 @@ public static class SeedData
                         Topics = new[] { topic6, topic2 },
                         Profession = SupervisorProfession.FullProfessor,
                         Status = SupervisorStatus.Available
-                    },
-                    Students = new Student[] { }
+                    }
                 },
                 new Project
                 {
@@ -388,8 +380,7 @@ public static class SeedData
                         Topics = new[] { topic6, topic13 },
                         Profession = SupervisorProfession.Lecturer,
                         Status = SupervisorStatus.Available
-                    },
-                    Students = new Student[] { }
+                    }
                 },
                 new Project
                 {
@@ -409,8 +400,7 @@ public static class SeedData
                         Profession = SupervisorProfession.AssociateProfessor,
                         Status = SupervisorStatus.Available
                     },
-                    CoSupervisor = supervisor2,
-                    Students = new Student[] { }
+                    CoSupervisor = supervisor2
                 },
                 new Project
                 {
@@ -421,8 +411,7 @@ public static class SeedData
                     Programmes = new[] { Programme.BGBI },
                     Ects = Ects.Bachelor,
                     Semester = new Semester { Season = Season.Spring, Year = 2024 },
-                    Supervisor = supervisor2,
-                    Students = new Student[] { }
+                    Supervisor = supervisor2
                 },
                 new Project
                 {
@@ -434,8 +423,7 @@ public static class SeedData
                     Ects = Ects.Master,
                     Semester = new Semester { Season = Season.Autumn, Year = 2023 },
                     Supervisor = supervisorTEST,
-                    CoSupervisor = supervisor1,
-                    Students = new Student[] { }
+                    CoSupervisor = supervisor1
                 }
             );
         }

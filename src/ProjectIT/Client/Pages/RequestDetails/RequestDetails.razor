@@ -35,7 +35,7 @@ else
             <div>
                 <Panel Title="Request Info" Width="@panelWidth">
                     <div class="d-flex flex-column py-2">
-                        Programmes: <br>
+                        <b>Programmes:</b>
                         <div class="d-flex flex-wrap programmes">
                             @for (int i = 0; i < request.Programmes.Count(); i++)
                             {
@@ -47,14 +47,13 @@ else
                             }
                         </div>
                         <br>
-                        ECTS Points: <br>
+                        <b>ECTS Points:</b>
                         <p1 class="fw-normal"> @request.Ects.GetTranslatedString(EnumsLocalizer) </p1> <br>
 
-                        Semester: <br>
+                        <b>Semester:</b>
                         <p1 class="fw-normal"> @request.Semester?.Season @request.Semester?.Year </p1> <br>
 
-                        Languages: <br>
-
+                        <b>Languages:</b>
                         @foreach (Language language in request.Languages)
                         {
                             <p1 class="fw-normal"> @language </p1>
@@ -64,7 +63,7 @@ else
             </div>
             <div class="py-2">
                 <Panel Title="Topics" Width="@panelWidth">
-                    <TagsDisplay Tags="request.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                    <TagsDisplay Tags="request.Topics?.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
                 </Panel>
             </div>
         </div>
@@ -75,20 +74,16 @@ else
                     <p class="fw-normal pt-2 text-break">
                         <h6 class="fw-bold"> Info: </h6>
                         <div class="lh-lg">
-                            @request.Student.FullName <br>
-                            @request.Student.Email <br>
-                        </div>
-                        <div class="lh-lg">
-                            @if (request.ExtraMembers is not null && request.ExtraMembers.Any())
+                            @if (request.StudentGroup is not null && request.StudentGroup.Students.Any())
                             {
                                 <hr>
-                                foreach (Student student in request.ExtraMembers.OrderBy(s => s.FullName))
+                                foreach (Student student in request.StudentGroup.Students.OrderBy(s => s.FullName))
                                 {
                                     <div>
                                         @student.FullName <br>
                                         @student.Email <br>
                                     </div>
-                                    if (student != request.ExtraMembers.Last())
+                                    if (student != request.StudentGroup.Students.Last())
                                     {
                                         <hr>
                                     }

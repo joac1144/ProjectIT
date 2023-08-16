@@ -4,6 +4,7 @@ using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Server.Repositories.Interfaces;
 using ProjectIT.Shared.Models;
 using Microsoft.IdentityModel.Tokens;
+using ProjectIT.Shared.Dtos.Users;
 
 namespace ProjectIT.Server.Repositories.Implementations;
 
@@ -22,7 +23,7 @@ public class ProjectsRepository : IProjectsRepository
             .Include(p => p.Topics)
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
-            .Include(p => p.Students)
+            .Include(p => p.AppliedStudentGroups)!.ThenInclude(sg => sg.Students)
             .ToListAsync();
 
         return projects.Select(p => new ProjectDetailsDto
@@ -37,7 +38,7 @@ public class ProjectsRepository : IProjectsRepository
             Semester = p.Semester,
             Supervisor = p.Supervisor,
             CoSupervisor = p.CoSupervisor,
-            Students = p.Students
+            AppliedStudentGroups = p.AppliedStudentGroups
         });
     }
 
@@ -48,7 +49,7 @@ public class ProjectsRepository : IProjectsRepository
             .Include(p => p.Topics)
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
-            .Include(p => p.Students)
+            .Include(p => p.AppliedStudentGroups)!.ThenInclude(sg => sg.Students)
             .SingleOrDefaultAsync();
 
         if (project == null)
@@ -66,7 +67,7 @@ public class ProjectsRepository : IProjectsRepository
             Semester = project.Semester,
             Supervisor = project.Supervisor,
             CoSupervisor = project.CoSupervisor,
-            Students = project.Students
+            AppliedStudentGroups = project.AppliedStudentGroups
         };
     }
 
@@ -125,7 +126,7 @@ public class ProjectsRepository : IProjectsRepository
             .Include(p => p.Topics)
             .Include(p => p.Supervisor)
             .Include(p => p.CoSupervisor)
-            .Include(p => p.Students)
+            .Include(p => p.AppliedStudentGroups)
             .SingleOrDefaultAsync();
 
         if (foundProject == null) return null;
@@ -164,6 +165,7 @@ public class ProjectsRepository : IProjectsRepository
         foundProject.Programmes = project.Programmes;
         foundProject.Ects = project.Ects;
         foundProject.Semester = project.Semester;
+        foundProject.AppliedStudentGroups = project.AppliedStudentGroups;
 
         await _context.SaveChangesAsync();
 
@@ -181,6 +183,41 @@ public class ProjectsRepository : IProjectsRepository
             return null;
 
         _context.Projects.Remove(project);
+
+        await _context.SaveChangesAsync();
+
+        return project.Id;
+    }
+
+    public async Task<int?> AddAppliedStudentGroup(int projectId, IEnumerable<StudentDetailsDto> students)
+    {
+        var project = await _context.Projects
+            .Where(p => p.Id == projectId)
+            .Include(p => p.Topics)
+            .Include(p => p.Supervisor)
+            .Include(p => p.CoSupervisor)
+            .Include(p => p.AppliedStudentGroups)
+            .SingleOrDefaultAsync();
+
+        if (project == null) return null;
+
+        var dbStudents = new List<Student>();
+
+        foreach (var student in students)
+        {
+            var st = _context.Students.Single(s => s.Id == student.Id);
+
+            dbStudents.Add(st);
+        }
+
+        var existingStudentGroups = project.AppliedStudentGroups is null ? new List<StudentGroup>() : project.AppliedStudentGroups.ToList();
+
+        existingStudentGroups.Add(new StudentGroup
+        {
+            Students = dbStudents
+        });
+
+        project.AppliedStudentGroups = existingStudentGroups;
 
         await _context.SaveChangesAsync();
 

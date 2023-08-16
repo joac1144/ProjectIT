@@ -35,7 +35,7 @@
                 }
         @if (projects is not null && projects.Any())
         {
-            var appliedProjects = projects.Where(p => p.Students?.Count() > 0).ToList();
+            var appliedProjects = projects.Where(p => p.AppliedStudentGroups?.Count() > 0).ToList();
 
             if (appliedProjects.Any())
             {
@@ -61,7 +61,7 @@
                 <hr class="w-50 align-self-center">
             }
 
-            var nonAppliedProjects = projects.Where(p => p.Students == null || p.Students.Count() == 0).ToList();
+            var nonAppliedProjects = projects.Where(p => p.AppliedStudentGroups == null || p.AppliedStudentGroups.Count() == 0).ToList();
 
             <Virtualize TItem="ProjectDetailsDto" Items="@nonAppliedProjects" Context="project">
                 <div class="d-flex flex-row align-items-center">

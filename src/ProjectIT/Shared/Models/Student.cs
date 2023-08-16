@@ -1,12 +1,14 @@
 using ProjectIT.Shared.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectIT.Shared.Models;
 
 public class Student : User
 {
-    public Programme? Programme { get; init; } = null!;
+    public Programme? Programme { get; set; }
 
-    public IEnumerable<Project>? AppliedProjects { get; init; }
+    public IEnumerable<Project>? AppliedProjects { get; set; }
 
-    public IEnumerable<Request>? Requests { get; init; }
+    [NotMapped]
+    public IEnumerable<Request>? Requests { get; set; }
 }
