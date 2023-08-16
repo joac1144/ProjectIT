@@ -28,6 +28,7 @@ public class RequestRepository : IRequestsRepository
         return requests.Select(r =>
             new RequestDetailsDto
             {
+                Id = r.Id,
                 Title = r.Title,
                 DescriptionHtml = r.DescriptionHtml,
                 Topics = r.Topics,
@@ -56,6 +57,7 @@ public class RequestRepository : IRequestsRepository
 
         return new RequestDetailsDto
         {
+            Id = request.Id,
             Title = request.Title,
             DescriptionHtml = request.DescriptionHtml,
             Topics = request.Topics,
@@ -99,7 +101,7 @@ public class RequestRepository : IRequestsRepository
             Status = request.Status
         };
 
-        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) ||
+        if (string.IsNullOrWhiteSpace(entity.Title) || string.IsNullOrWhiteSpace(entity.DescriptionHtml) || entity.Supervisors.IsNullOrEmpty() ||
             entity.Languages.IsNullOrEmpty() || entity.Programmes.IsNullOrEmpty() || entity.Semester is null || entity.Student is null)
                 throw new ArgumentNullException();
 

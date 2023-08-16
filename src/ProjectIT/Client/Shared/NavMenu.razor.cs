@@ -20,7 +20,7 @@ public partial class NavMenu
             return PageUrls.Projects;
         else if (url.Contains(PageUrls.Supervisors))
             return PageUrls.Supervisors;
-        else if (url.Contains(PageUrls.MyRequests))
+        else if (url.Contains(PageUrls.MyRequests) || url.Contains(PageUrls.CreateRequest))
             return PageUrls.MyRequests;
         else if (url.Contains(PageUrls.MyProjects))
             return PageUrls.MyProjects;

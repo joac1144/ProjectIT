@@ -43,5 +43,5 @@ public partial class SupervisorDetails
         }
     }
 
-    private void RequestSupervision(NavigationManager navigationManager) => navigationManager.NavigateTo(PageUrls.CreateRequest);
+    private void RequestSupervision(NavigationManager navigationManager) => navigationManager.NavigateTo($"{PageUrls.CreateRequest}?supervisor={Id}");
 }

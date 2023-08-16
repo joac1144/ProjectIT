@@ -30,13 +30,18 @@ public partial class Projects
 
     private readonly int pageSize = 10;
     private int totalPages;
-    private int currentPage;
+    private int currentPage;    
+    private bool isLoading = false;
 
     protected async override Task OnInitializedAsync()
     {
+        isLoading = true;
+
         projects = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))?.ToList()!;
         filteredProjects = projects;
         OnSort(sortSemester);
+
+        isLoading = false;
     }
 
     private void UpdateProjects(int pageNumber)
