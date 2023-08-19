@@ -76,7 +76,9 @@ else
                     <p class="fw-normal pt-2">
                         <h6 class="fw-bold"> Info: </h6>
                         <div class="lh-lg">
-                            @project.Supervisor.FullName <br>
+                            <a href=@($"{PageUrls.Supervisors}/{project.Supervisor.Id}") class="link-dark text-decoration-underline">
+                                @project.Supervisor.FullName <br>
+                            </a>
                             @project.Supervisor.Email <br>
                             @project.Supervisor.Profession.GetTranslatedString(EnumsLocalizer) <br>
                             <span class=@($"border rounded rounded-3 px-2 fs-8 text-white d-inline-block {statusSupervisor} ")>@project.Supervisor.Status.GetTranslatedString(EnumsLocalizer)</span>
@@ -91,7 +93,9 @@ else
                         <p class="fw-normal pt-2">
                             <h6 class="fw-bold"> Info: </h6>
                             <div class="lh-lg">
-                                @project.CoSupervisor?.FullName <br>
+                                <a href=@($"{PageUrls.Supervisors}/{project.CoSupervisor?.Id}") class="link-dark text-decoration-underline">
+                                    @project.CoSupervisor?.FullName <br>
+                                </a>
                                 @project.CoSupervisor?.Email <br>
                                 @project.CoSupervisor?.Profession.GetTranslatedString(EnumsLocalizer) <br>
                                 <span class=@($"border rounded rounded-3 px-2 fs-8 text-white d-inline-block {statusCoSupervisor} ")>@project.CoSupervisor?.Status.GetTranslatedString(EnumsLocalizer)</span>
