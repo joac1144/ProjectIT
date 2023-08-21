@@ -51,7 +51,7 @@ public partial class FilterPanelSimple
             case FilterType.Semester:
                 foreach (Semester semester in semesters)
                 {
-                    Data.Add(new FilterTagSimple { Tag = ((Enum)Enum.Parse(typeof(Season), semester.Season.ToString())).GetTranslatedString(EnumsLocalizer), FilterType = FilterType.Semester });
+                    Data.Add(new FilterTagSimple { Tag = $"{((Enum)Enum.Parse(typeof(Season), semester.Season.ToString())).GetTranslatedString(EnumsLocalizer)} {semester.Year}", FilterType = FilterType.Semester });
                 }
                 break;
             case FilterType.Language:
