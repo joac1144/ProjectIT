@@ -154,9 +154,9 @@ public partial class SupervisorList
             {
                 // Temporary way to fix sorting by status. This should eventually be changed once we optimize everything.
                 filteredBySupervisorStatuses = supervisors!
-                .Intersect(supervisors?.Where(supervisor => ((Enum)Enum.Parse(typeof(SupervisorStatus), supervisor.Status.ToString())).GetTranslatedString(EnumsLocalizer) == filterTag.Tag)!)
-                .Union(filteredBySupervisorStatuses)
-                .ToList();
+                    .Intersect(supervisors?.Where(supervisor => ((Enum)Enum.Parse(typeof(SupervisorStatus), supervisor.Status.ToString())).GetTranslatedString(EnumsLocalizer) == filterTag.Tag)!)
+                    .Union(filteredBySupervisorStatuses)
+                    .ToList();
             }
         }
 
