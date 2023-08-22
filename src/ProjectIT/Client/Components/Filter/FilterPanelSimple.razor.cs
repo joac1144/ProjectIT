@@ -61,9 +61,9 @@ public partial class FilterPanelSimple
                 }
                 break;
             case FilterType.SupervisorStatus:
-                foreach (SupervisorStatus st in Enum.GetValues<SupervisorStatus>())
+                foreach (SupervisorStatus status in Enum.GetValues<SupervisorStatus>())
                 {
-                    Data.Add(new FilterTagSimple { Tag = ((Enum)Enum.Parse(typeof(SupervisorStatus), st.ToString())).GetTranslatedString(EnumsLocalizer), FilterType = FilterType.SupervisorStatus });
+                    Data.Add(new FilterTagSimple { Tag = ((Enum)Enum.Parse(typeof(SupervisorStatus), status.ToString())).GetTranslatedString(EnumsLocalizer), FilterType = FilterType.SupervisorStatus });
                 }
                 break;
         }

@@ -2,6 +2,8 @@ using ProjectIT.Client.Components.Filter;
 using ProjectIT.Client.Components.Search;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Users;
+using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Extensions;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages.SupervisorsList;
@@ -150,10 +152,11 @@ public partial class SupervisorList
             filteredBySupervisorStatuses = new List<SupervisorDetailsDto>();
             foreach (FilterTag filterTag in _activeSupervisorStatuses)
             {
+                // Temporary way to fix sorting by status. This should eventually be changed once we optimize everything.
                 filteredBySupervisorStatuses = supervisors!
-                    .Intersect(supervisors?.Where(supervisor => supervisor.Status.ToString() == filterTag.Tag)!)
-                    .Union(filteredBySupervisorStatuses)
-                    .ToList();
+                .Intersect(supervisors?.Where(supervisor => ((Enum)Enum.Parse(typeof(SupervisorStatus), supervisor.Status.ToString())).GetTranslatedString(EnumsLocalizer) == filterTag.Tag)!)
+                .Union(filteredBySupervisorStatuses)
+                .ToList();
             }
         }
 
