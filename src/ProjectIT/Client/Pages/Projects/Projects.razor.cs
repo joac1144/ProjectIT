@@ -3,6 +3,9 @@ using ProjectIT.Client.Components.Search;
 using ProjectIT.Client.Shared.Enums;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
+using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Extensions;
+using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages.Projects;
@@ -190,8 +193,9 @@ public partial class Projects
             filteredByEcts = new List<ProjectDetailsDto>();
             foreach (FilterTag filterTag in _activeECTSs)
             {
+                // Temporary way to fix sorting by ECTS. This should eventually be changed once we optimize everything.
                 filteredByEcts = projects!
-                    .Intersect(projects?.Where(project => project.Ects.ToString() == filterTag.Tag)!)
+                    .Intersect(projects?.Where(project => ((Enum)Enum.Parse(typeof(Ects), project.Ects.ToString())).GetTranslatedString(EnumsLocalizer) == filterTag.Tag)!)
                     .Union(filteredByEcts)
                     .ToList();
             }
