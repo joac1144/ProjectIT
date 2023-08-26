@@ -4,6 +4,7 @@ using ProjectIT.Client.Http;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
+using ProjectIT.Shared.Extensions;
 using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Client.Components.Filter;
@@ -38,31 +39,31 @@ public partial class FilterPanelSimple
             case FilterType.Programme:
                 foreach (Programme programme in Enum.GetValues<Programme>())
                 {
-                    Data.Add(new FilterTagSimple { Tag = programme.ToString(), FilterType = FilterType.Programme });
+                    Data.Add(new FilterTagSimple { Tag = ((Enum)Enum.Parse(typeof(Programme), programme.ToString())).GetTranslatedString(EnumsLocalizer), FilterType = FilterType.Programme });
                 }
                 break;
             case FilterType.ECTS:
                 foreach (Ects ects in Enum.GetValues<Ects>())
                 {
-                    Data.Add(new FilterTagSimple { Tag = ects.ToString(), FilterType = FilterType.ECTS });
+                    Data.Add(new FilterTagSimple { Tag = ((Enum)Enum.Parse(typeof(Ects), ects.ToString())).GetTranslatedString(EnumsLocalizer), FilterType = FilterType.ECTS });
                 }
                 break;
             case FilterType.Semester:
                 foreach (Semester semester in semesters)
                 {
-                    Data.Add(new FilterTagSimple { Tag = semester.ToString(), FilterType = FilterType.Semester });
+                    Data.Add(new FilterTagSimple { Tag = $"{((Enum)Enum.Parse(typeof(Season), semester.Season.ToString())).GetTranslatedString(EnumsLocalizer)} {semester.Year}", FilterType = FilterType.Semester });
                 }
                 break;
             case FilterType.Language:
                 foreach (Language lang in Enum.GetValues<Language>())
                 {
-                    Data.Add(new FilterTagSimple { Tag = lang.ToString(), FilterType = FilterType.Language });
+                    Data.Add(new FilterTagSimple { Tag = ((Enum)Enum.Parse(typeof(Language), lang.ToString())).GetTranslatedString(EnumsLocalizer), FilterType = FilterType.Language });
                 }
                 break;
             case FilterType.SupervisorStatus:
-                foreach (SupervisorStatus st in Enum.GetValues<SupervisorStatus>())
+                foreach (SupervisorStatus status in Enum.GetValues<SupervisorStatus>())
                 {
-                    Data.Add(new FilterTagSimple { Tag = st.ToString(), FilterType = FilterType.SupervisorStatus });
+                    Data.Add(new FilterTagSimple { Tag = ((Enum)Enum.Parse(typeof(SupervisorStatus), status.ToString())).GetTranslatedString(EnumsLocalizer), FilterType = FilterType.SupervisorStatus });
                 }
                 break;
         }
