@@ -62,7 +62,7 @@ public partial class CreateRequestPage
     private IEnumerable<Language>? requestLanguages;
     private readonly List<Topic> requestTopics = new();
     private readonly List<Supervisor> requestSupervisors = new();
-    private readonly List<Student> ExtraMembers = new();
+    private readonly List<Student> extraMembers = new();
     private readonly int groupMembers = 1;
     private IEnumerable<Topic> topics = null!;
     private IEnumerable<Supervisor> supervisors = null!;
@@ -174,10 +174,10 @@ public partial class CreateRequestPage
     private async Task OnAddNewMemberFromSearchClicked()
     {
         if (!string.IsNullOrWhiteSpace(memberMail) && Regex.IsMatch(memberMail, @"^([\w.\-]+)@([\w\-]+)((\.(\w{2,}))+)$") ) {
-            if (!ExtraMembers!.Select(member => member.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase) && students.Select(student => student.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase))
+            if (!extraMembers!.Select(member => member.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase) && students.Select(student => student.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase))
             {
                 var newMember = students.Single(student => student.Email.Equals(memberMail, StringComparison.OrdinalIgnoreCase));
-                ExtraMembers.Add(newMember);
+                extraMembers.Add(newMember);
                 students = students.Where(student => student.Email != newMember.Email);
             }
             else
@@ -194,13 +194,13 @@ public partial class CreateRequestPage
 
     private void OnSelectedMemberClicked(Student student)
     {
-        ExtraMembers.Remove(student);
+        extraMembers.Remove(student);
         students = students.Append(student);
     }
 
     private async void SubmitRequestAsync()
     {
-        if (requestEcts is null || requestProgrammes is null || requestLanguages is null || requestTopics is null || requestSupervisors is null || request.Title is null || request.Semester is null || descriptionHtml is null || ExtraMembers is null)
+        if (requestEcts is null || requestProgrammes is null || requestLanguages is null || requestTopics is null || requestSupervisors is null || request.Title is null || request.Semester is null || descriptionHtml is null || extraMembers is null)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             return;
@@ -212,7 +212,7 @@ public partial class CreateRequestPage
             Topics = requestTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
             Languages = requestLanguages!,
             Programmes = requestProgrammes!,
-            StudentEmails = new List<string>() { userEmail! }.Concat(ExtraMembers?.Select(m => m.Email)!),
+            StudentEmails = new List<string>() { userEmail! }.Concat(extraMembers?.Select(m => m.Email)!),
             SupervisorEmails = requestSupervisors.Select(s => s.Email),
             Ects = (Ects)requestEcts!,
             Semester = request.Semester,

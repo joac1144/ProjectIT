@@ -1,4 +1,8 @@
+using System.Net.Http.Json;
+using System.Security.Claims;
 using ProjectIT.Client.Constants;
+using ProjectIT.Shared;
+using ProjectIT.Shared.Dtos.Users;
 
 namespace ProjectIT.Client.Shared;
 
@@ -6,13 +10,27 @@ public partial class NavMenu
 {
     private string? activeTab;
 
-    protected override void OnInitialized()
+    private ClaimsPrincipal? authUser;
+    private string? userEmail;
+
+    private SupervisorDetailsDto? supervisor = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        activeTab = GetActiveTabFromUrl(Navigation.Uri);
-        base.OnInitialized();
+        if (firstRender)
+        {
+            await Task.Delay(1000); // simulate authorization process
+            activeTab = GetActiveTabFromUrl(Navigation.Uri);
+            StateHasChanged(); // re-render the component
+        }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
-    private void SetActiveTab(string val) => activeTab = val;
+    private void SetActiveTab(string val)
+    {
+        activeTab = val;
+        StateHasChanged(); // re-render the component
+    }
 
     private string GetActiveTabFromUrl(string url)
     {
@@ -26,7 +44,23 @@ public partial class NavMenu
             return PageUrls.MyProjects;
         else if (url.Contains(PageUrls.AppliedProjects))
             return PageUrls.AppliedProjects;
-        
-        return PageUrls.Projects;
+        else if (url.Contains(PageUrls.MyProfile))
+            return PageUrls.MyProfile;
+
+        return string.Empty;
+    }
+
+    private async void DisplaySupervisorProfile()
+    {
+        authUser = (await authenticationStateProvider.GetAuthenticationStateAsync()).User;
+        userEmail = authUser?.FindFirst("preferred_username")?.Value!;
+        supervisor = await anonymousClient.Client.GetFromJsonAsync<SupervisorDetailsDto>($"{ApiEndpoints.Supervisors}/{userEmail}");
+        Navigation.NavigateTo($"{PageUrls.MyProfile}/{supervisor!.Id}");
+    }
+
+    private void DisplaySupervisorProfileAndSetActiveTab()
+    {
+        DisplaySupervisorProfile();
+        SetActiveTab(PageUrls.MyProfile);
     }
 }

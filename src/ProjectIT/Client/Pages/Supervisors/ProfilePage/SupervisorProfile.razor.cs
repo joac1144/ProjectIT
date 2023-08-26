@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System.Security.Claims;
 using ProjectIT.Shared.Dtos.Users;
 
-namespace ProjectIT.Client.Pages.Supervisors.MyProfileView;
+namespace ProjectIT.Client.Pages.Supervisors.ProfilePage;
 
 public partial class SupervisorProfile
 {
@@ -25,7 +25,6 @@ public partial class SupervisorProfile
     private IEnumerable<string> professions = new List<string>();
 
     private SupervisorProfession sp = new();
-
 
     private SupervisorStatus status = new();
 
@@ -49,9 +48,6 @@ public partial class SupervisorProfile
 
     protected override async Task OnInitializedAsync()
     {
-        
-
-        // userEmail = "testsupervisor @projectititu.onmicrosoft.com";
 
         supervisor = await anonymousClient.Client.GetFromJsonAsync<SupervisorDetailsDto>($"{ApiEndpoints.Supervisors}/{Id}");
 
@@ -137,7 +133,8 @@ public partial class SupervisorProfile
         SortTopics();
     }
 
-    private void SortTopics() => topicsInDropdownList = topicsInDropdownList.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
+    private void SortTopics() => 
+        topicsInDropdownList = topicsInDropdownList.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
 
     private async Task SubmitAsync()
     {
@@ -172,7 +169,6 @@ public partial class SupervisorProfile
                 {
                     return;
                 }
-
                 else
                 {
                     // If the dialog was canceled (Cancel button clicked), do not post the project.

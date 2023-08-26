@@ -33,11 +33,11 @@
 else
 {
     <div class="d-flex flex-row justify-content-center project-details-view">
-        <div class="d-flex flex-column panel-gap">
+        <div class="d-flex flex-column">
             <div>
                 <Panel Title="Project Info" Width="@panelWidth">
                     <div class="d-flex flex-column py-2">
-                        <b>Programmes:</b>
+                        <p class="fw-bold m-0">Programmes:</p>
                         <div class="d-flex flex-wrap programmes">
                             @for (int i = 0; i < project.Programmes.Count(); i++)
                             {
@@ -48,14 +48,13 @@ else
                                 }
                             }
                         </div>
-                        <br>
-                        <b>ECTS Points:</b>
-                        <p1 class="fw-normal"> @project.Ects.GetTranslatedString(EnumsLocalizer) </p1> <br>
+                        <p class="fw-bold m-0 mt-3">ECTS Points:</p>
+                        <p1 class="fw-normal"> @project.Ects.GetTranslatedString(EnumsLocalizer) </p1>
 
-                        <b>Semester:</b>
-                        <p1 class="fw-normal"> @project.Semester?.Season @project.Semester?.Year </p1> <br>
+                        <p class="fw-bold m-0 mt-3">Semester:</p>
+                        <p1 class="fw-normal"> @project.Semester?.Season @project.Semester?.Year </p1>
 
-                        <b>Languages:</b>
+                        <p class="fw-bold m-0 mt-3">Languages:</p>
                         @foreach (Language language in project.Languages)
                         {
                             <p1 class="fw-normal"> @language </p1>
@@ -63,20 +62,33 @@ else
                     </div>
                 </Panel>
             </div>
-            <div class="py-2">
-                <Panel Title="Topics" Width="@panelWidth">
-                    <TagsDisplay Tags="project.Topics?.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
-                </Panel>
-            </div>
+            @if (project.Topics is not null && project.Topics.Any())
+            {
+                <div class="my-2">
+                    <Panel Title="Topics" Width="@panelWidth">
+                        <TagsDisplay Tags="project.Topics?.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                    </Panel>
+                </div>
+            }
+            else
+            {
+                <div class="my-2">
+                    <Panel Title="Topics" Width="@panelWidth">
+                        <div class="d-flex flex-column align-items-center">
+                            <span class="my-3 fs-7 fw-bold text-black-50">No topics</span>
+                        </div>
+                    </Panel>
+                </div>
+            }
         </div>
         <DetailsView Title="@project.Title" Description="@project.DescriptionHtml" />
-        <div class="d-flex flex-column panel-gap">
+        <div class="d-flex flex-column">
             <div>
                 <Panel Title="Supervisor" Width="@panelWidth">
                     <p class="fw-normal pt-2">
                         <h6 class="fw-bold"> Info: </h6>
                         <div class="lh-lg">
-                            <a href=@($"{PageUrls.Supervisors}/{project.Supervisor.Id}") class="link-dark text-decoration-underline">
+                            <a href=@($"{PageUrls.Supervisors}/{project.Supervisor.Id}") class="text-decoration-none">
                                 @project.Supervisor.FullName <br>
                             </a>
                             @project.Supervisor.Email <br>
@@ -88,12 +100,12 @@ else
             </div>
             @if (project.CoSupervisor != null)
             {
-                <div>
+                <div class="mt-2">
                     <Panel Title="Co-supervisor" Width="@panelWidth">
                         <p class="fw-normal pt-2">
                             <h6 class="fw-bold"> Info: </h6>
                             <div class="lh-lg">
-                                <a href=@($"{PageUrls.Supervisors}/{project.CoSupervisor?.Id}") class="link-dark text-decoration-underline">
+                                <a href=@($"{PageUrls.Supervisors}/{project.CoSupervisor?.Id}") class="text-decoration-none">
                                     @project.CoSupervisor?.FullName <br>
                                 </a>
                                 @project.CoSupervisor?.Email <br>
@@ -110,23 +122,24 @@ else
                     {
                         if (appliedStudentGroup is not null)
                         {
+                            var sortedList = appliedStudentGroup.Students.OrderBy(s => s.FullName).ToList();
                             <Panel Title="Applied group" Width="@panelWidth">
-                                @for (int i = 0; i < appliedStudentGroup.Students.Count(); i++)
+                                @for (int i = 0; i < sortedList.Count(); i++)
                                 {
-                                    var student = appliedStudentGroup.Students.ElementAt(i);
+                                    var student = sortedList.ElementAt(i);
                                     <p class="my-0">@student.FullName</p>
                                     <p class="my-1">@student.Email</p>
-                                    if (i < appliedStudentGroup.Students.Count() - 1)
+                                    if (i < sortedList.Count() - 1)
                                     {
                                         <hr class="my-2" />
                                     }
                                 }
-                                <button class="btn btn-danger fw-bold px-2 my-2">Cancel</button>
+                                <button class="btn btn-danger fw-bold px-2 my-2 mt-4 w-100">Cancel</button>
                             </Panel>
                         }
                         else
                         {
-                            <button @onclick="(() => modal?.OpenModal())" type="button" class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#groupMembersModal">
+                            <button @onclick="(() => modal?.OpenModal())" type="button" class="btn btn-success fw-bold mt-2 mb-4" data-bs-toggle="modal" data-bs-target="#groupMembersModal">
                                 Apply
                             </button>
                         }
@@ -135,7 +148,7 @@ else
                     {
                         if (context.User.Identity!.Name == project.Supervisor.FullName)
                         {
-                            <button @onclick="(() => EditProject(project.Id))" type="button" class="btn fw-bold edit-btn-orange"> 
+                            <button @onclick="(() => EditProject(project.Id))" type="button" class="btn fw-bold edit-btn-orange mt-2 mb-4"> 
                                 Edit
                             </button>
                         }
@@ -150,24 +163,27 @@ else
         <p class="mb-3">Please choose who, if any, you will be working with.</p>
         @for (int i = 0; i < groupMembers && i < 5; i++)
         {
-            <div class="d-flex flex-row">
-                <form class="d-flex gap-2" onsubmit="event.preventDefault()">
+            <div class="d-flex flex-row mb-2">
+                <form class="d-flex align-items-center gap-3" onsubmit="event.preventDefault()">
                     <SearchField PlaceholderText="Add member mail..." ShowSearchIcon="false" Width="14.5rem" OnInputValueChanged="(newVal) => memberMail = newVal" />
-                    <button type="reset" value="reset" class="bg-transparent border-0" style="width: 28px;" @onclick=OnAddNewMemberFromSearchClicked>
-                        <img class="rotate-45 w-100 h-70" src="images/baseline_clear_24.png" alt="Add new member">
+                    <button type="reset" value="reset" class="d-flex flex-row align-items-center btn btn-success" @onclick=OnAddNewMemberFromSearchClicked>
+                        <p class="m-0 fs-8">Add member</p>
                     </button>
                 </form>
             </div>
             <div class="d-flex flex-start flex-wrap flex-column">
                 @foreach (var member in extraMembers)
                 {
-                    <div class="d-flex mt-2 justify-content-between">
+                    <div class="d-flex justify-content-between">
                         <span>@member?.FirstName @member?.LastName</span>
-                        <button class="bg-transparent border-0" style="width: 28px;" @onclick="() => OnSelectedMemberClicked(member!)">
+                        <button class="bg-transparent border-0 add-width" @onclick="() => OnSelectedMemberClicked(member!)">
                             <img class="w-100 h-70" src="images/baseline_clear_24.png" alt="Clear">
                         </button>
                     </div>
-                    <hr />
+                    if (member != extraMembers.Last())
+                    {
+                        <hr class="my-2" />
+                    }
                 }
             </div>
         }

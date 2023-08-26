@@ -20,7 +20,7 @@
             @if (context.User.IsInRole(AppRoles.Student))
             {
                 <div class="d-flex justify-content-between my-4">
-                    <button class="rounded rounded-3 bg-black text-white px-4" @onclick="@(() => navigationManager.NavigateTo("/create-Request"))">Create Project Request</button>
+                    <button class="rounded rounded-3 bg-black text-white px-4" @onclick="@(() => navigationManager.NavigateTo(PageUrls.CreateRequest))">Create Project Request</button>
                 
                     <RadzenDropDown TValue="string"
                                     @bind-Value=@sortValue

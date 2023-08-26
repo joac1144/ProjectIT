@@ -1,6 +1,9 @@
 @using ProjectIT.Client.Components.Login
 @using ProjectIT.Client.Constants;
+@using ProjectIT.Client.Http;
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject AnonymousClient anonymousClient
 
 <body>
     <nav class="navbar">
@@ -12,7 +15,7 @@
             <h5 class="text-white p-3"> IT UNIVERSITETET I KØBENHAVN</h5>
             <AuthorizeView>
                 <NotAuthorized>
-                    <div class="d-flex ms-4 gap-2">
+                    <div class="d-flex ms-4">
                         <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
                             <div>
                                 <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.Projects ? "active" : "")}") href="@PageUrls.Projects" @onclick="() => SetActiveTab(PageUrls.Projects)">Projects</a>
@@ -26,7 +29,7 @@
                     </div>
                 </NotAuthorized>
                 <Authorized>
-                    <div class="d-flex ms-4 gap-2">
+                    <div class="d-flex ms-4">
                         <div class="decoration-on-hover dimensions d-flex align-items-center justify-content-center">
                             <div>
                                 <a class=@($"text-decoration-none py-4 fw-bold text-white {(activeTab == PageUrls.Projects ? "active" : "")}") href="@PageUrls.Projects" @onclick="() => SetActiveTab(PageUrls.Projects)">Projects</a>
@@ -68,6 +71,23 @@
                 </Authorized>
             </AuthorizeView>
         </div>
-        <LoginDisplay />
-    </nav>    
+        <div class="d-flex flex-row align-items-center">
+            <LoginDisplay />
+
+            <AuthorizeView>
+                <Authorized>
+                    @if(context.User.IsInRole(AppRoles.Supervisor))
+                    {
+                        <div class="decoration-on-hover profile-page-icon-dimensions d-flex align-items-center justify-content-center">
+                            <div>
+                                <a class=@($"pt-4 padding-profile cursor-pointer {(activeTab == PageUrls.MyProfile ? "active" : "")}") @onclick="DisplaySupervisorProfileAndSetActiveTab"> 
+                                    <img class="img-height" src="images/profile_icon.png" /> 
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </nav>
 </body>

@@ -21,20 +21,20 @@
             <div class="d-flex flex-row mx-3 info-panel-items-horizontal-gap">
                 <div class="d-flex flex-column">
                     <h6 class="fw-bold"> First Name </h6>
-                    <input @bind-value="supervisor.FirstName" class="my-2 mb-3 rounded px-2" type="text"
+                    <input @bind-value="supervisor.FirstName" class="my-2 mb-3 rounded px-2" disabled type="text"
                         placeholder="Supervisor name....">
                     <h6 class="fw-bold"> Email </h6>
-                    <input @bind-value="supervisor.Email" class="my-2 rounded px-2 mb-3" type="text"
+                    <input @bind-value="supervisor.Email" class="my-2 rounded px-2 mb-3" disabled type="text"
                         placeholder="Supervisor email....">
                     <h6 class="fw-bold"> Profession </h6>
 
-                    <RadzenDropDown TValue="string" Data=@professions Placeholder="Select profession"
+                    <RadzenDropDown TValue="string" Data=@professions Disabled Placeholder="Select profession"
                         Change="@(args => OnProfessionsSelectedInList(args))"
                         Style="height: 29px; font-size: 11px; border: 1px solid black;" />
                 </div>
                 <div class="d-flex flex-column">
                     <h6 class="fw-bold"> Last Name </h6>
-                    <input @bind-value="supervisor.LastName" class="my-2 mb-3 rounded px-2" type="text"
+                    <input @bind-value="supervisor.LastName" class="my-2 mb-3 rounded px-2" disabled type="text"
                         placeholder="Supervisor surname....">
                     <h6 class="fw-bold mb-3"> Status </h6>
                     <RadzenDropDown TValue="string" Data=@statuses Placeholder="Select status"

@@ -51,7 +51,7 @@ public partial class ProjectDetails
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         userEmail = authUser?.FindFirst("preferred_username")?.Value!;
 
-        if (userEmail is not null)
+        if (userEmail is not null && students.Any(student => student.Email == userEmail))
             studentDetails = students.Where(student => student.Email == userEmail).Single();
 
         hasApplied = project.AppliedStudentGroups?.Any(sg => sg.Students.Select(student => student.Email).Contains(userEmail));
