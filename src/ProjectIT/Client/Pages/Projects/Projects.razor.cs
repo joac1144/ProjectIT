@@ -5,7 +5,6 @@ using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Extensions;
-using ProjectIT.Shared.Models;
 using System.Net.Http.Json;
 
 namespace ProjectIT.Client.Pages.Projects;
