@@ -272,23 +272,26 @@ public partial class CreateProjectPage
 
     private void CancelProjectAsync() => navManager.NavigateTo(PageUrls.MyProjects);
 
+    //this methods is using chat gpt to generate topics for the project description
     private async Task GenerateTopicsFromDiscription() 
     {
         try
         {
             if (!string.IsNullOrEmpty(descriptionHtml) && descriptionHtml.Length> 1500)
             {
+                //creating the query 
                 var query = "create one worded relevant topics from above description and put it in a json list using follwoing json structure: " +
                 "[{\"Name\": \"Risk Assessment\"}]. " +
                 "Each topic should not have more than 25 characters."+
                 "dont create more than 7 topic";
-
+                
+                //removing all the html stof from the description
                 var strippedString = Regex.Replace(descriptionHtml, "<[^>]*>", " ");
                 foreach (var (key, val) in _htmlEntitiesTable)
                 {
                     strippedString = strippedString.Replace(key, val);
                 }
-
+                // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;
@@ -304,7 +307,6 @@ public partial class CreateProjectPage
                 if (response.IsSuccessStatusCode)
                 {
                     await JSRuntime.InvokeAsync<string>("alert", "Topics created");
-                    //navManager.NavigateTo(PageUrls.MyRequests);
                 }
                 else
                 {
@@ -324,7 +326,7 @@ public partial class CreateProjectPage
         }
 
     }
-
+    //this method is creating chat gpt to create title for the project description.
     private async Task GenerateTitleFromDescription() 
     {
         try
@@ -347,8 +349,7 @@ public partial class CreateProjectPage
 
                 if (response.IsSuccessStatusCode)
                 {
-                    await JSRuntime.InvokeAsync<string>("alert", "title created");
-                    //navManager.NavigateTo(PageUrls.MyRequests);
+                    await JSRuntime.InvokeAsync<string>("alert", "Title created");
                 }
                 else
                 {
