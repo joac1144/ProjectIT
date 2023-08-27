@@ -8,9 +8,8 @@
         foreach (FilterTagSimple filterTag in Data)
         {
             <div class="form-check fw-normal">
-                <input 
-                    class="form-check-input rounded-0" 
-                    type="checkbox" 
+                <input class="form-check-input rounded-0 shadow-none border border-black"
+                       type="checkbox" 
                     id=@($"{filterTag.Tag}Checkbox") 
                     @onchange="(e) => CheckboxChecked(e, filterTag)" 
                     checked="@filterTag.Selected">
