@@ -10,11 +10,6 @@ public partial class NavMenu
 {
     private string? activeTab;
 
-    private ClaimsPrincipal? authUser;
-    private string? userEmail;
-
-    private SupervisorDetailsDto? supervisor = new();
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -48,19 +43,5 @@ public partial class NavMenu
             return PageUrls.MyProfile;
 
         return string.Empty;
-    }
-
-    private async void DisplaySupervisorProfile()
-    {
-        authUser = (await authenticationStateProvider.GetAuthenticationStateAsync()).User;
-        userEmail = authUser?.FindFirst("preferred_username")?.Value!;
-        supervisor = await anonymousClient.Client.GetFromJsonAsync<SupervisorDetailsDto>($"{ApiEndpoints.Supervisors}/{userEmail}");
-        Navigation.NavigateTo($"{PageUrls.MyProfile}/{supervisor!.Id}");
-    }
-
-    private void DisplaySupervisorProfileAndSetActiveTab()
-    {
-        DisplaySupervisorProfile();
-        SetActiveTab(PageUrls.MyProfile);
     }
 }

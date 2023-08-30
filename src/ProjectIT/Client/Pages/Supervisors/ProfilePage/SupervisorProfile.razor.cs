@@ -10,103 +10,80 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using System.Security.Claims;
 using ProjectIT.Shared.Dtos.Users;
+using ProjectIT.Client.Constants;
 
 namespace ProjectIT.Client.Pages.Supervisors.ProfilePage;
 
 public partial class SupervisorProfile
 {
-
-    [Parameter]
-    public int Id { get; set; }
-
-
-    private SupervisorProfession profession = new();
-
     private IEnumerable<string> professions = new List<string>();
-
-    private SupervisorProfession sp = new();
-
-    private SupervisorStatus status = new();
-
     private IEnumerable<string> statuses = new List<string>();
-
-    private SupervisorStatus ss = new();
-
-
-    private readonly List<Topic> supervisorTopics = new();
-
+    private SupervisorStatus supervisorStatus;
     private RadzenDropDown<Topic>? topicSelector;
-
     private IEnumerable<Topic> topics = null!;
-
     private IEnumerable<Topic> topicsInDropdownList = null!;
-
     private string topicName = string.Empty;
+    private SupervisorDetailsDto supervisor = new();
+    private List<Topic> supervisorTopics = new();
 
-    private SupervisorDetailsDto? supervisor = new();
-
+    private ClaimsPrincipal? authUser;
+    private bool isLoading = false;
 
     protected override async Task OnInitializedAsync()
     {
+        authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
+        string userEmail = authUser?.FindFirst("preferred_username")?.Value!;
 
-        supervisor = await anonymousClient.Client.GetFromJsonAsync<SupervisorDetailsDto>($"{ApiEndpoints.Supervisors}/{Id}");
+        isLoading = true;
+        supervisor = (await httpClient.GetFromJsonAsync<IEnumerable<SupervisorDetailsDto>>(ApiEndpoints.Supervisors))!.Where(supervisor => supervisor.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase)).FirstOrDefault()!;
+        isLoading = false;
 
-        professions = Enum.GetValues<SupervisorProfession>().ToList().Select(sp => sp.GetTranslatedString(EnumsLocalizer)).ToList();
+        supervisorTopics.Concat(supervisor?.Topics?.ToList() ?? new List<Topic>());
 
-        statuses = Enum.GetValues<SupervisorStatus>().ToList().Select(ss => ss.GetTranslatedString(EnumsLocalizer)).ToList();
+        await GetStatusAndProfessionAndTopicsData();
+        SortTopics();
+    }
 
-        topics = (await anonymousClient.Client.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
+    private async Task GetStatusAndProfessionAndTopicsData()
+    {
+        topics = (await httpClient.GetFromJsonAsync<IEnumerable<Topic>>(ApiEndpoints.Topics))!;
+        if (topics == null)
+            throw new Exception("Could not load topics");
 
         topicsInDropdownList = topics;
 
+        professions = Enum.GetValues<SupervisorProfession>().ToList().Select(sp => sp.GetTranslatedString(EnumsLocalizer)).ToList();
+        statuses = Enum.GetValues<SupervisorStatus>().ToList().Select(ss => ss.GetTranslatedString(EnumsLocalizer)).ToList();
     }
 
-    private void OnProfessionsSelectedInList(object args)
+    private void OnProfessionsSelectedInList(object value)
     {
-        string professionAsString = args.ToString()!;
-
-        Dictionary<string, SupervisorProfession> mappings = new(StringComparer.OrdinalIgnoreCase)
+        if (value is not null)
         {
-            { "Assistant professor", SupervisorProfession.AssistantProfessor },
-            { "Associate professor", SupervisorProfession.AssociateProfessor },
-            { "Full professor", SupervisorProfession.FullProfessor },
-            { "Adjunct professor", SupervisorProfession.AdjunctProfessor },
-            { "External professor", SupervisorProfession.ExternalProfessor },
-            { "Research professor", SupervisorProfession.ResearchProfessor },
-            { "Phd student", SupervisorProfession.PhdStudent },
-            { "Lecturer", SupervisorProfession.Lecturer },
-        };
-
-        if (mappings.TryGetValue(professionAsString, out SupervisorProfession supervisorProfession))
-        {
-            Console.WriteLine("Done!");
-            profession = supervisorProfession;
-        }
-        else
-        {
-            Console.WriteLine("Invalid input string.");
+            string val = (string)value;
+            var professions = Enum.GetValues<SupervisorProfession>();
+            foreach (var profession in professions)
+            {
+                if (profession.GetTranslatedString(EnumsLocalizer) == val)
+                {
+                    supervisor.Profession = profession;
+                    break;
+                }
+            }
         }
     }
 
-    private void OnStatusesSelectedInList(object args)
+    private void OnStatusesSelectedInList(object value)
     {
-        string statusAsString = args.ToString()!;
-
-        Dictionary<string, SupervisorStatus> mappings = new(StringComparer.OrdinalIgnoreCase)
+        string val = (string)value;
+        var statuses = Enum.GetValues<SupervisorStatus>();
+        foreach (var status in statuses)
         {
-            { "Limited supervision", SupervisorStatus.LimitedSupervision},
-            { "Available", SupervisorStatus.Available},
-            {"Inactive",SupervisorStatus.Inactive}
-        };
-
-        if (mappings.TryGetValue(statusAsString, out SupervisorStatus supervisorStatus))
-        {
-            Console.WriteLine("Done!");
-            status = supervisorStatus;
-        }
-        else
-        {
-            Console.WriteLine("Invalid input string.");
+            if (status.GetTranslatedString(EnumsLocalizer) == val)
+            {
+                supervisor.Status = status;
+                break;
+            }
         }
     }
 
@@ -121,9 +98,25 @@ public partial class SupervisorProfile
         }
     }
 
-    private void AddTopic(string topicName)
+    private void OnAddNewTopicFromSearchClicked() 
     {
-        supervisorTopics.Add(new Topic { Name = topicName });
+        if (!string.IsNullOrWhiteSpace(topicName)) {
+            if (topicsInDropdownList.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
+            {
+                var newTopic = topicsInDropdownList.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
+                supervisorTopics.Add(newTopic);
+                topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
+                topicSelector?.Reset();
+            }
+            if (topicName.Length > 25)
+            {
+                JSRuntime.InvokeAsync<string>("alert", "Topic should not be more than 25 characters");
+                topicName = string.Empty;
+            }
+            else
+                supervisorTopics.Add(new Topic { Name = topicName });
+        }
+        topicName = string.Empty;
     }
 
     private void OnSelectedTopicClicked(Topic topic)
@@ -140,24 +133,33 @@ public partial class SupervisorProfile
     {
         try
         {
-            
             var supervisorDetailsDto = new SupervisorDetailsDto()
             {
-                Id = Id,
+                Id = supervisor.Id,
                 FirstName = supervisor.FirstName,
                 LastName = supervisor.LastName,
                 Email = supervisor.Email,
-                Status = status,
-                Profession = profession,
+                Status = supervisor.Status,
+                Profession = supervisor.Profession,
                 Topics = supervisorTopics
             };
 
             IEnumerable<Topic> newTopics = supervisorTopics.Where(topic => topic.Category is null);
+            List<string> addedTopicNames = supervisorTopics.Select(t => t.Name).ToList();
 
-            if (newTopics.Any())
+            foreach (var topic in newTopics)
+            {
+                if (!addedTopicNames.Contains(topic.Name))
+                {
+                    // Add the topic to the SupervisorTopic table
+                    addedTopicNames.Add(topic.Name);
+                }
+            }
+
+            if (addedTopicNames.Any())
             {
                 // A new topic was added, open dialog to confirm and to add category.
-                var result = await SelectTopicCategoryDialog(newTopics);
+                var result = await SelectTopicCategoryDialog(addedTopicNames.Select(name => new Topic { Name = name }));
 
                 // Check if the dialog was confirmed (Save button clicked)
                 // and update the project's topics with the modified newProject topics.
@@ -181,7 +183,6 @@ public partial class SupervisorProfile
             if (response.IsSuccessStatusCode)
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Supervisor profile updated successfully!");
-                navigationManager.NavigateTo("/");
             }
             else
             {
@@ -196,7 +197,7 @@ public partial class SupervisorProfile
 
     private void DiscardChanges()
     {
-        navigationManager.NavigateTo("/");
+        navigationManager.NavigateTo(PageUrls.MyProfile, forceLoad: true);
     }
 
 }

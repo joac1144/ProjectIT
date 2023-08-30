@@ -80,7 +80,7 @@
                     {
                         <div class="decoration-on-hover profile-page-icon-dimensions d-flex align-items-center justify-content-center">
                             <div>
-                                <a class=@($"pt-4 padding-profile cursor-pointer {(activeTab == PageUrls.MyProfile ? "active" : "")}") @onclick="DisplaySupervisorProfileAndSetActiveTab"> 
+                                <a class=@($"pt-4 padding-profile cursor-pointer {(activeTab == PageUrls.MyProfile ? "active" : "")}") href="@PageUrls.MyProfile" @onclick="() => SetActiveTab(PageUrls.MyProfile)"> 
                                     <img class="img-height" src="images/profile_icon.png" /> 
                                 </a>
                             </div>

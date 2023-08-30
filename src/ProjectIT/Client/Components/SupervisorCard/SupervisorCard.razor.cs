@@ -25,8 +25,8 @@ public partial class SupervisorCard
             return Status switch
             {
                 SupervisorStatus.Available => "bg-success",
-                SupervisorStatus.Inactive => "bg-warning",
-                SupervisorStatus.LimitedSupervision => "bg-danger",
+                SupervisorStatus.LimitedSupervision => "bg-warning",
+                SupervisorStatus.Inactive => "bg-danger",
                 _ => "bg-secondary"
             };
         }

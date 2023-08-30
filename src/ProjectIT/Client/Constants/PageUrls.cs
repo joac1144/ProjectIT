@@ -19,7 +19,5 @@ public class PageUrls
     // Accessible for supervisors.
     public const string CreateProject = "/create-project";
     public const string MyProjects = "/my-projects";
-    public const string MyProfile = "/supervisor-profile";
-    public const string MyProfileDetails = "/supervisor-profile/{id:int}";
-
+    public const string MyProfile = "/my-profile";
 }

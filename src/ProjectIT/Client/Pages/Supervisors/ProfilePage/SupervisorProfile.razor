@@ -1,85 +1,135 @@
-@attribute [Route(PageUrls.MyProfileDetails)]
+@attribute [Route(PageUrls.MyProfile)]
+@using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Constants;
-@using ProjectIT.Client.Components.Panel;
+@using ProjectIT.Client.Components.Panel
+@using ProjectIT.Client.Components.Tag
 @using ProjectIT.Shared.Enums;
 @using ProjectIT.Client.Http;
 @using ProjectIT.Shared.Models;
 @using ProjectIT.Client.Components.Filter;
+@using Microsoft.AspNetCore.Authorization;
 @inject IStringLocalizer<EnumsResource> EnumsLocalizer
 @inject AnonymousClient anonymousClient
+@inject HttpClient httpClient
 @inject DialogService DialogService
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigationManager
-@inject AuthenticationStateProvider authenticationStateProvider
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = AppRoles.Supervisor)]
 
-<div style="gap: 120px;" class="d-flex flex-row">
-    <img class="profile-page-icon" src="images/profile_icon.png" alt="Avatar">
-    <div class="d-flex flex-column my-3 editform">
-        <h4 class="fw-bold"> @supervisor.FullName </h4>
-        <br>
-        <Panel Title="Info" Width="700px" Height="250px;">
-            <div class="d-flex flex-row mx-3 info-panel-items-horizontal-gap">
-                <div class="d-flex flex-column">
-                    <h6 class="fw-bold"> First Name </h6>
-                    <input @bind-value="supervisor.FirstName" class="my-2 mb-3 rounded px-2" disabled type="text"
-                        placeholder="Supervisor name....">
-                    <h6 class="fw-bold"> Email </h6>
-                    <input @bind-value="supervisor.Email" class="my-2 rounded px-2 mb-3" disabled type="text"
-                        placeholder="Supervisor email....">
-                    <h6 class="fw-bold"> Profession </h6>
-
-                    <RadzenDropDown TValue="string" Data=@professions Disabled Placeholder="Select profession"
-                        Change="@(args => OnProfessionsSelectedInList(args))"
-                        Style="height: 29px; font-size: 11px; border: 1px solid black;" />
-                </div>
-                <div class="d-flex flex-column">
-                    <h6 class="fw-bold"> Last Name </h6>
-                    <input @bind-value="supervisor.LastName" class="my-2 mb-3 rounded px-2" disabled type="text"
-                        placeholder="Supervisor surname....">
-                    <h6 class="fw-bold mb-3"> Status </h6>
-                    <RadzenDropDown TValue="string" Data=@statuses Placeholder="Select status"
-                        Change="@(args => OnStatusesSelectedInList(args))"
-                        Style="height: 29px; font-size: 11px; border: 1px solid black;" />
-                </div>
-            </div>
-        </Panel>
-        <br>
-        <Panel Title="Topics" Width="700px;" Height="4 rem;">
-            <div class="d-flex flex-row topics-panel-items-horizontal-gap">
-                @if (topicsInDropdownList is not null)
-                {
-                    <RadzenDropDown @ref="topicSelector" TValue="Topic" Placeholder="Select topics" AllowFiltering="true"
-                        ClearSearchAfterSelection="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                        Data="topicsInDropdownList" Change="OnTopicSelectedInList" ValueProperty="Name" TextProperty="Name"
-                        class="flex-grow-1">
-                        <Template>
-                            @context.Name
-                        </Template>
-                    </RadzenDropDown>
-                }
-                <div class="d-flex flex-row create-topic-button-gap">
-                    <input @bind-value=topicName class="my-2 rounded px-2" type="text"
-                        placeholder="Create new topics....">
-                    <button @onclick=@(e => AddTopic(topicName)) class="bg-transparent border border-white"> <img
-                            class="image-size" src="images/addition-thick-symbol.png" alt=""> </button>
-                </div>
-            </div>
-            @foreach (var topic in supervisorTopics)
-            {
-                <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false"
-                    OnClicked="() => OnSelectedTopicClicked(topic)" />
-            }
-        </Panel>
-        <br>
-        <div class="d-flex flex-row justify-content-around action-buttons-gap">
-            <button @onclick="SubmitAsync" type="button" class="btn btn-primary button-width bg-success text-white">
-                Save </button>
-            <button @onclick="DiscardChanges" type="button" class="btn btn-primary button-width bg-danger text-white">
-                Discard
-            </button>
+@if (isLoading)
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div style="gap: 10rem;" class="d-flex flex-row justify-content-center">
+        <div class="d-flex flex-column">
+            <img class="profile-page-icon" src=@("https://img.freepik.com/free-icon/user_318-159711.jpg") alt="Avatar">
+        </div>
+        <div class="d-flex flex-column my-3">
+            <div class="editform">
+                <h2 class="fw-bold mb-4"> @supervisor!.FullName </h2>
+                <Panel Title="Info" Width="700px" Height="270px;">
+                    <div class="d-flex flex-row mx-4 justify-content-between">
+                        <div class="d-flex flex-column">
+                            <label class="fw-bold my-2">First name</label>
+                            <input type="text" @bind-value="supervisor.FirstName" class="border rounded-1 fs-7 px-3 mb-4"
+                                style="width: 15rem; height: 2.2rem" disabled />
+                            <label class="fw-bold mb-2">Email</label>
+                            <input type="text" @bind-value="supervisor.Email" class="border rounded-1 fs-7 px-3 mb-1"
+                                style="width: 15rem; height: 2.2rem" disabled />
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label class="fw-bold my-2">Last name</label>
+                            <input type="text" @bind-value="supervisor.LastName" class="border rounded-1 fs-7 px-3 mb-4"
+                                style="width: 15rem; height: 2.2rem" disabled />
+                            <label class="fw-bold mb-2">Profession</label>
+                            <RadzenDropDown class="border" Style="height: 2.2rem;" TValue="string" Data=@professions Disabled
+                                Placeholder="@supervisor.Profession.GetTranslatedString(EnumsLocalizer)" Change="@(args => OnProfessionsSelectedInList(args))" />
+                        </div>
+                    </div>
+                    <hr class="my-3">
+                    <div class="d-flex flex-column ms-4">
+                        <label class="fw-bold mb-2">Status</label>
+                        <RadzenRadioButtonList class="mb-2" TValue="string" Data="statuses" Value=supervisor.Status.GetTranslatedString(EnumsLocalizer) TextProperty="StringValue"
+                            ValueProperty="SupervisorStatus" Orientation="Orientation.Horizontal" Change="@(args => OnStatusesSelectedInList(args))" />
+                    </div>
+                </Panel>
+                <br>
+                <Panel Title="Topics" Width="700px;" Height="4rem;">
+                    <div class="d-flex flex-row justify-content-between my-2 topics-panel-items-horizontal-gap">
+                        @if (topicsInDropdownList is not null)
+                        {
+                            <RadzenDropDown @ref="topicSelector" 
+                                            TValue="Topic" 
+                                            Placeholder="Select topics" 
+                                            AllowFiltering="true"
+                                            ClearSearchAfterSelection="true" 
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            Data=@topicsInDropdownList
+                                            Change="OnTopicSelectedInList" 
+                                            ValueProperty="Name" 
+                                            TextProperty="Name"
+                                            class="flex-grow-1"
+                                            Style="height: 2.2rem;" >
+                                <Template>
+                                    @context.Name
+                                </Template>
+                            </RadzenDropDown>
+                        }
+                        <div class="d-flex flex-row gap-2">
+                            <form class="d-flex gap-2" onsubmit="event.preventDefault()">
+                                <SearchField PlaceholderText="Create new topics..." ShowSearchIcon="false" Width="14.5rem" Height="2.2rem" OnInputValueChanged="(newVal) => topicName = newVal" />
+                                <button type="reset" value="reset" class="bg-transparent border-0 add-image-size" @onclick=OnAddNewTopicFromSearchClicked>
+                                    <img class="rotate-45 w-100 h-70" src="images/baseline_clear_24.png" alt="Add new topic">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-start flex-wrap py-2">
+                        @if (supervisorTopics is not null)
+                        {
+                            <TagsDisplay Tags="supervisorTopics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" TagsAreClickable OnTagClicked="(FilterTag tag) => OnSelectedTopicClicked(supervisorTopics.FirstOrDefault(topic => topic.Name == tag.Tag)!)" />
+                            
+                            @* @foreach (var topic in supervisorTopics)
+                            {
+                                <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false" OnClicked="() => OnSelectedTopicClicked(topic)" />
+                            } *@
+                        }
+                    </div>
+
+                    @* @if (supervisor.Topics is not null)
+                    {
+                        <div class="d-flex flex-start flex-wrap py-2">
+                            <TagsDisplay Tags="supervisor.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                        </div>
+                    }
+                    
+                    @foreach (var topic in supervisorTopics)
+                    {
+                        <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false"
+                            OnClicked="() => OnSelectedTopicClicked(topic)" />
+                    } *@
+
+                </Panel>
+                <br>
+                <div class="d-flex flex-row justify-content-around action-buttons-gap">
+                    <button @onclick="SubmitAsync" type="button" class="btn btn-primary border-0 button-width bg-success text-white">
+                        Save </button>
+                    <button @onclick="DiscardChanges" type="button" class="btn btn-primary border-0 button-width bg-danger text-white">
+                        Discard
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     async Task<dynamic> SelectTopicCategoryDialog(IEnumerable<Topic> newTopics)
