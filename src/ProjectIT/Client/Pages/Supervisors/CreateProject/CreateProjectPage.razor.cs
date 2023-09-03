@@ -134,9 +134,14 @@ public partial class CreateProjectPage
 
     private void SortSupervisors() => coSupervisors = coSupervisors.OrderBy(s => s.FullName);
 
-    private void OnAddNewTopicFromSearchClicked() 
+    private void OnAddNewTopicFromSearchClicked()
     {
         if (!string.IsNullOrWhiteSpace(topicName)) {
+            if (topicName.Length > 25)
+            {
+                JSRuntime.InvokeAsync<string>("alert", "Topic should not be more than 25 characters");
+                topicName = string.Empty;
+            }
             if (topicsInDropdownList.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
             {
                 var newTopic = topicsInDropdownList.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
@@ -144,13 +149,10 @@ public partial class CreateProjectPage
                 topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
                 topicSelector?.Reset();
             }
-            if (topicName.Length > 25)
-            {
-                JSRuntime.InvokeAsync<string>("alert", "Topic should not be more than 25 characters");
-                topicName = string.Empty;
-            }
             else
+            {
                 projectTopics.Add(new Topic { Name = topicName });
+            }
         }
         topicName = string.Empty;
     }
@@ -169,7 +171,7 @@ public partial class CreateProjectPage
 
     private async Task SubmitProjectAsync()
     {
-        if (projectEcts is null || projectProgrammes is null || projectLanguages is null || projectTopics.Count == 0 || projectCoSupervisor is null || project.Title is null || project.Semester is null)
+        if (projectEcts is null || projectProgrammes is null || projectLanguages is null || project.Title is null || project.Semester is null)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             return;
