@@ -36,13 +36,23 @@
                 style="width: 45rem; height: 2.5rem" @bind-Value="project!.Title" placeholder="Title here..." />
             <p class="fs-7 fw-bold">Description <span style="color: red; font-weight: 400;"> *</span></p>
             <RadzenHtmlEditor @bind-Value="@descriptionHtml" class="border border-0 shadow mb-4" style="height:40rem; width: 45rem" />
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-danger fw-bold py-1 btn-style" @onclick="CancelProjectAsync">
-                    Cancel
-                </button>
-                <button type="submit" class="btn btn-success fw-bold py-1 ms-3 btn-style">
-                    Post
-                </button>
+            <div class="d-flex">
+                <div class="d-flex gap-3">
+                    <button type="button" class="btn btn-dark fw-bold py-1 ai-btn-style" @onclick="GenerateTitleFromDescription">
+                        AI Title
+                    </button>
+                    <button type="button" class="btn btn-dark fw-bold py-1 ai-btn-style" @onclick="GenerateTopicsFromDiscription">
+                        AI Topics
+                    </button>
+                </div>
+                <div class="d-flex justify-content-end w-100">
+                    <button type="button" class="btn btn-danger fw-bold py-1 btn-style" @onclick="CancelProjectAsync">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-success fw-bold py-1 ms-3 btn-style">
+                        Post
+                    </button>
+                </div>
             </div>
         </EditForm>
     </div>
@@ -69,7 +79,7 @@
                 TextProperty="StringValue" ValueProperty="Language" Orientation="Orientation.Vertical" />
         </Panel>
         <Panel Title="Topics">
-            <div class="d-flex flex-column gap-2">
+            <div class="d-flex flex-column gap-2 mb-2">
                 @if (topicsInDropdownList is not null)
                 {
                     <RadzenDropDown @ref="topicSelector" 
