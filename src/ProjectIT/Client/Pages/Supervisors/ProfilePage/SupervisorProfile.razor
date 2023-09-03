@@ -27,11 +27,11 @@
 }
 else
 {
-    <div style="gap: 10rem;" class="d-flex flex-row justify-content-center">
-        <div class="d-flex flex-column">
+    <div>
+        <div class="d-flex flex-column position-absolute align-items-center w-30">
             <img class="profile-page-icon" src=@("https://img.freepik.com/free-icon/user_318-159711.jpg") alt="Avatar">
         </div>
-        <div class="d-flex flex-column my-3">
+        <div class="d-flex flex-column align-items-center w-100 my-3">
             <div class="editform">
                 <h2 class="fw-bold mb-4"> @supervisor!.FullName </h2>
                 <Panel Title="Info" Width="700px" Height="270px;">
@@ -65,15 +65,15 @@ else
                     <div class="d-flex flex-row justify-content-between my-2 topics-panel-items-horizontal-gap">
                         @if (topicsInDropdownList is not null)
                         {
-                            <RadzenDropDown @ref="topicSelector" 
-                                            TValue="Topic" 
-                                            Placeholder="Select topics" 
+                            <RadzenDropDown @ref="topicSelector"
+                                            TValue="Topic"
+                                            Placeholder="Select topics"
                                             AllowFiltering="true"
-                                            ClearSearchAfterSelection="true" 
+                                            ClearSearchAfterSelection="true"
                                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                             Data=@topicsInDropdownList
-                                            Change="OnTopicSelectedInList" 
-                                            ValueProperty="Name" 
+                                            Change="OnTopicSelectedInList"
+                                            ValueProperty="Name"
                                             TextProperty="Name"
                                             class="flex-grow-1"
                                             Style="height: 2.2rem;" >
@@ -93,9 +93,9 @@ else
                     </div>
 
                     <div class="d-flex flex-start flex-wrap py-2">
-                        @if (supervisorTopics is not null)
+                        @if (existingSupervisorTopics.Union(newTopics) is not null)
                         {
-                            <TagsDisplay Tags="supervisorTopics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" TagsAreClickable OnTagClicked="(FilterTag tag) => OnSelectedTopicClicked(supervisorTopics.FirstOrDefault(topic => topic.Name == tag.Tag)!)" />
+                            <TagsDisplay Tags="existingSupervisorTopics.Union(newTopics).Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" TagsAreClickable OnTagClicked="(FilterTag tag) => OnSelectedTopicClicked(existingSupervisorTopics.Union(newTopics).FirstOrDefault(topic => topic.Name == tag.Tag)!)" />
                             
                             @* @foreach (var topic in supervisorTopics)
                             {
@@ -154,15 +154,14 @@ else
             }
         </div>
         <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center"
-            JustifyContent="JustifyContent.SpaceBetween">
+            JustifyContent="JustifyContent.End">
             <RadzenStack Orientation="Orientation.Horizontal">
-                <RadzenButton Text="Save" Click="() => ds.Close(true)" Style="width: 80px; background-color:black" />
                 <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+                <RadzenButton Text="Save" Click="() => ds.Close(true)" Style="width: 80px; background-color:black" />
             </RadzenStack>
         </RadzenStack>
     </RadzenStack>
 );
-
         return result;
     }
 }

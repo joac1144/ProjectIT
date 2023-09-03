@@ -24,7 +24,10 @@ public partial class SupervisorProfile
     private IEnumerable<Topic> topicsInDropdownList = null!;
     private string topicName = string.Empty;
     private SupervisorDetailsDto supervisor = new();
-    private List<Topic> supervisorTopics = new();
+    //private List<Topic> supervisorTopics = new();
+
+    private List<Topic> existingSupervisorTopics = new();
+    private readonly List<Topic> newTopics = new();
 
     private ClaimsPrincipal? authUser;
     private bool isLoading = false;
@@ -38,7 +41,8 @@ public partial class SupervisorProfile
         supervisor = (await httpClient.GetFromJsonAsync<IEnumerable<SupervisorDetailsDto>>(ApiEndpoints.Supervisors))!.Where(supervisor => supervisor.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase)).FirstOrDefault()!;
         isLoading = false;
 
-        supervisorTopics.Concat(supervisor?.Topics?.ToList() ?? new List<Topic>());
+        //supervisorTopics = supervisor.Topics?.ToList() ?? new List<Topic>();
+        existingSupervisorTopics = supervisor.Topics?.ToList() ?? new List<Topic>();
 
         await GetStatusAndProfessionAndTopicsData();
         SortTopics();
@@ -50,7 +54,7 @@ public partial class SupervisorProfile
         if (topics == null)
             throw new Exception("Could not load topics");
 
-        topicsInDropdownList = topics;
+        topicsInDropdownList = topics.Where(topic => !existingSupervisorTopics.Select(t => t.Name).Contains(topic.Name));
 
         professions = Enum.GetValues<SupervisorProfession>().ToList().Select(sp => sp.GetTranslatedString(EnumsLocalizer)).ToList();
         statuses = Enum.GetValues<SupervisorStatus>().ToList().Select(ss => ss.GetTranslatedString(EnumsLocalizer)).ToList();
@@ -92,38 +96,45 @@ public partial class SupervisorProfile
         if (value is not null)
         {
             string val = (string)value;
-            supervisorTopics.Add(topicsInDropdownList.Single(t => t.Name == val));
+            existingSupervisorTopics.Add(topicsInDropdownList.Single(t => t.Name == val));
             topicsInDropdownList = topicsInDropdownList.Where(t => t.Name != val);
             topicSelector?.Reset();
         }
     }
 
-    private void OnAddNewTopicFromSearchClicked() 
+    private void OnAddNewTopicFromSearchClicked()
     {
         if (!string.IsNullOrWhiteSpace(topicName)) {
-            if (topicsInDropdownList.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
-            {
-                var newTopic = topicsInDropdownList.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
-                supervisorTopics.Add(newTopic);
-                topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
-                topicSelector?.Reset();
-            }
             if (topicName.Length > 25)
             {
                 JSRuntime.InvokeAsync<string>("alert", "Topic should not be more than 25 characters");
                 topicName = string.Empty;
             }
+            if (topicsInDropdownList.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
+            {
+                var newTopic = topicsInDropdownList.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
+                existingSupervisorTopics.Add(newTopic);
+                topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
+                topicSelector?.Reset();
+            }
             else
-                supervisorTopics.Add(new Topic { Name = topicName });
+                newTopics.Add(new Topic { Name = topicName });
         }
         topicName = string.Empty;
     }
 
     private void OnSelectedTopicClicked(Topic topic)
     {
-        supervisorTopics.Remove(topic);
-        topicsInDropdownList = topicsInDropdownList.Append(topic);
-        SortTopics();
+        if (newTopics.Contains(topic))
+        {
+            newTopics.Remove(topic);
+        }
+        else
+        {
+            existingSupervisorTopics.Remove(topic);
+            topicsInDropdownList = topicsInDropdownList.Append(topic);
+            SortTopics();
+        }
     }
 
     private void SortTopics() => 
@@ -133,7 +144,7 @@ public partial class SupervisorProfile
     {
         try
         {
-            var supervisorDetailsDto = new SupervisorDetailsDto()
+            var supervisorDetails = new SupervisorDetailsDto()
             {
                 Id = supervisor.Id,
                 FirstName = supervisor.FirstName,
@@ -141,35 +152,20 @@ public partial class SupervisorProfile
                 Email = supervisor.Email,
                 Status = supervisor.Status,
                 Profession = supervisor.Profession,
-                Topics = supervisorTopics
+                Topics = existingSupervisorTopics.Union(newTopics)
             };
 
-            IEnumerable<Topic> newTopics = supervisorTopics.Where(topic => topic.Category is null);
-            List<string> addedTopicNames = supervisorTopics.Select(t => t.Name).ToList();
-
-            foreach (var topic in newTopics)
-            {
-                if (!addedTopicNames.Contains(topic.Name))
-                {
-                    // Add the topic to the SupervisorTopic table
-                    addedTopicNames.Add(topic.Name);
-                }
-            }
-
-            if (addedTopicNames.Any())
+            if (newTopics.Any())
             {
                 // A new topic was added, open dialog to confirm and to add category.
-                var result = await SelectTopicCategoryDialog(addedTopicNames.Select(name => new Topic { Name = name }));
+                var result = await SelectTopicCategoryDialog(newTopics);
 
                 // Check if the dialog was confirmed (Save button clicked)
                 // and update the project's topics with the modified newProject topics.
                 if (result == true)
                 {
-                    Console.WriteLine("Categories added to topic(s)");
-                }
-                if (result == null)
-                {
-                    return;
+                    existingSupervisorTopics = existingSupervisorTopics.Concat(newTopics).ToList();
+                    newTopics.Clear();
                 }
                 else
                 {
@@ -178,7 +174,7 @@ public partial class SupervisorProfile
                 }
             }
 
-            var response = await anonymousClient.Client.PutAsJsonAsync($"{ApiEndpoints.Supervisors}", supervisorDetailsDto);
+            var response = await anonymousClient.Client.PutAsJsonAsync($"{ApiEndpoints.Supervisors}", supervisorDetails);
 
             if (response.IsSuccessStatusCode)
             {
@@ -199,5 +195,4 @@ public partial class SupervisorProfile
     {
         navigationManager.NavigateTo(PageUrls.MyProfile, forceLoad: true);
     }
-
 }
