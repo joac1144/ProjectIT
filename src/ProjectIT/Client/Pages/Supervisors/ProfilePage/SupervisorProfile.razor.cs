@@ -22,6 +22,7 @@ public partial class SupervisorProfile
     private RadzenDropDown<Topic>? topicSelector;
     private IEnumerable<Topic> topics = null!;
     private IEnumerable<Topic> topicsInDropdownList = null!;
+    private IEnumerable<Topic> topicsInDropdownListInitial = null!;
     private string topicName = string.Empty;
     private SupervisorDetailsDto supervisor = new();
     //private List<Topic> supervisorTopics = new();
@@ -55,6 +56,7 @@ public partial class SupervisorProfile
             throw new Exception("Could not load topics");
 
         topicsInDropdownList = topics.Where(topic => !existingSupervisorTopics.Select(t => t.Name).Contains(topic.Name));
+        topicsInDropdownListInitial = topicsInDropdownList;
 
         professions = Enum.GetValues<SupervisorProfession>().ToList().Select(sp => sp.GetTranslatedString(EnumsLocalizer)).ToList();
         statuses = Enum.GetValues<SupervisorStatus>().ToList().Select(ss => ss.GetTranslatedString(EnumsLocalizer)).ToList();
@@ -193,6 +195,13 @@ public partial class SupervisorProfile
 
     private void DiscardChanges()
     {
-        navigationManager.NavigateTo(PageUrls.MyProfile, forceLoad: true);
+        // Reset topics
+        existingSupervisorTopics = supervisor.Topics?.ToList() ?? new List<Topic>();
+        newTopics.Clear();
+        topicsInDropdownList = topicsInDropdownListInitial;
+        SortTopics();
+
+        // Reset status dropdown
+        supervisor.Status = supervisorStatus;
     }
 }

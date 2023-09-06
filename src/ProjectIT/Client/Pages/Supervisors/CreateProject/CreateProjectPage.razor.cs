@@ -228,11 +228,6 @@ public partial class CreateProjectPage
             {
                 project.Topics = newProject.Topics.ToList();
             }
-            if (result == null)
-            {
-                return;
-            }
-
             else
             {
                 // If the dialog was canceled (Cancel button clicked), do not post the project.
@@ -293,6 +288,7 @@ public partial class CreateProjectPage
                 {
                     strippedString = strippedString.Replace(key, val);
                 }
+                
                 // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
@@ -328,6 +324,7 @@ public partial class CreateProjectPage
         }
 
     }
+
     //this method is creating chat gpt to create title for the project description.
     private async Task GenerateTitleFromDescription() 
     {

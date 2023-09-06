@@ -103,22 +103,7 @@ else
                             } *@
                         }
                     </div>
-
-                    @* @if (supervisor.Topics is not null)
-                    {
-                        <div class="d-flex flex-start flex-wrap py-2">
-                            <TagsDisplay Tags="supervisor.Topics.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
-                        </div>
-                    }
-                    
-                    @foreach (var topic in supervisorTopics)
-                    {
-                        <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false"
-                            OnClicked="() => OnSelectedTopicClicked(topic)" />
-                    } *@
-
                 </Panel>
-                <br>
                 <div class="d-flex flex-row justify-content-end action-buttons-gap">
                     <button @onclick="DiscardChanges" type="button" class="btn btn-primary border-0 button-width bg-danger text-white">
                         Discard
