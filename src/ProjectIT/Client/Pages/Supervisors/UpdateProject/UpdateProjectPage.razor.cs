@@ -1,9 +1,11 @@
 using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
 using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using ProjectIT.Client.Constants;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
@@ -60,6 +62,25 @@ public partial class UpdateProjectPage
     private RadzenDropDown<Supervisor>? coSupervisorSelector;
 
     private string? topicName;
+
+    private readonly Dictionary<string, string> _htmlEntitiesTable = new()
+    {
+        { "&nbsp;", " " },
+        { "&amp;", "&" },
+        { "&quot;", "\"" },
+        { "&apos;", "'" },
+        { "&lt;", "<" },
+        { "&gt;", ">" },
+        { "&cent;", "¢" },
+        { "&pound;", "£" },
+        { "&yen;", "¥" },
+        { "&euro;", "€" },
+        { "&copy;", "©" },
+        { "&reg;", "®" },
+        { "&trade;", "™" },
+        { "&times;", "×" },
+        { "&divide;", "÷" }
+    };
 
     private ClaimsPrincipal? authUser;
     private string? userEmail;
@@ -240,5 +261,102 @@ public partial class UpdateProjectPage
     private void CancelProjectAsync()
     {
         navManager.NavigateTo(PageUrls.MyProjects);
+    }
+
+    //this methods is using chat gpt to generate topics for the project description
+    private async Task GenerateTopicsFromDescription() 
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(projectToBeUpdated!.DescriptionHtml) && projectToBeUpdated.DescriptionHtml.Length> 1500)
+            {
+                //creating the query 
+                var query = "create one worded relevant topics from above description and put it in a json list using follwoing json structure: " +
+                "[{\"Name\": \"Risk Assessment\"}]. " +
+                "Each topic should not have more than 25 characters."+
+                "dont create more than 7 topic";
+
+                //removing all the html stof from the description
+                var strippedString = Regex.Replace(projectToBeUpdated.DescriptionHtml, "<[^>]*>", " ");
+                foreach (var (key, val) in _htmlEntitiesTable)
+                {
+                    strippedString = strippedString.Replace(key, val);
+                }
+                // calling the chat gbt api using the description and the query
+                var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
+                var filterout = response.Content.ReadAsStringAsync();
+                var resutl = filterout.Result;
+
+                var aiTopics = JsonConvert.DeserializeObject<List<Topic>>(resutl);
+
+                if (aiTopics != null && aiTopics.Count > 0)
+                {
+
+                    projectTopics?.AddRange(aiTopics);
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await JSRuntime.InvokeAsync<string>("alert", "Topics created");
+                }
+                else
+                {
+                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong!");
+                }
+
+            }
+            else
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure the description is longer than 1500 characters.");
+            }
+
+        }
+        catch
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+        }
+
+    }
+    //this method is creating chat gpt to create title for the project description.
+    private async Task GenerateTitleFromDescription() 
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(projectToBeUpdated!.DescriptionHtml) && projectToBeUpdated.DescriptionHtml.Length > 1500)
+            {
+                var query = "create project title from above description and return it as string. Project title should not be more than 50 characters";
+
+                var strippedString = Regex.Replace(projectToBeUpdated.DescriptionHtml, "<[^>]*>", " ");
+                foreach (var (key, val) in _htmlEntitiesTable)
+                {
+                    strippedString = strippedString.Replace(key, val);
+                }
+
+                var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
+                var filterout = response.Content.ReadAsStringAsync();
+                var resutl = filterout.Result;
+
+                projectToBeUpdated!.Title = resutl;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await JSRuntime.InvokeAsync<string>("alert", "Title created");
+                }
+                else
+                {
+                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong!");
+                }
+
+            }
+            else
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure the description is longer than 1500 characters.");
+            }
+
+        }
+        catch
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+        }
     }
 }
