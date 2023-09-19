@@ -111,9 +111,7 @@ public partial class UpdateProjectPage
         if (topics == null)
             throw new Exception("Could not load topics");
 
-        topicsInDropdownList = topics;
-
-        topicsInDropdownList = topicsInDropdownList.Except(projectToBeUpdated!.Topics!);
+        topicsInDropdownList = topics.Except(projectToBeUpdated!.Topics!);
 
         coSupervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!.Where(supervisor => supervisor.Email != userEmail);
         if (coSupervisors == null)
@@ -122,7 +120,7 @@ public partial class UpdateProjectPage
 
     private void OnTopicSelectedInList(object value)
     {
-        if (value != null)
+        if (value is not null)
         {
             string val = (string)value;
             projectTopics?.Add(topicsInDropdownList.Single(t => t.Name == val));

@@ -104,10 +104,11 @@
                 </div>
             </div>
             @if(projectTopics is not null)
-            foreach (var topic in projectTopics)
             {
-                <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false"
-            OnClicked="() => OnSelectedTopicClicked(topic)" />
+                foreach (var topic in projectTopics)
+                {
+                    <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false" OnClicked="() => OnSelectedTopicClicked(topic)" />
+                }
             }
         </Panel>
         <Panel Title="CoSupervisor">

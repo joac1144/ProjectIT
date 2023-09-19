@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjectIT.Server.Database;
 using ProjectIT.Shared.Dtos.Users;
 using ProjectIT.Server.Repositories.Interfaces;
+using ProjectIT.Shared.Models;
 
 namespace ProjectIT.Server.Repositories.Implementations;
 
@@ -82,12 +83,29 @@ public class SupervisorsRepository : ISupervisorsRepository
 
         if(foundSupervisor == null) return null;
 
+        if (supervisor.Topics != null)
+        { 
+            var topics = new List<Topic>();
+            foreach (var topic in supervisor.Topics)
+            {
+                var dbTopic = _context.Topics.SingleOrDefault(t => t.Name == topic.Name);
+                if (dbTopic == null)
+                {
+                    topics.Add(new Topic { Name = topic.Name, Category = topic.Category });
+                }
+                else
+                {
+                    topics.Add(dbTopic);
+                }
+            }
+            foundSupervisor.Topics = topics.Any() ? topics : null;
+        }
+
         foundSupervisor.FirstName = supervisor.FirstName;
         foundSupervisor.LastName = supervisor.LastName;
         foundSupervisor.Email = supervisor.Email;
         foundSupervisor.Status = supervisor.Status;
         foundSupervisor.Profession = supervisor.Profession;
-        foundSupervisor.Topics = supervisor.Topics;
 
         await _context.SaveChangesAsync();
 
