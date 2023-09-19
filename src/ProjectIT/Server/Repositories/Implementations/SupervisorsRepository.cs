@@ -79,7 +79,10 @@ public class SupervisorsRepository : ISupervisorsRepository
 
     public async Task<int?> UpdateAsync(SupervisorDetailsDto supervisor)
     {
-        var foundSupervisor = await _context.Supervisors.FindAsync(supervisor.Id);
+        var foundSupervisor = await _context.Supervisors
+            .Where(s => s.Id == supervisor.Id)
+            .Include(s => s.Topics)
+            .SingleOrDefaultAsync();
 
         if(foundSupervisor == null) return null;
 
@@ -111,5 +114,4 @@ public class SupervisorsRepository : ISupervisorsRepository
 
         return supervisor.Id;
     }
-
 }
