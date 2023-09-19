@@ -131,8 +131,14 @@ public class ProjectsRepository : IProjectsRepository
 
         if (foundProject == null) return null;
 
-        if (foundProject.CoSupervisor?.Email != project.CoSupervisor?.Email)
+        if (project.CoSupervisor is null)
+        {
+            foundProject.CoSupervisor = null;
+        }
+        else if (project.CoSupervisor.Email != foundProject.CoSupervisor?.Email)
+        {
             foundProject.CoSupervisor = _context.Supervisors.SingleOrDefault(s => s.Email == project.CoSupervisor!.Email);
+        }
 
         if (project.Topics != null)
         { 

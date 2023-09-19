@@ -1,13 +1,7 @@
-using System.Net;
 using System.Net.Http.Json;
 using System.Security.Claims;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Localization;
-using Microsoft.Graph.Models;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using ProjectIT.Client.Constants;
@@ -16,7 +10,6 @@ using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Extensions;
 using ProjectIT.Shared.Models;
-using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
 
 namespace ProjectIT.Client.Pages.Supervisors.CreateProject;
@@ -240,7 +233,7 @@ public partial class CreateProjectPage
             await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters.");
             project.Title = string.Empty;
         }
-        if (newProject.DescriptionHtml.Length > 4800)
+        else if (newProject.DescriptionHtml.Length > 4800)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 2400 characters.");
         }
@@ -310,19 +303,16 @@ public partial class CreateProjectPage
                 {
                     await JSRuntime.InvokeAsync<string>("alert", "Something went wrong!");
                 }
-
             }
             else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure the description is longer than 1500 characters.");
             }
-
         }
         catch
         {
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
-
     }
 
     //this method is creating chat gpt to create title for the project description.
@@ -354,19 +344,15 @@ public partial class CreateProjectPage
                 {
                     await JSRuntime.InvokeAsync<string>("alert", "Something went wrong!");
                 }
-
             }
             else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure the description is longer than 1500 characters.");
             }
-
         }
         catch
         {
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
-
-    
 }

@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Localization;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using ProjectIT.Client.Constants;
@@ -37,6 +38,25 @@ public partial class UpdateProjectPage
         public string StringValue { get; set; } = string.Empty;
     }
 
+    private readonly Dictionary<string, string> _htmlEntitiesTable = new()
+    {
+        { "&nbsp;", " " },
+        { "&amp;", "&" },
+        { "&quot;", "\"" },
+        { "&apos;", "'" },
+        { "&lt;", "<" },
+        { "&gt;", ">" },
+        { "&cent;", "¢" },
+        { "&pound;", "£" },
+        { "&yen;", "¥" },
+        { "&euro;", "€" },
+        { "&copy;", "©" },
+        { "&reg;", "®" },
+        { "&trade;", "™" },
+        { "&times;", "×" },
+        { "&divide;", "÷" }
+    };
+
     [Parameter]
     public int Id { get; set; }
 
@@ -63,25 +83,6 @@ public partial class UpdateProjectPage
 
     private string? topicName;
 
-    private readonly Dictionary<string, string> _htmlEntitiesTable = new()
-    {
-        { "&nbsp;", " " },
-        { "&amp;", "&" },
-        { "&quot;", "\"" },
-        { "&apos;", "'" },
-        { "&lt;", "<" },
-        { "&gt;", ">" },
-        { "&cent;", "¢" },
-        { "&pound;", "£" },
-        { "&yen;", "¥" },
-        { "&euro;", "€" },
-        { "&copy;", "©" },
-        { "&reg;", "®" },
-        { "&trade;", "™" },
-        { "&times;", "×" },
-        { "&divide;", "÷" }
-    };
-
     private ClaimsPrincipal? authUser;
     private string? userEmail;
 
@@ -100,7 +101,6 @@ public partial class UpdateProjectPage
         projectCoSupervisor = projectToBeUpdated?.CoSupervisor;
         
         await GetSupervisorsAndTopicsData();
-        UnionTopicsListWithUpdatedProjectTopics();
         SortTopics();
         SortSupervisors();
     }
@@ -112,6 +112,8 @@ public partial class UpdateProjectPage
             throw new Exception("Could not load topics");
 
         topicsInDropdownList = topics;
+
+        topicsInDropdownList = topicsInDropdownList.Except(projectToBeUpdated!.Topics!);
 
         coSupervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!.Where(supervisor => supervisor.Email != userEmail);
         if (coSupervisors == null)
@@ -145,12 +147,6 @@ public partial class UpdateProjectPage
         }
     }
 
-    private void UnionTopicsListWithUpdatedProjectTopics() {
-        topicsInDropdownList = topicsInDropdownList.Union(projectTopics?.Select(t => new Topic { Name = t.Name })!);
-
-        SortTopics();
-    }
-
     private void OnSelectedTopicClicked(Topic topic)
     {
         projectTopics?.Remove(topic);
@@ -173,18 +169,17 @@ public partial class UpdateProjectPage
     {
         if (!string.IsNullOrWhiteSpace(topicName))
         {
+            if (topicName.Length > 25)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Topic name cannot be more than 25 characters");
+                topicName = string.Empty;
+            }
             if (topicsInDropdownList.Select(topic => topic.Name).Contains(topicName, StringComparer.OrdinalIgnoreCase))
             {
                 var newTopic = topicsInDropdownList.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
                 projectTopics?.Add(newTopic);
                 topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
                 topicSelector?.Reset();
-            }
-
-            if (topicName.Length > 25)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Topic name cannot be more than 25 characters");
-                topicName = string.Empty;
             }
             else
             {
@@ -196,72 +191,77 @@ public partial class UpdateProjectPage
 
     private async Task SubmitProjectAsync()
     {
-        try
+        if (projectToBeUpdated!.Programmes.IsNullOrEmpty() || projectToBeUpdated.Languages.IsNullOrEmpty() || projectToBeUpdated.Title is null || projectToBeUpdated.Semester is null)
         {
-            var updatedProject = new ProjectUpdateDto()
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
+            return;
+        }
+
+        var updatedProject = new ProjectUpdateDto()
+        {
+            Id = projectToBeUpdated!.Id,
+            Title = projectToBeUpdated!.Title,
+            DescriptionHtml = projectToBeUpdated.DescriptionHtml,
+            Topics = projectTopics?.Select(t => new Topic { Name = t.Name, Category = t.Category }),
+            Languages = projectToBeUpdated.Languages,
+            Programmes = projectToBeUpdated.Programmes,
+            Ects = projectToBeUpdated.Ects,
+            Semester = projectToBeUpdated.Semester,
+            CoSupervisor = projectCoSupervisor
+        };
+
+        IEnumerable<Topic>? newTopics = projectTopics?.Where(topic => topic.Category is null);
+
+        if (newTopics is not null && newTopics.Any())
+        {
+            // A new topic was added, open dialog to confirm and to add category.
+            var result = await SelectTopicCategoryDialog(newTopics);
+
+            // Check if the dialog was confirmed (Save button clicked)
+            // and update the project's topics with the modified newProject topics.
+            if (result == true)
             {
-                Id = projectToBeUpdated!.Id,
-                Title = projectToBeUpdated!.Title,
-                DescriptionHtml = projectToBeUpdated.DescriptionHtml,
-                Topics = projectTopics?.Select(t => new Topic { Name = t.Name, Category = t.Category }),
-                Languages = projectToBeUpdated.Languages,
-                Programmes = projectToBeUpdated.Programmes,
-                Ects = projectToBeUpdated.Ects,
-                Semester = projectToBeUpdated.Semester,
-                CoSupervisor = projectCoSupervisor
-            };
-
-            IEnumerable<Topic>? newTopics = projectTopics?.Where(topic => topic.Category is null);
-
-            if (newTopics is not null && newTopics.Any())
+                projectToBeUpdated.Topics = updatedProject.Topics?.ToList();
+            }
+            else
             {
-                // A new topic was added, open dialog to confirm and to add category.
-                var result = await SelectTopicCategoryDialog(newTopics);
+                // If the dialog was canceled (Cancel button clicked), do not post the project.
+                return;
+            }
+        }
 
-                // Check if the dialog was confirmed (Save button clicked)
-                // and update the project's topics with the modified newProject topics.
-                if (result == true)
+        if (updatedProject.Title.Length > 50)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Project title cannot be more than 50 characters");
+        }
+        else if (updatedProject.DescriptionHtml.Length > 4800)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Project description cannot be more than 4800 characters");
+        }
+        else
+        {
+            try
+            {
+                var response = await httpClient.Client.PutAsJsonAsync($"{ApiEndpoints.Projects}/{Id}", updatedProject);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    projectToBeUpdated.Topics = updatedProject.Topics?.ToList();
+                    await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
+                    navManager.NavigateTo(PageUrls.MyProjects);
                 }
                 else
                 {
-                    // If the dialog was canceled (Cancel button clicked), do not post the project.
-                    return;
+                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
                 }
             }
-
-            if (updatedProject.Title.Length > 50)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Project title cannot be more than 50 characters");
-            }
-            if (updatedProject.DescriptionHtml.Length > 4800)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Project description cannot be more than 4800 characters");
-            }
-
-            var response = await httpClient.Client.PutAsJsonAsync($"{ApiEndpoints.Projects}/{Id}", updatedProject);
-
-            if (response.IsSuccessStatusCode)
-            {
-                await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
-                navManager.NavigateTo(PageUrls.MyProjects);
-            }
-            else
+            catch
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             }
         }
-        catch
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
-        }
     }
 
-    private void CancelProjectAsync()
-    {
-        navManager.NavigateTo(PageUrls.MyProjects);
-    }
+    private void CancelProjectAsync() => navManager.NavigateTo(PageUrls.MyProjects);
 
     //this methods is using chat gpt to generate topics for the project description
     private async Task GenerateTopicsFromDescription() 
@@ -309,14 +309,13 @@ public partial class UpdateProjectPage
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure the description is longer than 1500 characters.");
             }
-
         }
         catch
         {
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
-
     }
+
     //this method is creating chat gpt to create title for the project description.
     private async Task GenerateTitleFromDescription() 
     {
@@ -346,13 +345,11 @@ public partial class UpdateProjectPage
                 {
                     await JSRuntime.InvokeAsync<string>("alert", "Something went wrong!");
                 }
-
             }
             else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure the description is longer than 1500 characters.");
             }
-
         }
         catch
         {

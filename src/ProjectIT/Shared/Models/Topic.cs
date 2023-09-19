@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ProjectIT.Shared.Models;
 
-public class Topic
+public class Topic : IEquatable<Topic>
 {
     public int Id { get; set; }
 
@@ -13,4 +13,15 @@ public class Topic
 
     [Required]
     public TopicCategory? Category { get; set; }
+
+    public bool Equals(Topic? other)
+    {
+        if (this is null || other is null) return false;
+
+        return this.Name == other.Name;
+    }
+
+    public override bool Equals(object? obj) => Equals(obj as Topic);
+
+    public override int GetHashCode() => (Name, Category).GetHashCode();
 }
