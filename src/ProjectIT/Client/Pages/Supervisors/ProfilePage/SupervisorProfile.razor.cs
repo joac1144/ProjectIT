@@ -1,16 +1,12 @@
 using ProjectIT.Shared.Enums;
 using Radzen.Blazor;
 using ProjectIT.Shared.Extensions;
-using ProjectIT.Shared.Dtos.Topics;
 using System.Net.Http.Json;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Models;
 using Microsoft.JSInterop;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using System.Security.Claims;
 using ProjectIT.Shared.Dtos.Users;
-using ProjectIT.Client.Constants;
 
 namespace ProjectIT.Client.Pages.Supervisors.ProfilePage;
 
@@ -25,7 +21,7 @@ public partial class SupervisorProfile
     private IEnumerable<Topic> topics = null!;
     
     // All topics available in the dropdown list.
-    private IEnumerable<Topic> topicsInDropdownList = null!;
+    private IList<Topic> topicsInDropdownList = null!;
 
     private string topicName = string.Empty;
     private SupervisorDetailsDto supervisor = new();
@@ -57,7 +53,7 @@ public partial class SupervisorProfile
         if (topics == null)
             throw new Exception("Could not load topics");
 
-        topicsInDropdownList = topics.Except(supervisorTopics!);
+        topicsInDropdownList = topics.Except(supervisorTopics!).ToList();
 
         professions = Enum.GetValues<SupervisorProfession>().ToList().Select(sp => sp.GetTranslatedString(EnumsLocalizer)).ToList();
         statuses = Enum.GetValues<SupervisorStatus>().ToList().Select(ss => ss.GetTranslatedString(EnumsLocalizer)).ToList();
@@ -100,7 +96,7 @@ public partial class SupervisorProfile
         {
             string val = (string)value;
             supervisorTopics?.Add(topicsInDropdownList.Single(t => t.Name == val));
-            topicsInDropdownList = topicsInDropdownList.Where(t => t.Name != val);
+            topicsInDropdownList.Remove(topicsInDropdownList.Single(t => t.Name == val));
             topicSelector?.Reset();
         }
     }
@@ -117,7 +113,7 @@ public partial class SupervisorProfile
             {
                 var newTopic = topicsInDropdownList.Single(topic => topic.Name.Equals(topicName, StringComparison.OrdinalIgnoreCase));
                 supervisorTopics?.Add(newTopic);
-                topicsInDropdownList = topicsInDropdownList.Where(topic => topic.Name != newTopic.Name);
+                topicsInDropdownList.Remove(topicsInDropdownList.Single(topic => topic.Name == newTopic.Name));
                 topicSelector?.Reset();
             }
             else
@@ -130,12 +126,12 @@ public partial class SupervisorProfile
     {
         supervisorTopics?.Remove(topic);
         if (topic.Category is not null)
-            topicsInDropdownList = topicsInDropdownList.Append(topic);
+            topicsInDropdownList.Add(topic);
         SortTopics();
     }
 
     private void SortTopics() => 
-        topicsInDropdownList = topicsInDropdownList.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name);
+        topicsInDropdownList = topicsInDropdownList.OrderBy(t => t.Category.ToString()).ThenBy(t => t.Name).ToList();
 
     private async Task SubmitAsync()
     {
@@ -193,7 +189,7 @@ public partial class SupervisorProfile
     {
         // Reset topics
         supervisorTopics = supervisor.Topics?.ToList();
-        topicsInDropdownList = topics.Except(supervisorTopics!);
+        topicsInDropdownList = topics.Except(supervisorTopics!).ToList();
         SortTopics();
 
         // Reset status dropdown
