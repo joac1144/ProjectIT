@@ -148,7 +148,8 @@ public partial class UpdateProjectPage
     private void OnSelectedTopicClicked(Topic topic)
     {
         projectTopics?.Remove(topic);
-        topicsInDropdownList = topicsInDropdownList.Append(topic);
+        if (topic.Category is not null)
+            topicsInDropdownList = topicsInDropdownList.Append(topic);
         SortTopics();
     }
 

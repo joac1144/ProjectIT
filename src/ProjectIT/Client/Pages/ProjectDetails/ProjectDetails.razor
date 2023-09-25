@@ -163,7 +163,7 @@ else
         <p class="mb-3">Please choose who, if any, you will be working with.</p>
         @for (int i = 0; i < groupMembers && i < 5; i++)
         {
-            <div class="d-flex flex-row mb-2">
+            <div class="d-flex flex-row mb-3">
                 <form class="d-flex align-items-center gap-3" onsubmit="event.preventDefault()">
                     <SearchField PlaceholderText="Add member mail..." ShowSearchIcon="false" Width="14.5rem" OnInputValueChanged="(newVal) => memberMail = newVal" />
                     <button type="reset" value="reset" class="d-flex flex-row align-items-center btn btn-success" @onclick=OnAddNewMemberFromSearchClicked>

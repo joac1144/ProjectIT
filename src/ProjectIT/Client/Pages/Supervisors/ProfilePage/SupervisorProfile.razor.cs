@@ -129,7 +129,8 @@ public partial class SupervisorProfile
     private void OnSelectedTopicClicked(Topic topic)
     {
         supervisorTopics?.Remove(topic);
-        topicsInDropdownList = topicsInDropdownList.Append(topic);
+        if (topic.Category is not null)
+            topicsInDropdownList = topicsInDropdownList.Append(topic);
         SortTopics();
     }
 
