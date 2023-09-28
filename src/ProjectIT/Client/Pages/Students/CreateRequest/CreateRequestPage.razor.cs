@@ -13,6 +13,7 @@ using System.Net.Http.Json;
 using Microsoft.JSInterop;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using ProjectIT.Client.Shared.Helpers;
 
 namespace ProjectIT.Client.Pages.Students.CreateRequest;
 
@@ -75,6 +76,7 @@ public partial class CreateRequestPage
 
     private ClaimsPrincipal? authUser;
     private string? userEmail;
+    private HTMLTags _htmlHepler = new HTMLTags();
 
     protected override async Task OnInitializedAsync()
     {
@@ -219,12 +221,14 @@ public partial class CreateRequestPage
             Status = RequestStatus.Pending
         };
 
+        var strippedString = _htmlHepler.RemoveFromText(newRequest.DescriptionHtml);
+
         if (newRequest.Title.Length > 50)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Request title should not be more than 50 characters.");
             
         }
-        if (newRequest.DescriptionHtml.Length > 4800)
+        if (strippedString.Length > 4800)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Request description should not be more than 4800 characters.");
 

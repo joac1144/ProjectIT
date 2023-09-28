@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using ProjectIT.Client.Shared.Helpers;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using System.Text.RegularExpressions;
@@ -34,15 +35,13 @@ public partial class RequestCard
     [Parameter]
     public string? CssClasses { get; set; }
 
+    HTMLTags _htmlhelper = new HTMLTags();
+
     private string Description
     {
         get
         {
-            var strippedString = Regex.Replace(DescriptionHtml, "<[^>]*>", " ");
-            foreach (var (key, val) in _htmlEntitiesTable)
-            {
-                strippedString = strippedString.Replace(key, val);
-            }
+            var strippedString = _htmlhelper.RemoveFromText(DescriptionHtml);
             return strippedString;
         }
     }

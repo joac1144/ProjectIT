@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using ProjectIT.Client.Constants;
+using ProjectIT.Client.Shared.Helpers;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
@@ -38,25 +39,6 @@ public partial class UpdateProjectPage
         public string StringValue { get; set; } = string.Empty;
     }
 
-    private readonly Dictionary<string, string> _htmlEntitiesTable = new()
-    {
-        { "&nbsp;", " " },
-        { "&amp;", "&" },
-        { "&quot;", "\"" },
-        { "&apos;", "'" },
-        { "&lt;", "<" },
-        { "&gt;", ">" },
-        { "&cent;", "¢" },
-        { "&pound;", "£" },
-        { "&yen;", "¥" },
-        { "&euro;", "€" },
-        { "&copy;", "©" },
-        { "&reg;", "®" },
-        { "&trade;", "™" },
-        { "&times;", "×" },
-        { "&divide;", "÷" }
-    };
-
     [Parameter]
     public int Id { get; set; }
 
@@ -85,6 +67,8 @@ public partial class UpdateProjectPage
 
     private ClaimsPrincipal? authUser;
     private string? userEmail;
+
+    private HTMLTags _htmlHepler = new HTMLTags();
 
     protected override async Task OnInitializedAsync()
     {
@@ -211,6 +195,9 @@ public partial class UpdateProjectPage
 
         IEnumerable<Topic>? newTopics = projectTopics?.Where(topic => topic.Category is null);
 
+        // Remove all html tags from the description.
+        var strippedString = _htmlHepler.RemoveFromText(updatedProject!.DescriptionHtml);
+
         if (newTopics is not null && newTopics.Any())
         {
             // A new topic was added, open dialog to confirm and to add category.
@@ -233,7 +220,9 @@ public partial class UpdateProjectPage
         {
             await JSRuntime.InvokeAsync<string>("alert", "Project title cannot be more than 50 characters");
         }
-        else if (updatedProject.DescriptionHtml.Length > 4800)
+
+
+        else if (strippedString.Length > 4800)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Project description cannot be more than 4800 characters");
         }
@@ -275,12 +264,8 @@ public partial class UpdateProjectPage
                 "Each topic should not have more than 25 characters."+
                 "dont create more than 7 topic";
 
-                //removing all the html stof from the description
-                var strippedString = Regex.Replace(projectToBeUpdated.DescriptionHtml, "<[^>]*>", " ");
-                foreach (var (key, val) in _htmlEntitiesTable)
-                {
-                    strippedString = strippedString.Replace(key, val);
-                }
+                var strippedString = _htmlHepler.RemoveFromText(projectToBeUpdated.DescriptionHtml);
+
                 // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
@@ -323,13 +308,8 @@ public partial class UpdateProjectPage
             if (!string.IsNullOrEmpty(projectToBeUpdated!.DescriptionHtml) && projectToBeUpdated.DescriptionHtml.Length > 1500)
             {
                 var query = "create project title from above description and return it as string. Project title should not be more than 50 characters";
-
-                var strippedString = Regex.Replace(projectToBeUpdated.DescriptionHtml, "<[^>]*>", " ");
-                foreach (var (key, val) in _htmlEntitiesTable)
-                {
-                    strippedString = strippedString.Replace(key, val);
-                }
-
+                
+                var strippedString = _htmlHepler.RemoveFromText(projectToBeUpdated.DescriptionHtml);
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;

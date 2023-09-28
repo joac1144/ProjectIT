@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using ProjectIT.Client.Constants;
+using ProjectIT.Client.Shared.Helpers;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
@@ -34,24 +35,7 @@ public partial class CreateProjectPage
         public string StringValue { get; set; } = string.Empty;
     }
 
-    private readonly Dictionary<string, string> _htmlEntitiesTable = new()
-    {
-        { "&nbsp;", " " },
-        { "&amp;", "&" },
-        { "&quot;", "\"" },
-        { "&apos;", "'" },
-        { "&lt;", "<" },
-        { "&gt;", ">" },
-        { "&cent;", "�" },
-        { "&pound;", "�" },
-        { "&yen;", "�" },
-        { "&euro;", "�" },
-        { "&copy;", "�" },
-        { "&reg;", "�" },
-        { "&trade;", "�" },
-        { "&times;", "�" },
-        { "&divide;", "�" }
-    };
+    private HTMLTags _htmlHepler = new HTMLTags();
 
     // All topics in database.
     private IEnumerable<Topic> topics = null!;
@@ -235,13 +219,8 @@ public partial class CreateProjectPage
             project.Title = string.Empty;
         }
 
-        //remove html tags from the description
-        var strippedString = Regex.Replace(newProject.DescriptionHtml, "<[^>]*>", " ");
-        foreach (var (key, val) in _htmlEntitiesTable)
-        {
-            strippedString = strippedString.Replace(key, val);
-        }
-
+        //using the html helper to remove all the html tags from the description
+        var strippedString = _htmlHepler.RemoveFromText(newProject.DescriptionHtml);
 
         if (strippedString.Length > 4800)
         {
@@ -285,13 +264,9 @@ public partial class CreateProjectPage
                 "Each topic should not have more than 25 characters."+
                 "dont create more than 7 topic";
                 
-                //removing all the html stof from the description
-                var strippedString = Regex.Replace(descriptionHtml, "<[^>]*>", " ");
-                foreach (var (key, val) in _htmlEntitiesTable)
-                {
-                    strippedString = strippedString.Replace(key, val);
-                }
-                
+                //using the html helper to remove all the html tags from the description
+                var strippedString = _htmlHepler.RemoveFromText(descriptionHtml);
+
                 // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
@@ -334,12 +309,9 @@ public partial class CreateProjectPage
             {
                 var query = "create project title from above description and return it as string. Project title should not be more than 50 characters";
 
-                var strippedString = Regex.Replace(descriptionHtml, "<[^>]*>", " ");
-                foreach (var (key, val) in _htmlEntitiesTable)
-                {
-                    strippedString = strippedString.Replace(key, val);
-                }
-
+             
+                //using the html helper to remove all the html tags from the description
+                var strippedString = _htmlHepler.RemoveFromText(descriptionHtml);
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;
