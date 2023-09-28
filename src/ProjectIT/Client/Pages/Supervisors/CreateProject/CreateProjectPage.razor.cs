@@ -234,7 +234,16 @@ public partial class CreateProjectPage
             await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters.");
             project.Title = string.Empty;
         }
-        else if (newProject.DescriptionHtml.Length > 4800)
+
+        //remove html tags from the description
+        var strippedString = Regex.Replace(newProject.DescriptionHtml, "<[^>]*>", " ");
+        foreach (var (key, val) in _htmlEntitiesTable)
+        {
+            strippedString = strippedString.Replace(key, val);
+        }
+
+
+        if (strippedString.Length > 4800)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 2400 characters.");
         }
