@@ -68,8 +68,6 @@ public partial class UpdateProjectPage
     private ClaimsPrincipal? authUser;
     private string? userEmail;
 
-    private HTMLTags _htmlHepler = new HTMLTags();
-
     protected override async Task OnInitializedAsync()
     {
         ectsWrappers = Enum.GetValues<Ects>().Select(ects => new EctsWrapper { Ects = ects, StringValue = ects.GetTranslatedString(EnumsLocalizer) });
@@ -196,7 +194,7 @@ public partial class UpdateProjectPage
         IEnumerable<Topic>? newTopics = projectTopics?.Where(topic => topic.Category is null);
 
         // Remove all html tags from the description.
-        var strippedString = _htmlHepler.RemoveFromText(updatedProject!.DescriptionHtml);
+        var strippedString = HTMLTags.RemoveFromText(updatedProject!.DescriptionHtml);
 
         if (newTopics is not null && newTopics.Any())
         {
@@ -264,7 +262,7 @@ public partial class UpdateProjectPage
                 "Each topic should not have more than 25 characters."+
                 "dont create more than 7 topic";
 
-                var strippedString = _htmlHepler.RemoveFromText(projectToBeUpdated.DescriptionHtml);
+                var strippedString = HTMLTags.RemoveFromText(projectToBeUpdated.DescriptionHtml);
 
                 // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
@@ -309,7 +307,7 @@ public partial class UpdateProjectPage
             {
                 var query = "create project title from above description and return it as string. Project title should not be more than 50 characters";
                 
-                var strippedString = _htmlHepler.RemoveFromText(projectToBeUpdated.DescriptionHtml);
+                var strippedString = HTMLTags.RemoveFromText(projectToBeUpdated.DescriptionHtml);
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;

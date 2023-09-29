@@ -35,13 +35,11 @@ public partial class ProjectCard
     [Parameter]
     public string? CssClasses { get; set; }
 
-    private HTMLTags _htmlHepler = new HTMLTags();
-
     private string Description
     {
         get
         {
-            var strippedString = _htmlHepler.RemoveFromText(DescriptionHtml);
+            var strippedString = HTMLTags.RemoveFromText(DescriptionHtml);
             return strippedString;
         }
     }

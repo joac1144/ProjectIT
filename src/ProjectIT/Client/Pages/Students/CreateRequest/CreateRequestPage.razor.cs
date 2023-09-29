@@ -73,11 +73,8 @@ public partial class CreateRequestPage
     private string? descriptionHtml;
     private Ects? requestEcts;
     private readonly Request request = new();
-
     private ClaimsPrincipal? authUser;
     private string? userEmail;
-    private HTMLTags _htmlHepler = new HTMLTags();
-
     protected override async Task OnInitializedAsync()
     {
         ectsWrappers = Enum.GetValues<Ects>().Select(ects => new EctsWrapper { Ects = ects, StringValue = ects.GetTranslatedString(EnumsLocalizer) });
@@ -221,7 +218,7 @@ public partial class CreateRequestPage
             Status = RequestStatus.Pending
         };
 
-        var strippedString = _htmlHepler.RemoveFromText(newRequest.DescriptionHtml);
+        var strippedString = HTMLTags.RemoveFromText(newRequest.DescriptionHtml);
 
         if (newRequest.Title.Length > 50)
         {

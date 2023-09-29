@@ -35,8 +35,6 @@ public partial class CreateProjectPage
         public string StringValue { get; set; } = string.Empty;
     }
 
-    private HTMLTags _htmlHepler = new HTMLTags();
-
     // All topics in database.
     private IEnumerable<Topic> topics = null!;
 
@@ -220,7 +218,7 @@ public partial class CreateProjectPage
         }
 
         //using the html helper to remove all the html tags from the description
-        var strippedString = _htmlHepler.RemoveFromText(newProject.DescriptionHtml);
+        var strippedString = HTMLTags.RemoveFromText(newProject.DescriptionHtml);
 
         if (strippedString.Length > 4800)
         {
@@ -265,7 +263,7 @@ public partial class CreateProjectPage
                 "dont create more than 7 topic";
                 
                 //using the html helper to remove all the html tags from the description
-                var strippedString = _htmlHepler.RemoveFromText(descriptionHtml);
+                var strippedString = HTMLTags.RemoveFromText(descriptionHtml);
 
                 // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
@@ -311,7 +309,7 @@ public partial class CreateProjectPage
 
              
                 //using the html helper to remove all the html tags from the description
-                var strippedString = _htmlHepler.RemoveFromText(descriptionHtml);
+                var strippedString = HTMLTags.RemoveFromText(descriptionHtml);
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;
