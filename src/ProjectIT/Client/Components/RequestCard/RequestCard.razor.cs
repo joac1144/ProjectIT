@@ -35,13 +35,13 @@ public partial class RequestCard
     [Parameter]
     public string? CssClasses { get; set; }
 
-    HTMLTags _htmlhelper = new HTMLTags();
+    private HTMLTags _htmlHepler = new HTMLTags();
 
     private string Description
     {
         get
         {
-            var strippedString = _htmlhelper.RemoveFromText(DescriptionHtml);
+            var strippedString = _htmlHepler.RemoveFromText(DescriptionHtml);
             return strippedString;
         }
     }
