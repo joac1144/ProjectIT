@@ -193,9 +193,6 @@ public partial class UpdateProjectPage
 
         IEnumerable<Topic>? newTopics = projectTopics?.Where(topic => topic.Category is null);
 
-        // Remove all html tags from the description.
-        var strippedString = HTMLHelper.RemoveFromText(updatedProject!.DescriptionHtml);
-
         if (newTopics is not null && newTopics.Any())
         {
             // A new topic was added, open dialog to confirm and to add category.
@@ -214,36 +211,36 @@ public partial class UpdateProjectPage
             }
         }
 
-        if (updatedProject.Title.Length > 50)
+        if (updatedProject.Title.Length > EntityPropertyRestrictions.ProjectTitleCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Project title cannot be more than 50 characters");
+            await JSRuntime.InvokeAsync<string>("alert", $"Project title should not be more than {EntityPropertyRestrictions.ProjectTitleCap} characters.");
+            return;
         }
 
-
-        else if (strippedString.Length > 4800)
+        var strippedString = HTMLHelper.RemoveTagsFromString(updatedProject!.DescriptionHtml);
+        if (strippedString.Length > EntityPropertyRestrictions.ProjectDescriptionCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Project description cannot be more than 4800 characters");
+            await JSRuntime.InvokeAsync<string>("alert", $"Project description should not be more than {EntityPropertyRestrictions.ProjectDescriptionCap} characters.");
+            return;
         }
-        else
+
+        try
         {
-            try
+            var response = await httpClient.Client.PutAsJsonAsync($"{ApiEndpoints.Projects}/{Id}", updatedProject);
+
+            if (response.IsSuccessStatusCode)
             {
-                var response = await httpClient.Client.PutAsJsonAsync($"{ApiEndpoints.Projects}/{Id}", updatedProject);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
-                    navManager.NavigateTo(PageUrls.MyProjects);
-                }
-                else
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
-                }
+                await JSRuntime.InvokeAsync<string>("alert", "Project updated successfully!");
+                navManager.NavigateTo(PageUrls.MyProjects);
             }
-            catch
+            else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             }
+        }
+        catch
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 
@@ -262,7 +259,7 @@ public partial class UpdateProjectPage
                 "Each topic should not have more than 25 characters."+
                 "dont create more than 7 topic";
 
-                var strippedString = HTMLHelper.RemoveFromText(projectToBeUpdated.DescriptionHtml);
+                var strippedString = HTMLHelper.RemoveTagsFromString(projectToBeUpdated.DescriptionHtml);
 
                 // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
@@ -307,7 +304,7 @@ public partial class UpdateProjectPage
             {
                 var query = "create project title from above description and return it as string. Project title should not be more than 50 characters";
                 
-                var strippedString = HTMLHelper.RemoveFromText(projectToBeUpdated.DescriptionHtml);
+                var strippedString = HTMLHelper.RemoveTagsFromString(projectToBeUpdated.DescriptionHtml);
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;

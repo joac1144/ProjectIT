@@ -211,39 +211,36 @@ public partial class CreateProjectPage
             }
         }
 
-        if (project.Title.Length > 50)
+        if (project.Title.Length > EntityPropertyRestrictions.ProjectTitleCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters.");
-            project.Title = string.Empty;
+            await JSRuntime.InvokeAsync<string>("alert", $"Project title should not be more than {EntityPropertyRestrictions.ProjectTitleCap} characters.");
+            return;
         }
 
-        //using the html helper to remove all the html tags from the description
-        var strippedString = HTMLHelper.RemoveFromText(newProject.DescriptionHtml);
-
-        if (strippedString.Length > 4800)
+        var strippedString = HTMLHelper.RemoveTagsFromString(newProject.DescriptionHtml);
+        if (strippedString.Length > EntityPropertyRestrictions.ProjectDescriptionCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 4800 characters.");
+            await JSRuntime.InvokeAsync<string>("alert", $"Project description should not be more than {EntityPropertyRestrictions.ProjectDescriptionCap} characters.");
+            return;
         }
-        else
+
+        try
         {
-            try
+            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
+
+            if (response.IsSuccessStatusCode)
             {
-                var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
-                    navManager.NavigateTo(PageUrls.MyProjects);
-                }
-                else
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
-                }
+                await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
+                navManager.NavigateTo(PageUrls.MyProjects);
             }
-            catch
+            else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             }
+        }
+        catch
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 
@@ -263,7 +260,7 @@ public partial class CreateProjectPage
                 "dont create more than 7 topic";
                 
                 //using the html helper to remove all the html tags from the description
-                var strippedString = HTMLHelper.RemoveFromText(descriptionHtml);
+                var strippedString = HTMLHelper.RemoveTagsFromString(descriptionHtml);
 
                 // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
@@ -309,7 +306,7 @@ public partial class CreateProjectPage
 
              
                 //using the html helper to remove all the html tags from the description
-                var strippedString = HTMLHelper.RemoveFromText(descriptionHtml);
+                var strippedString = HTMLHelper.RemoveTagsFromString(descriptionHtml);
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;

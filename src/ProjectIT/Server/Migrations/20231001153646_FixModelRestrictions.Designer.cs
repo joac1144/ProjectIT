@@ -12,8 +12,8 @@ using ProjectIT.Server.Database;
 namespace ProjectIT.Server.Migrations
 {
     [DbContext(typeof(ProjectITDbContext))]
-    [Migration("20231001125025_ProjectIT 9fcf6381-6df6-4417-8b35-24aae581850f")]
-    partial class ProjectIT9fcf63816df644178b3524aae581850f
+    [Migration("20231001153646_FixModelRestrictions")]
+    partial class FixModelRestrictions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,8 +38,7 @@ namespace ProjectIT.Server.Migrations
 
                     b.Property<string>("DescriptionHtml")
                         .IsRequired()
-                        .HasMaxLength(4800)
-                        .HasColumnType("character varying(4800)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ects")
                         .IsRequired()
@@ -84,8 +83,7 @@ namespace ProjectIT.Server.Migrations
 
                     b.Property<string>("DescriptionHtml")
                         .IsRequired()
-                        .HasMaxLength(4800)
-                        .HasColumnType("character varying(4800)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ects")
                         .IsRequired()

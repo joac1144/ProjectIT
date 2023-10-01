@@ -23,7 +23,7 @@ public static class HTMLHelper
         { "&divide;", "÷" }
     };
 
-    public static string RemoveFromText(string text)
+    public static string RemoveTagsFromString(string text)
     {
         // Check for null or empty input
         if (string.IsNullOrEmpty(text))

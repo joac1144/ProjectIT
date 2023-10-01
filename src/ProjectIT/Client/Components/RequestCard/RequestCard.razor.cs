@@ -39,7 +39,7 @@ public partial class RequestCard
     {
         get
         {
-            var strippedString = HTMLHelper.RemoveFromText(DescriptionHtml);
+            var strippedString = HTMLHelper.RemoveTagsFromString(DescriptionHtml);
             return strippedString;
         }
     }

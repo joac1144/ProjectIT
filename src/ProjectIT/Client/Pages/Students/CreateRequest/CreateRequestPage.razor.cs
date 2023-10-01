@@ -204,6 +204,7 @@ public partial class CreateRequestPage
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             return;
         }
+
         var newRequest = new RequestCreateDto
         {
             Title = request.Title,
@@ -218,38 +219,36 @@ public partial class CreateRequestPage
             Status = RequestStatus.Pending
         };
 
-        var strippedString = HTMLHelper.RemoveFromText(newRequest.DescriptionHtml);
-
-        if (newRequest.Title.Length > 50)
+        if (newRequest.Title.Length > EntityPropertyRestrictions.RequestTitleCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Request title should not be more than 50 characters.");
-            
+            await JSRuntime.InvokeAsync<string>("alert", $"Request title should not be more than {EntityPropertyRestrictions.RequestTitleCap} characters.");
+            return;
         }
-        if (strippedString.Length > 4800)
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Request description should not be more than 4800 characters.");
 
-        }
-        else
+        var strippedString = HTMLHelper.RemoveTagsFromString(newRequest.DescriptionHtml);
+        if (strippedString.Length > EntityPropertyRestrictions.RequestDescriptionCap)
         {
-            try
+            await JSRuntime.InvokeAsync<string>("alert", $"Request description should not be more than {EntityPropertyRestrictions.RequestDescriptionCap} characters.");
+            return;
+        }
+
+        try
+        {
+            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, newRequest);
+
+            if (response.IsSuccessStatusCode)
             {
-                var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, newRequest);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
-                    navManager.NavigateTo(PageUrls.MyRequests);
-                }
-                else
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
-                }
+                await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
+                navManager.NavigateTo(PageUrls.MyRequests);
             }
-            catch
+            else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             }
+        }
+        catch
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 
