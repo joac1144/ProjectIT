@@ -219,15 +219,13 @@ public partial class CreateRequestPage
             Status = RequestStatus.Pending
         };
 
-        if (newRequest.Title.Length > 50)
+        if (newRequest.Title.Length > EntityPropertyRestrictions.RequestTitleCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Request title should not be more than 50 characters.");
-            
+            await JSRuntime.InvokeAsync<string>("alert", $"Request title should not be more than {EntityPropertyRestrictions.RequestTitleCap} characters.");
         }
-        if (newRequest.DescriptionHtml.Length > 4800)
+        if (newRequest.DescriptionHtml.Length > EntityPropertyRestrictions.RequestDescriptionCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Request description should not be more than 4800 characters.");
-
+            await JSRuntime.InvokeAsync<string>("alert", $"Request description should not be more than {EntityPropertyRestrictions.RequestDescriptionCap} characters.");
         }
         else
         {

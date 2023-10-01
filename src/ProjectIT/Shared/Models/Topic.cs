@@ -1,3 +1,4 @@
+using ProjectIT.Shared.Constants;
 using ProjectIT.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,7 +9,7 @@ public class Topic : IEquatable<Topic>
     public int Id { get; set; }
 
     [Required]
-    [StringLength(25)]
+    [StringLength(ModelRestrictions.TopicNameCap)]
     public string Name { get; set; } = null!;
 
     [Required]
@@ -18,7 +19,7 @@ public class Topic : IEquatable<Topic>
     {
         if (this is null || other is null) return false;
 
-        return this.Name == other.Name;
+        return Name == other.Name;
     }
 
     public override bool Equals(object? obj) => Equals(obj as Topic);

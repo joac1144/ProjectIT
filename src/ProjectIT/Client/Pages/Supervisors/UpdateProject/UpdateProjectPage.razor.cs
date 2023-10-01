@@ -229,13 +229,13 @@ public partial class UpdateProjectPage
             }
         }
 
-        if (updatedProject.Title.Length > 50)
+        if (updatedProject.Title.Length > EntityPropertyRestrictions.ProjectTitleCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Project title cannot be more than 50 characters");
+            await JSRuntime.InvokeAsync<string>("alert", $"Project title should not be more than {EntityPropertyRestrictions.ProjectTitleCap} characters.");
         }
-        else if (updatedProject.DescriptionHtml.Length > 4800)
+        else if (updatedProject.DescriptionHtml.Length > EntityPropertyRestrictions.ProjectDescriptionCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Project description cannot be more than 4800 characters");
+            await JSRuntime.InvokeAsync<string>("alert", $"Project description should not be more than {EntityPropertyRestrictions.ProjectDescriptionCap} characters.");
         }
         else
         {

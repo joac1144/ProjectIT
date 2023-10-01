@@ -1,3 +1,4 @@
+using ProjectIT.Shared.Constants;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using System.ComponentModel.DataAnnotations;
@@ -12,11 +13,10 @@ public record ProjectUpdateDto
     public int Id { get; set; }
     
     [Required]
-    [StringLength(50)]
+    [StringLength(ModelRestrictions.ProjectTitleCap)]
     public string Title { get; set; } = null!;
 
     [Required]
-    [StringLength(4800)]
     public string DescriptionHtml { get; set; } = null!;
 
     public IEnumerable<Topic>? Topics { get; set; }
