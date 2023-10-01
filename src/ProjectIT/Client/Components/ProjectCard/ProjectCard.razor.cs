@@ -39,7 +39,7 @@ public partial class ProjectCard
     {
         get
         {
-            var strippedString = HTMLTags.RemoveFromText(DescriptionHtml);
+            var strippedString = HTMLHelper.RemoveFromText(DescriptionHtml);
             return strippedString;
         }
     }

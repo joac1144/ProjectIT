@@ -2,7 +2,7 @@
 
 namespace ProjectIT.Client.Shared.Helpers;
 
-public static class HTMLTags
+public static class HTMLHelper
 {
     private static readonly Dictionary<string, string> _htmlEntitiesTable = new()
     {

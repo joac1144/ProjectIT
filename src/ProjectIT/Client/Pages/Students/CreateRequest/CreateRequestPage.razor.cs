@@ -218,7 +218,7 @@ public partial class CreateRequestPage
             Status = RequestStatus.Pending
         };
 
-        var strippedString = HTMLTags.RemoveFromText(newRequest.DescriptionHtml);
+        var strippedString = HTMLHelper.RemoveFromText(newRequest.DescriptionHtml);
 
         if (newRequest.Title.Length > 50)
         {
