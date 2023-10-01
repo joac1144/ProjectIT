@@ -230,7 +230,7 @@ public partial class CreateRequestPage
             await JSRuntime.InvokeAsync<string>("alert", "Request description should not be more than 4800 characters.");
 
         }
-        else 
+        else
         {
             try
             {
