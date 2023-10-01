@@ -81,8 +81,8 @@ namespace ProjectIT.Server.Migrations
 
                     b.Property<string>("DescriptionHtml")
                         .IsRequired()
-                        .HasMaxLength(4400)
-                        .HasColumnType("character varying(4400)");
+                        .HasMaxLength(4800)
+                        .HasColumnType("character varying(4800)");
 
                     b.Property<string>("Ects")
                         .IsRequired()

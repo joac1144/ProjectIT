@@ -12,8 +12,8 @@ using ProjectIT.Server.Database;
 namespace ProjectIT.Server.Migrations
 {
     [DbContext(typeof(ProjectITDbContext))]
-    [Migration("20230814005658_AddStudentGroups")]
-    partial class AddStudentGroups
+    [Migration("20231001125025_ProjectIT 9fcf6381-6df6-4417-8b35-24aae581850f")]
+    partial class ProjectIT9fcf63816df644178b3524aae581850f
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,8 +84,8 @@ namespace ProjectIT.Server.Migrations
 
                     b.Property<string>("DescriptionHtml")
                         .IsRequired()
-                        .HasMaxLength(4400)
-                        .HasColumnType("character varying(4400)");
+                        .HasMaxLength(4800)
+                        .HasColumnType("character varying(4800)");
 
                     b.Property<string>("Ects")
                         .IsRequired()

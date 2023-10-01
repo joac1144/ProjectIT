@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ProjectIT.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class AddStudentGroups : Migration
+    public partial class ProjectIT9fcf63816df644178b3524aae581850f : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -186,7 +186,7 @@ namespace ProjectIT.Server.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    DescriptionHtml = table.Column<string>(type: "character varying(4400)", maxLength: 4400, nullable: false),
+                    DescriptionHtml = table.Column<string>(type: "character varying(4800)", maxLength: 4800, nullable: false),
                     Languages = table.Column<string>(type: "text", nullable: false),
                     Programmes = table.Column<string>(type: "text", nullable: false),
                     StudentGroupId = table.Column<int>(type: "integer", nullable: false),
