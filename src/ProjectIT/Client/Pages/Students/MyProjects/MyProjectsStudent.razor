@@ -1,17 +1,30 @@
 ﻿@attribute [Route(PageUrls.AppliedProjects)]
 @using ProjectIT.Client.Constants;
-@using ProjectIT.Client.Components.ProjectCard;
+@using ProjectIT.Client.Components.ProjectCard
 @using ProjectIT.Client.Http;
 @using ProjectIT.Shared.Dtos.Projects;
+@using Microsoft.AspNetCore.Authorization;
 @inject HttpClient httpClient
 @inject AnonymousClient anonymousClient
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = AppRoles.Student)]
 
-<div class="d-flex justify-content-center my-4">
-    <div style="width: 700px;" class="d-flex flex-column align-items-start px-2">
-        <h3 class="fw-bold">Applied Projects</h3>
-        @if (appliedProjects != null)
+<PageTitle>Applied Projects</PageTitle>
+
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-column width-43">
+        <h3 class="fw-bold d-block my-3">Applied projects</h3>
+        @if (isLoading)
         {
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        }
+        @if (appliedProjects is not null && appliedProjects.Any())
+        {
+            /// To be deleted when status for projects is implemented
             <Virtualize TItem="ProjectDetailsDto" Items="@appliedProjects" Context="project">
                 <ProjectCard Id="project.Id"
                              Title="@project.Title"
@@ -21,6 +34,49 @@
                              Supervisor="@project.Supervisor"
                              Programmes="@project.Programmes" />
             </Virtualize>
+
+            /// Show accepted projects first
+            @* var acceptedProjects = appliedProjects.Where(p => p.Status == Accepted).ToList();
+
+            if (acceptedProjects.Any())
+            {
+                <span class="my-3 fs-6">Accepted projects</span>                
+                <Virtualize TItem="ProjectDetailsDto" Items="@acceptedProjects" Context="project">
+                    <ProjectCard Id="project.Id"
+                                 Title="@project.Title"
+                                 DescriptionHtml="@project.DescriptionHtml"
+                                 Semester="@project.Semester"
+                                 Ects="@project.Ects"
+                                 Supervisor="@project.Supervisor"
+                                 Programmes="@project.Programmes" />
+                </Virtualize>
+            } *@
+
+            /// Show pending projects
+            @* var pendingProjects = appliedProjects.Where(p => p.Status == Pending).ToList();
+
+            if (pendingProjects.Any())
+            {
+                <span class="my-3 fs-6">Pending projects</span>
+                <Virtualize TItem="ProjectDetailsDto" Items="@pendingProjects" Context="project">
+                    <ProjectCard Id="project.Id"
+                                 Title="@project.Title"
+                                 DescriptionHtml="@project.DescriptionHtml"
+                                 Semester="@project.Semester"
+                                 Ects="@project.Ects"
+                                 Supervisor="@project.Supervisor"
+                                 Programmes="@project.Programmes" />
+                </Virtualize>
+            } *@
+        }
+        else
+        {
+            if (isLoading is false)
+            {
+                <div class="d-flex flex-column align-items-center position-absolute top-50 start-50 translate-middle">
+                    <span class="my-3 fs-4 fw-bold text-black-50">You have not applied for any projects</span>
+                </div>
+            }
         }
     </div>
 </div>

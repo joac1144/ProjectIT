@@ -8,6 +8,7 @@ namespace ProjectIT.Client.Pages.Students.MyProjects;
 public partial class MyProjectsStudent
 {
     private ICollection<ProjectDetailsDto>? appliedProjects;
+    private bool isLoading = false;
 
     private ClaimsPrincipal? authUser;
 
@@ -16,18 +17,13 @@ public partial class MyProjectsStudent
         authUser = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User;
         string userEmail = authUser?.FindFirst("preferred_username")?.Value!;
 
+        isLoading = true;
         // Fetch student's applied projects.
         appliedProjects = (await httpClient.GetFromJsonAsync<IEnumerable<ProjectDetailsDto>>(ApiEndpoints.Projects))!
-            .Where(
-                project => project.AppliedStudentGroups is not null && project.AppliedStudentGroups.Any(
-                    group => group.Students is not null && group.Students.Select(student => student.Email)
-                    .Contains(userEmail)))
-            .ToList();
-
-        /* TODO: Do this instead when it works at some point...
-        var student = (await httpClient.GetFromJsonAsync<IEnumerable<StudentDetailsDto>>(ApiEndpoints.Students))!.Where(student => student.Email == userEmail).Single();
-
-        var appPro = student.AppliedProjects;
-        */
+        .Where(
+            project => project.AppliedStudentGroups is not null && project.AppliedStudentGroups.Any(
+                group => group.Students is not null && group.Students.Any(student => student.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase))))
+        .ToList();
+        isLoading = false;
     }
 }

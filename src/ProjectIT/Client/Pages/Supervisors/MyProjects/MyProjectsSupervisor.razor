@@ -26,13 +26,13 @@
                             Style="width: 20%; max-width: 20rem; margin-right: 3.5rem;" />
         </div>
         @if (isLoading)
-                {
-                    <div class="d-flex justify-content-center">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                }
+        {
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        }
         @if (projects is not null && projects.Any())
         {
             var appliedProjects = projects.Where(p => p.AppliedStudentGroups?.Count() > 0).ToList();
@@ -58,30 +58,36 @@
                         </Dropdown>
                     </div>
                 </Virtualize>
-                <hr class="w-50 align-self-center">
             }
 
             var nonAppliedProjects = projects.Where(p => p.AppliedStudentGroups == null || p.AppliedStudentGroups.Count() == 0).ToList();
 
-            <Virtualize TItem="ProjectDetailsDto" Items="@nonAppliedProjects" Context="project">
-                <div class="d-flex flex-row align-items-center">
-                    <ProjectCard Id="project.Id"
-                                Title="@project.Title"
-                                DescriptionHtml="@project.DescriptionHtml"
-                                Semester= "@project.Semester"
-                                Ects="@project.Ects"
-                                Supervisor="@project.Supervisor"
-                                Programmes="@project.Programmes"
-                                CssClasses="mt-3" />
-                    <Dropdown BootstrapIcon="gear-fill" CssClasses="ms-2">
-                        <DropdownItems>
-                            <DropdownItem Text="Edit" OnClick="@(() => EditProject(project.Id))" />
-                            <hr class="dropdown-divider" />
-                            <DropdownItem Text="Delete" OpensModal="true" ModalIdentifier="deleteProjectConfirmation" OnClick="() => OpenDeleteConfirmationModal(project)" />
-                        </DropdownItems>
-                    </Dropdown>
-                </div>
-            </Virtualize>
+            if (nonAppliedProjects.Any())
+            {
+                if (appliedProjects.Any())
+                {
+                    <hr class="my-4 w-50 align-self-center">
+                }
+                <span class="my-3 fs-6">Non-applied projects</span>
+                <Virtualize TItem="ProjectDetailsDto" Items="@nonAppliedProjects" Context="project">
+                    <div class="d-flex flex-row align-items-center">
+                        <ProjectCard Id="project.Id"
+                                    Title="@project.Title"
+                                    DescriptionHtml="@project.DescriptionHtml"
+                                    Semester= "@project.Semester"
+                                    Ects="@project.Ects"
+                                    Supervisor="@project.Supervisor"
+                                    Programmes="@project.Programmes" />
+                        <Dropdown BootstrapIcon="gear-fill" CssClasses="ms-2">
+                            <DropdownItems>
+                                <DropdownItem Text="Edit" OnClick="@(() => EditProject(project.Id))" />
+                                <hr class="dropdown-divider" />
+                                <DropdownItem Text="Delete" OpensModal="true" ModalIdentifier="deleteProjectConfirmation" OnClick="() => OpenDeleteConfirmationModal(project)" />
+                            </DropdownItems>
+                        </Dropdown>
+                    </div>
+                </Virtualize>
+            }
         }
         else
         {

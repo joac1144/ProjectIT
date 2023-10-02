@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using ProjectIT.Client.Shared.Helpers;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Models;
 using System.Text.RegularExpressions;
@@ -38,11 +39,7 @@ public partial class RequestCard
     {
         get
         {
-            var strippedString = Regex.Replace(DescriptionHtml, "<[^>]*>", " ");
-            foreach (var (key, val) in _htmlEntitiesTable)
-            {
-                strippedString = strippedString.Replace(key, val);
-            }
+            var strippedString = HTMLHelper.RemoveTagsFromString(DescriptionHtml);
             return strippedString;
         }
     }

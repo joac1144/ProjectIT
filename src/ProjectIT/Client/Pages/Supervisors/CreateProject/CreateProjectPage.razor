@@ -125,7 +125,7 @@
                                 Change="OnSupervisorSelectedInList"
                                 ValueProperty="Id"
                                 TextProperty="FullName"
-                                class="w-100">
+                                class="w-100 mb-3">
                     <Template>
                         @context.FullName
                     </Template>
@@ -133,12 +133,12 @@
             }
             @if (projectCoSupervisor is not null)
             {
-                <div class="d-flex flex-column gap-2">
-                    <div class="d-flex flex-start mt-2 align-items-center">
-                            @projectCoSupervisor?.FullName
-                            <button class="bg-transparent border-0 add-image-size" @onclick="() => OnSelectedCoSupervisorClicked(projectCoSupervisor!)">
-                                <img class="w-100 h-70" src="images/baseline_clear_24.png" alt="Clear">
-                            </button>
+                <div class="d-flex flex-start flex-wrap flex-column">
+                    <div class="d-flex justify-content-between">
+                        <span>@projectCoSupervisor?.FullName</span>
+                        <button class="bg-transparent border-0 add-image-size" @onclick="() => OnSelectedCoSupervisorClicked(projectCoSupervisor!)">
+                            <img class="w-100 h-70" src="images/baseline_clear_24.png" alt="Clear">
+                        </button>
                     </div>
                 </div>
             }
@@ -166,10 +166,10 @@
                         </div>
                     }
                 </div>
-                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End">
                     <RadzenStack Orientation="Orientation.Horizontal">
-                        <RadzenButton Text="Save" Click="() => ds.Close(true)" Style="width: 80px; background-color:black" />
                         <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+                        <RadzenButton Text="Save" Click="() => ds.Close(true)" Style="width: 80px; background-color:black" />
                     </RadzenStack>
                 </RadzenStack>
             </RadzenStack>

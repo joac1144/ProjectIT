@@ -56,6 +56,10 @@
     "inputFile": "Pages/Students/CreateRequest/CreateRequestPage.razor.scss"
   },
   {
+    "outputFile": "Pages/Students/MyProjects/MyProjectsStudent.razor.css",
+    "inputFile": "Pages/Students/MyProjects/MyProjectsStudent.razor.scss"
+  },
+  {
     "outputFile": "Pages/MyRequests/MyRequests.razor.css",
     "inputFile": "Pages/MyRequests/MyRequests.razor.scss"
   },
@@ -76,7 +80,7 @@
     "inputFile": "Pages/Supervisors/MyProjects/MyProjectsSupervisor.razor.scss"
   },
   {
-    "outputFile": "Pages/Supervisors/MyProfileView/SupervisorProfile.razor.css",
-    "inputFile": "Pages/Supervisors/MyProfileView/SupervisorProfile.razor.scss" 
+    "outputFile": "Pages/Supervisors/ProfilePage/SupervisorProfile.razor.css",
+    "inputFile": "Pages/Supervisors/ProfilePage/SupervisorProfile.razor.scss" 
   }
 ]

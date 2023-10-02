@@ -31,11 +31,11 @@
 else
 {
     <div class="d-flex flex-row justify-content-center request-details-view">
-        <div class="d-flex flex-column panel-gap">
+        <div class="d-flex flex-column">
             <div>
                 <Panel Title="Request Info" Width="@panelWidth">
                     <div class="d-flex flex-column py-2">
-                        <b>Programmes:</b>
+                        <p class="fw-bold m-0">Programmes:</p>
                         <div class="d-flex flex-wrap programmes">
                             @for (int i = 0; i < request.Programmes.Count(); i++)
                             {
@@ -46,14 +46,13 @@ else
                                 }
                             }
                         </div>
-                        <br>
-                        <b>ECTS Points:</b>
-                        <p1 class="fw-normal"> @request.Ects.GetTranslatedString(EnumsLocalizer) </p1> <br>
+                        <p class="fw-bold m-0 mt-3">ECTS Points:</p>
+                        <p1 class="fw-normal"> @request.Ects.GetTranslatedString(EnumsLocalizer) </p1>
 
-                        <b>Semester:</b>
-                        <p1 class="fw-normal"> @request.Semester?.Season @request.Semester?.Year </p1> <br>
+                        <p class="fw-bold m-0 mt-3">Semester:</p>
+                        <p1 class="fw-normal"> @request.Semester?.Season @request.Semester?.Year </p1>
 
-                        <b>Languages:</b>
+                        <p class="fw-bold m-0 mt-3">Languages:</p>
                         @foreach (Language language in request.Languages)
                         {
                             <p1 class="fw-normal"> @language </p1>
@@ -61,31 +60,45 @@ else
                     </div>
                 </Panel>
             </div>
-            <div class="py-2">
-                <Panel Title="Topics" Width="@panelWidth">
-                    <TagsDisplay Tags="request.Topics?.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
-                </Panel>
-            </div>
+            @if (request.Topics is not null && request.Topics.Any())
+            {
+                <div class="my-2">
+                    <Panel Title="Topics" Width="@panelWidth">
+                        <TagsDisplay Tags="request.Topics?.Select(topic => new FilterTag { Tag = topic.Name, Selected = true }).ToList()" />
+                    </Panel>
+                </div>
+            }
+            else
+            {
+                <div class="my-2">
+                    <Panel Title="Topics" Width="@panelWidth">
+                        <div class="d-flex flex-column align-items-center">
+                            <span class="my-3 fs-7 fw-bold text-black-50">No topics</span>
+                        </div>
+                    </Panel>
+                </div>
+            }
         </div>
         <DetailsView Title="@request.Title" Description="@request.DescriptionHtml" />
-        <div class="d-flex flex-column panel-gap">
-            <div>
-                <Panel Title="Group member(s)" Width="@panelWidth">
+        <div class="d-flex flex-column">
+            <div class="mt-2">
+                <Panel Title="Group members" Width="@panelWidth">
                     <p class="fw-normal pt-2 text-break">
                         <h6 class="fw-bold"> Info: </h6>
                         <div class="lh-lg">
                             @if (request.StudentGroup is not null && request.StudentGroup.Students.Any())
                             {
-                                <hr>
-                                foreach (Student student in request.StudentGroup.Students.OrderBy(s => s.FullName))
+                                var sortedList = request.StudentGroup.Students.OrderBy(s => s.FullName);
+
+                                foreach (Student student in sortedList)
                                 {
                                     <div>
-                                        @student.FullName <br>
-                                        @student.Email <br>
+                                        <p class="my-0">@student.FullName</p>
+                                        <p class="my-1">@student.Email</p>
                                     </div>
-                                    if (student != request.StudentGroup.Students.Last())
+                                    if (student != sortedList.Last())
                                     {
-                                        <hr>
+                                        <hr class="my-2">
                                     }
                                 }
                             }
@@ -97,21 +110,24 @@ else
                 <Authorized>
                     @if (context.User.IsInRole(AppRoles.Student))
                     {
-                        <div>
+                        <div class="mt-2">
                             <Panel Title="Supervisors requested" Width="@panelWidth">
                                 <p class="fw-normal pt-2 text-break">
                                     <div class="lh-lg">
                                         @if (request.Supervisors is not null && request.Supervisors.Any())
                                         {
-                                            foreach (Supervisor supervisor in request.Supervisors.OrderBy(s => s.FullName))
+                                            var sortedList = request.Supervisors.OrderBy(s => s.FullName);
+
+                                            foreach (Supervisor supervisor in sortedList)
                                             {
                                                 <div>
-                                                    @supervisor.FullName <br>
-                                                    @supervisor.Email <br>
+                                                    <a href=@($"{PageUrls.Supervisors}/{supervisor.Id}") class="text-decoration-none">
+                                                        <p class="my-0">@supervisor.FullName</p>
+                                                    </a>                                                    
                                                 </div>
-                                                if (supervisor != request.Supervisors.Last())
+                                                if (supervisor != sortedList.Last())
                                                 {
-                                                    <hr>
+                                                    <hr class="my-2">
                                                 }
                                             }
                                         }
@@ -121,19 +137,19 @@ else
                         </div>
                     }
                     @if (context.User.IsInRole(AppRoles.Supervisor))
+                    {
+                        if (request.Supervisors is not null && request.Supervisors.Any(s => s.Email == userEmail))
                         {
-                            if (request.Supervisors is not null && request.Supervisors.Any(s => s.Email == userEmail))
-                            {
-                                <div class="d-flex flex-column">
-                                    <button @onclick="(() => AcceptRequest(request.Id))" type="button" class="btn btn-success fw-bold mb-4"> 
-                                        Accept
-                                    </button>
-                                    <button @onclick="(() => DeclineRequest(request.Id))" type="button" class="btn btn-danger fw-bold"> 
-                                        Decline
-                                    </button>
-                                </div>
-                            }
+                            <div class="d-flex flex-column">
+                                <button @onclick="(() => AcceptRequest(request.Id))" type="button" class="btn btn-success fw-bold mt-2 mb-4"> 
+                                    Accept
+                                </button>
+                                <button @onclick="(() => DeclineRequest(request.Id))" type="button" class="btn btn-danger fw-bold mb-4"> 
+                                    Decline
+                                </button>
+                            </div>
                         }
+                    }
                 </Authorized>
             </AuthorizeView>
         </div>

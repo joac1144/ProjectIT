@@ -13,6 +13,7 @@ using System.Net.Http.Json;
 using Microsoft.JSInterop;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using ProjectIT.Client.Shared.Helpers;
 
 namespace ProjectIT.Client.Pages.Students.CreateRequest;
 
@@ -62,7 +63,7 @@ public partial class CreateRequestPage
     private IEnumerable<Language>? requestLanguages;
     private readonly List<Topic> requestTopics = new();
     private readonly List<Supervisor> requestSupervisors = new();
-    private readonly List<Student> ExtraMembers = new();
+    private readonly List<Student> extraMembers = new();
     private readonly int groupMembers = 1;
     private IEnumerable<Topic> topics = null!;
     private IEnumerable<Supervisor> supervisors = null!;
@@ -72,10 +73,8 @@ public partial class CreateRequestPage
     private string? descriptionHtml;
     private Ects? requestEcts;
     private readonly Request request = new();
-
     private ClaimsPrincipal? authUser;
     private string? userEmail;
-
     protected override async Task OnInitializedAsync()
     {
         ectsWrappers = Enum.GetValues<Ects>().Select(ects => new EctsWrapper { Ects = ects, StringValue = ects.GetTranslatedString(EnumsLocalizer) });
@@ -174,10 +173,10 @@ public partial class CreateRequestPage
     private async Task OnAddNewMemberFromSearchClicked()
     {
         if (!string.IsNullOrWhiteSpace(memberMail) && Regex.IsMatch(memberMail, @"^([\w.\-]+)@([\w\-]+)((\.(\w{2,}))+)$") ) {
-            if (!ExtraMembers!.Select(member => member.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase) && students.Select(student => student.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase))
+            if (!extraMembers!.Select(member => member.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase) && students.Select(student => student.Email).Contains(memberMail, StringComparer.OrdinalIgnoreCase))
             {
                 var newMember = students.Single(student => student.Email.Equals(memberMail, StringComparison.OrdinalIgnoreCase));
-                ExtraMembers.Add(newMember);
+                extraMembers.Add(newMember);
                 students = students.Where(student => student.Email != newMember.Email);
             }
             else
@@ -194,17 +193,18 @@ public partial class CreateRequestPage
 
     private void OnSelectedMemberClicked(Student student)
     {
-        ExtraMembers.Remove(student);
+        extraMembers.Remove(student);
         students = students.Append(student);
     }
 
     private async void SubmitRequestAsync()
     {
-        if (requestEcts is null || requestProgrammes is null || requestLanguages is null || requestTopics is null || requestSupervisors is null || request.Title is null || request.Semester is null || descriptionHtml is null || ExtraMembers is null)
+        if (requestEcts is null || requestProgrammes is null || requestLanguages is null || requestTopics is null || requestSupervisors is null || request.Title is null || request.Semester is null || descriptionHtml is null || extraMembers is null)
         {
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             return;
         }
+
         var newRequest = new RequestCreateDto
         {
             Title = request.Title,
@@ -212,43 +212,43 @@ public partial class CreateRequestPage
             Topics = requestTopics.Select(t => new Topic { Name = t.Name, Category = t.Category }),
             Languages = requestLanguages!,
             Programmes = requestProgrammes!,
-            StudentEmails = new List<string>() { userEmail! }.Concat(ExtraMembers?.Select(m => m.Email)!),
+            StudentEmails = new List<string>() { userEmail! }.Concat(extraMembers?.Select(m => m.Email)!),
             SupervisorEmails = requestSupervisors.Select(s => s.Email),
             Ects = (Ects)requestEcts!,
             Semester = request.Semester,
             Status = RequestStatus.Pending
         };
 
-        if (newRequest.Title.Length > 50)
+        if (newRequest.Title.Length > EntityPropertyRestrictions.RequestTitleCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Request title should not be more than 50 characters.");
-            
+            await JSRuntime.InvokeAsync<string>("alert", $"Request title should not be more than {EntityPropertyRestrictions.RequestTitleCap} characters.");
+            return;
         }
-        if (newRequest.DescriptionHtml.Length > 4800)
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Request description should not be more than 4800 characters.");
 
-        }
-        else 
+        var strippedString = HTMLHelper.RemoveTagsFromString(newRequest.DescriptionHtml);
+        if (strippedString.Length > EntityPropertyRestrictions.RequestDescriptionCap)
         {
-            try
+            await JSRuntime.InvokeAsync<string>("alert", $"Request description should not be more than {EntityPropertyRestrictions.RequestDescriptionCap} characters.");
+            return;
+        }
+
+        try
+        {
+            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, newRequest);
+
+            if (response.IsSuccessStatusCode)
             {
-                var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Requests, newRequest);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
-                    navManager.NavigateTo(PageUrls.MyRequests);
-                }
-                else
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
-                }
+                await JSRuntime.InvokeAsync<string>("alert", "Request created successfully!");
+                navManager.NavigateTo(PageUrls.MyRequests);
             }
-            catch
+            else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             }
+        }
+        catch
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 

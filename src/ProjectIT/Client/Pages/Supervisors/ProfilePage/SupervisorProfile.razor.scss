@@ -1,16 +1,11 @@
 .profile-page-icon{
-    margin-left: 10.0rem;
-    height: 120px;
-    width: 120px;
+    height: 150px;
+    width: 150px;
     border-radius: 50%;
 }
 
 .editform{
     width: 700px;
-}
-
-.info-panel-items-horizontal-gap{
-    gap: 120px;
 }
 
 .topics-panel-items-horizontal-gap{
@@ -34,3 +29,14 @@
     width: 200px;
 }
 
+.rotate-45 {
+    transform: rotate(45deg);
+}
+
+.add-image-size {
+    width: 24px;
+}
+
+.w-30 {
+    width: 30%;
+}

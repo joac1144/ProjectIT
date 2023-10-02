@@ -1,22 +1,16 @@
-using System.Net;
 using System.Net.Http.Json;
 using System.Security.Claims;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Localization;
-using Microsoft.Graph.Models;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using ProjectIT.Client.Constants;
+using ProjectIT.Client.Shared.Helpers;
 using ProjectIT.Shared;
 using ProjectIT.Shared.Dtos.Projects;
 using ProjectIT.Shared.Enums;
 using ProjectIT.Shared.Extensions;
 using ProjectIT.Shared.Models;
-using ProjectIT.Shared.Resources;
 using Radzen.Blazor;
 
 namespace ProjectIT.Client.Pages.Supervisors.CreateProject;
@@ -40,25 +34,6 @@ public partial class CreateProjectPage
         public Language Language { get; set; }
         public string StringValue { get; set; } = string.Empty;
     }
-
-    private readonly Dictionary<string, string> _htmlEntitiesTable = new()
-    {
-        { "&nbsp;", " " },
-        { "&amp;", "&" },
-        { "&quot;", "\"" },
-        { "&apos;", "'" },
-        { "&lt;", "<" },
-        { "&gt;", ">" },
-        { "&cent;", "¢" },
-        { "&pound;", "£" },
-        { "&yen;", "¥" },
-        { "&euro;", "€" },
-        { "&copy;", "©" },
-        { "&reg;", "®" },
-        { "&trade;", "™" },
-        { "&times;", "×" },
-        { "&divide;", "÷" }
-    };
 
     // All topics in database.
     private IEnumerable<Topic> topics = null!;
@@ -144,7 +119,8 @@ public partial class CreateProjectPage
     private void OnSelectedTopicClicked(Topic topic)
     {
         projectTopics.Remove(topic);
-        topicsInDropdownList = topicsInDropdownList.Append(topic);
+        if (topic.Category is not null)
+            topicsInDropdownList = topicsInDropdownList.Append(topic);
         SortTopics();
     }
 
@@ -220,7 +196,7 @@ public partial class CreateProjectPage
         if (newTopics.Any())
         {
             // A new topic was added, open dialog to confirm and to add category.
-                var result = await SelectTopicCategoryDialog(newTopics);
+            var result = await SelectTopicCategoryDialog(newTopics);
 
             // Check if the dialog was confirmed (Save button clicked)
             // and update the project's topics with the modified newProject topics.
@@ -228,11 +204,6 @@ public partial class CreateProjectPage
             {
                 project.Topics = newProject.Topics.ToList();
             }
-            if (result == null)
-            {
-                return;
-            }
-
             else
             {
                 // If the dialog was canceled (Cancel button clicked), do not post the project.
@@ -240,35 +211,36 @@ public partial class CreateProjectPage
             }
         }
 
-        if (project.Title.Length > 50)
+        if (project.Title.Length > EntityPropertyRestrictions.ProjectTitleCap)
         {
-            await JSRuntime.InvokeAsync<string>("alert", "Project title should not be more than 50 characters.");
-            project.Title = string.Empty;
+            await JSRuntime.InvokeAsync<string>("alert", $"Project title should not be more than {EntityPropertyRestrictions.ProjectTitleCap} characters.");
+            return;
         }
-        if (newProject.DescriptionHtml.Length > 4800)
-        {
-            await JSRuntime.InvokeAsync<string>("alert", "Project description should not be more than 2400 characters.");
-        }
-        else
-        {
-            try
-            {
-                var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
-                    navManager.NavigateTo(PageUrls.MyProjects);
-                }
-                else
-                {
-                    await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
-                }
+        var strippedString = HTMLHelper.RemoveTagsFromString(newProject.DescriptionHtml);
+        if (strippedString.Length > EntityPropertyRestrictions.ProjectDescriptionCap)
+        {
+            await JSRuntime.InvokeAsync<string>("alert", $"Project description should not be more than {EntityPropertyRestrictions.ProjectDescriptionCap} characters.");
+            return;
+        }
+
+        try
+        {
+            var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Projects, newProject);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await JSRuntime.InvokeAsync<string>("alert", "Project created successfully!");
+                navManager.NavigateTo(PageUrls.MyProjects);
             }
-            catch
+            else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
             }
+        }
+        catch
+        {
+            await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
 
@@ -287,12 +259,9 @@ public partial class CreateProjectPage
                 "Each topic should not have more than 25 characters."+
                 "dont create more than 7 topic";
                 
-                //removing all the html stof from the description
-                var strippedString = Regex.Replace(descriptionHtml, "<[^>]*>", " ");
-                foreach (var (key, val) in _htmlEntitiesTable)
-                {
-                    strippedString = strippedString.Replace(key, val);
-                }
+                //using the html helper to remove all the html tags from the description
+                var strippedString = HTMLHelper.RemoveTagsFromString(descriptionHtml);
+
                 // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
@@ -314,20 +283,18 @@ public partial class CreateProjectPage
                 {
                     await JSRuntime.InvokeAsync<string>("alert", "Something went wrong!");
                 }
-
             }
             else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure the description is longer than 1500 characters.");
             }
-
         }
         catch
         {
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
-
     }
+
     //this method is creating chat gpt to create title for the project description.
     private async Task GenerateTitleFromDescription() 
     {
@@ -337,12 +304,9 @@ public partial class CreateProjectPage
             {
                 var query = "create project title from above description and return it as string. Project title should not be more than 50 characters";
 
-                var strippedString = Regex.Replace(descriptionHtml, "<[^>]*>", " ");
-                foreach (var (key, val) in _htmlEntitiesTable)
-                {
-                    strippedString = strippedString.Replace(key, val);
-                }
-
+             
+                //using the html helper to remove all the html tags from the description
+                var strippedString = HTMLHelper.RemoveTagsFromString(descriptionHtml);
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;
@@ -357,19 +321,15 @@ public partial class CreateProjectPage
                 {
                     await JSRuntime.InvokeAsync<string>("alert", "Something went wrong!");
                 }
-
             }
             else
             {
                 await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure the description is longer than 1500 characters.");
             }
-
         }
         catch
         {
             await JSRuntime.InvokeAsync<string>("alert", "Something went wrong! Please make sure to fill out all required fields and try again.");
         }
     }
-
-    
 }

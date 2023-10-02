@@ -1,0 +1,150 @@
+@attribute [Route(PageUrls.MyProfile)]
+@using ProjectIT.Client.Components.Search
+@using ProjectIT.Client.Constants;
+@using ProjectIT.Client.Components.Panel
+@using ProjectIT.Client.Components.Tag
+@using ProjectIT.Shared.Enums;
+@using ProjectIT.Client.Http;
+@using ProjectIT.Shared.Models;
+@using ProjectIT.Client.Components.Filter;
+@using Microsoft.AspNetCore.Authorization;
+@inject IStringLocalizer<EnumsResource> EnumsLocalizer
+@inject AnonymousClient anonymousClient
+@inject HttpClient httpClient
+@inject DialogService DialogService
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize(Roles = AppRoles.Supervisor)]
+
+@if (isLoading)
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div>
+        <div class="d-flex flex-column position-absolute align-items-center w-30">
+            <img class="profile-page-icon" src=@("https://img.freepik.com/free-icon/user_318-159711.jpg") alt="Avatar">
+        </div>
+        <div class="d-flex flex-column align-items-center w-100 my-3">
+            <div class="editform">
+                <h2 class="fw-bold mb-4"> @supervisor!.FullName </h2>
+                <Panel Title="Info" Width="700px" Height="270px;">
+                    <div class="d-flex flex-row mx-4 justify-content-between">
+                        <div class="d-flex flex-column">
+                            <label class="fw-bold my-2">First name</label>
+                            <input type="text" @bind-value="supervisor.FirstName" class="border rounded-1 fs-7 px-3 mb-4"
+                                style="width: 15rem; height: 2.2rem" disabled />
+                            <label class="fw-bold mb-2">Email</label>
+                            <input type="text" @bind-value="supervisor.Email" class="border rounded-1 fs-7 px-3 mb-1"
+                                style="width: 15rem; height: 2.2rem" disabled />
+                        </div>
+                        <div class="d-flex flex-column">
+                            <label class="fw-bold my-2">Last name</label>
+                            <input type="text" @bind-value="supervisor.LastName" class="border rounded-1 fs-7 px-3 mb-4"
+                                style="width: 15rem; height: 2.2rem" disabled />
+                            <label class="fw-bold mb-2">Profession</label>
+                            <RadzenDropDown class="border" Style="height: 2.2rem;" TValue="string" Data=@professions Disabled
+                                Placeholder="@supervisor.Profession.GetTranslatedString(EnumsLocalizer)" Change="@(args => OnProfessionsSelectedInList(args))" />
+                        </div>
+                    </div>
+                    <hr class="my-3">
+                    <div class="d-flex flex-column ms-4">
+                        <label class="fw-bold mb-2">Status</label>
+                        <RadzenRadioButtonList class="mb-2" TValue="string" Data="statuses" Value=supervisor.Status.GetTranslatedString(EnumsLocalizer) TextProperty="StringValue"
+                            ValueProperty="SupervisorStatus" Orientation="Orientation.Horizontal" Change="@(args => OnStatusesSelectedInList(args))" />
+                    </div>
+                </Panel>
+                <br>
+                <Panel Title="Topics" Width="700px;" Height="4rem;">
+                    <div class="d-flex flex-row justify-content-between my-2 topics-panel-items-horizontal-gap">
+                        @if (topicsInDropdownList is not null)
+                        {
+                            <RadzenDropDown @ref="topicSelector"
+                                            TValue="Topic"
+                                            Placeholder="Select topics"
+                                            AllowFiltering="true"
+                                            ClearSearchAfterSelection="true"
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                            Data=@topicsInDropdownList
+                                            Change="OnTopicSelectedInList"
+                                            ValueProperty="Name"
+                                            TextProperty="Name"
+                                            class="flex-grow-1"
+                                            Style="height: 2.2rem;" >
+                                <Template>
+                                    @context.Name
+                                </Template>
+                            </RadzenDropDown>
+                        }
+                        <div class="d-flex flex-row gap-2">
+                            <form class="d-flex gap-2" onsubmit="event.preventDefault()">
+                                <SearchField PlaceholderText="Create new topics..." ShowSearchIcon="false" Width="14.5rem" Height="2.2rem" OnInputValueChanged="(newVal) => topicName = newVal" />
+                                <button type="reset" value="reset" class="bg-transparent border-0 add-image-size" @onclick=OnAddNewTopicFromSearchClicked>
+                                    <img class="rotate-45 w-100 h-70" src="images/baseline_clear_24.png" alt="Add new topic">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-start flex-wrap py-2">
+                        @if (supervisorTopics is not null)
+                        {
+                            foreach (var topic in supervisorTopics)
+                            {
+                                <TagBox Tag="@(new FilterTag { Tag = topic.Name })" IsDisabled="false" OnClicked="() => OnSelectedTopicClicked(topic)" />
+                            }
+                        }
+                    </div>
+                </Panel>
+                <div class="d-flex flex-row justify-content-end action-buttons-gap">
+                    <button @onclick="DiscardChanges" type="button" class="btn btn-primary border-0 button-width bg-danger text-white">
+                        Discard
+                    </button>
+                    <button @onclick="SubmitAsync" type="button" class="btn btn-primary border-0 button-width bg-success text-white">
+                        Save </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    async Task<dynamic> SelectTopicCategoryDialog(IEnumerable<Topic> newTopics)
+    {
+        IEnumerable<TopicCategory?> topicCategories = Enum.GetValues(typeof(TopicCategory)).Cast<TopicCategory?>();
+
+        var result = await DialogService.OpenAsync("Select Categories for Topics", ds =>
+    @<RadzenStack Gap="1.5rem">
+        <div class="d-flex flex-column">
+            @foreach (var topic in newTopics)
+            {
+            <div class="d-flex flex-row align-items-center justify-content-between mb-2">
+                <span class="me-2">@topic.Name</span>
+                <RadzenDropDown TValue="TopicCategory?" Data="@topicCategories" @bind-Value="@topic.Category"
+                    Placeholder="Choose a category">
+                    <Template Context="category">
+                        @(((Enum)Enum.Parse(typeof(TopicCategory),
+                                category.ToString())).GetTranslatedString(EnumsLocalizer))
+                    </Template>
+                </RadzenDropDown>
+            </div>
+            }
+        </div>
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center"
+            JustifyContent="JustifyContent.End">
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <RadzenButton Text="Cancel" Click="() => ds.Close(false)" ButtonStyle="ButtonStyle.Light" />
+                <RadzenButton Text="Save" Click="() => ds.Close(true)" Style="width: 80px; background-color:black" />
+            </RadzenStack>
+        </RadzenStack>
+    </RadzenStack>
+);
+        return result;
+    }
+}

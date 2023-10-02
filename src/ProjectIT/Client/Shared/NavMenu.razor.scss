@@ -11,7 +11,7 @@
 }
 
 .active {
-    border-bottom: 4px solid white !important;
+    border-bottom: 4px solid #F8F9FA !important;
 }
 
 .decoration-on-hover:hover {
@@ -29,7 +29,24 @@
     width: 7rem;
 }
 
+.padding-profile {
+    padding-bottom: 25.5px;
+}
+
+.profile-page-icon-dimensions {
+    height: 4.7rem;
+    width: 5rem;
+}
+
 .link-padding {
     padding-right: 2.3rem;
     padding-left: 2.3rem;
+}
+
+.img-height {
+    height: 40px !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
