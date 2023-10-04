@@ -79,7 +79,9 @@ public partial class UpdateProjectPage
 
         projectToBeUpdated = await httpClient.Client.GetFromJsonAsync<ProjectUpdateDto>($"{ApiEndpoints.Projects}/{Id}");
 
-        projectTopics = projectToBeUpdated?.Topics?.ToList();
+        if (projectToBeUpdated?.Topics is not null && projectToBeUpdated?.Topics.Count() > 0)
+            projectTopics = projectToBeUpdated?.Topics?.ToList();
+        
         projectCoSupervisor = projectToBeUpdated?.CoSupervisor;
         
         await GetSupervisorsAndTopicsData();
@@ -93,7 +95,10 @@ public partial class UpdateProjectPage
         if (topics == null)
             throw new Exception("Could not load topics");
 
-        topicsInDropdownList = topics.Except(projectToBeUpdated!.Topics!);
+        if (projectToBeUpdated?.Topics is not null)
+            topicsInDropdownList = topics.Except(projectToBeUpdated!.Topics!);
+        else
+            topicsInDropdownList = topics;
 
         coSupervisors = (await httpClient.Client.GetFromJsonAsync<IEnumerable<Supervisor>>(ApiEndpoints.Supervisors))!.Where(supervisor => supervisor.Email != userEmail);
         if (coSupervisors == null)
