@@ -2,6 +2,7 @@
 @using ProjectIT.Client.Components.Filter
 @using ProjectIT.Client.Components.ProjectCard
 @using ProjectIT.Client.Components.Search
+@using ProjectIT.Client.Components.Loader
 @using ProjectIT.Client.Components.Tag
 @using ProjectIT.Client.Components.Panel
 @using ProjectIT.Client.Http;
@@ -13,6 +14,12 @@
 @inject NavigationManager navManager
 @inject IJSRuntime JSRuntime
 
+@if(isLoading)
+{
+    <div class="d-flex justify-content-center align-items-center" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.2); z-index: 9999;">
+        <Loader />
+    </div>
+}
 <div class="d-flex flex-row justify-content-center gap-5">
     <div class="d-flex flex-column my-4 py-3 gap-4 filter-size">
         <Panel Title="Programmes" InputRequired="true">

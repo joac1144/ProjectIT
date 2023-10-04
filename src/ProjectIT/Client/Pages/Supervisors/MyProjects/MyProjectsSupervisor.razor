@@ -2,6 +2,7 @@
 @using ProjectIT.Client.Components.Dropdown
 @using ProjectIT.Client.Components.Modal
 @using ProjectIT.Client.Components.ProjectCard
+@using ProjectIT.Client.Components.Loader
 @using Microsoft.AspNetCore.Authorization;
 @using ProjectIT.Client.Constants;
 @using ProjectIT.Shared.Dtos.Projects;
@@ -28,9 +29,7 @@
         @if (isLoading)
         {
             <div class="d-flex justify-content-center">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+                <Loader />
             </div>
         }
         @if (projects is not null && projects.Any())

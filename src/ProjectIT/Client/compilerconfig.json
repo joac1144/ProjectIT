@@ -20,6 +20,10 @@
     "inputFile": "Components/Search/SearchField.razor.scss"
   },
   {
+    "outputFile": "Components/Loader/Loader.razor.css",
+    "inputFile": "Components/Loader/Loader.razor.scss"
+  },
+  {
     "outputFile": "Components/Filter/FilterPanelTopics.razor.css",
     "inputFile": "Components/Filter/FilterPanelTopics.razor.scss"
   },
