@@ -67,6 +67,7 @@ public partial class UpdateProjectPage
 
     private ClaimsPrincipal? authUser;
     private string? userEmail;
+    private bool isLoading = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -266,12 +267,14 @@ public partial class UpdateProjectPage
 
                 var strippedString = HTMLHelper.RemoveTagsFromString(projectToBeUpdated.DescriptionHtml);
 
+                isLoading = true;
                 // calling the chat gbt api using the description and the query
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;
 
                 var aiTopics = JsonConvert.DeserializeObject<List<Topic>>(resutl);
+                isLoading = false;
 
                 if (aiTopics != null && aiTopics.Count > 0)
                 {
@@ -310,11 +313,13 @@ public partial class UpdateProjectPage
                 var query = "create project title from above description and return it as string. Project title should not be more than 50 characters";
                 
                 var strippedString = HTMLHelper.RemoveTagsFromString(projectToBeUpdated.DescriptionHtml);
+                isLoading = true;
                 var response = await httpClient.Client.PostAsJsonAsync(ApiEndpoints.Gpt, strippedString + " " + query);
                 var filterout = response.Content.ReadAsStringAsync();
                 var resutl = filterout.Result;
 
                 projectToBeUpdated!.Title = resutl;
+                isLoading = false;
 
                 if (response.IsSuccessStatusCode)
                 {

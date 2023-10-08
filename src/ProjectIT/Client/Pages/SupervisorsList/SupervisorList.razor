@@ -2,6 +2,7 @@
 @using ProjectIT.Client.Constants;
 @using ProjectIT.Client.Http;
 @using ProjectIT.Client.Components.Filter
+@using ProjectIT.Client.Components.Loader
 @using ProjectIT.Client.Components.Search
 @using ProjectIT.Client.Components.Tag
 @using ProjectIT.Shared.Dtos.Users;
@@ -42,9 +43,7 @@
             @if (isLoading)
             {
                 <div class="d-flex justify-content-center">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
+                    <Loader />
                 </div>
             }
 
