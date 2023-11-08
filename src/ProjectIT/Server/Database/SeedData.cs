@@ -65,9 +65,9 @@ public static class SeedData
     private static readonly Supervisor supervisor2 = new() { FirstName = "Alice", LastName = "Jones", Email = "aljo@itu.dk", Profession = SupervisorProfession.ExternalProfessor, Topics = new List<Topic>() { topic1, topic11, topic12, topic29, topic17, topic22, topic27, topic5 }, Status = SupervisorStatus.Available };
     private static readonly Supervisor supervisor3 = new() { FirstName = "Emil", LastName = "Smith", Email = "Emsm@itu.dk", Profession = SupervisorProfession.PhdStudent, Topics = new List<Topic>() { topic10, topic15, topic16, topic19, topic20, topic21, topic8, topic50 }, Status = SupervisorStatus.Inactive };
     private static readonly Supervisor supervisor4 = new() { FirstName = "Sarah", LastName = "Lee", Email = "sale@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic42 }, Status = SupervisorStatus.Available };
-    private static readonly Supervisor supervisor5 = new() { FirstName = "Alaa Imad", LastName = "Abdul-Al", Email = "alia@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic25, topic26, topic28, topic31, topic3, topic4, topic8, topic46 }, Status = SupervisorStatus.Available };
-    private static readonly Supervisor supervisor6 = new() { FirstName = "Emdah", LastName = "Habib", Email = "emdah1@hotmail.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
-    private static readonly Supervisor supervisorTEST = new() { FirstName = "Supervisor Test", LastName = "#1", Email = "testsupervisor@projectititu.onmicrosoft.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13 }, Status = SupervisorStatus.Available };
+    private static readonly Supervisor supervisorAlaaItu = new() { FirstName = "Alaa Imad", LastName = "Abdul-Al", Email = "alia@itu.dk", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic25, topic26, topic28, topic31, topic3, topic4, topic8, topic46 }, Status = SupervisorStatus.Available };
+    private static readonly Supervisor supervisorEmdah = new() { FirstName = "Emdah", LastName = "Habib", Email = "emdah1@hotmail.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13, topic5, topic2, topic7, topic8, topic9 }, Status = SupervisorStatus.Available };
+    private static readonly Supervisor supervisorTEST = new() { FirstName = "John", LastName = "Doe", Email = "testsupervisor@projectititu.onmicrosoft.com", Profession = SupervisorProfession.Lecturer, Topics = new List<Topic>() { topic6, topic14, topic13 }, Status = SupervisorStatus.Available };
 
     private static readonly Student student1 = new() { FirstName = "Josefine", LastName = "Henriksen", Email = "Josefine@itu.dk" };
     private static readonly Student student2 = new() { FirstName = "Kristian", LastName = "Jespersen", Email = "Kristian@itu.dk" };
@@ -76,7 +76,7 @@ public static class SeedData
     private static readonly Student studentAlaa = new() { FirstName = "Alaa", LastName = "Abdul-Al", Email = "alaamohamed@hotmail.dk" };
     private static readonly Student studentJoachim = new() { FirstName = "Joachim", LastName = "Kofoed", Email = "jkof@itu.dk" };
     private static readonly Student studentMohammad = new() { FirstName = "Mohammad", LastName = "Hasham", Email = "mhas@itu.dk" };
-    private static readonly Student studentTEST = new() { FirstName = "Student Test", LastName = "#1", Email = "teststudent@projectititu.onmicrosoft.com" };
+    private static readonly Student studentTEST = new() { FirstName = "Casper", LastName = "Jensen", Email = "teststudent@projectititu.onmicrosoft.com" };
 
     private static Project project2 = new() 
     {
@@ -130,7 +130,7 @@ public static class SeedData
     {
         if (!context.Supervisors.Any())
         {
-            context.Supervisors.AddRange(supervisor1, supervisor2, supervisor3, supervisor4, supervisor5, supervisor6, supervisorTEST);
+            context.Supervisors.AddRange(supervisor1, supervisor2, supervisor3, supervisor4, supervisorAlaaItu, supervisorEmdah, supervisorTEST);
         }
         context.SaveChanges();
     }
@@ -140,6 +140,34 @@ public static class SeedData
         if (!context.Projects.Any())
         {
             context.Projects.AddRange(
+                new Project
+                {
+                    Title = "Project collaboration process improvement",
+                    DescriptionHtml = "<div><span><span style=\"background-color: transparent; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-variant-position: normal; vertical-align: baseline;\"><div style=\"\"><span style=\"color: rgb(0, 0, 0); font-family: Arial, sans-serif; font-size: 14.6667px; white-space-collapse: preserve;\">On an annual basis, students and supervisors at the IT University of Copenhagen (ITU) collaborate on final year’s projects to mark off the students’ final year. For students, the process of finding a relevant supervisor and project is a critical step, since it has an effect on the outcome of the project. Currently, this process can be framed as manual, disorganized and lacks a centralized platform between the two parties. All of this combined leads to waste of time, redundancy, and the risk of pairing up with an inadequate supervisor due to time constraints.</span></div><div style=\"\"><span style=\"color: rgb(0, 0, 0); font-family: Arial, sans-serif; font-size: 14.6667px; white-space-collapse: preserve;\"><br></span></div><div style=\"\"><span style=\"color: rgb(0, 0, 0); font-family: Arial, sans-serif; font-size: 14.6667px; white-space-collapse: preserve;\">This suboptimal process is also prevalent in some other Danish universities. For instance, Aarhus University and Roskilde University have a process similar to ITU. On the other hand, other universities such as the University of Copenhagen and the Technical University of Copenhagen have solutions that enhance the process, though still have room for improvement.</span></div></span></span></div>",
+                    Topics = new[] { topic46, topic27, topic22, topic17 },
+                    Languages = new[]
+                    {
+                        Language.English
+                    },
+                    Programmes = new[]
+                    {
+                        Programme.BSWU
+                    },
+                    Ects = Ects.Bachelor,
+                    Semester = new Semester
+                    {
+                        Season = Season.Autumn,
+                        Year = 2024
+                    },
+                    Supervisor = supervisorTEST,
+                    AppliedStudentGroups = new StudentGroup[]
+                    {
+                        new StudentGroup
+                        {
+                            Students = new Student[] { studentAlaa, studentJoachim, studentTEST }
+                        }
+                    }
+                },
                 new Project
                 {
                     Title = "ProjectIT",
@@ -249,7 +277,7 @@ public static class SeedData
                         Programmes = new[] { Programme.MDS },
                         Ects = Ects.Master,
                         Semester = new Semester { Season = Season.Autumn, Year = 2023 },
-                        Supervisor = supervisor5
+                        Supervisor = supervisorAlaaItu
                     },
                 new Project
                 {
