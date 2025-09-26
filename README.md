@@ -1,52 +1,41 @@
 # ProjectIT
 
-## Setting up application
+ProjectIT is a web platform built to show a concept that enhances the process of finding a project and supervisor for larger projects. It streamlines the process by having one centralized place for students and supervisors to match and connect.
 
-### Pull Docker image for PostgreSQL
+The platform allows supervisors to propose and manage thesis topics, while students can browse, filter, and apply for projects—similar to applying for jobs online.
 
-```$ docker pull postgres```
+![The projects page where all projects created by supervisors show up.](https://www.datocms-assets.com/171355/1758898661-projects.png)
 
-### Setup Docker container with PostgreSQL
+## Motivation
 
-```$ docker run --name ProjectIT_DB -e POSTGRES_DB=projectit -e POSTGRES_PASSWORD=postgres -p 5433:5432 -d postgres```
+Every year, students at ITU face the same challenge: how to efficiently find the right supervisor and project for their final thesis. The process is often messy—spread across emails, informal conversations, and scattered documents. We saw this as an opportunity to build something meaningful: a digital platform that not only organizes the process but also improves the quality of matches between students and supervisors.
 
-### Connecting to database server in PgAdmin
+We built ProjectIT because we believe that the final thesis should start with inspiration, not frustration. By creating a centralized platform, we wanted to make the experience smoother, more transparent, and ultimately more rewarding for both students and supervisors.
 
-```
-Host name/address: localhost
-Port: 5433
-Username: postgres
-Password: postgres
-```
+## Usage
 
-## Using the application
+For detailed instructions on setting up and using the application, please refer to the [How-To Guide](how-to.md).
 
-### Creating and applying migrations
+## Tech Stack
 
-Make sure you have EF tools installed:
+- **Frontend**: Blazor WebAssembly
+- **Backend**: ASP.NET Core Web API
+- **Database**: PostgreSQL
+- **ORM**: Entity Framework Core
+- **Other Tools**: Docker, PgAdmin, SCSS
 
-```$ dotnet tool install --global dotnet-ef```
+## Screenshots
 
-Create new migration:
+![The supervisors page where all supervisors are listed.](https://www.datocms-assets.com/171355/1758898661-supervisors.png)
+![A project page where a student can see details about a project and apply for it.](https://www.datocms-assets.com/171355/1758898661-project_details.png)
+![The page to create a new project as a supervisor.](https://www.datocms-assets.com/171355/1758898661-supervisor_create-project.png)
 
-```$ dotnet ef migrations add <migration name>```
+## Development Process
 
-Apply migration / update database:
+We developed the project following a custom agile methodology based on Scrum, Lean, and Kanban principles.
 
-```$ dotnet ef database update```
+## Team
 
-### Running the application
-
-`cd` into `ProjectIT/src/ProjectIT/Server` and run app with `dotnet run`.
-
-## Test users
-
-### Test Supervisor
-Username: ```testsupervisor@projectititu.onmicrosoft.com```
-
-Password: ```Sada203599```
-
-### Test Student
-Username: ```teststudent@projectititu.onmicrosoft.com```
-
-Password: ```Roso457346```
+- [Alaa Abdul-Al](https://github.com/Alaa0129)
+- [Joachim Alexander Kofoed](https://github.com/joac1144)
+- [Mohammad Hasham](https://github.com/Mohammadhasham1999)
